@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getElogium, ApiError } from "@/lib/api";
+import { useState } from "react";
+import EulogyView from "@/components/EulogyView";
 import {
   isAdjudicable,
   opId,
@@ -11,7 +11,7 @@ import {
   type MergeOp,
   type DecisionRecord,
 } from "@/lib/changeset";
-import type { EulogyOut, Locale } from "@/lib/types";
+import type { Locale } from "@/lib/types";
 
 interface Props {
   op: Op;
@@ -21,28 +21,7 @@ interface Props {
   baseEdition: string;
 }
 
-function affectedId(op: Op): string | null {
-  if (op.op === "rename" || op.op === "delete") return (op as { id?: string }).id ?? null;
-  if (op.op === "merge") return (op as { ids: string[] }).ids[0] ?? null;
-  return null;
-}
-
-function pickEditionText(
-  eulogy: EulogyOut,
-  baseEdition: string
-): { text: string | null; editionId: string | null; isFallback: boolean } {
-  const base = eulogy.editions[baseEdition];
-  if (base?.text) return { text: base.text, editionId: baseEdition, isFallback: false };
-  for (const [edId, p] of Object.entries(eulogy.editions)) {
-    if (p.text) return { text: p.text, editionId: edId, isFallback: true };
-  }
-  return { text: null, editionId: null, isFallback: false };
-}
-
 export default function OperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
-  const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   // Seed edit inputs from a previously-saved edit (resume from localStorage / filter
   // toggle remounts the card) falling back to the original proposal, so re-opening Edit
@@ -61,30 +40,7 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
     ed?.reason ?? (op.op === "delete" ? ((op as DeleteOp).reason ?? "") : "")
   );
 
-  const id = affectedId(op);
   const adjudicable = isAdjudicable(op);
-
-  useEffect(() => {
-    if (!id) return;
-    let cancelled = false;
-    (async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getElogium(id);
-        if (!cancelled) setEulogy(data);
-      } catch (err) {
-        if (!cancelled)
-          setError(err instanceof ApiError ? `text unavailable (${err.title})` : "text unavailable");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [id]);
-
   const id_ = opId(op);
   const decide = (d: DecisionRecord) => onDecide(id_, d);
 
@@ -110,26 +66,30 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         )}
       </div>
 
-      {loading && <p className="text-slate-500 dark:text-slate-400">Loading eulogy…</p>}
-      {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
-      {eulogy &&
-        (() => {
-          const { text, editionId, isFallback } = pickEditionText(eulogy, baseEdition);
-          return (
-            <div className="mb-2 rounded bg-slate-50 p-2 dark:bg-slate-900">
-              <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
-              {isFallback && editionId && (
-                <p className="text-xs text-amber-600 dark:text-amber-400">
-                  no {baseEdition} placement — showing {editionId}
-                </p>
-              )}
-              {!isFallback && editionId && (
-                <p className="text-xs text-slate-500 dark:text-slate-400">{editionId}</p>
-              )}
-              <p className="mt-1">{text ?? "(no text)"}</p>
-            </div>
-          );
-        })()}
+      {/* Eulogy text(s). A merge shows BOTH the losing entry and the winner so the
+          curator can confirm they are the same subject before merging. */}
+      {op.op === "merge" ? (
+        <div className="mb-2 grid gap-2 md:grid-cols-2">
+          <EulogyView
+            id={(op as MergeOp).ids[0] ?? null}
+            baseEdition={baseEdition}
+            locale={locale}
+            label="Losing — will be removed"
+            tone="loser"
+          />
+          <EulogyView
+            id={(op as MergeOp).winner}
+            baseEdition={baseEdition}
+            locale={locale}
+            label="Winner — kept"
+            tone="winner"
+          />
+        </div>
+      ) : (
+        <div className="mb-2">
+          <EulogyView id={(op as { id?: string }).id ?? null} baseEdition={baseEdition} locale={locale} />
+        </div>
+      )}
 
       <div className="mb-2">
         {op.op === "rename" && (
