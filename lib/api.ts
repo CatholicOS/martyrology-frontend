@@ -26,8 +26,11 @@ export async function getCatalog(edition: string, locale: Locale): Promise<Catal
   return (await get<{ elogia: CatalogEntryOut[] }>(`elogia?edition=${encodeURIComponent(edition)}&locale=${locale}`)).elogia;
 }
 
-export async function getElogium(id: string, locale: Locale = "la"): Promise<EulogyOut> {
-  return get<EulogyOut>(`elogium/${encodeURIComponent(id)}?locale=${locale}`);
+// The /elogium/{id} endpoint has no locale parameter — it returns subjects for ALL
+// locales (EulogyOut.subject: {la,it,en}) and all edition placements. Callers select
+// the language/edition they need from the returned object.
+export async function getElogium(id: string): Promise<EulogyOut> {
+  return get<EulogyOut>(`elogium/${encodeURIComponent(id)}`);
 }
 
 export async function getDay(edition: string, mm: string, dd: string): Promise<DayContentOut> {
