@@ -59,31 +59,51 @@ Next.js route handlers  (app/api/proxy/…)  ── thin proxy / typed client
   the endpoints used.
 - **API endpoints consumed (read-only):**
   - `GET /api/v1/editions` — list available editions (id, label, availability).
-  - `GET /api/v1/elogia/edition/{edition}/{MM}/{DD}` — a day's eulogies for an edition.
-  - `GET /api/v1/elogium/{canonical_id}` — a single eulogy (text + placement + `deprecated`).
-  - `GET /api/v1/elogia?edition={edition}` — the catalog (all IDs for an edition) used to
-    build the compare set-diff. (If the catalog does not include the `deprecated` flag, the
-    flag is taken from the CRMEDR registry via the elogium/catalog response; see Open items.)
-- **Change-set files** are loaded from the user's disk (file input) and exported as a
-  download — the MVP does not read/write them through the API.
+  - `GET /api/v1/elogia/edition/{edition}/{MM}/{DD}` — a day's eulogies for an edition
+    (the eulogies **physically placed** on that day in that edition).
+  - `GET /api/v1/elogium/{canonical_id}` — a single eulogy (text + placement).
+- **Bundled CRMEDR registry + subjects snapshot.** The RED/GREEN coloring needs each ID's
+  `deprecated` status, and the views benefit from the rest of CRMEDR's **public, non-copyrighted
+  metadata**. Rather than depend on the API response shape, the frontend bundles a snapshot,
+  committed into this repo under `data/` and refreshed by a script (`scripts/snapshot-registry.mjs`),
+  built from CRMEDR's public files:
+  - from `crmedr/data/martyrology_ids.json`: per ID — `deprecated`, `month`/`day`, `entry`,
+    `asterisk`/`unnumbered`, `country` (ISO 3166-1 alpha-2), and `attested_in` for deprecated IDs.
+  - from `crmedr/i18n/{la,it,en}.json`: per ID — the **subject** display name in each language
+    (Latin fully filled; Italian/English partial).
+  Shape: `data/registry-snapshot.json` = `{ id → { deprecated, month, day, entry, asterisk,
+  unnumbered, country, attested_in, subject: { la, it, en } } }`. This makes CRMEDR the
+  authoritative source for the flag and lets the UI show the **subject in the language matching
+  the edition** (1749 Latin → `la`; 1914 English → `en`; an Italian edition → `it`) plus the
+  country, without extra API calls. (The eulogy *text* still comes from the API and is not
+  bundled; only public IDs/subjects/placement facts are.)
+- **Change-set files** are loaded from a frontend-readable folder (see the converter below)
+  and/or the user's disk (file input), and exported as a download — the MVP does not
+  read/write them through the API.
 
 ## Views
 
 ### 1. Compare
 
-- Controls: choose **edition A** and **edition B** from the editions list; a day selector
-  (month/day) with prev/next; a filter toggle (all / only-differences).
-- Alignment: eulogies are joined by **canonical ID** (not by physical position), because the
-  same ID may sit on different physical days across editions. For the chosen day (the MMDD
-  anchor), show three groups: **in both**, **A-only**, **B-only**.
-- Highlighting (per the curator's spec):
-  - An ID present in A but not B → **RED** if it carries `deprecated: true`, **GREEN** if not.
-  - An ID present in B but not A → same rule, mirrored.
-  - In-both rows are neutral; if the two sides differ in placement/number/asterisk, show a
-    subtle marker.
-- Each row shows the canonical ID, the subject (per locale), and the eulogy incipit; clicking
-  expands the full text (from `/elogium/{id}`). Per-day and running totals of
-  both/A-only/B-only (and red/green counts) are shown.
+- Controls: choose **edition A** and **edition B** from the editions list; a month selector
+  and a day selector with prev/next; a filter toggle (all / only-differences).
+- **Organized by physical day.** Eulogies are displayed **under the physical day they belong
+  to in each edition** (the edition's own placement — the outer day key served by
+  `/elogia/edition/{edition}/{MM}/{DD}`), NOT by the MMDD encoded in the canonical ID. Within
+  a given physical day, edition A's and edition B's eulogies are aligned **by canonical ID**:
+  - **in both** (same ID physically on this day in A and B) → neutral row.
+  - **A-only** / **B-only** (ID physically on this day in one edition, not the other) →
+    colored **RED** if the ID carries `deprecated: true`, **GREEN** if not (mirrored for the
+    other side).
+- **Cross-day IDs surface naturally.** A canonical ID whose intended anchor differs from its
+  physical placement (e.g. `mr:1229-…` physically filed under a January day) appears under its
+  *physical* day. If it sits on different physical days in A vs B, it shows as A-only on one
+  day and B-only on another — making the discrepancy visible. (These are known data defects to
+  be corrected later; the tool surfaces them, it does not hide them.)
+- Each row shows the canonical ID, the **subject in the edition's language** and the
+  **country** (from the bundled snapshot), and the eulogy incipit; clicking expands the full
+  text (from `/elogium/{id}`). Per-day and running totals of both / A-only / B-only (and
+  red / green counts) are shown.
 
 ### 2. Review (adjudication)
 
@@ -147,8 +167,18 @@ Rules:
 - `decision` defaults to `null` (undecided). Export preserves every operation, decided or not.
 - The CRMEDR `data/deprecated_id_corrections.json` maps onto this: `action:"rename"`→`rename`,
   `action:"delete"` with `class:"G-rubric"`→`delete`, `action:"delete"` with `class:"M-merge"`
-  →`merge` (winner = `new_id`). A small converter (or a `--changeset` flag on the CRMEDR
-  detect script) produces the v1 file; both are acceptable — the converter is simplest for MVP.
+  →`merge` (winner = `new_id`).
+
+**Converter & change-set location.** A small converter script in this repo
+(`scripts/import-changeset.mjs`, Node, no deps) reads a CRMEDR manifest
+(`../crmedr/data/deprecated_id_corrections.json` by default, path overridable), transforms it
+to `crmedr-changeset/v1`, and writes it into a **frontend-readable folder committed to this
+repo** — `data/changesets/<name>.json`. The Review view lists change-sets found there and
+also accepts an ad-hoc file upload. Keeping the change-set inside this repo (not read live
+from CRMEDR) means the frontend has a stable, self-contained input; refreshing it is an
+explicit `npm run import-changeset` step. The registry snapshot for the deprecated flag is
+produced by the same or a sibling script (`scripts/snapshot-registry.mjs` →
+`data/registry-deprecated.json`).
 
 ## Non-goals (MVP)
 
@@ -156,16 +186,21 @@ Rules:
 - No editing of eulogy *text* (texts are copyrighted / out of scope; only IDs/subjects).
 - No production deployment; local-dev only.
 
+## Resolved decisions (from review)
+
+- **Deprecated flag & metadata:** bundled CRMEDR registry + subjects snapshot (above).
+- **Compare organization:** by physical day; align by canonical ID within a day; cross-day IDs
+  surface as anomalies rather than being hidden.
+- **Converter & change-set location:** a script in this repo writes `crmedr-changeset/v1`
+  into `data/changesets/` (self-contained; not read live from CRMEDR).
+
 ## Open items (resolve during planning)
 
-- Confirm the exact `martyrology-api` response shapes (editions list, day content, elogium)
-  and whether the catalog/elogium response carries the `deprecated` flag; if not, decide how
-  the compare view obtains it (registry endpoint vs. bundled CRMEDR registry snapshot).
-- Confirm the API is runnable locally against the public-domain editions (the README's
-  uvicorn instructions suggest yes); the frontend must degrade gracefully (clear error state)
-  when the API or an edition is unavailable (e.g. the private 2004 edition → 404).
-- Decide whether the CRMEDR→v1 converter lives in `crmedr` (as a detect-script flag) or as a
-  small script in this repo; default: a script in this repo for MVP self-containment.
+- Confirm the exact `martyrology-api` response shapes (editions list, day content, single
+  elogium) by reading the API's models/routers during planning, so the typed client matches.
+- Confirm the API is runnable locally against the public-domain editions (the README's uvicorn
+  instructions suggest yes); the frontend must degrade gracefully (clear error state) when the
+  API or an edition is unavailable (e.g. the private 2004 edition → 404).
 
 ## Success criteria (MVP)
 
