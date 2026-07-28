@@ -260,6 +260,7 @@ export default function ReviewPage() {
                 decision={decisions[opId(op)]}
                 onDecide={onDecide}
                 locale={locale}
+                baseEdition={cs.base.edition}
               />
             ))}
           </div>

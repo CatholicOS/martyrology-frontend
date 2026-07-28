@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import OperationCard from "@/components/OperationCard";
-import type { RenameOp } from "@/lib/changeset";
+import type { RenameOp, MergeOp } from "@/lib/changeset";
 import type { EulogyOut } from "@/lib/types";
 
 vi.mock("@/lib/api", () => ({
@@ -47,12 +47,29 @@ const renameOp: RenameOp = {
   decision: null,
 };
 
+const mergeOp: MergeOp = {
+  op: "merge",
+  ids: ["a", "b"],
+  winner: "a",
+  class: "V-duplicate",
+  confidence: "high",
+  reasoning: "duplicate",
+  decision: null,
+};
+
 describe("OperationCard", () => {
   it("fetches the eulogy and shows Latin text + old→new, then reports accept decisions", async () => {
     vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
     const onDecide = vi.fn();
 
-    render(<OperationCard op={renameOp} onDecide={onDecide} locale="la" />);
+    render(
+      <OperationCard
+        op={renameOp}
+        onDecide={onDecide}
+        locale="la"
+        baseEdition="martyrologium_romanum_1749"
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/Circumcisio Domini nostri Jesu Christi, et Octava Nativitatis ejusdem\./)).toBeInTheDocument();
@@ -64,5 +81,72 @@ describe("OperationCard", () => {
     fireEvent.click(screen.getByRole("button", { name: /accept/i }));
 
     expect(onDecide).toHaveBeenCalledWith(renameOp.id, { decision: "accept" });
+  });
+
+  it("edits a merge op with a winner field only (no new_id/subject_la)", async () => {
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    const onDecide = vi.fn();
+
+    render(
+      <OperationCard
+        op={mergeOp}
+        onDecide={onDecide}
+        locale="la"
+        baseEdition="martyrologium_romanum_1749"
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/Circumcisio Domini nostri Jesu Christi, et Octava Nativitatis ejusdem\./)).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /edit/i }));
+
+    const winnerField = screen.getByLabelText(/winner/i) as HTMLInputElement;
+    expect(winnerField).toBeInTheDocument();
+    expect(winnerField.value).toBe("a");
+    expect(screen.queryByLabelText(/new_id/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/subject_la/i)).not.toBeInTheDocument();
+
+    fireEvent.change(winnerField, { target: { value: "b" } });
+    fireEvent.click(screen.getByRole("button", { name: /save edit/i }));
+
+    expect(onDecide).toHaveBeenCalledWith("a+b", { decision: "edit", edited: { winner: "b" } });
+  });
+
+  it("prefers the base edition's text and labels a fallback edition", async () => {
+    const onDecide = vi.fn();
+
+    // Base edition present with text: shows it directly, labeled.
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    const { unmount } = render(
+      <OperationCard
+        op={renameOp}
+        onDecide={onDecide}
+        locale="la"
+        baseEdition="martyrologium_romanum_1749"
+      />
+    );
+    await waitFor(() => {
+      expect(screen.getByText(/Circumcisio Domini nostri Jesu Christi, et Octava Nativitatis ejusdem\./)).toBeInTheDocument();
+    });
+    expect(screen.getByText(/martyrologium_romanum_1749/)).toBeInTheDocument();
+    expect(screen.queryByText(/no .* placement/i)).not.toBeInTheDocument();
+    unmount();
+
+    // Base edition absent: falls back to another edition and shows an amber warning.
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    render(
+      <OperationCard
+        op={renameOp}
+        onDecide={onDecide}
+        locale="la"
+        baseEdition="martyrologium_romanum_1914"
+      />
+    );
+    await waitFor(() => {
+      expect(screen.getByText(/Circumcisio Domini nostri Jesu Christi, et Octava Nativitatis ejusdem\./)).toBeInTheDocument();
+    });
+    expect(screen.getByText(/no martyrologium_romanum_1914 placement — showing martyrologium_romanum_1749/)).toBeInTheDocument();
   });
 });

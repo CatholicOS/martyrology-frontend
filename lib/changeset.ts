@@ -1,8 +1,15 @@
 export type Decision = null | "accept" | "reject" | "edit";
 
+export interface EditedFields {
+  new_id?: string;
+  subject_la?: string;
+  winner?: string;
+  reason?: string;
+}
+
 export interface DecisionRecord {
   decision: Exclude<Decision, null>;
-  edited?: { new_id?: string; subject_la?: string };
+  edited?: EditedFields;
 }
 
 interface Base {
@@ -11,7 +18,7 @@ interface Base {
   incipit?: string;
   reasoning?: string;
   decision: Decision;
-  edited?: { new_id?: string; subject_la?: string } | null;
+  edited?: EditedFields | null;
 }
 
 export interface RenameOp extends Base {

@@ -18,6 +18,7 @@ interface Props {
   decision?: DecisionRecord;
   onDecide: (id: string, d: DecisionRecord) => void;
   locale: Locale;
+  baseEdition: string;
 }
 
 function affectedId(op: Op): string | null {
@@ -26,13 +27,19 @@ function affectedId(op: Op): string | null {
   return null;
 }
 
-function firstEditionText(eulogy: EulogyOut): string | null {
-  const placements = Object.values(eulogy.editions);
-  const withText = placements.find((p) => p.text);
-  return withText?.text ?? null;
+function pickEditionText(
+  eulogy: EulogyOut,
+  baseEdition: string
+): { text: string | null; editionId: string | null; isFallback: boolean } {
+  const base = eulogy.editions[baseEdition];
+  if (base?.text) return { text: base.text, editionId: baseEdition, isFallback: false };
+  for (const [edId, p] of Object.entries(eulogy.editions)) {
+    if (p.text) return { text: p.text, editionId: edId, isFallback: true };
+  }
+  return { text: null, editionId: null, isFallback: false };
 }
 
-export default function OperationCard({ op, decision, onDecide, locale }: Props) {
+export default function OperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
   const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -40,6 +47,10 @@ export default function OperationCard({ op, decision, onDecide, locale }: Props)
   const [newIdInput, setNewIdInput] = useState(op.op === "rename" ? (op as RenameOp).new_id : "");
   const [subjectLaInput, setSubjectLaInput] = useState(
     op.op === "rename" ? ((op as RenameOp).subject_la ?? "") : ""
+  );
+  const [winnerInput, setWinnerInput] = useState(op.op === "merge" ? (op as MergeOp).winner : "");
+  const [reasonInput, setReasonInput] = useState(
+    op.op === "delete" ? ((op as DeleteOp).reason ?? "") : ""
   );
 
   const id = affectedId(op);
@@ -55,7 +66,8 @@ export default function OperationCard({ op, decision, onDecide, locale }: Props)
         const data = await getElogium(id);
         if (!cancelled) setEulogy(data);
       } catch (err) {
-        if (!cancelled) setError(err instanceof ApiError ? "text unavailable" : "text unavailable");
+        if (!cancelled)
+          setError(err instanceof ApiError ? `text unavailable (${err.title})` : "text unavailable");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -92,12 +104,24 @@ export default function OperationCard({ op, decision, onDecide, locale }: Props)
 
       {loading && <p className="text-slate-500 dark:text-slate-400">Loading eulogy…</p>}
       {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
-      {eulogy && (
-        <div className="mb-2 rounded bg-slate-50 p-2 dark:bg-slate-900">
-          <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
-          <p className="mt-1">{firstEditionText(eulogy) ?? "(no text)"}</p>
-        </div>
-      )}
+      {eulogy &&
+        (() => {
+          const { text, editionId, isFallback } = pickEditionText(eulogy, baseEdition);
+          return (
+            <div className="mb-2 rounded bg-slate-50 p-2 dark:bg-slate-900">
+              <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
+              {isFallback && editionId && (
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  no {baseEdition} placement — showing {editionId}
+                </p>
+              )}
+              {!isFallback && editionId && (
+                <p className="text-xs text-slate-500 dark:text-slate-400">{editionId}</p>
+              )}
+              <p className="mt-1">{text ?? "(no text)"}</p>
+            </div>
+          );
+        })()}
 
       <div className="mb-2">
         {op.op === "rename" && (
@@ -157,28 +181,58 @@ export default function OperationCard({ op, decision, onDecide, locale }: Props)
 
       {adjudicable && editing && (
         <div className="flex flex-col gap-2">
-          <label className="flex items-center gap-2 text-xs">
-            new_id
-            <input
-              className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
-              value={newIdInput}
-              onChange={(e) => setNewIdInput(e.target.value)}
-            />
-          </label>
-          <label className="flex items-center gap-2 text-xs">
-            subject_la
-            <input
-              className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
-              value={subjectLaInput}
-              onChange={(e) => setSubjectLaInput(e.target.value)}
-            />
-          </label>
+          {op.op === "rename" && (
+            <>
+              <label className="flex items-center gap-2 text-xs">
+                new_id
+                <input
+                  className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
+                  value={newIdInput}
+                  onChange={(e) => setNewIdInput(e.target.value)}
+                />
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                subject_la
+                <input
+                  className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
+                  value={subjectLaInput}
+                  onChange={(e) => setSubjectLaInput(e.target.value)}
+                />
+              </label>
+            </>
+          )}
+          {op.op === "merge" && (
+            <label className="flex items-center gap-2 text-xs">
+              winner
+              <input
+                className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
+                value={winnerInput}
+                onChange={(e) => setWinnerInput(e.target.value)}
+              />
+            </label>
+          )}
+          {op.op === "delete" && (
+            <label className="flex items-center gap-2 text-xs">
+              reason
+              <input
+                className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
+                value={reasonInput}
+                onChange={(e) => setReasonInput(e.target.value)}
+              />
+            </label>
+          )}
           <div className="flex gap-2">
             <button
               type="button"
               className="rounded bg-amber-600 px-2 py-1 text-xs font-medium text-white hover:bg-amber-700"
               onClick={() => {
-                decide({ decision: "edit", edited: { new_id: newIdInput, subject_la: subjectLaInput } });
+                if (op.op === "rename") {
+                  decide({ decision: "edit", edited: { new_id: newIdInput, subject_la: subjectLaInput } });
+                } else if (op.op === "merge") {
+                  decide({ decision: "edit", edited: { winner: winnerInput } });
+                } else if (op.op === "delete") {
+                  decide({ decision: "edit", edited: { reason: reasonInput } });
+                }
                 setEditing(false);
               }}
             >
