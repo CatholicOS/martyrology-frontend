@@ -44,13 +44,21 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [newIdInput, setNewIdInput] = useState(op.op === "rename" ? (op as RenameOp).new_id : "");
-  const [subjectLaInput, setSubjectLaInput] = useState(
-    op.op === "rename" ? ((op as RenameOp).subject_la ?? "") : ""
+  // Seed edit inputs from a previously-saved edit (resume from localStorage / filter
+  // toggle remounts the card) falling back to the original proposal, so re-opening Edit
+  // shows the curator's saved correction rather than silently reverting it.
+  const ed = decision?.edited;
+  const [newIdInput, setNewIdInput] = useState(
+    ed?.new_id ?? (op.op === "rename" ? (op as RenameOp).new_id : "")
   );
-  const [winnerInput, setWinnerInput] = useState(op.op === "merge" ? (op as MergeOp).winner : "");
+  const [subjectLaInput, setSubjectLaInput] = useState(
+    ed?.subject_la ?? (op.op === "rename" ? ((op as RenameOp).subject_la ?? "") : "")
+  );
+  const [winnerInput, setWinnerInput] = useState(
+    ed?.winner ?? (op.op === "merge" ? (op as MergeOp).winner : "")
+  );
   const [reasonInput, setReasonInput] = useState(
-    op.op === "delete" ? ((op as DeleteOp).reason ?? "") : ""
+    ed?.reason ?? (op.op === "delete" ? ((op as DeleteOp).reason ?? "") : "")
   );
 
   const id = affectedId(op);

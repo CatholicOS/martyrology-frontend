@@ -114,6 +114,27 @@ describe("OperationCard", () => {
     expect(onDecide).toHaveBeenCalledWith("a+b", { decision: "edit", edited: { winner: "b" } });
   });
 
+  it("restores a previously-saved edit into the input (resume) instead of the proposal", async () => {
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    const onDecide = vi.fn();
+
+    render(
+      <OperationCard
+        op={renameOp}
+        decision={{ decision: "edit", edited: { new_id: "mr:0101-circumcisio-domini", subject_la: "Circumcisio Domini" } }}
+        onDecide={onDecide}
+        locale="la"
+        baseEdition="martyrologium_romanum_1749"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /edit/i }));
+    const newIdField = screen.getByLabelText(/new_id/i) as HTMLInputElement;
+    // shows the saved correction, NOT the original proposal
+    expect(newIdField.value).toBe("mr:0101-circumcisio-domini");
+    expect(newIdField.value).not.toBe(renameOp.new_id);
+  });
+
   it("prefers the base edition's text and labels a fallback edition", async () => {
     const onDecide = vi.fn();
 

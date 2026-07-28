@@ -165,6 +165,11 @@ Rules:
 - The MVP renders and adjudicates `rename`, `delete`, `merge`; it ignores unknown `op` values
   gracefully (shows them read-only with a "not adjudicable in this version" note).
 - `decision` defaults to `null` (undecided). Export preserves every operation, decided or not.
+- **`edited` is op-type-specific and overrides the top-level fields.** When `decision === "edit"`,
+  `edited` carries only the keys the op type can edit: `rename` → `{new_id?, subject_la?}`,
+  `merge` → `{winner?}`, `delete` → `{reason?}`. A consumer applying the change-set (CRMEDR
+  Phase-2) MUST read the value from `edited` when present, not the (unchanged) top-level
+  `new_id`/`winner`/`reason`.
 - The CRMEDR `data/deprecated_id_corrections.json` maps onto this: `action:"rename"`→`rename`,
   `action:"delete"` with `class:"G-rubric"`→`delete`, `action:"delete"` with `class:"M-merge"`
   →`merge` (winner = `new_id`).
