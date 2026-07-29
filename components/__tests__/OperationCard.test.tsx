@@ -93,8 +93,9 @@ describe("OperationCard", () => {
     expect(screen.getAllByText("mr:0108-severinus").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("prefers the 2004 edition text for the merge winner", async () => {
-    const winnerFixture: EulogyOut = {
+  it("shows the 2004 text for whichever id has it, and keeps it when the winner is flipped", async () => {
+    // mr:0108-severinus has a 2004 placement; the other id (deprecated) has only 1749.
+    const currentFixture: EulogyOut = {
       id: "mr:0108-severinus",
       subject: { la: "Sanctus Severinus", it: "", en: "Saint Severinus" },
       anchor_day: "01-08",
@@ -105,15 +106,19 @@ describe("OperationCard", () => {
       },
     };
     vi.mocked(getElogium).mockImplementation((id: string) =>
-      Promise.resolve(id === "mr:0108-severinus" ? winnerFixture : fixtureEulogy)
+      Promise.resolve(id === "mr:0108-severinus" ? currentFixture : fixtureEulogy)
     );
     render(
       <OperationCard op={mergeOp} onDecide={vi.fn()} locale="la" baseEdition="martyrologium_romanum_1749" />
     );
-    // winner shows the 2004 text (aligned target), labeled; NOT its own 1749 text
+    // the id with a 2004 placement shows the 2004 text (not its own 1749)
     await waitFor(() => expect(screen.getByText("CURRENT 2004 winner text")).toBeInTheDocument());
     expect(screen.getByText("martyrologium_romanum_2004")).toBeInTheDocument();
     expect(screen.queryByText("OLD 1749 winner text")).not.toBeInTheDocument();
+    // flipping the winner to the 1749 id must NOT hide the 2004 text — it belongs to the
+    // id that has a 2004 placement, not to the winner role.
+    fireEvent.click(screen.getByLabelText(/make winner/i));
+    expect(screen.getByText("CURRENT 2004 winner text")).toBeInTheDocument();
   });
 
   it("accepting a merge with the default winner records a plain accept", () => {

@@ -13,9 +13,10 @@ import {
 } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
-// We align to the 2004 editio typica, so a merge winner's text is shown from 2004 when
-// present; only a winner with no 2004 placement (i.e. both IDs deprecated) shows an older
-// edition for the comparison.
+// We align to the 2004 editio typica, so every eulogy is shown from 2004 when it has a
+// 2004 placement — i.e. the current (non-deprecated) id shows its 2004 text while a
+// deprecated id shows its own older edition. This is tied to whether the id HAS 2004, not
+// to which side is the winner, so flipping the winner never hides the 2004 text.
 const CURRENT_EDITION = "martyrologium_romanum_2004";
 
 interface Props {
@@ -105,7 +106,7 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
                   baseEdition={baseEdition}
                   locale={locale}
                   tone={isWinner ? "winner" : "loser"}
-                  preferEdition={isWinner ? CURRENT_EDITION : undefined}
+                  preferEdition={CURRENT_EDITION}
                 />
               </div>
             );
