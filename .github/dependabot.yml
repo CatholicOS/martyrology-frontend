@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 7
+    groups:
+      npm-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 7
+    groups:
+      # Actions published by GitHub itself (actions/*, github/*).
+      # All update types are grouped here — including majors — so the
+      # auto-merge workflow can merge them without manual review.
+      github-official-actions:
+        applies-to: version-updates
+        patterns:
+          - "actions/*"
+          - "github/*"
+      # Third-party actions: only minor/patch are grouped and auto-merged.
+      # Major bumps match no group and arrive as individual PRs for review.
+      third-party-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "actions/*"
+          - "github/*"
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "github-actions"
