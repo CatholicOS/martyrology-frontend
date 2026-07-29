@@ -93,6 +93,29 @@ describe("OperationCard", () => {
     expect(screen.getAllByText("mr:0108-severinus").length).toBeGreaterThanOrEqual(1);
   });
 
+  it("prefers the 2004 edition text for the merge winner", async () => {
+    const winnerFixture: EulogyOut = {
+      id: "mr:0108-severinus",
+      subject: { la: "Sanctus Severinus", it: "", en: "Saint Severinus" },
+      anchor_day: "01-08",
+      deprecated: false,
+      editions: {
+        martyrologium_romanum_1749: { day_printed: "01-08", entry: 1, asterisk: false, unnumbered: false, text: "OLD 1749 winner text" },
+        martyrologium_romanum_2004: { day_printed: "01-08", entry: 1, asterisk: false, unnumbered: false, text: "CURRENT 2004 winner text" },
+      },
+    };
+    vi.mocked(getElogium).mockImplementation((id: string) =>
+      Promise.resolve(id === "mr:0108-severinus" ? winnerFixture : fixtureEulogy)
+    );
+    render(
+      <OperationCard op={mergeOp} onDecide={vi.fn()} locale="la" baseEdition="martyrologium_romanum_1749" />
+    );
+    // winner shows the 2004 text (aligned target), labeled; NOT its own 1749 text
+    await waitFor(() => expect(screen.getByText("CURRENT 2004 winner text")).toBeInTheDocument());
+    expect(screen.getByText("martyrologium_romanum_2004")).toBeInTheDocument();
+    expect(screen.queryByText("OLD 1749 winner text")).not.toBeInTheDocument();
+  });
+
   it("accepting a merge with the default winner records a plain accept", () => {
     vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
     const onDecide = vi.fn();
