@@ -1,5 +1,6 @@
 {
  "changesets": [
-  "deprecated-id-normalization.json"
+  "deprecated-id-normalization.json",
+  "merge-audit.json"
  ]
 }

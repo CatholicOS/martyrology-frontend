@@ -2,7 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { parseChangeset, exportChangeset, opId, type Changeset } from "@/lib/changeset";
-import { decisionsKey, loadDecisions, saveDecisions, summarize, type DecisionMap } from "@/lib/decisions";
+import {
+  decisionsFromChangeset,
+  decisionsKey,
+  loadDecisions,
+  saveDecisions,
+  summarize,
+  type DecisionMap,
+} from "@/lib/decisions";
 import type { DecisionRecord } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 import OperationCard from "@/components/OperationCard";
@@ -55,7 +62,9 @@ export default function ReviewPage() {
       const parsed = parseChangeset(text);
       setCs(parsed);
       setName(stripExt(filename));
-      setDecisions(loadDecisions(decisionsKey(parsed)));
+      // Seed from decisions carried in the file (e.g. a prefilled audit), then let
+      // localStorage (the curator's own in-progress work) override for resume.
+      setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisions(decisionsKey(parsed)) });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load change-set");
       setCs(null);
@@ -78,7 +87,9 @@ export default function ReviewPage() {
       setCs(parsed);
       setName(stripExt(file.name));
       setSelectedBundled("");
-      setDecisions(loadDecisions(decisionsKey(parsed)));
+      // Seed from decisions carried in the file (e.g. a prefilled audit), then let
+      // localStorage (the curator's own in-progress work) override for resume.
+      setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisions(decisionsKey(parsed)) });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to parse change-set");
       setCs(null);
