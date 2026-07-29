@@ -23,26 +23,36 @@ interface Props {
 
 export default function OperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
   const [editing, setEditing] = useState(false);
-  // Seed edit inputs from a previously-saved edit (resume from localStorage / filter
-  // toggle remounts the card) falling back to the original proposal, so re-opening Edit
-  // shows the curator's saved correction rather than silently reverting it.
   const ed = decision?.edited;
+  // rename/delete edit inputs, seeded from a saved edit (resume) then the proposal
   const [newIdInput, setNewIdInput] = useState(
     ed?.new_id ?? (op.op === "rename" ? (op as RenameOp).new_id : "")
   );
   const [subjectLaInput, setSubjectLaInput] = useState(
     ed?.subject_la ?? (op.op === "rename" ? ((op as RenameOp).subject_la ?? "") : "")
   );
-  const [winnerInput, setWinnerInput] = useState(
-    ed?.winner ?? (op.op === "merge" ? (op as MergeOp).winner : "")
-  );
   const [reasonInput, setReasonInput] = useState(
     ed?.reason ?? (op.op === "delete" ? ((op as DeleteOp).reason ?? "") : "")
+  );
+  // merge: which of the involved ids is the winner (reversible). Seeded from a saved
+  // edit (resume) then the proposal's winner.
+  const mergeIds =
+    op.op === "merge" ? Array.from(new Set([...(op as MergeOp).ids, (op as MergeOp).winner])) : [];
+  const [selectedWinner, setSelectedWinner] = useState(
+    ed?.winner ?? (op.op === "merge" ? (op as MergeOp).winner : "")
   );
 
   const adjudicable = isAdjudicable(op);
   const id_ = opId(op);
   const decide = (d: DecisionRecord) => onDecide(id_, d);
+
+  // Accepting a merge whose winner was flipped from the proposal records it as an edit.
+  const acceptMerge = () =>
+    decide(
+      selectedWinner === (op as MergeOp).winner
+        ? { decision: "accept" }
+        : { decision: "edit", edited: { winner: selectedWinner } }
+    );
 
   const decisionClass =
     decision?.decision === "accept"
@@ -52,6 +62,8 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         : decision?.decision === "edit"
           ? "border-amber-400 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30"
           : "border-slate-200 dark:border-slate-800";
+
+  const mergeLosers = mergeIds.filter((x) => x !== selectedWinner);
 
   return (
     <div className={`mb-3 rounded border p-3 text-sm ${decisionClass}`} data-testid={`op-card-${id_}`}>
@@ -66,24 +78,27 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         )}
       </div>
 
-      {/* Eulogy text(s). A merge shows BOTH the losing entry and the winner so the
-          curator can confirm they are the same subject before merging. */}
+      {/* A merge shows every involved eulogy side by side, each with a radio to pick the
+          winner — the loser/winner contract is reversible. Non-merge ops show one eulogy. */}
       {op.op === "merge" ? (
         <div className="mb-2 grid gap-2 md:grid-cols-2">
-          <EulogyView
-            id={(op as MergeOp).ids[0] ?? null}
-            baseEdition={baseEdition}
-            locale={locale}
-            label="Losing — will be removed"
-            tone="loser"
-          />
-          <EulogyView
-            id={(op as MergeOp).winner}
-            baseEdition={baseEdition}
-            locale={locale}
-            label="Winner — kept"
-            tone="winner"
-          />
+          {mergeIds.map((mid) => {
+            const isWinner = mid === selectedWinner;
+            return (
+              <div key={mid}>
+                <label className="mb-1 flex items-center gap-1 text-xs font-medium">
+                  <input
+                    type="radio"
+                    name={`winner-${id_}`}
+                    checked={isWinner}
+                    onChange={() => setSelectedWinner(mid)}
+                  />
+                  {isWinner ? "Winner — kept" : "Make winner"}
+                </label>
+                <EulogyView id={mid} baseEdition={baseEdition} locale={locale} tone={isWinner ? "winner" : "loser"} />
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="mb-2">
@@ -106,8 +121,8 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         )}
         {op.op === "merge" && (
           <p>
-            Merge <span className="font-mono text-xs">{(op as MergeOp).ids.join(", ")}</span> → winner{" "}
-            <span className="font-mono text-xs">{(op as MergeOp).winner}</span>
+            Merge <span className="font-mono text-xs">{mergeLosers.join(", ")}</span> → winner{" "}
+            <span className="font-mono text-xs">{selectedWinner}</span>
           </p>
         )}
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -126,7 +141,7 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
           <button
             type="button"
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
-            onClick={() => decide({ decision: "accept" })}
+            onClick={() => (op.op === "merge" ? acceptMerge() : decide({ decision: "accept" }))}
           >
             Accept
           </button>
@@ -137,17 +152,19 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
           >
             Reject
           </button>
-          <button
-            type="button"
-            className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
-            onClick={() => setEditing(true)}
-          >
-            Edit
-          </button>
+          {op.op !== "merge" && (
+            <button
+              type="button"
+              className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
+              onClick={() => setEditing(true)}
+            >
+              Edit
+            </button>
+          )}
         </div>
       )}
 
-      {adjudicable && editing && (
+      {adjudicable && editing && op.op !== "merge" && (
         <div className="flex flex-col gap-2">
           {op.op === "rename" && (
             <>
@@ -169,16 +186,6 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
               </label>
             </>
           )}
-          {op.op === "merge" && (
-            <label className="flex items-center gap-2 text-xs">
-              winner
-              <input
-                className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
-                value={winnerInput}
-                onChange={(e) => setWinnerInput(e.target.value)}
-              />
-            </label>
-          )}
           {op.op === "delete" && (
             <label className="flex items-center gap-2 text-xs">
               reason
@@ -196,8 +203,6 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
               onClick={() => {
                 if (op.op === "rename") {
                   decide({ decision: "edit", edited: { new_id: newIdInput, subject_la: subjectLaInput } });
-                } else if (op.op === "merge") {
-                  decide({ decision: "edit", edited: { winner: winnerInput } });
                 } else if (op.op === "delete") {
                   decide({ decision: "edit", edited: { reason: reasonInput } });
                 }

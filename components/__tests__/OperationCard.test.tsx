@@ -83,37 +83,38 @@ describe("OperationCard", () => {
       <OperationCard op={mergeOp} onDecide={vi.fn()} locale="la" baseEdition="martyrologium_romanum_1749" />
     );
 
-    // two eulogy panels: the losing entry and the winner, each fetched by getElogium
+    // two eulogy panels, one per involved id, each fetched by getElogium
     await waitFor(() => expect(screen.getAllByText(EULOGY_RE)).toHaveLength(2));
-    expect(screen.getByText(/losing — will be removed/i)).toBeInTheDocument();
-    expect(screen.getByText(/winner — kept/i)).toBeInTheDocument();
+    expect(screen.getByText(/winner — kept/i)).toBeInTheDocument(); // the current winner
+    expect(screen.getByText(/make winner/i)).toBeInTheDocument(); // the other, flippable
     expect(getElogium).toHaveBeenCalledWith("mr:0108-severinus-neapoli");
     expect(getElogium).toHaveBeenCalledWith("mr:0108-severinus");
-    // both ids are rendered so the curator can tell the panels apart
     expect(screen.getAllByText("mr:0108-severinus-neapoli").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("mr:0108-severinus").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("edits a merge op with a winner field only (no new_id/subject_la)", async () => {
+  it("accepting a merge with the default winner records a plain accept", () => {
     vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
     const onDecide = vi.fn();
-
     render(
       <OperationCard op={mergeOp} onDecide={onDecide} locale="la" baseEdition="martyrologium_romanum_1749" />
     );
+    fireEvent.click(screen.getByRole("button", { name: /accept/i }));
+    expect(onDecide).toHaveBeenCalledWith("mr:0108-severinus-neapoli", { decision: "accept" });
+  });
 
-    fireEvent.click(screen.getByRole("button", { name: /edit/i }));
-    const winnerField = screen.getByLabelText(/winner/i) as HTMLInputElement;
-    expect(winnerField).toBeInTheDocument();
-    expect(winnerField.value).toBe("mr:0108-severinus");
-    expect(screen.queryByLabelText(/new_id/i)).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(/subject_la/i)).not.toBeInTheDocument();
-
-    fireEvent.change(winnerField, { target: { value: "mr:0108-severinus-x" } });
-    fireEvent.click(screen.getByRole("button", { name: /save edit/i }));
+  it("flips the winner via the radio and records it as an edit (reversible)", () => {
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    const onDecide = vi.fn();
+    render(
+      <OperationCard op={mergeOp} onDecide={onDecide} locale="la" baseEdition="martyrologium_romanum_1749" />
+    );
+    // default winner is mr:0108-severinus; the other side offers "Make winner"
+    fireEvent.click(screen.getByLabelText(/make winner/i));
+    fireEvent.click(screen.getByRole("button", { name: /accept/i }));
     expect(onDecide).toHaveBeenCalledWith("mr:0108-severinus-neapoli", {
       decision: "edit",
-      edited: { winner: "mr:0108-severinus-x" },
+      edited: { winner: "mr:0108-severinus-neapoli" },
     });
   });
 
