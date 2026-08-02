@@ -277,11 +277,11 @@ Three consequences, all accepted:
 |---|---|---|---|
 | Secret | `VPS_HOST` | `catholicdigitalcommons.org` | set 2026-08-02 |
 | Secret | `VPS_USERNAME` | the subscription's system user | set 2026-07-29 |
-| Secret | `VPS_SSH_KEY` | private half of the deploy keypair | **to set** — see §6.1 |
+| Secret | `VPS_SSH_KEY` | private half of the deploy keypair (§6.1) | set 2026-08-02 |
 | Variable | `VPS_HOST_KEY` | `ssh-keyscan -t ed25519,rsa catholicdigitalcommons.org` | set 2026-08-02 |
 | Variable | `VPS_APP_DIR` | `/httpdocs` | set 2026-07-29 |
 | Variable | `SITE_URL` | `https://romanmartyrology.com` | set 2026-08-02 |
-| Variable | `API_BASE` | `http://127.0.0.1:<MARTYROLOGY_PORT>` | **to set** |
+| Variable | `API_BASE` | `http://127.0.0.1:8412` | set 2026-08-02 |
 
 **`VPS_HOST` is the SSH endpoint, `SITE_URL` is the public site — they are
 deliberately different hostnames for the same machine.**
@@ -438,7 +438,7 @@ implementation can be lifted across verbatim.
        'echo AUTH_OK; command -v tar gzip mkdir touch; ls -d /httpdocs'
    ```
 
-6. Set the remaining repository secrets and variables from §6:
+6. Set the repository secrets and variables from §6:
    ```bash
    gh secret set VPS_SSH_KEY -R CatholicOS/martyrology-frontend \
      < ~/.ssh/martyrology-frontend-deploy
