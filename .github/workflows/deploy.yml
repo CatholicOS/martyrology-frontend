@@ -1,0 +1,287 @@
+name: Deploy
+
+# Builds the Next.js standalone bundle, ships it to the Plesk vhost on the VPS,
+# and restarts the Passenger-managed Node application.
+#
+# The API (martyrology-api) deploys to /opt/martyrology under its own systemd
+# unit and a dedicated non-chrooted user. This frontend does NOT: the domain is
+# a Plesk subscription served by the Plesk Node.js extension (Passenger), so the
+# deploy identity is the subscription user and "restart" means touching
+# tmp/restart.txt rather than calling systemctl.
+#
+# Every ${{ ... }} interpolation is a repo secret/variable (trusted). No
+# untrusted github.event.* field is interpolated into a command line.
+#
+# See docs/superpowers/specs/2026-08-02-frontend-deployment-design.md
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-martyrology-frontend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Pinned, never ubuntu-latest — the same reasoning the API's deploy records.
+    # The VPS is Ubuntu 24.04 / glibc 2.39, and the standalone bundle is not
+    # pure JavaScript: it carries @img/sharp-linux-x64/lib/sharp-linux-x64.node,
+    # a glibc-linked native addon, straight from the runner's node_modules to
+    # the VPS. `ubuntu-latest` will eventually roll to 26.04 and silently break
+    # that match. Node's own ABI is pinned separately by .nvmrc, which must
+    # equal the Node version selected in the Plesk panel.
+    runs-on: ubuntu-24.04
+    env:
+      # Unique per run so two deploys can never collide on the staging tarball
+      # sitting in the vhost's tmp/ directory. github.run_id is monotonic.
+      BUNDLE_TAG: ${{ github.run_id }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Validate deploy configuration (fail fast)
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST_KEY: ${{ vars.VPS_HOST_KEY }}
+          VPS_APP_DIR: ${{ vars.VPS_APP_DIR }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          API_BASE: ${{ vars.API_BASE }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; MISSING=1; }
+          MISSING=0
+
+          [ -n "$VPS_HOST" ]     || fail "secrets.VPS_HOST is empty"
+          [ -n "$VPS_USERNAME" ] || fail "secrets.VPS_USERNAME is empty"
+          [ -n "$VPS_SSH_KEY" ]  || fail "secrets.VPS_SSH_KEY is empty"
+          [ -n "$VPS_HOST_KEY" ] || fail "vars.VPS_HOST_KEY is empty; refusing to deploy without a pinned host key"
+          [ -n "$SITE_URL" ]     || fail "vars.SITE_URL is empty (e.g. https://romanmartyrology.com); the smoke test needs it"
+
+          # An empty VPS_APP_DIR would make the remote `tar -xzf ... -C ""`
+          # extract into the ssh session's home directory instead of failing —
+          # scattering the whole bundle across the vhost root.
+          [ -n "$VPS_APP_DIR" ] || fail "vars.VPS_APP_DIR is empty (e.g. /httpdocs)"
+
+          # Deliberately fail rather than default. The API's loopback port is
+          # chosen per-host in /opt/martyrology/config/runtime.env; guessing it
+          # here would bake a wrong URL into the bundle and surface only as a
+          # 502 from the proxy after the deploy had already shipped.
+          [ -n "$API_BASE" ] || fail "vars.API_BASE is empty (e.g. http://127.0.0.1:8412 — read MARTYROLOGY_PORT from /opt/martyrology/config/runtime.env on the VPS)"
+
+          [ "$MISSING" -eq 0 ] || exit 1
+          echo "Deploy configuration OK. APP_DIR=$VPS_APP_DIR SITE_URL=$SITE_URL API_BASE=$API_BASE"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # A release can be cut from any commit, including one that never passed
+      # CI. Re-run the same gates here so a red commit cannot reach production
+      # just because someone tagged it.
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Vitest
+        run: npm test
+
+      - name: ESLint
+        run: npm run lint
+
+      # Scoped to the actual source trees. An unscoped `**/*.ts` glob runs after
+      # `npm ci` and therefore walks node_modules, changing the key on every
+      # dependency bump — a guaranteed cache miss on every build.
+      - name: Cache Next.js build
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
+        with:
+          path: .next/cache
+          key: nextjs-deploy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**/*.{ts,tsx,css}', 'lib/**/*.{ts,tsx,css}', 'components/**/*.{ts,tsx,css}', 'data/**/*.json', 'public/**/*.json', '*.ts', '*.mjs', 'tsconfig.json') }}
+          restore-keys: nextjs-deploy-${{ hashFiles('package-lock.json') }}-
+
+      - name: Build
+        run: npm run build
+
+      - name: Assemble the standalone bundle
+        env:
+          API_BASE: ${{ vars.API_BASE }}
+        run: |
+          set -euo pipefail
+
+          # `output: "standalone"` emits server.js and a pruned node_modules,
+          # but deliberately omits both of these — they are the caller's job.
+          # Without them the app boots and then serves every page unstyled and
+          # every /changesets/*.json as a 404.
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
+
+          # Next copies any .env file it loaded at build time into the
+          # standalone root, and that file IS read again at runtime. On a
+          # developer machine that means a bundle carrying
+          # API_BASE=http://localhost:8000; here .env is gitignored so none
+          # exists, but write ours unconditionally rather than depend on which
+          # of those two situations produced the build.
+          #
+          # This is only the DEFAULT: a real environment variable set in the
+          # Plesk Node.js panel takes precedence over this file, so the live
+          # upstream can be repointed without a redeploy. (Verified against
+          # Next 16.2: process env wins, the file fills in when it is absent.)
+          printf 'API_BASE=%s\n' "$API_BASE" > .next/standalone/.env
+
+          # Record what is live. Nothing reads this at runtime; it exists so
+          # that `cat .env`-style poking at the vhost can answer "which commit
+          # is this?" without guessing from file mtimes.
+          printf '{"commit":"%s","ref":"%s","run_id":"%s"}\n' \
+            "$GITHUB_SHA" "$GITHUB_REF_NAME" "$GITHUB_RUN_ID" \
+            > .next/standalone/.deploy-manifest.json
+
+          tar -czf "/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz" -C .next/standalone .
+          ls -la "/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"
+
+      - name: Setup SSH
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST_KEY: ${{ vars.VPS_HOST_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "$VPS_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Verify the pinned host key covers the target
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          # StrictHostKeyChecking=yes below turns a missing entry into an
+          # opaque connection failure three retries deep. Say so plainly here.
+          if ! ssh-keygen -F "$VPS_HOST" -f ~/.ssh/known_hosts >/dev/null; then
+            echo "::error::vars.VPS_HOST_KEY has no entry for the host in secrets.VPS_HOST. Regenerate with: ssh-keyscan -t ed25519,rsa <host>"
+            exit 1
+          fi
+
+      - name: Upload bundle
+        env:
+          VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          # Staged in the vhost's tmp/, never in the application directory: if
+          # the Plesk document root is the app root, a tarball dropped there is
+          # publicly fetchable for the length of the deploy.
+          for attempt in 1 2 3; do
+            echo "Upload attempt $attempt..."
+            if scp -i ~/.ssh/deploy_key \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=10 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 \
+              "/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz" \
+              "${VPS_USERNAME}@${VPS_HOST}:/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"; then
+              echo "Upload succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "Upload failed on attempt $attempt"
+            [ "$attempt" -lt 3 ] && echo "Retrying in 15s..." && sleep 15
+          done
+          echo "::error::All upload attempts failed"
+          exit 1
+
+      - name: Extract and restart the Passenger application
+        env:
+          VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_APP_DIR: ${{ vars.VPS_APP_DIR }}
+        run: |
+          set -euo pipefail
+          # The remote destination is expanded by the remote shell, not
+          # locally. printf %q renders it as a single literal word there, so a
+          # path containing whitespace or a shell metacharacter cannot re-split
+          # into extra arguments to tar.
+          REMOTE_APP_DIR="$(printf '%q' "$VPS_APP_DIR")"
+
+          # Extraction is over the top of the previous release, not into a
+          # fresh directory: the Plesk panel pins the application root to one
+          # fixed path, so there is no symlink to flip. Files deleted between
+          # releases therefore linger (stale .next/static/<old-build-id>/ trees,
+          # packages dropped from node_modules). That is dead weight, not a
+          # correctness problem — every manifest that routes to them is
+          # overwritten — but it does mean the vhost grows over time. See the
+          # design doc's "Pruning" note.
+          for attempt in 1 2 3; do
+            echo "SSH attempt $attempt..."
+            if ssh -i ~/.ssh/deploy_key \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=10 -o ServerAliveInterval=15 -o ServerAliveCountMax=2 \
+              "${VPS_USERNAME}@${VPS_HOST}" \
+              "set -e; \
+               tar -xzf /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz -C ${REMOTE_APP_DIR} && \
+               mkdir -p ${REMOTE_APP_DIR}/tmp && \
+               touch ${REMOTE_APP_DIR}/tmp/restart.txt && \
+               rm -f /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"; then
+              echo "SSH succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "SSH failed on attempt $attempt"
+            [ "$attempt" -lt 3 ] && echo "Retrying in 15s..." && sleep 15
+          done
+          echo "::error::All SSH attempts failed. If the subscription user is Plesk-chrooted, confirm tar/gzip/mkdir/touch exist in the chroot — see the design doc's 'Probing the deploy identity' section."
+          exit 1
+
+      - name: Smoke-test the deployed site
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          set -euo pipefail
+
+          # Passenger starts the app lazily, on the first request after
+          # restart.txt changes, and a cold Next boot is not instant. Retry
+          # rather than race it.
+          echo "Smoke testing $SITE_URL"
+          for attempt in 1 2 3 4 5; do
+            STATUS=$(curl -sS -o /dev/null -w '%{http_code}' \
+              --connect-timeout 10 --max-time 45 "$SITE_URL/" || echo "000")
+            if [ "$STATUS" = "200" ]; then
+              echo "Home page: HTTP 200"
+              break
+            fi
+            echo "Home page attempt $attempt: HTTP $STATUS"
+            if [ "$attempt" -eq 5 ]; then
+              echo "::error::GET $SITE_URL/ returned $STATUS (expected 200). The Passenger application did not come up."
+              exit 1
+            fi
+            sleep 6
+          done
+
+          # The canary that actually matters. This traverses the whole chain:
+          # nginx -> Passenger -> Next route handler -> API_BASE -> the API.
+          # A wrong API_BASE (wrong port, API moved, upstream down) is a 502
+          # from our own proxy carrying {"title":"API unreachable"}, which a
+          # plain 200-check on the home page would never notice — /compare and
+          # /review would just be broken for the curator.
+          for attempt in 1 2 3 4 5; do
+            BODY_FILE=$(mktemp)
+            STATUS=$(curl -sS -o "$BODY_FILE" -w '%{http_code}' \
+              --connect-timeout 10 --max-time 45 "$SITE_URL/api/mr/editions" || echo "000")
+            if [ "$STATUS" = "200" ] && grep -q '"editions"' "$BODY_FILE"; then
+              echo "API proxy: HTTP 200, editions present"
+              head -c 300 "$BODY_FILE"; echo
+              exit 0
+            fi
+            echo "API proxy attempt $attempt: HTTP $STATUS"
+            head -c 300 "$BODY_FILE"; echo
+            if [ "$attempt" -eq 5 ]; then
+              echo "::error::GET $SITE_URL/api/mr/editions returned $STATUS without an editions list. Check vars.API_BASE against MARTYROLOGY_PORT in /opt/martyrology/config/runtime.env, and that the martyrology-api service is running."
+              exit 1
+            fi
+            sleep 6
+          done

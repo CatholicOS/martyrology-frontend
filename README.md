@@ -103,3 +103,22 @@ npm test          # vitest
 npx tsc --noEmit  # typecheck
 npm run build     # production build
 ```
+
+## Deployment
+
+Production runs at [romanmartyrology.com](https://romanmartyrology.com) on the
+same Plesk-managed VPS as the API, under the **Plesk Node.js extension**
+(Phusion Passenger). `.github/workflows/deploy.yml` deploys on
+`release: published` (or `gh workflow run deploy.yml --ref main`): it builds the
+`output: "standalone"` bundle, ships it over `scp`, unpacks it into the vhost,
+and restarts Passenger by touching `tmp/restart.txt`. Nothing is installed on
+the VPS — `standalone` bundles its own pruned `node_modules`.
+
+`API_BASE` resolves in two layers: the workflow writes `vars.API_BASE` into the
+bundle as the shipped default, and a **Custom environment variable** set in the
+Plesk Node.js panel overrides it live without a redeploy.
+
+Required repository configuration, and the one-time Plesk setup, are listed in
+[`docs/superpowers/specs/2026-08-02-frontend-deployment-design.md`](docs/superpowers/specs/2026-08-02-frontend-deployment-design.md).
+That document also records why Passenger is used here while the API uses a
+systemd unit, and why the deployed site cannot show the restricted 2004 text.
