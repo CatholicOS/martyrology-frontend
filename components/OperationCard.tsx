@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getElogium, ApiError } from "@/lib/api";
+import { useState } from "react";
+import EulogyView from "@/components/EulogyView";
 import {
   isAdjudicable,
   opId,
@@ -11,7 +11,13 @@ import {
   type MergeOp,
   type DecisionRecord,
 } from "@/lib/changeset";
-import type { EulogyOut, Locale } from "@/lib/types";
+import type { Locale } from "@/lib/types";
+
+// We align to the 2004 editio typica, so every eulogy is shown from 2004 when it has a
+// 2004 placement — i.e. the current (non-deprecated) id shows its 2004 text while a
+// deprecated id shows its own older edition. This is tied to whether the id HAS 2004, not
+// to which side is the winner, so flipping the winner never hides the 2004 text.
+const CURRENT_EDITION = "martyrologium_romanum_2004";
 
 interface Props {
   op: Op;
@@ -21,72 +27,38 @@ interface Props {
   baseEdition: string;
 }
 
-function affectedId(op: Op): string | null {
-  if (op.op === "rename" || op.op === "delete") return (op as { id?: string }).id ?? null;
-  if (op.op === "merge") return (op as { ids: string[] }).ids[0] ?? null;
-  return null;
-}
-
-function pickEditionText(
-  eulogy: EulogyOut,
-  baseEdition: string
-): { text: string | null; editionId: string | null; isFallback: boolean } {
-  const base = eulogy.editions[baseEdition];
-  if (base?.text) return { text: base.text, editionId: baseEdition, isFallback: false };
-  for (const [edId, p] of Object.entries(eulogy.editions)) {
-    if (p.text) return { text: p.text, editionId: edId, isFallback: true };
-  }
-  return { text: null, editionId: null, isFallback: false };
-}
-
 export default function OperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
-  const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
-  // Seed edit inputs from a previously-saved edit (resume from localStorage / filter
-  // toggle remounts the card) falling back to the original proposal, so re-opening Edit
-  // shows the curator's saved correction rather than silently reverting it.
   const ed = decision?.edited;
+  // rename/delete edit inputs, seeded from a saved edit (resume) then the proposal
   const [newIdInput, setNewIdInput] = useState(
     ed?.new_id ?? (op.op === "rename" ? (op as RenameOp).new_id : "")
   );
   const [subjectLaInput, setSubjectLaInput] = useState(
     ed?.subject_la ?? (op.op === "rename" ? ((op as RenameOp).subject_la ?? "") : "")
   );
-  const [winnerInput, setWinnerInput] = useState(
-    ed?.winner ?? (op.op === "merge" ? (op as MergeOp).winner : "")
-  );
   const [reasonInput, setReasonInput] = useState(
     ed?.reason ?? (op.op === "delete" ? ((op as DeleteOp).reason ?? "") : "")
   );
+  // merge: which of the involved ids is the winner (reversible). Seeded from a saved
+  // edit (resume) then the proposal's winner.
+  const mergeIds =
+    op.op === "merge" ? Array.from(new Set([...(op as MergeOp).ids, (op as MergeOp).winner])) : [];
+  const [selectedWinner, setSelectedWinner] = useState(
+    ed?.winner ?? (op.op === "merge" ? (op as MergeOp).winner : "")
+  );
 
-  const id = affectedId(op);
   const adjudicable = isAdjudicable(op);
-
-  useEffect(() => {
-    if (!id) return;
-    let cancelled = false;
-    (async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getElogium(id);
-        if (!cancelled) setEulogy(data);
-      } catch (err) {
-        if (!cancelled)
-          setError(err instanceof ApiError ? `text unavailable (${err.title})` : "text unavailable");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [id]);
-
   const id_ = opId(op);
   const decide = (d: DecisionRecord) => onDecide(id_, d);
+
+  // Accepting a merge whose winner was flipped from the proposal records it as an edit.
+  const acceptMerge = () =>
+    decide(
+      selectedWinner === (op as MergeOp).winner
+        ? { decision: "accept" }
+        : { decision: "edit", edited: { winner: selectedWinner } }
+    );
 
   const decisionClass =
     decision?.decision === "accept"
@@ -96,6 +68,8 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         : decision?.decision === "edit"
           ? "border-amber-400 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30"
           : "border-slate-200 dark:border-slate-800";
+
+  const mergeLosers = mergeIds.filter((x) => x !== selectedWinner);
 
   return (
     <div className={`mb-3 rounded border p-3 text-sm ${decisionClass}`} data-testid={`op-card-${id_}`}>
@@ -110,26 +84,39 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         )}
       </div>
 
-      {loading && <p className="text-slate-500 dark:text-slate-400">Loading eulogy…</p>}
-      {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
-      {eulogy &&
-        (() => {
-          const { text, editionId, isFallback } = pickEditionText(eulogy, baseEdition);
-          return (
-            <div className="mb-2 rounded bg-slate-50 p-2 dark:bg-slate-900">
-              <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
-              {isFallback && editionId && (
-                <p className="text-xs text-amber-600 dark:text-amber-400">
-                  no {baseEdition} placement — showing {editionId}
-                </p>
-              )}
-              {!isFallback && editionId && (
-                <p className="text-xs text-slate-500 dark:text-slate-400">{editionId}</p>
-              )}
-              <p className="mt-1">{text ?? "(no text)"}</p>
-            </div>
-          );
-        })()}
+      {/* A merge shows every involved eulogy side by side, each with a radio to pick the
+          winner — the loser/winner contract is reversible. Non-merge ops show one eulogy. */}
+      {op.op === "merge" ? (
+        <div className="mb-2 grid gap-2 md:grid-cols-2">
+          {mergeIds.map((mid) => {
+            const isWinner = mid === selectedWinner;
+            return (
+              <div key={mid}>
+                <label className="mb-1 flex items-center gap-1 text-xs font-medium">
+                  <input
+                    type="radio"
+                    name={`winner-${id_}`}
+                    checked={isWinner}
+                    onChange={() => setSelectedWinner(mid)}
+                  />
+                  {isWinner ? "Winner — kept" : "Make winner"}
+                </label>
+                <EulogyView
+                  id={mid}
+                  baseEdition={baseEdition}
+                  locale={locale}
+                  tone={isWinner ? "winner" : "loser"}
+                  preferEdition={CURRENT_EDITION}
+                />
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="mb-2">
+          <EulogyView id={(op as { id?: string }).id ?? null} baseEdition={baseEdition} locale={locale} />
+        </div>
+      )}
 
       <div className="mb-2">
         {op.op === "rename" && (
@@ -146,8 +133,8 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         )}
         {op.op === "merge" && (
           <p>
-            Merge <span className="font-mono text-xs">{(op as MergeOp).ids.join(", ")}</span> → winner{" "}
-            <span className="font-mono text-xs">{(op as MergeOp).winner}</span>
+            Merge <span className="font-mono text-xs">{mergeLosers.join(", ")}</span> → winner{" "}
+            <span className="font-mono text-xs">{selectedWinner}</span>
           </p>
         )}
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -166,7 +153,7 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
           <button
             type="button"
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
-            onClick={() => decide({ decision: "accept" })}
+            onClick={() => (op.op === "merge" ? acceptMerge() : decide({ decision: "accept" }))}
           >
             Accept
           </button>
@@ -177,17 +164,19 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
           >
             Reject
           </button>
-          <button
-            type="button"
-            className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
-            onClick={() => setEditing(true)}
-          >
-            Edit
-          </button>
+          {op.op !== "merge" && (
+            <button
+              type="button"
+              className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
+              onClick={() => setEditing(true)}
+            >
+              Edit
+            </button>
+          )}
         </div>
       )}
 
-      {adjudicable && editing && (
+      {adjudicable && editing && op.op !== "merge" && (
         <div className="flex flex-col gap-2">
           {op.op === "rename" && (
             <>
@@ -209,16 +198,6 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
               </label>
             </>
           )}
-          {op.op === "merge" && (
-            <label className="flex items-center gap-2 text-xs">
-              winner
-              <input
-                className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
-                value={winnerInput}
-                onChange={(e) => setWinnerInput(e.target.value)}
-              />
-            </label>
-          )}
           {op.op === "delete" && (
             <label className="flex items-center gap-2 text-xs">
               reason
@@ -236,8 +215,6 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
               onClick={() => {
                 if (op.op === "rename") {
                   decide({ decision: "edit", edited: { new_id: newIdInput, subject_la: subjectLaInput } });
-                } else if (op.op === "merge") {
-                  decide({ decision: "edit", edited: { winner: winnerInput } });
                 } else if (op.op === "delete") {
                   decide({ decision: "edit", edited: { reason: reasonInput } });
                 }

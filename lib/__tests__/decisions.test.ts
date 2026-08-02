@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { summarize, saveDecisions, loadDecisions, decisionsKey } from "@/lib/decisions";
+import { summarize, saveDecisions, loadDecisions, decisionsKey, decisionsFromChangeset } from "@/lib/decisions";
 import type { Changeset } from "@/lib/changeset";
 
 const cs: Changeset = { schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "e", registry: "r" },
@@ -15,5 +15,10 @@ describe("decisions", () => {
     const key = decisionsKey(cs);
     saveDecisions(key, { a: { decision: "edit", edited: { new_id: "z" } } });
     expect(loadDecisions(key)).toEqual({ a: { decision: "edit", edited: { new_id: "z" } } });
+  });
+  it("seeds decisions carried in the change-set file", () => {
+    const prefilled: Changeset = { schema: "crmedr-changeset/v1", generated_by: "claude-code", base: { edition: "e", registry: "r" },
+      operations: [ { op: "merge", ids: ["c"], winner: "c2", decision: "reject" }, { op: "merge", ids: ["d"], winner: "d2", decision: "accept" }, { op: "rename", id: "a", new_id: "a2", decision: null } ] as never };
+    expect(decisionsFromChangeset(prefilled)).toEqual({ c: { decision: "reject" }, d: { decision: "accept" } });
   });
 });

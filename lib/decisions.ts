@@ -7,6 +7,22 @@ export function decisionsKey(cs: Changeset): string {
   return `mrf:decisions:${cs.base.edition}:${cs.base.registry}:${cs.operations.length}`;
 }
 
+/**
+ * Decisions carried IN the change-set file itself (e.g. a Claude-Code-prefilled
+ * audit). Ops whose `decision` is already set seed the map, so a prefilled
+ * change-set shows its decisions on load. Callers overlay localStorage on top so
+ * the curator's own in-progress edits take precedence (resume).
+ */
+export function decisionsFromChangeset(cs: Changeset): DecisionMap {
+  const map: DecisionMap = {};
+  for (const op of cs.operations) {
+    if (op.decision && op.decision !== null) {
+      map[opId(op)] = { decision: op.decision, ...(op.edited ? { edited: op.edited } : {}) };
+    }
+  }
+  return map;
+}
+
 export function loadDecisions(key: string): DecisionMap {
   if (typeof window === "undefined") return {};
   try {

@@ -1,0 +1,816 @@
+{
+ "schema": "crmedr-changeset/v1",
+ "generated_by": "claude-code",
+ "base": {
+  "edition": "martyrologium_romanum_1749",
+  "registry": "crmedr@local"
+ },
+ "operations": [
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0108-severinus-neapoli"
+   ],
+   "winner": "mr:0108-severinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Neapoli, in Campania, natalis sancti Severini Episcopi, qui fuit frater beati Vi",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0110-paulus-thebaide"
+   ],
+   "winner": "mr:0110-paulus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Thebaide natalis beati Pauli, primi Eremitae, Confessoris, qui, a sextodecimo",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0114-datius-mediolani"
+   ],
+   "winner": "mr:0114-datius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Mediolani sancti Datii, Episcopi et Confessoris; cujus meminit beatus Gregorius ",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0115-maurus-in"
+   ],
+   "winner": "mr:0115-maurus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "In territorio Andegavensi beati Mauri Abbatis, qui fuit discipulus sancti Benedi",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0116-marcellus-primus-romae"
+   ],
+   "winner": "mr:0116-marcellus-primus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Romae, via Salaria, natalis sancti Marcelli Primi, Papae et Martyris; qui, ob ca",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0203-celerinus-africa"
+   ],
+   "winner": "mr:0203-celerinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Africa sancti Celerini Diaconi, qui, decem et novem dies custodia carceris se",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0214-valentinus-interamnae"
+   ],
+   "winner": "mr:0214-valentinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Interamnae sancti Valentini, Episcopi et Martyris, qui, post diutinam caedem man",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0222-petrus-damianus-cardinalis"
+   ],
+   "winner": "mr:0222-petrus-damianus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Faventiae, in Aemilia, natalis sancti Petri Damiani, Cardinalis atque Episcopi O",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0223-polycarpus-romae"
+   ],
+   "winner": "mr:0223-polycarpus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Romae sancti Polycarpi Presbyteri, qui, cum beato Sebastiano, plurimos ad Christ",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0307-paulus-pelusii"
+   ],
+   "winner": "mr:0307-paulus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Pelusii, in Aegypto, sancti Pauli Episcopi, qui, eamdem ob causam, exsul occubui",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0312-petrus-ibidem"
+   ],
+   "winner": "mr:0312-petrus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Ibidem passio sancti Petri Martyris, qui, cum esset cubicularius Diocletiani Imp",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0413-ursi"
+   ],
+   "winner": "mr:0413-ursus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Ravennae sancti Ursi, Episcopi et Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0422-caji"
+   ],
+   "winner": "mr:0422-caius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Item Romae sancti Caji, Papae et Martyris; qui martyrio coronatus est sub Diocle",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0425-marcus-evangelista-hic"
+   ],
+   "winner": "mr:0425-marcus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Alexandriae natalis beati Marci Evangelistae. Hic, discipulus et interpres Apost",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0510-job-propheta"
+   ],
+   "winner": "mr:0510-iob",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In terra Hus sancti Job Prophetae, admirandae patientiae viri.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0511-anthimus-romae"
+   ],
+   "winner": "mr:0511-anthimus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Romae, via Salaria, item natalis beati Anthimi Presbyteri, qui, post virtutum et",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0518-ericus-upsali"
+   ],
+   "winner": "mr:0518-ericus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Upsali, in Suecia, sancti Erici, Regis et Martyris. Romae sancti Felicis Confess",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0519-ivo-lohaneti"
+   ],
+   "winner": "mr:0519-ivo",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Lohaneti, in Britannia minore, sancti Ivonis, Presbyteri et Confessoris; qui, pr",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0525-leo-in"
+   ],
+   "winner": "mr:0525-leo",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "In territorio Tricassino sancti Leonis Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0528-justus"
+   ],
+   "winner": "mr:0528-iustus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Urgellae, in Hispania Tarraconensi, sancti Justi Episcopi. Florentiae sancti Pod",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0604-quirinus-tibure"
+   ],
+   "winner": "mr:0604-quirinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Tibure sancti Quirini Martyris.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0622-paulinus-nolam"
+   ],
+   "winner": "mr:0622-paulinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Apud Nolam, Campaniae urbem, natalis beati Paulini, Episcopi et Confessoris, qui",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0629-syri"
+   ],
+   "winner": "mr:0629-syrus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Genuae natalis sancti Syri Episcopi.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0720-paulus-cordubae"
+   ],
+   "winner": "mr:0720-paulus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Cordubae, in Hispania, sancti Pauli, Diaconi et Martyris; qui, cum infideles pri",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0729-olavus-norvegia"
+   ],
+   "winner": "mr:0729-olavus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Norvegia sancti Olavi, Regis et Martyris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0729-lupi"
+   ],
+   "winner": "mr:0729-lupus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Trecis, in Gallia, sancti Lupi, Episcopi et Confessoris; qui, cum beato Germano,",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0730-ursi"
+   ],
+   "winner": "mr:0730-ursus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Antisiodori sancti Ursi, Episcopi et Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0731-fabius-caesareae"
+   ],
+   "winner": "mr:0731-fabius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Caesareae, in Mauritania, passio beati Fabii Martyris, qui, cum ferre vexilla pr",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0806-dominicus-bononiae"
+   ],
+   "winner": "mr:0806-dominicus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Bononiae natalis sancti Dominici Confessoris, qui Ordinis Fratrum Praedicatorum ",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0816-rochus-montem"
+   ],
+   "winner": "mr:0816-rochus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Apud Montem Pessulanum, in Gallia Narbonensi, depositio beati Rochi Confessoris,",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0819-magnus-anagniae"
+   ],
+   "winner": "mr:0819-magnus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Anagniae sancti Magni Episcopi et Martyris, qui in persecutione Decii necatus es",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0823-luppus-item"
+   ],
+   "winner": "mr:0823-luppus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Item sancti Luppi Martyris, qui, ex servili conditione, Christi libertate donatu",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0825-ludovicus-noni"
+   ],
+   "winner": "mr:0825-ludovicus-nonus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Apud Carthaginem sancti Ludovici Noni, Regis Francorum et Confessoris, vitae san",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0825-genesius-item"
+   ],
+   "winner": "mr:0825-genesius",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Item Romae sancti Genesii Martyris, qui, primum sub Gentilitate mimus, cum in th",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0827-rufi"
+   ],
+   "winner": "mr:0827-rufus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Capuae natalis sancti Rufi, Episcopi et Martyris; qui, cum esset patriciae digni",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0829-sebbus-anglia"
+   ],
+   "winner": "mr:0829-sebbus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Anglia sancti Sebbi Regis.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0901-priscus-capuae"
+   ],
+   "winner": "mr:0901-priscus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Capuae sancti Prisci Episcopi, qui unus fuit ex illis Sacerdotibus, qui, in pers",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0901-lupi"
+   ],
+   "winner": "mr:0901-lupus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Apud Senonas beati Lupi, Episcopi et Confessoris; de quo refertur quod quadam di",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0902-elpidius-lugduni"
+   ],
+   "winner": "mr:0902-elpidius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Lugduni, in Gallia, sancti Elpidii, Episcopi et Confessoris.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0903-gregorius-magnus-item"
+   ],
+   "winner": "mr:0903-gregorius-magnus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Item Romae Ordinatio incomparabilis viri sancti Gregorii Magni in Summum Pontifi",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0904-marcellus-cabillone"
+   ],
+   "winner": "mr:0904-marcellus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Cabillone, in Galliis, sancti Marcelli Martyris, qui, sub Antonino Imperatore, c",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0908-petrus-claver-carthagine"
+   ],
+   "winner": "mr:0908-petrus-claver",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Carthagine nova, in America meridionali, sancti Petri Claver, Sacerdotis e Socie",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0923-lini"
+   ],
+   "winner": "mr:0923-linus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Romae sancti Lini, Papae et Martyris, qui, primus post beatum Petrum Apostolum, ",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:0927-caji"
+   ],
+   "winner": "mr:0927-caius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Mediolani sancti Caji Episcopi, qui fuit discipulus beati Barnabae Apostoli; et,",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1006-fideus-agenni"
+   ],
+   "winner": "mr:1006-fideus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Agenni, in Gallia, natalis sanctae Fidei, Virginis et Martyris; cujus exemplo be",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1007-marcus-romae"
+   ],
+   "winner": "mr:1007-marcus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Romae, via Ardeatina, depositio sancti Marci, Papae et Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1010-cerbonius-veronae"
+   ],
+   "winner": "mr:1010-cerbonius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Veronae sancti Cerbonii Episcopi.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1010-paulinus-capuae"
+   ],
+   "winner": "mr:1010-paulinus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Capuae sancti Paulini Episcopi.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1016-lullus-moguntiae"
+   ],
+   "winner": "mr:1016-lullus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Moguntiae sancti Lulli, Episcopi et Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1022-philippus-firmum"
+   ],
+   "winner": "mr:1022-philippus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Apud Firmum, in Piceno, natalis sancti Philippi, Episcopi et Martyris.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1022-donatus-scotus-tuscia"
+   ],
+   "winner": "mr:1022-donatus-scotus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Tuscia sancti Donati Scoti, Episcopi Faesulani.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1026-fulcus-papiae"
+   ],
+   "winner": "mr:1026-fulcus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Papiae sancti Fulci Episcopi.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1101-caesarius-tarracinae"
+   ],
+   "winner": "mr:1101-caesarius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Tarracinae, in Campania, natalis sancti Caesarii Diaconi, qui, diebus multis in ",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1102-justus"
+   ],
+   "winner": "mr:1102-iustus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Tergeste passio beati Justi, qui in eadem persecutione, sub Manatio Praeside, ma",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1106-felix-fundis"
+   ],
+   "winner": "mr:1106-felix",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Fundis, in Latio, sancti Felicis Monachi.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1110-justus"
+   ],
+   "winner": "mr:1110-iustus",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "In Anglia sancti Justi Episcopi, qui, una cum Augustino, Mellito et aliis a beat",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1209-syri"
+   ],
+   "winner": "mr:1209-syrus",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Papiae sancti Syri, qui fuit primus ejusdem civitatis Episcopus, atque apostolic",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1209-petrus-fourier-graji"
+   ],
+   "winner": "mr:1209-petrus-fourier",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Graji, in Burgundia, sancti Petri Fourier, qui Canonicus Regularis fuit Salvator",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1210-eulalia-emeritae"
+   ],
+   "winner": "mr:1210-eulalia",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Emeritae, in Hispania, passio sanctae Eulaliae Virginis, quae, sub Maximiano Imp",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1216-ado-viennae"
+   ],
+   "winner": "mr:1216-ado",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Viennae, in Gallia, beati Adonis, Episcopi et Confessoris.",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1221-petrus-canisius-friburgi"
+   ],
+   "winner": "mr:1221-petrus-canisius",
+   "class": "M-merge",
+   "confidence": "low",
+   "incipit": "Friburgi Helvetiorum item natalis sancti Petri Canisii, Sacerdotis e Societate J",
+   "reasoning": "ACCEPT — same saint: this 1749 entry is the earlier attestation of the current ID (winner has no separate 1749 entry). Merge = re-align the 1749 eulogy onto the current ID (drops deprecated/attested_in; eulogy preserved).",
+   "decision": "accept",
+   "edited": null
+  },
+  {
+   "op": "merge",
+   "ids": [
+    "mr:1230-anysius-ibidem"
+   ],
+   "winner": "mr:1230-anysius",
+   "class": "M-merge",
+   "confidence": "high",
+   "incipit": "Ibidem sancti Anysii, ejusdem civitatis Episcopi.",
+   "reasoning": "REJECT — homonym: a DIFFERENT saint sharing the name and day; the winner has its own distinct 1749 entry. Keep as a deprecated ID with a disambiguating slug instead of merging.",
+   "decision": "reject",
+   "edited": null
+  }
+ ]
+}
