@@ -1,9 +1,12 @@
 # Frontend Deployment Design
 
 **Date:** 2026-08-02
-**Status:** Workflow implemented. Deploy identity provisioned and verified
-2026-08-02 (§4). Outstanding: the Plesk Node.js application settings, and the
-`VPS_SSH_KEY` / `API_BASE` repository settings (§7 steps 1, 6).
+**Status:** Workflow implemented and exercised end to end against the VPS on
+2026-08-02 (run 30759983162): configuration validation, build, native-dependency
+verification, host-key pinning, upload, extraction into the vhost and the
+Passenger restart all succeeded. The run failed at its final assertion only,
+because the Plesk Node.js application had not yet been created — see §7 steps 0
+and 1, the sole remaining work. All repository secrets and variables are set.
 **Companion:** `martyrology-api`'s
 `docs/superpowers/specs/2026-08-01-continuous-deployment-design.md`, which
 deploys the upstream API to the same VPS by a deliberately different route.
@@ -329,6 +332,18 @@ train the reader to ignore it. Publish SSHFP for the domain and the API's
 implementation can be lifted across verbatim.
 
 ## 7. Operator runbook
+
+0. **Delete Plesk's default page from the document root** — `index.html`, and
+   the `error_docs/` assets it references. A fresh subscription ships an
+   `index.html` placeholder, and nginx serves an existing static file from the
+   document root *before* handing the request to Passenger. Left in place, it
+   permanently shadows the application's `/` route.
+
+   This interacts badly with smoke testing: `GET /` returns a perfectly healthy
+   **200** — of the wrong page. A deploy validated only against the home page
+   would report success while serving Plesk's placeholder to every visitor.
+   The deploy never removes it, because extracting over the previous release
+   deletes nothing (§5 "Pruning"); it has to go once, by hand.
 
 1. **Plesk → Domains → romanmartyrology.com → Node.js**, and configure:
    - *Node.js version*: 24 (match `.nvmrc`; the bundle's `node_modules` is
