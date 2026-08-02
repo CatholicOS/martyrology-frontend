@@ -1,9 +1,11 @@
 # Frontend Deployment Design
 
 **Date:** 2026-08-02
-**Status:** Workflow implemented. Deploy identity provisioned and verified
-2026-08-02 (§4). Outstanding: the Plesk Node.js application settings, and the
-`VPS_SSH_KEY` / `API_BASE` repository settings (§7 steps 1, 6).
+**Status:** **Live** at https://romanmartyrology.com since 2026-08-02. The
+workflow deploys end to end; the Plesk Node.js application is configured per §7
+step 1. The first run (30759983162) shipped the bundle correctly and failed only
+its smoke test, because the Node.js application had been filled in but not
+enabled — the findings from that are folded into §7 step 1.
 **Companion:** `martyrology-api`'s
 `docs/superpowers/specs/2026-08-01-continuous-deployment-design.md`, which
 deploys the upstream API to the same VPS by a deliberately different route.
@@ -275,11 +277,11 @@ Three consequences, all accepted:
 |---|---|---|---|
 | Secret | `VPS_HOST` | `catholicdigitalcommons.org` | set 2026-08-02 |
 | Secret | `VPS_USERNAME` | the subscription's system user | set 2026-07-29 |
-| Secret | `VPS_SSH_KEY` | private half of the deploy keypair | **to set** — see §6.1 |
+| Secret | `VPS_SSH_KEY` | private half of the deploy keypair (§6.1) | set 2026-08-02 |
 | Variable | `VPS_HOST_KEY` | `ssh-keyscan -t ed25519,rsa catholicdigitalcommons.org` | set 2026-08-02 |
 | Variable | `VPS_APP_DIR` | `/httpdocs` | set 2026-07-29 |
 | Variable | `SITE_URL` | `https://romanmartyrology.com` | set 2026-08-02 |
-| Variable | `API_BASE` | `http://127.0.0.1:<MARTYROLOGY_PORT>` | **to set** |
+| Variable | `API_BASE` | `http://127.0.0.1:8412` | set 2026-08-02 |
 
 **`VPS_HOST` is the SSH endpoint, `SITE_URL` is the public site — they are
 deliberately different hostnames for the same machine.**
@@ -334,10 +336,50 @@ implementation can be lifted across verbatim.
    - *Node.js version*: 24 (match `.nvmrc`; the bundle's `node_modules` is
      built against it)
    - *Application Root*: `/httpdocs`
+   - *Document Root*: `/httpdocs/public` — **not** the application root; see
+     below
    - *Application Startup File*: `server.js`
    - *Application Mode*: `production`
    - *Custom environment variables*: `API_BASE` → `http://127.0.0.1:<port>`
+   - then press **Enable Node.js**
+
    Do **not** press "NPM install" — the bundle ships its own `node_modules`.
+
+   **"Enable Node.js" is a separate action from filling the form in.** Setting
+   every field above and navigating away leaves the domain served as plain
+   static hosting, which presents as the site "not deploying" when in fact it
+   deployed perfectly and nothing is running it.
+
+   **Application Root and Document Root are different things, and the
+   difference matters.** Application Root is where Passenger looks for
+   `server.js` and `tmp/restart.txt`. Document Root is where *nginx* looks for
+   static files to serve itself, before handing anything to Passenger. Pointing
+   the latter at `/httpdocs/public` does two useful things:
+
+   - It matches Next's own contract, in which `public/x.json` is served at
+     `/x.json`. nginx then answers those from disk without waking Node —
+     confirmed live by `/changesets/index.json` returning `accept-ranges: bytes`
+     and an inode-style etag with no Passenger header, while `/` and `/compare`
+     return `x-powered-by: Next.js, Phusion Passenger`.
+   - It structurally removes the placeholder-shadowing problem below, rather
+     than papering over one instance of it.
+
+   The trade-off to remember: anything in `public/` shadows an application route
+   of the same name, because nginx resolves it first.
+
+   **Why the document root must not be the application root.** A fresh Plesk
+   subscription ships an `index.html` placeholder in `/httpdocs`. If that is
+   also the document root, nginx serves it for `/` and permanently shadows the
+   application's home page. The symptom is not an error: `GET /` returns a
+   healthy **200** of the wrong page, so a deploy validated only against the
+   home page would report success while serving Plesk's placeholder to every
+   visitor. Observed exactly that way on the first deploy run, 2026-08-02, with
+   `/` returning `<title>Domain Default page</title>`. With the document root at
+   `/httpdocs/public`, the placeholder is simply outside it and harmless.
+
+   This is the concrete justification for a choice §"Smoke test" previously
+   argued only in the abstract: the deploy asserts the API proxy route because a
+   200 on `/` demonstrably does not mean the application is serving.
 2. Read the API's live port: `grep MARTYROLOGY_PORT /opt/martyrology/config/runtime.env`.
 3. Enable SSH for the subscription: **Plesk → Websites & Domains →
    romanmartyrology.com → Web Hosting Access → Access to the server over SSH**.
@@ -396,7 +438,7 @@ implementation can be lifted across verbatim.
        'echo AUTH_OK; command -v tar gzip mkdir touch; ls -d /httpdocs'
    ```
 
-6. Set the remaining repository secrets and variables from §6:
+6. Set the repository secrets and variables from §6:
    ```bash
    gh secret set VPS_SSH_KEY -R CatholicOS/martyrology-frontend \
      < ~/.ssh/martyrology-frontend-deploy
