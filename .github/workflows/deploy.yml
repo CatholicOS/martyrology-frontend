@@ -149,6 +149,30 @@ jobs:
           tar -czf "/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz" -C .next/standalone .
           ls -la "/tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"
 
+      - name: Verify the bundle's native dependencies resolve
+        run: |
+          set -euo pipefail
+          # `standalone` traces `require` graphs and does NOT follow dlopen, so
+          # a native addon can be bundled without the shared library it opens at
+          # load time. That produces a bundle which builds clean, serves every
+          # route, and passes the whole test suite — and throws ERR_DLOPEN_FAILED
+          # the first time anything actually calls into the addon. It cannot
+          # reproduce in development, where the full node_modules is on disk.
+          #
+          # This exact failure shipped once (sharp 0.35 split libvips into a
+          # separate libvips-cpp.so; see the design doc, "What tracing does and
+          # does not follow"). Loading it here, from the bundle rather than from
+          # the repo tree, is what makes the trace configuration falsifiable
+          # instead of assumed.
+          cd .next/standalone
+          node -e '
+            const sharp = require("sharp");
+            if (!sharp.versions || !sharp.versions.vips) {
+              throw new Error("sharp loaded but reported no libvips version");
+            }
+            console.log("sharp " + sharp.versions.sharp + " / libvips " + sharp.versions.vips);
+          '
+
       - name: Setup SSH
         env:
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}

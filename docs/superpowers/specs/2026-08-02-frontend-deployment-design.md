@@ -79,6 +79,46 @@ identity is a Plesk subscription user whose command execution is restricted
 (§4), so that is exactly the wrong dependency to take on. A standalone bundle
 needs no remote command beyond unpacking it.
 
+### What tracing does and does not follow
+
+`standalone` decides what to bundle by tracing `require` graphs. It does **not**
+follow `dlopen`, and the bundle is consequently not pure JavaScript — it carries
+`@img/sharp-linux-x64/lib/*.node`, a glibc-linked native addon, plus the libvips
+shared object that addon opens at load time.
+
+This bit once, on 2026-08-02, while clearing Dependabot alert #7
+(GHSA-f88m-g3jw-g9cj, four libvips CVEs). `package.json` overrides `sharp` to
+`^0.35.3`; `next@16.2.12` pins `^0.34.5`. In 0.34 libvips is linked into the
+`.node` binary, so tracing the binary sufficed. 0.35 splits it into a separate
+`libvips-cpp.so` opened via `dlopen`, which tracing misses — so the bundle
+shipped `sharp` without the library it needs.
+
+The failure mode is why this is written down rather than just fixed:
+
+- the build succeeds;
+- every route serves 200, and the full test suite passes;
+- nothing is wrong until something actually calls `sharp`, which then throws
+  `ERR_DLOPEN_FAILED: libvips-cpp.so.8.18.3: cannot open shared object file`;
+- it **cannot reproduce in development**, where the full `node_modules` is on
+  disk. Only the bundle is broken.
+
+Today nothing imports `sharp` — there is no `next/image` usage and `public/`
+holds three JSON files and no images — so the breakage would have lain dormant
+until someone added an image, and then presented as "works locally, fails in
+production" with no recent change to blame.
+
+The tell is quantitative: the bundle dropped from 11MB to 3.8MB. **A deploy
+bundle that suddenly gets smaller is a bundle that lost something.**
+`outputFileTracingIncludes` in `next.config.ts` pulls the `.so` back in (12MB),
+and is removable once Next ships a stable release pinning `sharp ^0.35.x`.
+
+Verifying a bundle boots is therefore not sufficient on its own. The check that
+would have caught this is:
+
+```bash
+(cd <extracted-bundle> && node -e "const s=require('sharp'); console.log(s.versions.vips)")
+```
+
 Two directories are **not** included by `standalone` and must be copied in by
 the caller, which the workflow does:
 
