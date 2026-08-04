@@ -31,9 +31,9 @@ from the API for the actual eulogy text.
 - A sibling checkout of [`crmedr`](https://github.com/CatholicOS/crmedr) at
   `../crmedr` (only needed to regenerate the bundled registry snapshot / import
   a new change-set — the app itself does not read `crmedr` at runtime).
-- Docker with Compose v2 and `openssl` (only needed for the full local
-  development stack below — `scripts/setup-stack.sh` uses `openssl rand` to
-  generate `AUTH_SECRET`).
+- Docker with Compose v2, `curl`, `jq`, `git`, and `openssl` (only needed for
+  the full local development stack below — see that section for what each
+  one is used for).
 
 ## Setup
 
@@ -114,8 +114,12 @@ in Docker. Mirrors `cdcf-infra` production topology: Zitadel and its v2 login UI
 share one origin behind an nginx proxy, with image versions pinned to
 production's.
 
-Requires Docker with Compose v2. Ports match LiturgicalCalendar's stack, so only
-one of the two can run at a time.
+Requires Docker with Compose v2, `curl`, `jq`, `git`, and `openssl` — the
+provisioning and smoke scripts shell out to all four (`curl`/`jq` to talk to
+Zitadel and OpenFGA, `git` to clone `cdcf-infra`, `openssl` to generate
+`AUTH_SECRET`); a missing one otherwise surfaces as a bare "command not found"
+partway through provisioning, with nothing pointing at the cause. Ports match
+LiturgicalCalendar's stack, so only one of the two can run at a time.
 
 ```bash
 cp .env.example .env
