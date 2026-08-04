@@ -154,6 +154,7 @@ the Playground is enabled alongside the preshared auth this stack requires.
 Inspect a store's tuples with `curl` instead, e.g.:
 
 ```bash
+set -a; . ./.env; set +a   # loads MARTYROLOGY_OPENFGA_API_URL/STORE_ID/API_TOKEN
 curl -s -X POST "$MARTYROLOGY_OPENFGA_API_URL/stores/$MARTYROLOGY_OPENFGA_STORE_ID/read" \
   -H "Authorization: Bearer $MARTYROLOGY_OPENFGA_API_TOKEN" \
   -H "Content-Type: application/json" -d '{}' | jq

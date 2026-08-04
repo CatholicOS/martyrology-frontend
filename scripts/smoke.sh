@@ -20,22 +20,55 @@ FE="http://localhost:${FRONTEND_PORT:-3000}"
 FGA="${MARTYROLOGY_OPENFGA_API_URL:-http://localhost:8083}"
 ISSUER="http://localhost:${ZITADEL_PORT:-8080}"
 
+# --connect-timeout/--max-time bound EVERY curl below so an unreachable
+# service fails fast instead of hanging on curl's own (much longer) defaults.
+# By this point in the bring-up (see README.md → "Local development stack")
+# Zitadel's slow first boot is already behind setup-stack.sh's own retry
+# loop, so a generous but finite per-call timeout is safe here.
+CURL_TIMEOUT=(--connect-timeout 5 --max-time 15)
+
 echo "1. Zitadel discovery on the single origin"
-[[ "$(curl -sf "$ISSUER/.well-known/openid-configuration" | jq -r '.issuer')" == "$ISSUER" ]] \
+[[ "$(curl -sf "${CURL_TIMEOUT[@]}" "$ISSUER/.well-known/openid-configuration" | jq -r '.issuer')" == "$ISSUER" ]] \
     && ok "issuer is $ISSUER" || bad "discovery missing or issuer mismatch"
 
 echo "2. OpenFGA structural tuples"
-COUNT=$(curl -sf -X POST "$FGA/stores/$MARTYROLOGY_OPENFGA_STORE_ID/read" \
-    -H "Authorization: Bearer $MARTYROLOGY_OPENFGA_API_TOKEN" \
-    -H "Content-Type: application/json" -d '{}' | jq '.tuples | length')
-[[ "$COUNT" == "11" ]] && ok "11 structural tuples" || bad "expected 11 tuples, got ${COUNT:-none}"
+# Excludes `relation == "superuser"`: those are administrative grants
+# (grant-superuser.sh writes platform:martyrology#superuser), not part of the
+# seeded structural model, and README's documented bring-up has the reader
+# grant themselves one right after this script — counting them here would
+# make the smoke test fail on exactly the workflow the README tells you to
+# follow. Paginated (page_size + continuation_token) rather than a bare `{}`
+# read, mirroring martyrology-api's Authz.read_tuples — see authz.py — so a
+# larger store can't silently truncate the count onto one page.
+COUNT=0
+TOKEN=""
+PAGES_OK=1
+for _ in $(seq 1 50); do
+    if [[ -n "$TOKEN" ]]; then
+        REQ_BODY=$(jq -n --arg tok "$TOKEN" '{page_size: 100, continuation_token: $tok}')
+    else
+        REQ_BODY='{"page_size": 100}'
+    fi
+    PAGE=$(curl -sf "${CURL_TIMEOUT[@]}" -X POST "$FGA/stores/$MARTYROLOGY_OPENFGA_STORE_ID/read" \
+        -H "Authorization: Bearer $MARTYROLOGY_OPENFGA_API_TOKEN" \
+        -H "Content-Type: application/json" -d "$REQ_BODY") || { PAGES_OK=0; break; }
+    PAGE_COUNT=$(jq '[.tuples[] | select(.key.relation != "superuser")] | length' <<<"$PAGE")
+    COUNT=$((COUNT + PAGE_COUNT))
+    TOKEN=$(jq -r '.continuation_token // empty' <<<"$PAGE")
+    [[ -z "$TOKEN" ]] && break
+done
+if [[ $PAGES_OK -eq 1 && "$COUNT" == "11" ]]; then
+    ok "11 structural tuples"
+else
+    bad "expected 11 structural tuples, got ${COUNT:-none}"
+fi
 
 echo "3. Alembic is at head"
 CUR=$(docker compose run --rm --entrypoint alembic api-migrate current 2>/dev/null | tr -d '\r')
 grep -q '(head)' <<<"$CUR" && ok "alembic current is at head" || bad "alembic not at head: $CUR"
 
 echo "4. API health"
-curl -sf "$API/healthz" >/dev/null && ok "GET /healthz 200" || bad "GET /healthz failed"
+curl -sf "${CURL_TIMEOUT[@]}" "$API/healthz" >/dev/null && ok "GET /healthz 200" || bad "GET /healthz failed"
 
 echo "5. Anonymous read of a restricted edition is redacted"
 # `curl -sf` yields an empty body for ANY non-2xx status, collapsing "no such
@@ -44,7 +77,7 @@ echo "5. Anonymous read of a restricted edition is redacted"
 # same "not attached" skip. Capture the status code instead (appended after a
 # newline, then split off) so only a 404 skips; every other non-2xx is
 # reported as a failure with the code attached.
-RESP=$(curl -s -w '\n%{http_code}' \
+RESP=$(curl -s "${CURL_TIMEOUT[@]}" -w '\n%{http_code}' \
     "$API/api/v1/elogia/edition/martyrologium_romanum_2004/01/02" 2>/dev/null)
 CODE=$(tail -n1 <<<"$RESP")
 BODY=$(sed '$d' <<<"$RESP")
@@ -61,13 +94,13 @@ else
 fi
 
 echo "6. Login V2 is served through the proxy"
-CODE=$(curl -s -o /dev/null -w '%{http_code}' "$ISSUER/ui/v2/login/login")
+CODE=$(curl -s "${CURL_TIMEOUT[@]}" -o /dev/null -w '%{http_code}' "$ISSUER/ui/v2/login/login")
 [[ "$CODE" != "404" && -n "$CODE" ]] \
     && ok "/ui/v2/login/login -> $CODE" \
     || bad "/ui/v2/login/login returned 404 — proxy is routing to the backend"
 
 echo "7. Auth.js provider"
-PROVIDERS=$(curl -sf "$FE/api/auth/providers" 2>/dev/null)
+PROVIDERS=$(curl -sf "${CURL_TIMEOUT[@]}" "$FE/api/auth/providers" 2>/dev/null)
 if [[ -z "$PROVIDERS" ]]; then
     # Auth.js is introduced by the OIDC login-client plan, not by this stack.
     skip "no /api/auth/providers — Auth.js not yet wired into the frontend"

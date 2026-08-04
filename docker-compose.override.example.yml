@@ -45,6 +45,17 @@ services:
       # GitHub-default stack necessarily serves the public editions only.
       MARTYROLOGY_DATA_PATH: /app/data/editions:/app/data/texts
     volumes:
+      # ⚠ VERIFY EACH SIBLING EXISTS BEFORE `--build`. Docker silently
+      # auto-creates a missing bind-mount source as an empty host directory —
+      # confirmed empirically, and NOT prevented by the long-syntax
+      # `create_host_path: false` option (that flag is honoured only under
+      # Swarm; `docker compose up`/`run` ignores it and creates the directory
+      # anyway). A missing ../martyrology-texts therefore mounts an empty dir
+      # over /app/data/texts with no error: the container starts healthy and
+      # the restricted-texts path quietly serves nothing instead of failing
+      # loudly. Check `ls ../martyrology-api ../martyrology-texts/data/editions
+      # ../crmedr ../clbdr` first.
+      #
       # :ro — the API never writes to its source tree. The venv is deliberately
       # NOT mounted, so the image's installed dependencies are used.
       - ../martyrology-api/src:/app/src:ro
