@@ -137,6 +137,19 @@ services:
     environment:
       # Reaches the backend over the docker network, not through the proxy.
       ZITADEL_API_URL: http://zitadel:8080
+      # Zitadel resolves which instance a request belongs to from the Host
+      # header (multi-instance routing), matched against the instance's
+      # registered domains — never from the network path. ZITADEL_API_URL's
+      # own host ("zitadel:8080") is not a registered domain, so backend calls
+      # without this header fail with "Instance not found" even though the
+      # connection itself succeeds. Confirmed empirically (see task-10-report):
+      # Host: zitadel:8080 -> 404 Instance not found; Host: localhost:8090 AND
+      # bare Host: localhost both resolve, but return DIFFERENT issuers
+      # ("http://localhost:8090" vs "http://localhost") — the same class of
+      # mismatch $http_host fixes in the nginx conf. Set to the port-qualified
+      # form so it agrees with the real browser-facing origin the proxy
+      # forwards (Correction 1's ${ZITADEL_PORT:-8080}, never hardcoded).
+      CUSTOM_REQUEST_HEADERS: 'Host:localhost:${ZITADEL_PORT:-8080}'
       NEXT_PUBLIC_BASE_PATH: /ui/v2/login
       ZITADEL_SERVICE_USER_TOKEN_FILE: /zitadel-data/login-client.pat
       EMAIL_VERIFICATION: true
