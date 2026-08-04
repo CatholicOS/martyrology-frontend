@@ -25,6 +25,31 @@
 # right-hand side of every port mapping) are NOT parameterized — nothing outside
 # the docker network ever resolves them, so there is nothing for a moved
 # external port to desynchronize from.
+#
+# PLATFORM: developed and verified on Docker Desktop (WSL2/macOS). The
+# martyrology-api and martyrology-frontend services rely on
+# `extra_hosts: ["localhost:host-gateway"]` to reach zitadel-proxy from
+# inside a container — Zitadel resolves instances by Host header (see
+# zitadel-login's CUSTOM_REQUEST_HEADERS comment below), so introspection and
+# Auth.js discovery both have to present the browser-facing Host, not the
+# docker-network one. Docker Desktop's `host-gateway` resolves to vpnkit's
+# gateway, which specially bridges into the HOST'S OWN loopback — the only
+# reason a container-side "localhost" reaches zitadel-proxy's
+# 127.0.0.1-bound publish at all. On native Linux Docker Engine,
+# `host-gateway` instead resolves to the ordinary bridge gateway (e.g.
+# 172.17.0.1), and a socket published as `127.0.0.1:<port>:<port>` does not
+# accept traffic from that address — every port in this file binds
+# 127.0.0.1 specifically (a deliberate security property, not an oversight;
+# see each service's ports: block), so this stack as committed will very
+# likely 401 on native Linux rather than fail loudly. A native Linux user
+# needs to widen the publish the app containers actually reach through
+# — at minimum zitadel-proxy's `127.0.0.1:${ZITADEL_PORT:-8080}:80` — to
+# `0.0.0.0:${ZITADEL_PORT:-8080}:80` (or bind explicitly to the bridge
+# gateway address) so traffic arriving from the bridge IP is accepted; that
+# is a real, deliberate loosening of this stack's default posture and should
+# be made locally (e.g. in docker-compose.override.yml), not upstreamed
+# here. Confirmed empirically only on Docker Desktop — see
+# .superpowers/sdd/2026-08-04-local-development-stack/task-11-report.md.
 
 name: martyrology
 
@@ -182,6 +207,25 @@ services:
       # filename stays zitadel.local.conf) so nginx's entrypoint renders it
       # through envsubst before nginx starts.
       - ./docker/nginx/zitadel.local.conf:/etc/nginx/templates/default.conf.template:ro
+    # Requests the "/" route (proxy_pass http://zitadel_backend in
+    # zitadel.local.conf) with the same Host normalization the CSP comment
+    # above and CUSTOM_REQUEST_HEADERS already rely on. This deliberately
+    # exercises the FORWARDED path rather than nginx's own listening socket:
+    # nginx answers on :80 whether or not zitadel is reachable, so a bare TCP
+    # or "curl localhost:80" check would report healthy even with a dead
+    # upstream (502) and never catch the startup race martyrology-api and
+    # martyrology-frontend now depend on this healthcheck to rule out — every
+    # Zitadel interaction they make (OIDC discovery, introspection, token
+    # exchange) routes through this proxy. A 200 here can only come from
+    # zitadel itself answering behind the proxy. $ZITADEL_PORT is the
+    # container env var set above, already substituted by compose from
+    # ${ZITADEL_PORT:-8080} — read directly, not re-derived.
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf -H \"Host: localhost:$$ZITADEL_PORT\" http://localhost/.well-known/openid-configuration -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     ports:
       - "127.0.0.1:${ZITADEL_PORT:-8080}:80"
     networks:
@@ -304,6 +348,20 @@ services:
     # Host: localhost:${ZITADEL_PORT} — the same origin the browser uses.
     # Mirrors LiturgicalCalendarFrontend's pattern for its own containers.
     # Costs a container->host->proxy hop; acceptable for a dev stack.
+    #
+    # PLATFORM-SPECIFIC — verified on Docker Desktop (WSL2/macOS) only.
+    # `host-gateway` here resolves to Docker Desktop's vpnkit gateway, which
+    # specially bridges into the HOST'S OWN loopback — that bridging is why a
+    # container-side request to "localhost" reaches zitadel-proxy's
+    # 127.0.0.1-bound publish at all. On native Linux Docker Engine,
+    # `host-gateway` instead resolves to the ordinary bridge gateway (e.g.
+    # 172.17.0.1), which is NOT the host's loopback — a socket published as
+    # `127.0.0.1:${ZITADEL_PORT}:80` (see zitadel-proxy below) does not
+    # accept traffic arriving from the bridge IP, so this would silently
+    # break introspection (401s, not an obvious connection error) on native
+    # Linux. See the compose file header and .env.example for what a native
+    # Linux user needs to change. Confirmed empirically — see
+    # task-11-report.md.
     extra_hosts:
       - "localhost:host-gateway"
     environment:
@@ -332,6 +390,11 @@ services:
     depends_on:
       zitadel:
         condition: service_healthy
+      # Introspection is sent to the proxy (MARTYROLOGY_ZITADEL_INTERNAL_URL
+      # above), not to zitadel directly — gating on zitadel alone leaves a
+      # startup race where the proxy hasn't started forwarding yet.
+      zitadel-proxy:
+        condition: service_healthy
       openfga:
         condition: service_healthy
       authz-seed:
@@ -347,6 +410,15 @@ services:
     # the SAME origin the browser is redirected to, so `localhost` has to mean
     # the host here rather than this container's loopback. Same pattern as
     # LiturgicalCalendarFrontend's litcal-frontend service.
+    #
+    # PLATFORM-SPECIFIC — same caveat as martyrology-api's extra_hosts above:
+    # `host-gateway` only reaches zitadel-proxy's 127.0.0.1-bound publish
+    # because Docker Desktop's vpnkit gateway specially bridges into the
+    # host's own loopback. Native Linux Docker Engine's plain bridge gateway
+    # does not, so this needs adjustment there (see compose file header).
+    # NOT independently verified end-to-end here — no live login redirect was
+    # exercised in this task; verified only by analogy to the API's proven
+    # fix (task-11-report.md).
     extra_hosts:
       - "localhost:host-gateway"
     environment:
@@ -363,6 +435,11 @@ services:
       - martyrology
     depends_on:
       martyrology-api:
+        condition: service_healthy
+      # Auth.js discovery/token exchange also goes through the proxy
+      # (AUTH_ZITADEL_ISSUER above) — same startup-race reasoning as
+      # martyrology-api's zitadel-proxy dependency.
+      zitadel-proxy:
         condition: service_healthy
 
   adminer:
