@@ -57,6 +57,10 @@ for _ in $(seq 1 50); do
     TOKEN=$(jq -r '.continuation_token // empty' <<<"$PAGE")
     [[ -z "$TOKEN" ]] && break
 done
+# If the loop above exhausted its 50-iteration cap while TOKEN is still
+# non-empty, pagination did not finish — OpenFGA said there was more to
+# read. COUNT is a partial sum in that case and must not be trusted.
+[[ -n "$TOKEN" ]] && PAGES_OK=0
 if [[ $PAGES_OK -eq 1 && "$COUNT" == "11" ]]; then
     ok "11 structural tuples"
 else
@@ -94,8 +98,15 @@ else
 fi
 
 echo "6. Login V2 is served through the proxy"
+# A 404 here means the proxy routed to the Zitadel backend instead of the
+# login UI — that's the failure this check exists to catch. But the mere
+# absence of a 404 isn't enough: `curl -w '%{http_code}'` prints "000" on a
+# connection failure, and a 5xx means the login UI itself is broken, so both
+# must fail too. The live Login V2 app returns 400 ("no authRequest") on a
+# bare GET with no query params, which is the expected, passing response —
+# accept 2xx/3xx/400 and nothing else.
 CODE=$(curl -s "${CURL_TIMEOUT[@]}" -o /dev/null -w '%{http_code}' "$ISSUER/ui/v2/login/login")
-[[ "$CODE" != "404" && -n "$CODE" ]] \
+[[ "$CODE" =~ ^(2[0-9]{2}|3[0-9]{2}|400)$ ]] \
     && ok "/ui/v2/login/login -> $CODE" \
     || bad "/ui/v2/login/login returned 404 — proxy is routing to the backend"
 
