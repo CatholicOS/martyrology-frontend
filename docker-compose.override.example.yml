@@ -1,0 +1,95 @@
+# Local sibling builds. Copy to docker-compose.override.yml (gitignored):
+#
+#   cp docker-compose.override.example.yml docker-compose.override.yml
+#   docker compose up -d --build
+#
+# Compose merges the override automatically. Services omitted here keep
+# building from their GitHub refs.
+#
+# Expected sibling layout:
+#   ../martyrology-api
+#   ../martyrology-texts   (private — restricted editions)
+#   ../crmedr  ../clbdr    (public data repos)
+#   ../cdcf-infra          (OpenFGA model + provisioning scripts)
+#
+# ⚠ IF YOU TRIM THIS FILE, KEEP db-init, api-migrate, AND martyrology-api
+# TOGETHER OR DROP ALL THREE. All three services share the martyrology-api
+# :latest tag. Overriding only some of them leaves `docker compose up --build`
+# rebuilding martyrology-api:latest from GitHub via whichever service you left
+# un-overridden, silently clobbering the local build with no error. This
+# warning is repeated at each of the three stanzas below, but THIS copy is
+# the one that survives if you delete a stanza — do not delete it too.
+
+services:
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside api-migrate and martyrology-api.
+  db-init:
+    build:
+      context: ../martyrology-api
+
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside db-init and martyrology-api.
+  api-migrate:
+    build:
+      context: ../martyrology-api
+
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside db-init and api-migrate.
+  martyrology-api:
+    build:
+      context: ../martyrology-api
+    environment:
+      # Attach the private 2004-family texts alongside the public-domain
+      # editions baked into the image. This is the ONLY way the restricted
+      # -texts path becomes exercisable: martyrology-texts is private, so the
+      # GitHub-default stack necessarily serves the public editions only.
+      MARTYROLOGY_DATA_PATH: /app/data/editions:/app/data/texts
+    volumes:
+      # ⚠ VERIFY EACH SIBLING EXISTS BEFORE `--build`. Docker silently
+      # auto-creates a missing bind-mount source as an empty host directory —
+      # confirmed empirically, and NOT prevented by the long-syntax
+      # `create_host_path: false` option (that flag is honoured only under
+      # Swarm; `docker compose up`/`run` ignores it and creates the directory
+      # anyway). A missing ../martyrology-texts therefore mounts an empty dir
+      # over /app/data/texts with no error: the container starts healthy and
+      # the restricted-texts path quietly serves nothing instead of failing
+      # loudly. Check `ls ../martyrology-api ../martyrology-texts/data/editions
+      # ../crmedr ../clbdr` first.
+      #
+      # :ro — the API never writes to its source tree. The venv is deliberately
+      # NOT mounted, so the image's installed dependencies are used.
+      - ../martyrology-api/src:/app/src:ro
+      - ../martyrology-texts/data/editions:/app/data/texts:ro
+      # Live data-repo edits. The image clones these at build time; mounting
+      # host checkouts over them means a stale pinned ref never blocks work.
+      - ../crmedr:/data/crmedr:ro
+      - ../clbdr:/data/clbdr:ro
+
+  # Use the sibling checkout instead of cloning, so local model or tuple edits
+  # are seeded without pushing them first.
+  authz-seed:
+    volumes:
+      - ../cdcf-infra:/cdcf-infra:ro
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        apk add --no-cache bash curl jq >/dev/null
+        rm -rf /tmp/auth && cp -r /cdcf-infra/auth /tmp/auth
+        cd /tmp/auth
+        cat > .env.local <<EOF
+        OPENFGA_API_URL=http://openfga:8080
+        OPENFGA_INTERNAL_URL=http://openfga:8080
+        OPENFGA_PRESHARED_KEY=$$OPENFGA_PRESHARED_KEY
+        EOF
+        ./setup-openfga.sh --target local --create-martyrology-store
+
+  martyrology-frontend:
+    build:
+      context: .
+    # NO source bind mount. This is a production Next.js image and will not
+    # hot-reload from one. For frontend iteration:
+    #   docker compose stop martyrology-frontend
+    #   npm run dev
+    # Port 3000 is then free and the registered OIDC callback still matches.

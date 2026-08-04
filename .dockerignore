@@ -1,0 +1,20 @@
+# Deny-all, then re-admit exactly what the build stage needs (`npm ci` +
+# `next build`, which traces app/components/lib/data/public for the
+# `standalone` output). Chosen over an allow-all-except form (this file's
+# prior shape) because that form leaks anything new dropped at repo root by
+# default — which is exactly how .zitadel-data/*.pat (Zitadel admin/login
+# PATs) and .stack-out/cdcf-infra (a full git clone) ended up copied into a
+# build-stage layer via `COPY . .`. Mirrors martyrology-api's .dockerignore.
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!next.config.ts
+!next-env.d.ts
+!postcss.config.mjs
+!eslint.config.mjs
+!app
+!components
+!lib
+!data
+!public

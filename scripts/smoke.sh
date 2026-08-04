@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+#
+# smoke.sh — full-stack bring-up invariants.
+#
+# Checks wiring, not behaviour. Run after `setup-stack.sh --update-env` and a
+# `docker compose up -d --force-recreate` of the application services.
+
+set -uo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+set -a; . ./.env; set +a
+
+PASS=0; FAIL=0; SKIP=0
+ok()   { printf '  ✓ %s\n' "$1"; PASS=$((PASS+1)); }
+bad()  { printf '  ✗ %s\n' "$1"; FAIL=$((FAIL+1)); }
+skip() { printf '  ~ %s\n' "$1"; SKIP=$((SKIP+1)); }
+
+API="http://localhost:${API_PORT:-8000}"
+FE="http://localhost:${FRONTEND_PORT:-3000}"
+FGA="${MARTYROLOGY_OPENFGA_API_URL:-http://localhost:8083}"
+ISSUER="http://localhost:${ZITADEL_PORT:-8080}"
+
+# --connect-timeout/--max-time bound EVERY curl below so an unreachable
+# service fails fast instead of hanging on curl's own (much longer) defaults.
+# By this point in the bring-up (see README.md → "Local development stack")
+# Zitadel's slow first boot is already behind setup-stack.sh's own retry
+# loop, so a generous but finite per-call timeout is safe here.
+CURL_TIMEOUT=(--connect-timeout 5 --max-time 15)
+
+echo "1. Zitadel discovery on the single origin"
+[[ "$(curl -sf "${CURL_TIMEOUT[@]}" "$ISSUER/.well-known/openid-configuration" | jq -r '.issuer')" == "$ISSUER" ]] \
+    && ok "issuer is $ISSUER" || bad "discovery missing or issuer mismatch"
+
+echo "2. OpenFGA structural tuples"
+# Excludes `relation == "superuser"`: those are administrative grants
+# (grant-superuser.sh writes platform:martyrology#superuser), not part of the
+# seeded structural model, and README's documented bring-up has the reader
+# grant themselves one right after this script — counting them here would
+# make the smoke test fail on exactly the workflow the README tells you to
+# follow. Paginated (page_size + continuation_token) rather than a bare `{}`
+# read, mirroring martyrology-api's Authz.read_tuples — see authz.py — so a
+# larger store can't silently truncate the count onto one page.
+COUNT=0
+TOKEN=""
+PAGES_OK=1
+for _ in $(seq 1 50); do
+    if [[ -n "$TOKEN" ]]; then
+        REQ_BODY=$(jq -n --arg tok "$TOKEN" '{page_size: 100, continuation_token: $tok}')
+    else
+        REQ_BODY='{"page_size": 100}'
+    fi
+    PAGE=$(curl -sf "${CURL_TIMEOUT[@]}" -X POST "$FGA/stores/$MARTYROLOGY_OPENFGA_STORE_ID/read" \
+        -H "Authorization: Bearer $MARTYROLOGY_OPENFGA_API_TOKEN" \
+        -H "Content-Type: application/json" -d "$REQ_BODY") || { PAGES_OK=0; break; }
+    PAGE_COUNT=$(jq '[.tuples[] | select(.key.relation != "superuser")] | length' <<<"$PAGE")
+    COUNT=$((COUNT + PAGE_COUNT))
+    TOKEN=$(jq -r '.continuation_token // empty' <<<"$PAGE")
+    [[ -z "$TOKEN" ]] && break
+done
+# If the loop above exhausted its 50-iteration cap while TOKEN is still
+# non-empty, pagination did not finish — OpenFGA said there was more to
+# read. COUNT is a partial sum in that case and must not be trusted.
+[[ -n "$TOKEN" ]] && PAGES_OK=0
+if [[ $PAGES_OK -eq 1 && "$COUNT" == "11" ]]; then
+    ok "11 structural tuples"
+else
+    bad "expected 11 structural tuples, got ${COUNT:-none}"
+fi
+
+echo "3. Alembic is at head"
+CUR=$(docker compose run --rm --entrypoint alembic api-migrate current 2>/dev/null | tr -d '\r')
+grep -q '(head)' <<<"$CUR" && ok "alembic current is at head" || bad "alembic not at head: $CUR"
+
+echo "4. API health"
+curl -sf "${CURL_TIMEOUT[@]}" "$API/healthz" >/dev/null && ok "GET /healthz 200" || bad "GET /healthz failed"
+
+echo "5. Anonymous read of a restricted edition is redacted"
+# `curl -sf` yields an empty body for ANY non-2xx status, collapsing "no such
+# edition" (404 — legitimately skippable when martyrology-texts isn't
+# attached) and a broken redaction path (403/500 — a real failure) into the
+# same "not attached" skip. Capture the status code instead (appended after a
+# newline, then split off) so only a 404 skips; every other non-2xx is
+# reported as a failure with the code attached.
+RESP=$(curl -s "${CURL_TIMEOUT[@]}" -w '\n%{http_code}' \
+    "$API/api/v1/elogia/edition/martyrologium_romanum_2004/01/02" 2>/dev/null)
+CODE=$(tail -n1 <<<"$RESP")
+BODY=$(sed '$d' <<<"$RESP")
+if [[ "$CODE" == "404" ]]; then
+    skip "martyrologium_romanum_2004 not attached (no override / no martyrology-texts)"
+elif [[ "$CODE" != "200" ]]; then
+    bad "expected 200 or 404, got $CODE"
+else
+    ACCESS=$(jq -r '.metadata.access // empty' <<<"$BODY")
+    TEXT=$(jq -r '.elogia[0].text // "null"' <<<"$BODY")
+    [[ "$ACCESS" == "restricted-texts" && "$TEXT" == "null" ]] \
+        && ok "access=restricted-texts with text=null" \
+        || bad "expected redaction, got access=$ACCESS text=$TEXT"
+fi
+
+echo "6. Login V2 is served through the proxy"
+# A 404 here means the proxy routed to the Zitadel backend instead of the
+# login UI — that's the failure this check exists to catch. But the mere
+# absence of a 404 isn't enough: `curl -w '%{http_code}'` prints "000" on a
+# connection failure, and a 5xx means the login UI itself is broken, so both
+# must fail too. The live Login V2 app returns 400 ("no authRequest") on a
+# bare GET with no query params, which is the expected, passing response —
+# accept 2xx/3xx/400 and nothing else.
+CODE=$(curl -s "${CURL_TIMEOUT[@]}" -o /dev/null -w '%{http_code}' "$ISSUER/ui/v2/login/login")
+[[ "$CODE" =~ ^(2[0-9]{2}|3[0-9]{2}|400)$ ]] \
+    && ok "/ui/v2/login/login -> $CODE" \
+    || bad "/ui/v2/login/login returned 404 — proxy is routing to the backend"
+
+echo "7. Auth.js provider"
+PROVIDERS=$(curl -sf "${CURL_TIMEOUT[@]}" "$FE/api/auth/providers" 2>/dev/null)
+if [[ -z "$PROVIDERS" ]]; then
+    # Auth.js is introduced by the OIDC login-client plan, not by this stack.
+    skip "no /api/auth/providers — Auth.js not yet wired into the frontend"
+else
+    jq -e '.zitadel' >/dev/null <<<"$PROVIDERS" \
+        && ok "zitadel provider registered" || bad "zitadel missing from providers"
+fi
+
+echo
+printf 'passed %d, failed %d, skipped %d\n' "$PASS" "$FAIL" "$SKIP"
+[[ $FAIL -eq 0 ]]
