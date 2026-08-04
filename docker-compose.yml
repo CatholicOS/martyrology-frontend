@@ -171,6 +171,12 @@ services:
       # to render the CSP's connect-src for this stack's actual origin — see
       # docker/nginx/zitadel.local.conf for the full explanation.
       ZITADEL_PORT: ${ZITADEL_PORT:-8080}
+      # Restricts envsubst-on-templates to substituting ONLY this variable.
+      # Unset, the entrypoint substitutes every container env var against the
+      # template — harmless today (nothing here collides with nginx's own
+      # $variables) but not by design, so a future addition to this block
+      # could silently mangle the rendered conf without this filter.
+      NGINX_ENVSUBST_FILTER: '^ZITADEL_PORT$'
     volumes:
       # Mounted with a .template suffix on the CONTAINER side (the host
       # filename stays zitadel.local.conf) so nginx's entrypoint renders it
