@@ -38,9 +38,20 @@ echo "4. API health"
 curl -sf "$API/healthz" >/dev/null && ok "GET /healthz 200" || bad "GET /healthz failed"
 
 echo "5. Anonymous read of a restricted edition is redacted"
-BODY=$(curl -sf "$API/api/v1/elogia/edition/martyrologium_romanum_2004/01/02" 2>/dev/null)
-if [[ -z "$BODY" ]]; then
+# `curl -sf` yields an empty body for ANY non-2xx status, collapsing "no such
+# edition" (404 — legitimately skippable when martyrology-texts isn't
+# attached) and a broken redaction path (403/500 — a real failure) into the
+# same "not attached" skip. Capture the status code instead (appended after a
+# newline, then split off) so only a 404 skips; every other non-2xx is
+# reported as a failure with the code attached.
+RESP=$(curl -s -w '\n%{http_code}' \
+    "$API/api/v1/elogia/edition/martyrologium_romanum_2004/01/02" 2>/dev/null)
+CODE=$(tail -n1 <<<"$RESP")
+BODY=$(sed '$d' <<<"$RESP")
+if [[ "$CODE" == "404" ]]; then
     skip "martyrologium_romanum_2004 not attached (no override / no martyrology-texts)"
+elif [[ "$CODE" != "200" ]]; then
+    bad "expected 200 or 404, got $CODE"
 else
     ACCESS=$(jq -r '.metadata.access // empty' <<<"$BODY")
     TEXT=$(jq -r '.elogia[0].text // "null"' <<<"$BODY")

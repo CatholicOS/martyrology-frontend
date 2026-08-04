@@ -42,15 +42,15 @@ fi
 
 ENV_FILE=".env"
 PAT_FILE="./.zitadel-data/automation-user.pat"
-ZITADEL_PORT="$(grep -E '^ZITADEL_PORT=' "$ENV_FILE" | cut -d= -f2 || true)"
+ZITADEL_PORT="$(grep -E '^ZITADEL_PORT=' "$ENV_FILE" | cut -d= -f2- || true)"
 ZITADEL_PORT="${ZITADEL_PORT:-8080}"
-OPENFGA_HTTP_PORT="$(grep -E '^OPENFGA_HTTP_PORT=' "$ENV_FILE" | cut -d= -f2 || true)"
+OPENFGA_HTTP_PORT="$(grep -E '^OPENFGA_HTTP_PORT=' "$ENV_FILE" | cut -d= -f2- || true)"
 OPENFGA_HTTP_PORT="${OPENFGA_HTTP_PORT:-8083}"
-PRESHARED_KEY="$(grep -E '^OPENFGA_PRESHARED_KEY=' "$ENV_FILE" | cut -d= -f2 || true)"
+PRESHARED_KEY="$(grep -E '^OPENFGA_PRESHARED_KEY=' "$ENV_FILE" | cut -d= -f2- || true)"
 [[ -n "$PRESHARED_KEY" ]] || { echo "OPENFGA_PRESHARED_KEY missing from $ENV_FILE" >&2; exit 1; }
-CDCF_INFRA_REF="$(grep -E '^CDCF_INFRA_REF=' "$ENV_FILE" | cut -d= -f2 || true)"
+CDCF_INFRA_REF="$(grep -E '^CDCF_INFRA_REF=' "$ENV_FILE" | cut -d= -f2- || true)"
 CDCF_INFRA_REF="${CDCF_INFRA_REF:-main}"
-FRONTEND_PORT="$(grep -E '^FRONTEND_PORT=' "$ENV_FILE" | cut -d= -f2 || true)"
+FRONTEND_PORT="$(grep -E '^FRONTEND_PORT=' "$ENV_FILE" | cut -d= -f2- || true)"
 FRONTEND_PORT="${FRONTEND_PORT:-3000}"
 
 ISSUER="http://localhost:${ZITADEL_PORT}"

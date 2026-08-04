@@ -58,7 +58,7 @@ services:
   # source of truth and no copy is maintained in this repo.
   db-init:
     image: martyrology-api:latest
-    build: https://github.com/CatholicOS/martyrology-api.git#main
+    build: https://github.com/CatholicOS/martyrology-api.git#${MARTYROLOGY_API_REF:-main}
     entrypoint: ["cp", "/app/scripts/init-db.sql", "/init/01-init.sql"]
     volumes:
       - db_init_scripts:/init
@@ -334,7 +334,7 @@ services:
 
   martyrology-api:
     image: martyrology-api:latest
-    build: https://github.com/CatholicOS/martyrology-api.git#main
+    build: https://github.com/CatholicOS/martyrology-api.git#${MARTYROLOGY_API_REF:-main}
     restart: unless-stopped
     # Zitadel resolves which instance a request belongs to from the Host
     # header (multi-instance routing), not the network path. A request to
@@ -404,7 +404,7 @@ services:
 
   martyrology-frontend:
     image: martyrology-frontend:latest
-    build: https://github.com/CatholicOS/martyrology-frontend.git#main
+    build: https://github.com/CatholicOS/martyrology-frontend.git#${MARTYROLOGY_FRONTEND_REF:-main}
     restart: unless-stopped
     # Auth.js must reach the issuer server-side (discovery, token exchange) at
     # the SAME origin the browser is redirected to, so `localhost` has to mean
