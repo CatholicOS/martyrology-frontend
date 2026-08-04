@@ -1,0 +1,206 @@
+# Martyrology full development stack.
+#
+# Mirrors cdcf-infra production topology: Zitadel and the v2 login UI behind a
+# single nginx origin, with image versions pinned to production's. That
+# fidelity is the point — this stack exists to verify an OIDC flow that will
+# run against cdcf-infra, and redirect URIs, issuer discovery and CSP are
+# exactly what a two-origin issuer gets wrong.
+#
+# Builds from GitHub refs by default so a bare clone stands the whole system up.
+# For local sibling checkouts:
+#   cp docker-compose.override.example.yml docker-compose.override.yml
+#
+# Bring-up: see README.md → "Local development stack".
+#
+# Port 8081 is deliberately unused: login v2 sits behind the proxy at
+# :8080/ui/v2/login rather than on its own origin.
+#
+# ZITADEL_PORT is the ONE externally-advertised port variable in this file.
+# Every origin a browser or OIDC client sees — the proxy's published port,
+# ZITADEL_EXTERNALPORT, and the three LOGINV2/OIDC URLs below — follows it, so
+# moving the published port (e.g. ZITADEL_PORT=8090, needed on machines where
+# something else already holds 127.0.0.1:8080) can never leave Zitadel still
+# advertising 8080 to itself. Purely container-internal addresses (zitadel:8080,
+# zitadel-login:3000, ZITADEL_API_URL, Adminer's internal 8080, and the
+# right-hand side of every port mapping) are NOT parameterized — nothing outside
+# the docker network ever resolves them, so there is nothing for a moved
+# external port to desynchronize from.
+
+name: martyrology
+
+services:
+  # Extracts init-db.sql from the API image, so the database bootstrap has one
+  # source of truth and no copy is maintained in this repo.
+  db-init:
+    image: martyrology-api:latest
+    build: https://github.com/CatholicOS/martyrology-api.git#main
+    entrypoint: ["cp", "/app/scripts/init-db.sql", "/init/01-init.sql"]
+    volumes:
+      - db_init_scripts:/init
+    restart: "no"
+
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      PGUSER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:rw
+      - db_init_scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - martyrology
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+
+  # Publishes NOTHING. zitadel-proxy owns the :8080 origin.
+  zitadel:
+    image: ghcr.io/zitadel/zitadel:v4.15.0
+    restart: unless-stopped
+    command: 'start-from-init --masterkey "${ZITADEL_MASTERKEY:-MasterkeyNeedsToHave32Characters}"'
+    environment:
+      ZITADEL_EXTERNALDOMAIN: localhost
+      # Describes the PROXY's published port, which is the origin browsers and
+      # OIDC clients see. Follows ZITADEL_PORT so moving the published port
+      # can never leave Zitadel advertising a stale one.
+      ZITADEL_EXTERNALPORT: ${ZITADEL_PORT:-8080}
+      ZITADEL_EXTERNALSECURE: false
+      ZITADEL_TLS_ENABLED: false
+
+      ZITADEL_DATABASE_POSTGRES_HOST: db
+      ZITADEL_DATABASE_POSTGRES_PORT: 5432
+      ZITADEL_DATABASE_POSTGRES_DATABASE: zitadel
+      ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME: postgres
+      ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD: postgres
+      ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE: disable
+      ZITADEL_DATABASE_POSTGRES_USER_USERNAME: zitadel
+      ZITADEL_DATABASE_POSTGRES_USER_PASSWORD: zitadel
+      ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE: disable
+
+      ZITADEL_FIRSTINSTANCE_LOGINCLIENTPATPATH: /zitadel-data/login-client.pat
+      ZITADEL_FIRSTINSTANCE_ORG_LOGINCLIENT_MACHINE_USERNAME: login-client
+      ZITADEL_FIRSTINSTANCE_ORG_LOGINCLIENT_MACHINE_NAME: Login V2 Client
+      ZITADEL_FIRSTINSTANCE_ORG_LOGINCLIENT_PAT_EXPIRATIONDATE: '2030-01-01T00:00:00Z'
+
+      # Single origin: the login UI lives under the proxy, not on its own port.
+      ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED: true
+      ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_BASEURI: http://localhost:${ZITADEL_PORT:-8080}/ui/v2/login
+      ZITADEL_OIDC_DEFAULTLOGINURLV2: http://localhost:${ZITADEL_PORT:-8080}/ui/v2/login/login?authRequest=
+      ZITADEL_OIDC_DEFAULTLOGOUTURLV2: http://localhost:${ZITADEL_PORT:-8080}/ui/v2/login/logout?post_logout_redirect=
+
+      ZITADEL_FIRSTINSTANCE_PATPATH: /zitadel-data/automation-user.pat
+      ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_USERNAME: automation-user
+      ZITADEL_FIRSTINSTANCE_ORG_MACHINE_MACHINE_NAME: Automation User
+      ZITADEL_FIRSTINSTANCE_ORG_MACHINE_PAT_EXPIRATIONDATE: '2030-01-01T00:00:00Z'
+
+      ZITADEL_FIRSTINSTANCE_ORG_NAME: "Martyrology"
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME: root
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD: RootPassword1!
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORDCHANGEREQUIRED: false
+
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_SMTP_HOST: mailpit:1025
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_SMTP_USER: ""
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_SMTP_PASSWORD: ""
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_TLS: false
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_FROM: noreply@martyrology.localhost
+      ZITADEL_DEFAULTINSTANCE_SMTPCONFIGURATION_FROMNAME: Martyrology
+
+      ZITADEL_LOG_LEVEL: info
+    healthcheck:
+      test: ["CMD", "/app/zitadel", "ready"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+    user: "0"
+    volumes:
+      - ./.zitadel-data:/zitadel-data:delegated
+    networks:
+      - martyrology
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+  zitadel-login:
+    image: ghcr.io/zitadel/zitadel-login:v4.15.0
+    restart: unless-stopped
+    environment:
+      # Reaches the backend over the docker network, not through the proxy.
+      ZITADEL_API_URL: http://zitadel:8080
+      NEXT_PUBLIC_BASE_PATH: /ui/v2/login
+      ZITADEL_SERVICE_USER_TOKEN_FILE: /zitadel-data/login-client.pat
+      EMAIL_VERIFICATION: true
+    user: "0"
+    volumes:
+      - ./.zitadel-data:/zitadel-data:ro
+    networks:
+      - martyrology
+    depends_on:
+      zitadel:
+        condition: service_healthy
+        restart: false
+
+  zitadel-proxy:
+    image: nginx:alpine
+    restart: unless-stopped
+    environment:
+      # Consumed by nginx's stock docker-entrypoint.d/20-envsubst-on-templates.sh
+      # to render the CSP's connect-src for this stack's actual origin — see
+      # docker/nginx/zitadel.local.conf for the full explanation.
+      ZITADEL_PORT: ${ZITADEL_PORT:-8080}
+    volumes:
+      # Mounted with a .template suffix on the CONTAINER side (the host
+      # filename stays zitadel.local.conf) so nginx's entrypoint renders it
+      # through envsubst before nginx starts.
+      - ./docker/nginx/zitadel.local.conf:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - "127.0.0.1:${ZITADEL_PORT:-8080}:80"
+    networks:
+      - martyrology
+    depends_on:
+      - zitadel
+      - zitadel-login
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    ports:
+      - "127.0.0.1:${MAILPIT_PORT:-8025}:8025"
+    networks:
+      - martyrology
+
+  adminer:
+    image: adminer:latest
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: lucas-sandery
+    ports:
+      - "127.0.0.1:${ADMINER_PORT:-8088}:8080"
+    networks:
+      - martyrology
+    depends_on:
+      - db
+
+networks:
+  martyrology:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  db_init_scripts:
+    driver: local
