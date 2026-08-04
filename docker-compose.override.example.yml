@@ -1,0 +1,74 @@
+# Local sibling builds. Copy to docker-compose.override.yml (gitignored):
+#
+#   cp docker-compose.override.example.yml docker-compose.override.yml
+#   docker compose up -d --build
+#
+# Compose merges the override automatically. Services omitted here keep
+# building from their GitHub refs.
+#
+# Expected sibling layout:
+#   ../martyrology-api
+#   ../martyrology-texts   (private — restricted editions)
+#   ../crmedr  ../clbdr    (public data repos)
+#   ../cdcf-infra          (OpenFGA model + provisioning scripts)
+
+services:
+  # ⚠ All THREE services that use martyrology-api:latest must be overridden
+  # together. Overriding only one leaves `docker compose up --build` rebuilding
+  # martyrology-api:latest from GitHub via another service, clobbering the
+  # local build with no error.
+  db-init:
+    build:
+      context: ../martyrology-api
+
+  api-migrate:
+    build:
+      context: ../martyrology-api
+
+  martyrology-api:
+    build:
+      context: ../martyrology-api
+    environment:
+      # Attach the private 2004-family texts alongside the public-domain
+      # editions baked into the image. This is the ONLY way the restricted
+      # -texts path becomes exercisable: martyrology-texts is private, so the
+      # GitHub-default stack necessarily serves the public editions only.
+      MARTYROLOGY_DATA_PATH: /app/data/editions:/app/data/texts
+    volumes:
+      # :ro — the API never writes to its source tree. The venv is deliberately
+      # NOT mounted, so the image's installed dependencies are used.
+      - ../martyrology-api/src:/app/src:ro
+      - ../martyrology-texts/data/editions:/app/data/texts:ro
+      # Live data-repo edits. The image clones these at build time; mounting
+      # host checkouts over them means a stale pinned ref never blocks work.
+      - ../crmedr:/data/crmedr:ro
+      - ../clbdr:/data/clbdr:ro
+
+  # Use the sibling checkout instead of cloning, so local model or tuple edits
+  # are seeded without pushing them first.
+  authz-seed:
+    volumes:
+      - ../cdcf-infra:/cdcf-infra:ro
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        apk add --no-cache bash curl jq >/dev/null
+        rm -rf /tmp/auth && cp -r /cdcf-infra/auth /tmp/auth
+        cd /tmp/auth
+        cat > .env.local <<EOF
+        OPENFGA_API_URL=http://openfga:8080
+        OPENFGA_INTERNAL_URL=http://openfga:8080
+        OPENFGA_PRESHARED_KEY=$$OPENFGA_PRESHARED_KEY
+        EOF
+        ./setup-openfga.sh --target local --create-martyrology-store
+
+  martyrology-frontend:
+    build:
+      context: .
+    # NO source bind mount. This is a production Next.js image and will not
+    # hot-reload from one. For frontend iteration:
+    #   docker compose stop martyrology-frontend
+    #   npm run dev
+    # Port 3000 is then free and the registered OIDC callback still matches.
