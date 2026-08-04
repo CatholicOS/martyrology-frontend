@@ -201,6 +201,170 @@ services:
     networks:
       - martyrology
 
+  openfga-migrate:
+    image: openfga/openfga:v1.15.1
+    command: migrate
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://openfga:openfga_secure_password@db:5432/openfga?sslmode=disable
+    networks:
+      - martyrology
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  openfga:
+    image: openfga/openfga:v1.15.1
+    command: run
+    restart: unless-stopped
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://openfga:openfga_secure_password@db:5432/openfga?sslmode=disable
+      # Required — see the API repo's compose for why a tokenless OpenFGA
+      # silently disables authorization.
+      OPENFGA_AUTHN_METHOD: preshared
+      OPENFGA_AUTHN_PRESHARED_KEYS: "${OPENFGA_PRESHARED_KEY:-local-dev-preshared-key}"
+      # No OPENFGA_PLAYGROUND_ENABLED / port 3001 here: OpenFGA v1.15.1 panics
+      # at startup ("the playground only supports authn method 'none'") when
+      # the Playground is enabled alongside preshared auth. Preshared auth is
+      # required (see above), so the Playground cannot be offered in this
+      # stack — confirmed empirically, not assumed. Inspect the store with
+      # curl instead.
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/grpc_health_probe", "-addr=localhost:8081"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "127.0.0.1:${OPENFGA_HTTP_PORT:-8083}:8080"
+      - "127.0.0.1:${OPENFGA_GRPC_PORT:-8084}:8081"
+    networks:
+      - martyrology
+    depends_on:
+      openfga-migrate:
+        condition: service_completed_successfully
+
+  authz-seed:
+    image: alpine:3.21
+    restart: "no"
+    environment:
+      CDCF_INFRA_REF: "${CDCF_INFRA_REF:-main}"
+      OPENFGA_PRESHARED_KEY: "${OPENFGA_PRESHARED_KEY:-local-dev-preshared-key}"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        apk add --no-cache bash curl jq git >/dev/null
+        rm -rf /tmp/cdcf-infra
+        git clone --depth 1 --branch "$$CDCF_INFRA_REF" \
+          https://github.com/CatholicOS/cdcf-infra.git /tmp/cdcf-infra
+        cd /tmp/cdcf-infra/auth
+        cat > .env.local <<EOF
+        OPENFGA_API_URL=http://openfga:8080
+        OPENFGA_INTERNAL_URL=http://openfga:8080
+        OPENFGA_PRESHARED_KEY=$$OPENFGA_PRESHARED_KEY
+        EOF
+        ./setup-openfga.sh --target local --create-martyrology-store
+    networks:
+      - martyrology
+    depends_on:
+      openfga:
+        condition: service_healthy
+
+  api-migrate:
+    image: martyrology-api:latest
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      MARTYROLOGY_DATABASE_URL: postgresql+psycopg://martyrology:martyrology_secure_password@db:5432/martyrology
+    networks:
+      - martyrology
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+
+  martyrology-api:
+    image: martyrology-api:latest
+    build: https://github.com/CatholicOS/martyrology-api.git#main
+    restart: unless-stopped
+    # Zitadel resolves which instance a request belongs to from the Host
+    # header (multi-instance routing), not the network path. A request to
+    # http://zitadel:8080 presents Host: zitadel:8080 — not a registered
+    # domain — and fails instance resolution with "Instance not found",
+    # confirmed empirically against this stack (see task-11-report.md).
+    # `martyrology_api.auth.Authenticator` builds the introspection request
+    # itself with httpx and has no Host-header override, so the fix has to
+    # be a URL that presents an already-registered Host: send the request to
+    # the host's loopback instead, which zitadel-proxy forwards under
+    # Host: localhost:${ZITADEL_PORT} — the same origin the browser uses.
+    # Mirrors LiturgicalCalendarFrontend's pattern for its own containers.
+    # Costs a container->host->proxy hop; acceptable for a dev stack.
+    extra_hosts:
+      - "localhost:host-gateway"
+    environment:
+      MARTYROLOGY_ZITADEL_ISSUER: http://localhost:${ZITADEL_PORT:-8080}
+      # The issuer above is the browser-facing origin and is what the `iss`
+      # claim carries. Transport only — it never affects auth_enabled.
+      MARTYROLOGY_ZITADEL_INTERNAL_URL: http://localhost:${ZITADEL_PORT:-8080}
+      MARTYROLOGY_ZITADEL_CLIENT_ID: ${MARTYROLOGY_ZITADEL_CLIENT_ID:-}
+      MARTYROLOGY_ZITADEL_CLIENT_SECRET: ${MARTYROLOGY_ZITADEL_CLIENT_SECRET:-}
+      MARTYROLOGY_ZITADEL_PROJECT_ID: ${MARTYROLOGY_ZITADEL_PROJECT_ID:-}
+      MARTYROLOGY_OPENFGA_API_URL: http://openfga:8080
+      MARTYROLOGY_OPENFGA_STORE_ID: ${MARTYROLOGY_OPENFGA_STORE_ID:-}
+      MARTYROLOGY_OPENFGA_MODEL_ID: ${MARTYROLOGY_OPENFGA_MODEL_ID:-}
+      MARTYROLOGY_OPENFGA_API_TOKEN: ${OPENFGA_PRESHARED_KEY:-local-dev-preshared-key}
+      MARTYROLOGY_DATABASE_URL: postgresql+psycopg://martyrology:martyrology_secure_password@db:5432/martyrology
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    networks:
+      - martyrology
+    depends_on:
+      zitadel:
+        condition: service_healthy
+      openfga:
+        condition: service_healthy
+      authz-seed:
+        condition: service_completed_successfully
+      api-migrate:
+        condition: service_completed_successfully
+
+  martyrology-frontend:
+    image: martyrology-frontend:latest
+    build: https://github.com/CatholicOS/martyrology-frontend.git#main
+    restart: unless-stopped
+    # Auth.js must reach the issuer server-side (discovery, token exchange) at
+    # the SAME origin the browser is redirected to, so `localhost` has to mean
+    # the host here rather than this container's loopback. Same pattern as
+    # LiturgicalCalendarFrontend's litcal-frontend service.
+    extra_hosts:
+      - "localhost:host-gateway"
+    environment:
+      # Server-side proxy calls route over the docker network.
+      API_BASE: http://martyrology-api:8000
+      AUTH_URL: http://localhost:${FRONTEND_PORT:-3000}
+      AUTH_SECRET: ${AUTH_SECRET:-}
+      AUTH_ZITADEL_ID: ${AUTH_ZITADEL_ID:-}
+      AUTH_ZITADEL_SECRET: ${AUTH_ZITADEL_SECRET:-}
+      AUTH_ZITADEL_ISSUER: http://localhost:${ZITADEL_PORT:-8080}
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - martyrology
+    depends_on:
+      martyrology-api:
+        condition: service_healthy
+
   adminer:
     image: adminer:latest
     restart: unless-stopped
