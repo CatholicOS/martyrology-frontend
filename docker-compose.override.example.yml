@@ -11,20 +11,30 @@
 #   ../martyrology-texts   (private — restricted editions)
 #   ../crmedr  ../clbdr    (public data repos)
 #   ../cdcf-infra          (OpenFGA model + provisioning scripts)
+#
+# ⚠ IF YOU TRIM THIS FILE, KEEP db-init, api-migrate, AND martyrology-api
+# TOGETHER OR DROP ALL THREE. All three services share the martyrology-api
+# :latest tag. Overriding only some of them leaves `docker compose up --build`
+# rebuilding martyrology-api:latest from GitHub via whichever service you left
+# un-overridden, silently clobbering the local build with no error. This
+# warning is repeated at each of the three stanzas below, but THIS copy is
+# the one that survives if you delete a stanza — do not delete it too.
 
 services:
-  # ⚠ All THREE services that use martyrology-api:latest must be overridden
-  # together. Overriding only one leaves `docker compose up --build` rebuilding
-  # martyrology-api:latest from GitHub via another service, clobbering the
-  # local build with no error.
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside api-migrate and martyrology-api.
   db-init:
     build:
       context: ../martyrology-api
 
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside db-init and martyrology-api.
   api-migrate:
     build:
       context: ../martyrology-api
 
+  # Part of the three-services group sharing martyrology-api:latest — see the
+  # ⚠ warning in the header. Keep alongside db-init and api-migrate.
   martyrology-api:
     build:
       context: ../martyrology-api
