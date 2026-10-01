@@ -63,8 +63,8 @@ describe("refreshAccessToken", () => {
     expect(result.refresh_token).toBe("r1");
   });
 
-  it("flags RefreshAccessTokenError on a 4xx response rather than throwing", async () => {
-    const fetchImpl = vi.fn().mockResolvedValue(new Response("{}", { status: 400 }));
+  it("flags RefreshAccessTokenError on an invalid_grant response rather than throwing", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(new Response('{"error":"invalid_grant"}', { status: 400 }));
 
     const result = await refreshAccessToken(base, fetchImpl as never);
 
@@ -74,6 +74,10 @@ describe("refreshAccessToken", () => {
 
   it.each([
     ["a 5xx response", () => Promise.resolve(new Response("{}", { status: 503 }))],
+    ["an invalid_client 401", () => Promise.resolve(new Response('{"error":"invalid_client"}', { status: 401 }))],
+    ["a 429 rate limit", () => Promise.resolve(new Response('{"error":"slow_down"}', { status: 429 }))],
+    ["a 4xx with no error code", () => Promise.resolve(new Response("{}", { status: 400 }))],
+    ["a 4xx with a non-JSON body", () => Promise.resolve(new Response("<html>", { status: 400 }))],
     ["a network failure", () => Promise.reject(new TypeError("fetch failed"))],
     ["a timeout", () => Promise.reject(new DOMException("timed out", "TimeoutError"))],
     ["a 2xx body without an access token", () => Promise.resolve(new Response("{}", { status: 200 }))],

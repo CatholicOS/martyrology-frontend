@@ -23,7 +23,7 @@ export function isExpired(expiresAt: number | undefined, nowMs: number): boolean
 }
 
 /**
- * The issuer definitively rejected the refresh (HTTP 4xx, e.g. invalid_grant),
+ * The issuer definitively rejected the refresh token (OAuth `invalid_grant`),
  * or there is no refresh token to try. The session cannot recover; the
  * curator has to sign in again. Safe to persist and to show on the Session.
  */
@@ -31,7 +31,8 @@ export const REFRESH_REJECTED = "RefreshAccessTokenError";
 
 /**
  * The refresh could not be completed for a reason that may not recur: network
- * failure, timeout, 5xx, or an unusable response body. Never persisted — the
+ * failure, timeout, 5xx, a 4xx other than invalid_grant, or an unusable
+ * response body. Never persisted — the
  * next request simply tries again with the same refresh token.
  */
 export const REFRESH_TRANSIENT = "RefreshAccessTokenTransientError";
@@ -64,7 +65,17 @@ export async function refreshAccessToken(
       body,
       signal: AbortSignal.timeout(REFRESH_TIMEOUT_MS),
     });
-    if (res.status >= 400 && res.status < 500) return { ...token, error: REFRESH_REJECTED };
+    if (res.status >= 400 && res.status < 500) {
+      // Only invalid_grant means this refresh token is dead. Other 4xx codes —
+      // invalid_client after a secret rotation, 429 rate limiting — are not the
+      // session's fault, and persisting them would force every curator to sign
+      // in again even once the cause is fixed.
+      const oauthError = await res.json().then(
+        (b: { error?: unknown }) => b?.error,
+        () => undefined,
+      );
+      return { ...token, error: oauthError === "invalid_grant" ? REFRESH_REJECTED : REFRESH_TRANSIENT };
+    }
     if (!res.ok) return { ...token, error: REFRESH_TRANSIENT };
 
     const refreshed = (await res.json()) as {
