@@ -1,5 +1,10 @@
-import { describe, it, expect, vi } from "vitest";
-import { isExpired, refreshAccessToken } from "@/lib/zitadel-token";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import {
+  isExpired,
+  refreshAccessToken,
+  REFRESH_REJECTED,
+  REFRESH_TRANSIENT,
+} from "@/lib/zitadel-token";
 
 describe("isExpired", () => {
   it("treats a missing expiry as expired", () => {
@@ -19,6 +24,10 @@ describe("isExpired", () => {
 
 describe("refreshAccessToken", () => {
   const base = { access_token: "old", refresh_token: "r1", expires_at: 1_000 };
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
 
   it("posts the refresh grant with client credentials and returns new values", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
@@ -54,12 +63,45 @@ describe("refreshAccessToken", () => {
     expect(result.refresh_token).toBe("r1");
   });
 
-  it("flags RefreshAccessTokenError on a non-2xx response rather than throwing", async () => {
+  it("flags RefreshAccessTokenError on a 4xx response rather than throwing", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(new Response("{}", { status: 400 }));
 
     const result = await refreshAccessToken(base, fetchImpl as never);
 
     expect(result.error).toBe("RefreshAccessTokenError");
+    expect(result.error).toBe(REFRESH_REJECTED);
+  });
+
+  it.each([
+    ["a 5xx response", () => Promise.resolve(new Response("{}", { status: 503 }))],
+    ["a network failure", () => Promise.reject(new TypeError("fetch failed"))],
+    ["a timeout", () => Promise.reject(new DOMException("timed out", "TimeoutError"))],
+    ["a 2xx body without an access token", () => Promise.resolve(new Response("{}", { status: 200 }))],
+    ["a non-JSON 2xx body", () => Promise.resolve(new Response("<html>", { status: 200 }))],
+  ])("flags a transient error, not a rejection, on %s", async (_label, respond) => {
+    const fetchImpl = vi.fn().mockImplementation(respond);
+
+    const result = await refreshAccessToken(base, fetchImpl as never);
+
+    expect(result.error).toBe(REFRESH_TRANSIENT);
+  });
+
+  it("bounds the token-endpoint call with an abort signal", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(new Response("{}", { status: 400 }));
+
+    await refreshAccessToken(base, fetchImpl as never);
+
+    const init = fetchImpl.mock.calls[0][1] as RequestInit;
+    expect(init.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it("does not double the slash when the issuer ends with one", async () => {
+    vi.stubEnv("AUTH_ZITADEL_ISSUER", "https://issuer.test/");
+    const fetchImpl = vi.fn().mockResolvedValue(new Response("{}", { status: 400 }));
+
+    await refreshAccessToken(base, fetchImpl as never);
+
+    expect(fetchImpl.mock.calls[0][0]).toBe("https://issuer.test/oauth/v2/token");
   });
 
   it("flags RefreshAccessTokenError when there is no refresh token to use", async () => {
