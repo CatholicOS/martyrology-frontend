@@ -21,8 +21,8 @@ from the API for the actual eulogy text.
   `crmedr-changeset/v1` JSON file with `decision`/`edited` filled in.
   A `resolve_place` op (crmedr's gazetteer queue, `gazetteer-review`) gets its
   own card: the printed Latin and Italian place, why it was not resolved
-  automatically, the suggested Wikidata item and the candidates (Wikidata and
-  map links), the modern country, and which modern-country claims of the
+  automatically, the suggested Wikidata item and the candidates (with Wikidata
+  links and a Leaflet map of their coordinates, opened on demand), the modern country, and which modern-country claims of the
   Italian to record as `text_says`; eulogies load on demand. A reject asks for
   a reason. Export, then run `python3 scripts/build_gazetteer.py apply
   <exported.json>` in crmedr. Cards render 50 at a time.

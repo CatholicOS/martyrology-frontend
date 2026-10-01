@@ -12,6 +12,19 @@ vi.mock("@/lib/api", () => ({
   },
 }));
 
+vi.mock("@/components/PlaceMap", () => ({
+  default: ({ points, selected, onSelect }: { points: { wikidata: string }[]; selected: string; onSelect: (q: string) => void }) => (
+    <div data-testid="place-map">
+      {points.map((p) => p.wikidata).join(",")}|{selected}
+      {points.map((p) => (
+        <button key={p.wikidata} type="button" onClick={() => onSelect(p.wikidata)}>
+          pick {p.wikidata}
+        </button>
+      ))}
+    </div>
+  ),
+}));
+
 import { getElogium } from "@/lib/api";
 
 function candidate(qid: string, label: string, country: string | null, extra: Partial<PlaceCandidate> = {}): PlaceCandidate {
@@ -68,7 +81,6 @@ describe("PlaceCard", () => {
     expect(screen.getByText(/the Italian says DE, the item is in AT/)).toBeInTheDocument();
     expect(screen.getByText(/Fictopolis is the town on the river\./)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Q1" })).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q1");
-    expect(screen.getAllByRole("link", { name: /map/i })[0].getAttribute("href")).toContain("openstreetmap.org");
     expect(screen.getByLabelText(/Fictopolis —/)).toBeChecked();
     expect(screen.getByLabelText(/country/i)).toHaveValue("AT");
     expect(screen.getByRole("checkbox", { name: /the text says DE/i })).toBeChecked();
@@ -154,6 +166,16 @@ describe("PlaceCard", () => {
       decision: "reject",
       edited: { reason: "no item for the hill" },
     });
+  });
+
+  it("opens the map on demand and selects a candidate from it", () => {
+    renderCard(makeOp());
+    expect(screen.queryByTestId("place-map")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /show map/i }));
+    expect(screen.getByTestId("place-map")).toHaveTextContent("Q1,Q2|Q1");
+    fireEvent.click(screen.getByRole("button", { name: "pick Q2" }));
+    expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
+    expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
   });
 
   it("loads an occurrence's eulogy only when asked", () => {

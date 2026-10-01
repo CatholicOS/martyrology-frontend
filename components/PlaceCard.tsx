@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import EulogyView from "@/components/EulogyView";
+import PlaceMap from "@/components/PlaceMap";
 import { decisionClass } from "@/components/decisionClass";
 import type { DecisionRecord, ResolvePlaceOp, TextSays } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
@@ -58,6 +59,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState(decision?.decision === "reject" ? (decision.edited?.reason ?? "") : "");
   const [openEulogy, setOpenEulogy] = useState<string | null>(null);
+  const [showMap, setShowMap] = useState(false);
 
   const qid = otherQid.trim() || selected;
   const canAccept = /^Q[1-9]\d*$/.test(qid) && ISO.test(country);
@@ -160,16 +162,6 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             <a className="font-mono text-xs text-blue-700 underline dark:text-blue-400" href={`https://www.wikidata.org/wiki/${c.wikidata}`} target="_blank" rel="noreferrer">
               {c.wikidata}
             </a>
-            {c.coords && (
-              <a
-                className="text-xs text-blue-700 underline dark:text-blue-400"
-                href={`https://www.openstreetmap.org/?mlat=${c.coords[0]}&mlon=${c.coords[1]}#map=11/${c.coords[0]}/${c.coords[1]}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                map
-              </a>
-            )}
             <span className="text-xs text-slate-500 dark:text-slate-400">
               {c.la.length > 0 ? `la: ${c.la.slice(0, 4).join(", ")} · ` : ""}
               {c.evidence.join(", ")}
@@ -186,6 +178,21 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
           />
         </label>
       </fieldset>
+
+      <div className="mb-2">
+        <button
+          type="button"
+          className="rounded bg-slate-200 px-2 py-0.5 text-xs dark:bg-slate-800"
+          onClick={() => setShowMap(!showMap)}
+        >
+          {showMap ? "Hide map" : "Show map"}
+        </button>
+        {showMap && (
+          <div className="mt-1" data-testid="place-map-panel">
+            <PlaceMap points={op.candidates} selected={qid} onSelect={choose} />
+          </div>
+        )}
+      </div>
 
       <div className="mb-2 flex flex-col gap-1">
         <label className="flex items-center gap-2 text-xs">
