@@ -2472,7 +2472,7 @@
     "mr:0418-sabina-petrilli",
     "mr:0510-nicolaus-albergati",
     "mr:0519-augustinus-novellus",
-    "mr:0526-franciscus-patrizus",
+    "mr:0526-franciscus-patrizi",
     "mr:0820-bernardus-tolomei",
     "mr:1204-petrus-pectinarius",
     "mr:1211-francus-lippi"
@@ -59159,7 +59159,7 @@
     "Presso il monastero di Saint-Bertin nel territorio di Thérouanne in Francia"
    ],
    "occurrences": [
-    "mr:0419-bertinus"
+    "mr:0419-bernardus-paenitens"
    ],
    "claims": [],
    "failed": [
@@ -96592,7 +96592,7 @@
     "A Malgarten in Frisia, nell’odierna Olanda"
    ],
    "occurrences": [
-    "mr:1114-maria"
+    "mr:1114-siardus"
    ],
    "claims": [
     {
@@ -108882,7 +108882,7 @@
     "Nel cenobio di San Pietro di Aquara in Campania"
    ],
    "occurrences": [
-    "mr:1205-petrus-de-aquara"
+    "mr:1205-lucidus"
    ],
    "claims": [],
    "failed": [
@@ -108931,7 +108931,7 @@
     "Nel cenobio di Santa Maria di Cadossa in Lucania"
    ],
    "occurrences": [
-    "mr:0603-maria-de-cadossa"
+    "mr:0603-conus"
    ],
    "claims": [],
    "failed": [
@@ -108980,7 +108980,7 @@
     "Nel cenobio di Santa Maria di Gualdo Mazocca vicino a Campobasso"
    ],
    "occurrences": [
-    "mr:1114-maria-de-gualdo-mazocca"
+    "mr:1114-ioannes-de-tupharia"
    ],
    "claims": [],
    "failed": [
@@ -110606,7 +110606,7 @@
     "Nel monastero di Mar Saba in Palestina"
    ],
    "occurrences": [
-    "mr:0320-sabas"
+    "mr:0320-viginti-monachi-palaestina"
    ],
    "claims": [],
    "failed": [
@@ -130664,7 +130664,7 @@
     "Nel monastero di San Benedetto Po nei pressi di Mantova"
    ],
    "occurrences": [
-    "mr:0726-benedictus"
+    "mr:0726-simeon"
    ],
    "claims": [],
    "failed": [
@@ -130827,7 +130827,7 @@
     "Nel monastero di San Benedetto a Maredsous sempre in Belgio"
    ],
    "occurrences": [
-    "mr:0130-benedictus-de-maretiolo"
+    "mr:0130-columba-marmion"
    ],
    "claims": [],
    "failed": [
@@ -130876,7 +130876,7 @@
     "A Kornelimünster in Germania"
    ],
    "occurrences": [
-    "mr:0212-cornelius"
+    "mr:0212-benedictus-anianensis"
    ],
    "claims": [],
    "failed": [
@@ -131125,7 +131125,7 @@
     "Nel monastero di San Giacomo di Foggia in Puglia"
    ],
    "occurrences": [
-    "mr:0620-iacobus-fodiensi"
+    "mr:0620-ioannes-de-mateola"
    ],
    "claims": [],
    "failed": [
@@ -131175,7 +131175,7 @@
     "Nel monastero di Sant’Isidoro di Dueñas in Spagna"
    ],
    "occurrences": [
-    "mr:0426-isidorus-de-duenas"
+    "mr:0426-raphael-arnaiz-baron"
    ],
    "claims": [],
    "failed": [
@@ -131222,7 +131222,7 @@
     "Nel monastero di San Nicola di Viotorito in Calabria"
    ],
    "occurrences": [
-    "mr:1210-nicolaus-de-viotorito"
+    "mr:1210-lucas-de-insula"
    ],
    "claims": [],
    "failed": [
@@ -131243,7 +131243,7 @@
     "Nel monastero di San Filippo vicino a Locri in Calabria"
    ],
    "occurrences": [
-    "mr:0823-philippus"
+    "mr:0823-antonius-de-hieracio"
    ],
    "claims": [],
    "failed": [
@@ -131495,7 +131495,7 @@
     "Nel monastero di Saint-Papoul in Francia"
    ],
    "occurrences": [
-    "mr:0526-papulus"
+    "mr:0526-berengarius"
    ],
    "claims": [],
    "failed": [
@@ -131646,7 +131646,7 @@
     "Nel monastero di Santa Maria al Sacro Monte sopra Varese"
    ],
    "occurrences": [
-    "mr:0406-maria"
+    "mr:0406-catharina-de-pallantia"
    ],
    "claims": [],
    "failed": [
@@ -131694,7 +131694,7 @@
     "Nel monastero di Santa Maria presso Wast nella regione di Boulogne in Francia"
    ],
    "occurrences": [
-    "mr:0413-maria-de-capella"
+    "mr:0413-ida-boloniensis"
    ],
    "claims": [],
    "failed": [
@@ -131970,7 +131970,7 @@
     "Nel monastero di Santa Maria di Terreto vicino a Reggio Calabria"
    ],
    "occurrences": [
-    "mr:0705-maria-de-terreto"
+    "mr:0705-thomas"
    ],
    "claims": [],
    "failed": [
@@ -132017,7 +132017,7 @@
     "Nel monastero di Santa Maria della Serra nelle Marche"
    ],
    "occurrences": [
-    "mr:0508-maria-della-serra"
+    "mr:0508-angelus-de-massatio"
    ],
    "claims": [],
    "failed": [
@@ -143238,7 +143238,7 @@
     "Nel territorio di San Gallo nell’odierna Svizzera"
    ],
    "occurrences": [
-    "mr:0502-gallus"
+    "mr:0502-wiborada"
    ],
    "claims": [
     {
@@ -143475,7 +143475,7 @@
     "Nei pressi di San José nella regione di Chilpancinga in Messico"
    ],
    "occurrences": [
-    "mr:0412-ioseph"
+    "mr:0412-david-uribe"
    ],
    "claims": [],
    "failed": [
@@ -143752,7 +143752,7 @@
     "Nel territorio di San Julián nella regione di Guadalajara in Messico"
    ],
    "occurrences": [
-    "mr:0330-iulianus"
+    "mr:0330-iulius-alvarez"
    ],
    "claims": [],
    "failed": [
@@ -153989,7 +153989,7 @@
     "Nella città di Saint-Hyacinthe in Canada"
    ],
    "occurrences": [
-    "mr:0524-hyacinthus"
+    "mr:0524-ludovicus-zephyrinus-moreau"
    ],
    "claims": [],
    "failed": [
