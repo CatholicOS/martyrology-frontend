@@ -149,6 +149,21 @@ describe("PlaceCard", () => {
     });
   });
 
+  it("labels a candidate's country, its countries, or ? when it has neither", () => {
+    renderCard(
+      makeOp({
+        candidates: [
+          candidate("Q1", "Fictopolis", "AT"),
+          candidate("Q4", "Fictoria", null),
+          candidate("Q5", "Fictana", null, { countries: [] }),
+        ],
+      }),
+    );
+    expect(screen.getByLabelText(/Fictopolis —/).parentElement).toHaveTextContent(/· AT · suggested$/);
+    expect(screen.getByLabelText(/Fictoria —/).parentElement).toHaveTextContent(/· FR\/IT$/);
+    expect(screen.getByLabelText(/Fictana —/).parentElement).toHaveTextContent(/· \?$/);
+  });
+
   it("an invalid country code disables accept", () => {
     renderCard(makeOp());
     fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "AUT" } });

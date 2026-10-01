@@ -155,7 +155,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
                 onChange={() => choose(c.wikidata)}
               />
               <span>
-                {c.label} — {c.description || "(no description)"} · {c.country ?? c.countries.join("/") ?? "?"}
+                {c.label} — {c.description || "(no description)"} · {c.country ?? (c.countries.join("/") || "?")}
                 {c.wikidata === suggested?.wikidata ? " · suggested" : ""}
               </span>
             </label>
