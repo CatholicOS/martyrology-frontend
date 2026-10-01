@@ -16,5 +16,8 @@
 !app
 !components
 !lib
+# Auth.js config and its type augmentation live at repo root / types/.
+!auth.ts
+!types
 !data
 !public
