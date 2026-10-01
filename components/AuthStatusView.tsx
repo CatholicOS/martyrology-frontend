@@ -22,6 +22,8 @@ export function AuthStatusView({
         </span>
       ) : null}
       <span className="text-sm text-slate-600 dark:text-slate-400">{email}</span>
+      {/* The message asks the curator to sign in again, so offer the control. */}
+      {error ? onSignIn : null}
       {onSignOut}
     </div>
   );

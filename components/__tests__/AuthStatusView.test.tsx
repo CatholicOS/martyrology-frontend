@@ -33,4 +33,18 @@ describe("AuthStatusView", () => {
     );
     expect(screen.getByRole("status")).toHaveTextContent("Session expired");
   });
+
+  it("offers sign-in alongside sign-out when the session carries a refresh error", () => {
+    render(
+      <AuthStatusView
+        email="priest@johnromanodorazio.com"
+        error="RefreshAccessTokenError"
+        onSignIn={<button>Sign in</button>}
+        onSignOut={<button>Sign out</button>}
+      />,
+    );
+    // The message says "sign in again"; the control to do so must be there.
+    expect(screen.getByText("Sign in")).toBeInTheDocument();
+    expect(screen.getByText("Sign out")).toBeInTheDocument();
+  });
 });

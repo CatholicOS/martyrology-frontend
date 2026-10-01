@@ -1,6 +1,7 @@
 import { unstable_rethrow } from "next/navigation";
 import { auth, signIn, signOut } from "@/auth";
 import { AuthStatusView } from "@/components/AuthStatusView";
+import { describeError } from "@/lib/describe-error";
 
 const buttonClass =
   "rounded border border-slate-300 px-3 py-1 text-sm dark:border-slate-700";
@@ -15,6 +16,7 @@ export async function AuthStatus() {
     // reads headers/cookies); swallowing them would leave pages prerendered
     // with a permanent "Sign in" header.
     unstable_rethrow(err);
+    console.warn(`[AuthStatus] could not read the session; rendering signed out (${describeError(err)})`);
     session = null;
   }
 

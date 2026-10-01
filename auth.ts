@@ -50,7 +50,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_ZITADEL_SECRET,
       // offline_access is what makes Zitadel return a refresh token; without
       // it the curator is logged out when the access token expires.
-      authorization: { params: { scope: "openid profile email offline_access" } },
+      //
+      // prompt=select_account makes Zitadel show its account picker even
+      // while its own SSO session is alive, so "Sign in" after "Sign out"
+      // (which ends only this app's session) can choose a different account.
+      authorization: {
+        params: { scope: "openid profile email offline_access", prompt: "select_account" },
+      },
     }),
   ],
   // Needed behind Plesk's Passenger reverse proxy in production (same as
