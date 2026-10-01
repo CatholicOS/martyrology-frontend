@@ -1,6 +1,7 @@
 {
  "changesets": [
   "deprecated-id-normalization.json",
+  "gazetteer-review.json",
   "merge-audit.json"
  ]
 }
