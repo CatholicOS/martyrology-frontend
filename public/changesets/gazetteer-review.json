@@ -53,7 +53,7 @@
     "mr:1109-eustolia-et-sopatra",
     "mr:1111-theodorus-studita",
     "mr:1117-lazarus",
-    "mr:1120-gregorius-decapolitani",
+    "mr:1120-gregorius-decapolitanus",
     "mr:1128-stephanus",
     "mr:1211-daniel-stylita",
     "mr:1229-marcellus",
@@ -206,7 +206,7 @@
     "mr:1015-magdalena",
     "mr:1019-lucas-alphonsus-gorda",
     "mr:1111-marina-de-omura",
-    "mr:1115-caius-coreani",
+    "mr:1115-caius-coreanus",
     "mr:1117-iordanus-ansalone-et-thomas-hioji-rokuzayemon-nishi",
     "mr:1118-leonardus-kimura",
     "mr:1127-thomas-koteda-kiuni-et-socii",
@@ -632,7 +632,7 @@
    ],
    "occurrences": [
     "mr:0105-convoio",
-    "mr:0129-gilda-sapientis",
+    "mr:0129-gilda-sapiens",
     "mr:0208-iacutus",
     "mr:0501-briocus",
     "mr:0601-ronanus",
@@ -1186,7 +1186,7 @@
     "mr:0802-rutilius",
     "mr:0923-andreas-et-socii",
     "mr:1113-martyres-africa",
-    "mr:1128-papinianus-vitensis-et-mansuetus-urusitani",
+    "mr:1128-papinianus-vitensis-et-mansuetus-urusitanus",
     "mr:1206-martyres-africa",
     "mr:1218-namphamo-et-socii"
    ],
@@ -3490,7 +3490,7 @@
     "A Silistra, in Mesia, nell’odierna Bulgaria"
    ],
    "occurrences": [
-    "mr:0425-pasicratis-et-valentio",
+    "mr:0425-pasicrates-et-valentio",
     "mr:0428-maximus-et-socii",
     "mr:0527-iulius",
     "mr:0615-hesychius",
@@ -11097,7 +11097,7 @@
    "occurrences": [
     "mr:0115-malardus",
     "mr:0802-betharius",
-    "mr:0904-caletricis"
+    "mr:0904-caletricus"
    ],
    "claims": [
     {
@@ -16801,7 +16801,7 @@
    ],
    "occurrences": [
     "mr:0531-hermia",
-    "mr:0914-ioannes-chrysostomi"
+    "mr:0914-ioannes-chrysostomus"
    ],
    "claims": [
     {
@@ -26738,7 +26738,7 @@
    ],
    "occurrences": [
     "mr:0514-isidorus",
-    "mr:0713-myropis"
+    "mr:0713-myrope"
    ],
    "claims": [],
    "failed": [
@@ -30078,7 +30078,7 @@
    ],
    "occurrences": [
     "mr:0411-antipa",
-    "mr:0413-carpus-et-thyatirensis"
+    "mr:0413-carpus-et-socii"
    ],
    "claims": [
     {
@@ -36955,7 +36955,7 @@
     "All’ancora davanti a Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0828-carolus-arnaldi-hanus"
+    "mr:0828-carolus-arnaldus-hanus"
    ],
    "claims": [],
    "failed": [
@@ -37614,7 +37614,7 @@
     "Ad Alcantarilla vicino a Murcia in Spagna"
    ],
    "occurrences": [
-    "mr:0226-pietatis-a-cruce-ortiz-real"
+    "mr:0226-pietas-a-cruce-ortiz-real"
    ],
    "claims": [],
    "failed": [
@@ -42620,7 +42620,7 @@
     "In una sordida galera all’ancora davanti a Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0713-ludovicus-armandi-iosephus-adam"
+    "mr:0713-ludovicus-armandus-iosephus-adam"
    ],
    "claims": [],
    "failed": [
@@ -56445,7 +56445,7 @@
     "Nella Tebaide in Egitto"
    ],
    "occurrences": [
-    "mr:0307-paulus-simplicis"
+    "mr:0307-paulus-simplex"
    ],
    "claims": [],
    "failed": [
@@ -120999,7 +120999,7 @@
     "Nel monastero cistercense di Bonnevaux nel Delfinato in Francia"
    ],
    "occurrences": [
-    "mr:0401-hugo-cisterciensi-bonae"
+    "mr:0401-hugo-bonaevallensis"
    ],
    "claims": [],
    "failed": [
@@ -122350,7 +122350,7 @@
     "Nel monastero di Corbie sempre in Neustria"
    ],
    "occurrences": [
-    "mr:0426-paschasius-radberti"
+    "mr:0426-paschasius-radbertus"
    ],
    "claims": [],
    "failed": [
@@ -122636,7 +122636,7 @@
     "Nel monastero di Cuxa tra i Pirenei"
    ],
    "occurrences": [
-    "mr:0110-petrus-urseoli"
+    "mr:0110-petrus-urseolus"
    ],
    "claims": [],
    "failed": [
@@ -126144,7 +126144,7 @@
     "Nel monastero di Huerta nella Castiglia in Spagna"
    ],
    "occurrences": [
-    "mr:0916-martinus-sacerdotis"
+    "mr:0916-martinus-sacerdos"
    ],
    "claims": [],
    "failed": [
@@ -128625,7 +128625,7 @@
     "Nel monastero di Molesme in Francia"
    ],
    "occurrences": [
-    "mr:0417-robertus-molismensi"
+    "mr:0417-robertus-molismensis"
    ],
    "claims": [],
    "failed": [
@@ -132133,7 +132133,7 @@
     "Nel monastero di San Gallo in Svevia, nel territorio dell’odierna Svizzera"
    ],
    "occurrences": [
-    "mr:0406-notkerus-balbuli"
+    "mr:0406-notkerus-balbulus"
    ],
    "claims": [
     {
@@ -139903,7 +139903,7 @@
     "Nel territorio di Vienne, in Francia"
    ],
    "occurrences": [
-    "mr:0918-ferreolus-galliae-viennensi"
+    "mr:0918-ferreolus-viennensis"
    ],
    "claims": [],
    "failed": [
@@ -189189,7 +189189,7 @@
     "A Mortain nella Normandia, in Francia"
    ],
    "occurrences": [
-    "mr:0424-gulielmus-firmati"
+    "mr:0424-gulielmus-firmatus"
    ],
    "claims": [],
    "failed": [
@@ -196184,7 +196184,7 @@
     "A Passignano in Toscana"
    ],
    "occurrences": [
-    "mr:0712-ioannes-gualberti"
+    "mr:0712-ioannes-gualbertus"
    ],
    "claims": [],
    "failed": [
