@@ -60,6 +60,8 @@ jobs:
           VPS_APP_DIR: ${{ vars.VPS_APP_DIR }}
           SITE_URL: ${{ vars.SITE_URL }}
           API_BASE: ${{ vars.API_BASE }}
+          AUTH_ZITADEL_ISSUER: ${{ vars.AUTH_ZITADEL_ISSUER }}
+          AUTH_ZITADEL_ID: ${{ vars.AUTH_ZITADEL_ID }}
         run: |
           set -euo pipefail
           fail() { echo "::error::$1"; MISSING=1; }
@@ -82,8 +84,15 @@ jobs:
           # 502 from the proxy after the deploy had already shipped.
           [ -n "$API_BASE" ] || fail "vars.API_BASE is empty (e.g. http://127.0.0.1:8412 — read MARTYROLOGY_PORT from /opt/martyrology/config/runtime.env on the VPS)"
 
+          [ -n "$AUTH_ZITADEL_ISSUER" ] || fail "vars.AUTH_ZITADEL_ISSUER is empty (e.g. https://auth.catholicdigitalcommons.org)"
+          # The providers smoke check cannot detect a missing issuer or id —
+          # it reads configuration and performs no discovery. This preflight
+          # is the only thing standing between a blank var and a broken
+          # sign-in that deploys green.
+          [ -n "$AUTH_ZITADEL_ID" ]     || fail "vars.AUTH_ZITADEL_ID is empty (the client_id from the Martyrology Frontend handoff block)"
+
           [ "$MISSING" -eq 0 ] || exit 1
-          echo "Deploy configuration OK. APP_DIR=$VPS_APP_DIR SITE_URL=$SITE_URL API_BASE=$API_BASE"
+          echo "Deploy configuration OK. APP_DIR=$VPS_APP_DIR SITE_URL=$SITE_URL API_BASE=$API_BASE AUTH_ZITADEL_ISSUER=$AUTH_ZITADEL_ISSUER"
 
       - name: Install dependencies
         run: npm ci
@@ -116,6 +125,9 @@ jobs:
       - name: Assemble the standalone bundle
         env:
           API_BASE: ${{ vars.API_BASE }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          AUTH_ZITADEL_ISSUER: ${{ vars.AUTH_ZITADEL_ISSUER }}
+          AUTH_ZITADEL_ID: ${{ vars.AUTH_ZITADEL_ID }}
         run: |
           set -euo pipefail
 
@@ -137,7 +149,16 @@ jobs:
           # Plesk Node.js panel takes precedence over this file, so the live
           # upstream can be repointed without a redeploy. (Verified against
           # Next 16.2: process env wins, the file fills in when it is absent.)
-          printf 'API_BASE=%s\n' "$API_BASE" > .next/standalone/.env
+          # Non-secret configuration only. AUTH_SECRET and AUTH_ZITADEL_SECRET
+          # are set in the Plesk Node environment by hand and MUST NOT appear
+          # here — a real env var wins over this file, and this file is
+          # readable by anything that can read the vhost.
+          {
+            printf 'API_BASE=%s\n' "$API_BASE"
+            printf 'AUTH_ZITADEL_ISSUER=%s\n' "$AUTH_ZITADEL_ISSUER"
+            printf 'AUTH_ZITADEL_ID=%s\n' "$AUTH_ZITADEL_ID"
+            printf 'AUTH_URL=%s\n' "$SITE_URL"
+          } > .next/standalone/.env
 
           # Record what is live. Nothing reads this at runtime; it exists so
           # that `cat .env`-style poking at the vhost can answer "which commit
@@ -285,6 +306,26 @@ jobs:
             fi
             sleep 6
           done
+
+          # Provider-registration check only. It proves Auth.js booted and
+          # registered the provider, which catches a missing AUTH_SECRET.
+          # It does NOT validate AUTH_ZITADEL_ISSUER or AUTH_ZITADEL_ID: this
+          # endpoint reports configuration and performs no OIDC discovery, so
+          # a wrong issuer survives it. Those two are guarded by the preflight
+          # above instead. It does NOT validate AUTH_ZITADEL_SECRET either —
+          # the provider is built from config and advertised whether or not
+          # the secret is right, because nothing exchanges a code here. A
+          # wrong secret shows up as invalid_client during a real sign-in,
+          # which is why the manual acceptance run is what proves it.
+          PROV_FILE=$(mktemp)
+          STATUS=$(curl -sS -o "$PROV_FILE" -w '%{http_code}' \
+            --connect-timeout 10 --max-time 45 "$SITE_URL/api/auth/providers" || echo "000")
+          if [ "$STATUS" != "200" ] || ! grep -q '"zitadel"' "$PROV_FILE"; then
+            echo "::error::GET $SITE_URL/api/auth/providers returned $STATUS without a zitadel provider. Auth.js did not boot or did not register the provider — check AUTH_SECRET in Plesk → Domains → romanmartyrology.com → Node.js → Custom environment variables, then redeploy. Note this check reads configuration only: it cannot detect a wrong AUTH_ZITADEL_ISSUER, AUTH_ZITADEL_ID or AUTH_ZITADEL_SECRET. Those surface at sign-in, as a discovery failure or invalid_client."
+            head -c 300 "$PROV_FILE"; echo
+            exit 1
+          fi
+          echo "Auth providers: zitadel present"
 
           # The canary that actually matters. This traverses the whole chain:
           # nginx -> Passenger -> Next route handler -> API_BASE -> the API.
