@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { parseChangeset, exportChangeset, opId } from "@/lib/changeset";
-import { convertManifest } from "@/scripts/import-changeset.mjs";
+import { parseChangeset, exportChangeset, opId, isAdjudicable } from "@/lib/changeset";
+import { convertManifest, toBundledChangeset } from "@/scripts/import-changeset.mjs";
 
 const manifest = [
   { old_id: "mr:0104-titi", new_id: "mr:0104-titus", action: "rename", new_subject_la: "Sanctus Titus", class: "A-genitive", confidence: "high", incipit: "In Creta natalis sancti Titi", reasoning: "person" },
@@ -28,5 +28,25 @@ describe("changeset", () => {
     expect(out.operations[0]).toMatchObject({ decision: "edit", edited: { new_id: "mr:0104-titus-x" } });
     expect(out.operations[1].decision).toBe("accept");
     expect(out.operations[2].decision).toBeNull();
+  });
+
+  it("resolve_place ops are adjudicable and keyed by their place", () => {
+    const op = { op: "resolve_place", id: "Fictópoli", la: "Fictópoli", decision: null };
+    expect(isAdjudicable(op)).toBe(true);
+    expect(opId(op)).toBe("Fictópoli");
+  });
+
+  it("exportChangeset carries a place edit with text_says", () => {
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "data/places.json" },
+      operations: [{ op: "resolve_place", id: "Fictópoli", la: "Fictópoli", decision: null, edited: null }] }));
+    const edited = { wikidata: "Q2", country: "FR", text_says: [{ country: "DE", it: "A Fictopoli, ora in Germania" }] };
+    const out = exportChangeset(cs, { "Fictópoli": { decision: "edit", edited } });
+    expect(out.operations[0]).toMatchObject({ decision: "edit", edited });
+  });
+
+  it("toBundledChangeset passes a change-set through and converts a manifest", () => {
+    const cs = { schema: "crmedr-changeset/v1", generated_by: "scripts/build_gazetteer.py", base: { edition: "2004", registry: "data/places.json" }, operations: [] };
+    expect(toBundledChangeset(cs, { edition: "e", registry: "r" })).toBe(cs);
+    expect(toBundledChangeset(manifest, { edition: "e", registry: "r" }).operations[0]).toMatchObject({ op: "rename" });
   });
 });

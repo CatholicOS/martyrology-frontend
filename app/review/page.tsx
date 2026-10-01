@@ -15,6 +15,9 @@ import type { Locale } from "@/lib/types";
 import OperationCard from "@/components/OperationCard";
 import ReviewSummary from "@/components/ReviewSummary";
 
+// Cards render a page at a time: a gazetteer queue holds ~1,900 places.
+const PAGE_SIZE = 50;
+
 function stripExt(name: string): string {
   return name.replace(/\.json$/i, "");
 }
@@ -33,6 +36,10 @@ export default function ReviewPage() {
   const [confidenceFilter, setConfidenceFilter] = useState("");
   const [opFilter, setOpFilter] = useState("");
   const [undecidedOnly, setUndecidedOnly] = useState(false);
+  // Paging restarts when the change-set or a filter changes (derived, not reset in an effect).
+  const pageKey = `${name}|${classFilter}|${confidenceFilter}|${opFilter}|${undecidedOnly}`;
+  const [paging, setPaging] = useState({ key: pageKey, shown: PAGE_SIZE });
+  const shown = paging.key === pageKey ? paging.shown : PAGE_SIZE;
 
   useEffect(() => {
     let cancelled = false;
@@ -264,7 +271,7 @@ export default function ReviewPage() {
             {filteredOps.length === 0 && (
               <p className="text-slate-500 dark:text-slate-400">No operations match the current filters.</p>
             )}
-            {filteredOps.map((op) => (
+            {filteredOps.slice(0, shown).map((op) => (
               <OperationCard
                 key={opId(op)}
                 op={op}
@@ -274,6 +281,15 @@ export default function ReviewPage() {
                 baseEdition={cs.base.edition}
               />
             ))}
+            {filteredOps.length > shown && (
+              <button
+                type="button"
+                className="mt-2 rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
+                onClick={() => setPaging({ key: pageKey, shown: shown + PAGE_SIZE })}
+              >
+                Show more ({filteredOps.length - shown} remaining)
+              </button>
+            )}
           </div>
         </>
       )}

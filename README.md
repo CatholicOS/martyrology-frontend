@@ -19,6 +19,13 @@ from the API for the actual eulogy text.
   for the affected ID(s), and Accept / Reject / Edit each one. Decisions persist
   in `localStorage` (reload-safe) and can be exported as a new
   `crmedr-changeset/v1` JSON file with `decision`/`edited` filled in.
+  A `resolve_place` op (crmedr's gazetteer queue, `gazetteer-review`) gets its
+  own card: the printed Latin and Italian place, why it was not resolved
+  automatically, the suggested Wikidata item and the candidates (Wikidata and
+  map links), the modern country, and which modern-country claims of the
+  Italian to record as `text_says`; eulogies load on demand. A reject asks for
+  a reason. Export, then run `python3 scripts/build_gazetteer.py apply
+  <exported.json>` in crmedr. Cards render 50 at a time.
 
 ## Prerequisites
 
@@ -61,6 +68,10 @@ npm run snapshot-registry
 # public/changesets/index.json (the manifest the Review page's change-set
 # picker fetches).
 npm run import-changeset
+
+# Bundle crmedr's gazetteer review queue (already a crmedr-changeset/v1 file,
+# copied as it is).
+npm run import-changeset -- ../crmedr/data/gazetteer_review.json gazetteer-review
 ```
 
 Both accept optional positional args — see the top of each script under

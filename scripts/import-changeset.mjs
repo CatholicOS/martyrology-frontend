@@ -41,13 +41,23 @@ export function convertManifest(manifest, base) {
   return { schema: "crmedr-changeset/v1", generated_by: "claude-code", base, operations };
 }
 
+/**
+ * A file that is already a crmedr-changeset/v1 document (e.g. crmedr's
+ * data/gazetteer_review.json) is bundled as it is; a CRMEDR manifest is converted.
+ * @param {any} json
+ * @param {{edition: string, registry: string}} base
+ */
+export function toBundledChangeset(json, base) {
+  if (json && json.schema === "crmedr-changeset/v1") return json;
+  return convertManifest(json, base);
+}
+
 function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const src = process.argv[2] ?? join(here, "..", "..", "crmedr", "data", "deprecated_id_corrections.json");
   const name = process.argv[3] ?? "deprecated-id-normalization";
   const edition = process.argv[4] ?? "martyrologium_romanum_1749";
-  const manifest = JSON.parse(readFileSync(src, "utf8"));
-  const cs = convertManifest(manifest, { edition, registry: "crmedr@local" });
+  const cs = toBundledChangeset(JSON.parse(readFileSync(src, "utf8")), { edition, registry: "crmedr@local" });
   const destDir = join(here, "..", "public", "changesets");
   const dest = join(destDir, `${name}.json`);
   mkdirSync(destDir, { recursive: true });
