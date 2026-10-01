@@ -16,6 +16,9 @@
 !app
 !components
 !lib
+# Auth.js config and its type augmentation live at repo root / types/.
+!auth.ts
+!types
 !data
 !public
 # `next build` type-checks with the project's `tsc` (Next 16.3's default
