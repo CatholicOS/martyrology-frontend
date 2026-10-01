@@ -130,11 +130,10 @@ docker compose up -d --force-recreate martyrology-api martyrology-frontend
 ./scripts/smoke.sh
 ```
 
-There is no sign-in on the frontend yet — that arrives with the OIDC
-login-client plan (see smoke assertion 7, which skips until then). Until it
-does, create/find your user in the Zitadel console
-(<http://localhost:8080/ui/console>, Martyrology Org → Users), copy its `sub`
-(→ your user → ID), and grant yourself platform superuser:
+Sign-in is available (see "Signing in locally" below). To see restricted texts
+after signing in locally, your user needs platform superuser. Create/find your
+user in the Zitadel console (<http://localhost:8080/ui/console>, Martyrology
+Org → Users), copy its `sub` (→ your user → ID), and grant yourself platform superuser:
 
 ```bash
 ./scripts/grant-superuser.sh <your-sub>
@@ -212,6 +211,23 @@ Port 3000 is then free and the registered OIDC callback still matches.
   `docker inspect` before anything else.
 - **Port 3000 is fixed.** `cdcf-infra` registers
   `http://localhost:3000/api/auth/callback/zitadel` for `--target local`.
+
+## Signing in locally
+
+Local sign-in runs against the local stack's own Zitadel instance (see "Local
+development stack" above for bring-up) — a `Martyrology Frontend` app
+provisioned there by `--target local`, separate from the production app in
+production's Zitadel, not a second app in production's project.
+`./scripts/setup-stack.sh --update-env` writes its `AUTH_ZITADEL_ISSUER`,
+`AUTH_ZITADEL_ID` and `AUTH_ZITADEL_SECRET` into this stack's `.env`, which
+Next.js loads automatically — no `.env.local` needed, and never reuse the
+production client secret here.
+
+Signing in is additive: anonymous browsing works unchanged, and restricted
+editions render redacted. Signing in as a user who holds the OpenFGA
+`can_read_texts` relation is what makes their text appear. Smoke assertion 7
+checks that the Auth.js providers endpoint (`/api/auth/providers`) lists the
+`zitadel` provider.
 
 ## Deployment
 
