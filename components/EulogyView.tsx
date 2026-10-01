@@ -35,10 +35,20 @@ interface Props {
   tone?: "neutral" | "winner" | "loser";
   /** Preferred edition to show first (e.g. the 2004 editio typica for a winner). */
   preferEdition?: string;
+  /** A second edition shown beside the first for comparison (e.g. the Italian 2004). */
+  alongside?: string;
 }
 
 /** Fetches and renders one eulogy (subject + edition text) for a canonical id. */
-export default function EulogyView({ id, baseEdition, locale, label, tone = "neutral", preferEdition }: Props) {
+export default function EulogyView({
+  id,
+  baseEdition,
+  locale,
+  label,
+  tone = "neutral",
+  preferEdition,
+  alongside,
+}: Props) {
   const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -74,6 +84,7 @@ export default function EulogyView({ id, baseEdition, locale, label, tone = "neu
         : "bg-slate-50 dark:bg-slate-900";
   const sel = eulogy ? pickEditionText(eulogy, baseEdition, preferEdition) : null;
   const wanted = preferEdition ?? baseEdition;
+  const showAlongside = Boolean(alongside) && alongside !== sel?.editionId;
 
   return (
     <div className={`rounded p-2 ${toneClass}`}>
@@ -88,15 +99,25 @@ export default function EulogyView({ id, baseEdition, locale, label, tone = "neu
       {eulogy && sel && (
         <>
           <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
-          {sel.isFallback && sel.editionId && (
-            <p className="text-xs text-amber-600 dark:text-amber-400">
-              no {wanted} placement — showing {sel.editionId}
-            </p>
-          )}
-          {!sel.isFallback && sel.editionId && (
-            <p className="text-xs text-slate-500 dark:text-slate-400">{sel.editionId}</p>
-          )}
-          <p className="mt-1">{sel.text ?? "(no text)"}</p>
+          <div className={showAlongside ? "grid gap-3 sm:grid-cols-2" : undefined}>
+            <div>
+              {sel.isFallback && sel.editionId && (
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  no {wanted} placement — showing {sel.editionId}
+                </p>
+              )}
+              {!sel.isFallback && sel.editionId && (
+                <p className="text-xs text-slate-500 dark:text-slate-400">{sel.editionId}</p>
+              )}
+              <p className="mt-1">{sel.text ?? "(no text)"}</p>
+            </div>
+            {showAlongside && alongside && (
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{alongside}</p>
+                <p className="mt-1">{eulogy.editions[alongside]?.text ?? `(no text in ${alongside})`}</p>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>

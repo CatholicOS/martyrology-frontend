@@ -29,6 +29,10 @@ function sameSet(a: Set<string>, b: Set<string>): boolean {
  * crmedr's `build_gazetteer.py apply`: an unchanged suggestion (or top candidate)
  * is a plain accept, any change is an edit, and a reject carries a reason.
  */
+// The CEI Italian of the 2004 edition, shown beside the Latin: the queue's Italian
+// place phrases come from it, so the curator compares like with like.
+const ITALIAN_2004 = "martyrologium_romanum_2004_it_IT";
+
 export default function PlaceCard({ op, decision, onDecide, locale, baseEdition }: Props) {
   const suggested = op.suggested ?? null;
   const byQid = new Map(op.candidates.map((c) => [c.wikidata, c]));
@@ -126,7 +130,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
       </div>
       {openEulogy && (
         <div className="mb-2">
-          <EulogyView id={openEulogy} baseEdition={baseEdition} locale={locale} />
+          <EulogyView id={openEulogy} baseEdition={baseEdition} locale={locale} alongside={ITALIAN_2004} />
         </div>
       )}
 
