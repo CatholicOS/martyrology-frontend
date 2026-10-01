@@ -45,9 +45,16 @@ export default function PlaceMap({ points, selected, onSelect }: Props) {
       const L = (await import("leaflet")).default;
       if (cancelled || !el.current) return;
       map = L.map(el.current, { scrollWheelZoom: false });
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      // Esri World Street Map rather than the standard OSM tiles: OSM labels each
+      // place in its local script (kanji, Arabic, Hangul…), which a curator matching
+      // Latin and Italian place names cannot read. Esri labels in English, keyless.
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
         maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution:
+          "Tiles &copy; Esri &mdash; Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, " +
+          "METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, " +
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+          "and the GIS User Community",
       }).addTo(map);
       for (const p of located) {
         const style = p.wikidata === selectedRef.current ? SELECTED : OTHER;
