@@ -1,6 +1,6 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Zitadel from "next-auth/providers/zitadel";
-import { isExpired, refreshAccessToken, type ZitadelToken } from "@/lib/zitadel-token";
+import type { ZitadelToken } from "@/lib/zitadel-token";
 
 // Exported so the callbacks can be unit tested without booting a provider.
 // The test that matters asserts the access token never reaches the Session —
@@ -18,9 +18,13 @@ export const callbacks = {
         expires_at: account.expires_at,
       };
     }
-    const current = token as ZitadelToken;
-    if (!isExpired(current.expires_at, Date.now())) return token;
-    return { ...token, ...(await refreshAccessToken(current)) };
+    // Deliberately no refresh here. This callback also runs under auth() in
+    // Server Components (the header renders it on every page), and there
+    // Auth.js throws away the Set-Cookie: a refresh would spend Zitadel's
+    // rotating refresh token and keep nothing. The /api/mr route is the
+    // access token's only consumer and, as a Route Handler, can persist the
+    // refreshed cookie, so the refresh lives there (lib/session-token.ts).
+    return token;
   },
   async session({ session, token }) {
     // NEVER put the access token here. Auth.js sets the session callback's
