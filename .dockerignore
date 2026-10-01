@@ -18,3 +18,10 @@
 !lib
 !data
 !public
+# `next build` type-checks with the project's `tsc` (Next 16.3's default
+# `experimental.useTypeScriptCli`), which covers the whole tsconfig — tests
+# included. The tests need the jest-dom matcher types from vitest.setup.ts and
+# import these two scripts; without them the image build fails type checking.
+!vitest.setup.ts
+!scripts/import-changeset.mjs
+!scripts/snapshot-registry.mjs
