@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import EulogyView from "@/components/EulogyView";
+import PlaceCard from "@/components/PlaceCard";
+import { decisionClass as cardClass } from "@/components/decisionClass";
 import {
   isAdjudicable,
   opId,
@@ -10,6 +12,7 @@ import {
   type DeleteOp,
   type MergeOp,
   type DecisionRecord,
+  type ResolvePlaceOp,
 } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
@@ -27,7 +30,15 @@ interface Props {
   baseEdition: string;
 }
 
-export default function OperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
+export default function OperationCard(props: Props) {
+  // A gazetteer place has its own card: no eulogy of its own, candidates instead.
+  if (props.op.op === "resolve_place") {
+    return <PlaceCard {...props} op={props.op as ResolvePlaceOp} />;
+  }
+  return <IdOperationCard {...props} />;
+}
+
+function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
   const [editing, setEditing] = useState(false);
   const ed = decision?.edited;
   // rename/delete edit inputs, seeded from a saved edit (resume) then the proposal
@@ -60,14 +71,7 @@ export default function OperationCard({ op, decision, onDecide, locale, baseEdit
         : { decision: "edit", edited: { winner: selectedWinner } }
     );
 
-  const decisionClass =
-    decision?.decision === "accept"
-      ? "border-green-400 bg-green-50 dark:border-green-700 dark:bg-green-950/30"
-      : decision?.decision === "reject"
-        ? "border-red-400 bg-red-50 dark:border-red-700 dark:bg-red-950/30"
-        : decision?.decision === "edit"
-          ? "border-amber-400 bg-amber-50 dark:border-amber-700 dark:bg-amber-950/30"
-          : "border-slate-200 dark:border-slate-800";
+  const decisionClass = cardClass(decision);
 
   const mergeLosers = mergeIds.filter((x) => x !== selectedWinner);
 

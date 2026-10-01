@@ -1,10 +1,19 @@
 export type Decision = null | "accept" | "reject" | "edit";
 
+export interface TextSays {
+  country: string;
+  it: string;
+}
+
 export interface EditedFields {
   new_id?: string;
   subject_la?: string;
   winner?: string;
   reason?: string;
+  // resolve_place
+  wikidata?: string;
+  country?: string;
+  text_says?: TextSays[];
 }
 
 export interface DecisionRecord {
@@ -40,13 +49,42 @@ export interface MergeOp extends Base {
   winner: string;
 }
 
+/** A Wikidata candidate for a place, as written by crmedr's scripts/build_gazetteer.py. */
+export interface PlaceCandidate {
+  wikidata: string;
+  label: string;
+  description: string;
+  /** The single current country (ISO 3166-1 alpha-2), or null. */
+  country: string | null;
+  countries: string[];
+  la: string[];
+  p9314: boolean;
+  coords: [number, number] | null;
+  types: string[];
+  evidence: string[];
+}
+
+/** Resolve a printed Latin place designation to a Wikidata item (crmedr gazetteer). */
+export interface ResolvePlaceOp extends Base {
+  op: "resolve_place";
+  /** The Latin place designation as printed; also the op's key. */
+  id: string;
+  la: string;
+  it: string[];
+  occurrences: string[];
+  claims: TextSays[];
+  failed: string[];
+  candidates: PlaceCandidate[];
+  suggested?: { wikidata: string; country: string; text_says?: TextSays[] } | null;
+}
+
 export interface UnknownOp extends Base {
   op: string;
   id?: string;
   [k: string]: unknown;
 }
 
-export type Op = RenameOp | DeleteOp | MergeOp | UnknownOp;
+export type Op = RenameOp | DeleteOp | MergeOp | ResolvePlaceOp | UnknownOp;
 
 export interface Changeset {
   schema: "crmedr-changeset/v1";
@@ -68,7 +106,7 @@ export function parseChangeset(text: string): Changeset {
 }
 
 export function isAdjudicable(op: Op): boolean {
-  return op.op === "rename" || op.op === "delete" || op.op === "merge";
+  return op.op === "rename" || op.op === "delete" || op.op === "merge" || op.op === "resolve_place";
 }
 
 export function opId(op: Op): string {
