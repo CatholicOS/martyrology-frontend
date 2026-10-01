@@ -3,7 +3,7 @@
  "generated_by": "scripts/build_gazetteer.py",
  "generated_at": "2026-10-01",
  "base": {
-  "edition": "2004",
+  "edition": "martyrologium_romanum_2004",
   "registry": "data/places.json"
  },
  "operations": [
