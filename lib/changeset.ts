@@ -10,10 +10,9 @@ export interface EditedFields {
   subject_la?: string;
   winner?: string;
   reason?: string;
-  // resolve_place
+  // resolve_place (text_says is derived by crmedr's apply, never chosen)
   wikidata?: string;
   country?: string;
-  text_says?: TextSays[];
 }
 
 export interface DecisionRecord {
@@ -75,7 +74,7 @@ export interface ResolvePlaceOp extends Base {
   claims: TextSays[];
   failed: string[];
   candidates: PlaceCandidate[];
-  suggested?: { wikidata: string; country: string; text_says?: TextSays[] } | null;
+  suggested?: { wikidata: string; country: string } | null;
 }
 
 export interface UnknownOp extends Base {

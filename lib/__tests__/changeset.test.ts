@@ -36,10 +36,10 @@ describe("changeset", () => {
     expect(opId(op)).toBe("Fictópoli");
   });
 
-  it("exportChangeset carries a place edit with text_says", () => {
+  it("exportChangeset carries a place edit", () => {
     const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "data/places.json" },
       operations: [{ op: "resolve_place", id: "Fictópoli", la: "Fictópoli", decision: null, edited: null }] }));
-    const edited = { wikidata: "Q2", country: "FR", text_says: [{ country: "DE", it: "A Fictopoli, ora in Germania" }] };
+    const edited = { wikidata: "Q2", country: "FR" };
     const out = exportChangeset(cs, { "Fictópoli": { decision: "edit", edited } });
     expect(out.operations[0]).toMatchObject({ decision: "edit", edited });
   });
