@@ -52,7 +52,8 @@ export default function PlaceMap({ points, selected, onSelect }: Props) {
         maxZoom: 18,
         attribution:
           "Tiles &copy; Esri &mdash; Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, " +
-          "METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, &copy; OpenStreetMap contributors, " +
+          "METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, " +
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
           "and the GIS User Community",
       }).addTo(map);
       for (const p of located) {
