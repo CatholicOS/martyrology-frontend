@@ -201,6 +201,35 @@ describe("PlaceCard", () => {
     expect(getElogium).toHaveBeenCalledWith("mr:0202-fictitius");
   });
 
+  it("shows an occurrence's Latin 2004 text alongside the Italian 2004", async () => {
+    vi.mocked(getElogium).mockResolvedValue({
+      id: "mr:0202-fictitius",
+      subject: { la: "Fictitius" },
+      editions: {
+        martyrologium_romanum_1749: { text: "Antiqua" },
+        martyrologium_romanum_2004: { text: "Fictópoli in Fíctia, sancti Fictitii." },
+        martyrologium_romanum_2004_it_IT: { text: "A Fictopoli nel Fictiense, san Fittizio." },
+      },
+    } as never);
+    renderCard(makeOp());
+    fireEvent.click(screen.getByRole("button", { name: "mr:0202-fictitius" }));
+    expect(await screen.findByText("Fictópoli in Fíctia, sancti Fictitii.")).toBeInTheDocument();
+    expect(screen.getByText("A Fictopoli nel Fictiense, san Fittizio.")).toBeInTheDocument();
+    expect(screen.queryByText("Antiqua")).not.toBeInTheDocument();
+  });
+
+  it("says so when the occurrence has no Italian 2004 text", async () => {
+    vi.mocked(getElogium).mockResolvedValue({
+      id: "mr:0202-fictitius",
+      subject: { la: "Fictitius" },
+      editions: { martyrologium_romanum_2004: { text: "Fictópoli in Fíctia, sancti Fictitii." } },
+    } as never);
+    renderCard(makeOp());
+    fireEvent.click(screen.getByRole("button", { name: "mr:0202-fictitius" }));
+    expect(await screen.findByText("Fictópoli in Fíctia, sancti Fictitii.")).toBeInTheDocument();
+    expect(screen.getByText("(no text in martyrologium_romanum_2004_it_IT)")).toBeInTheDocument();
+  });
+
   it("resumes a saved edit", () => {
     renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", country: "FR", text_says: [] } });
     expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
