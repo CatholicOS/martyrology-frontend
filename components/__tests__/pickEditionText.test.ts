@@ -39,20 +39,9 @@ describe("pickEditionText", () => {
     });
   });
 
-  it("resolves a short edition name like crmedr's \"2004\" to the one edition id ending in it", () => {
-    expect(pickEditionText(eulogy(all), "2004")).toEqual({
-      text: "new text",
-      editionId: "martyrologium_romanum_2004",
-      isFallback: false,
-    });
-  });
-
-  it("does not resolve a short name that matches more than one edition", () => {
-    const e = eulogy({ martyrologium_romanum_1749: "old text", a_2004: "a", b_2004: "b" });
-    expect(pickEditionText(e, "2004")).toEqual({
-      text: "old text",
-      editionId: "martyrologium_romanum_1749",
-      isFallback: true,
-    });
+  it("flags a fallback when the base names no edition id at all", () => {
+    // crmedr's gazetteer queue once declared base.edition "2004": no eulogy has
+    // an edition by that name, so the curator saw the 1749 text instead.
+    expect(pickEditionText(eulogy(all), "2004").isFallback).toBe(true);
   });
 });

@@ -17,26 +17,14 @@ export function pickEditionText(
   preferEdition?: string
 ): { text: string | null; editionId: string | null; isFallback: boolean } {
   const order = [preferEdition, baseEdition].filter((x): x is string => Boolean(x));
-  for (const wanted of order) {
-    const ed = resolveEditionId(eulogy, wanted);
-    const p = ed ? eulogy.editions[ed] : undefined;
-    if (ed && p?.text) return { text: p.text, editionId: ed, isFallback: false };
+  for (const ed of order) {
+    const p = eulogy.editions[ed];
+    if (p?.text) return { text: p.text, editionId: ed, isFallback: false };
   }
   for (const [edId, p] of Object.entries(eulogy.editions)) {
     if (p.text) return { text: p.text, editionId: edId, isFallback: true };
   }
   return { text: null, editionId: null, isFallback: false };
-}
-
-/**
- * An exact edition id, or — for a change-set whose base names its edition in
- * short form, like crmedr's gazetteer queue's "2004" — the single edition id
- * ending in `_<name>`. Ambiguous short names resolve to nothing.
- */
-function resolveEditionId(eulogy: EulogyOut, wanted: string): string | undefined {
-  if (wanted in eulogy.editions) return wanted;
-  const matches = Object.keys(eulogy.editions).filter((id) => id.endsWith(`_${wanted}`));
-  return matches.length === 1 ? matches[0] : undefined;
 }
 
 interface Props {
