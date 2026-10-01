@@ -145,9 +145,21 @@ describe("/api/mr proxy", () => {
     expect(cookies).toHaveLength(1);
     expect(cookies[0]).toMatch(/^authjs\.session-token=[^;]+;/);
     expect(cookies[0]).toContain("HttpOnly");
-    // The cookie is encrypted; neither token appears in clear.
+    // The cookie is encrypted: the access token does not appear in clear.
+    // ("r2" is too short to check this way — it occurs by chance in ~7% of
+    // random base64url values — so the rotated refresh token is verified by
+    // decoding instead.)
     expect(cookies[0]).not.toContain("NEW-TOKEN");
-    expect(cookies[0]).not.toContain("r2");
+    const { getToken: realGetToken } = await vi.importActual<typeof import("next-auth/jwt")>("next-auth/jwt");
+    const decoded = await realGetToken({
+      req: new Request("http://localhost:3000/api/mr/editions", {
+        headers: { cookie: cookies[0].split(";")[0] },
+      }),
+      secret: "test-auth-secret",
+      secureCookie: false,
+    });
+    expect(decoded?.access_token).toBe("NEW-TOKEN");
+    expect(decoded?.refresh_token).toBe("r2");
   });
 
   it("proxies anonymously and records the error when the issuer rejects the refresh (4xx)", async () => {
