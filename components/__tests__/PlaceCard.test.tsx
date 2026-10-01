@@ -55,7 +55,7 @@ function makeOp(extra: Partial<ResolvePlaceOp> = {}): ResolvePlaceOp {
     claims: [{ country: "DE", it: claimIt }],
     failed: ["country: the Italian says DE, the item is in AT"],
     candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q2", "Fictopolis Nova", "FR")],
-    suggested: { wikidata: "Q1", country: "AT", text_says: [{ country: "DE", it: claimIt }] },
+    suggested: { wikidata: "Q1", country: "AT" },
     reasoning: "Fictopolis is the town on the river.",
     confidence: "high",
     decision: null,
@@ -83,7 +83,10 @@ describe("PlaceCard", () => {
     expect(screen.getByRole("link", { name: "Q1" })).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q1");
     expect(screen.getByLabelText(/Fictopolis —/)).toBeChecked();
     expect(screen.getByLabelText(/country/i)).toHaveValue("AT");
-    expect(screen.getByRole("checkbox", { name: /the text says DE/i })).toBeChecked();
+    // text_says is derived and shown read-only: no checkboxes
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
+    expect(screen.getByTestId("text-says")).toHaveTextContent(claimIt);
   });
 
   it("accepting the unchanged suggestion records a plain accept", () => {
@@ -92,17 +95,16 @@ describe("PlaceCard", () => {
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "accept" });
   });
 
-  it("choosing another candidate records an edit without the suggestion's text_says", () => {
+  it("choosing another candidate records an edit; text_says follows the chosen country", () => {
     const onDecide = renderCard(makeOp());
     fireEvent.click(screen.getByLabelText(/Fictopolis Nova —/));
     expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
-    // the DE claim still disagrees with FR, so it stays checked
-    expect(screen.getByRole("checkbox", { name: /the text says DE/i })).toBeChecked();
-    fireEvent.click(screen.getByRole("checkbox", { name: /the text says DE/i }));
+    // the DE claim still disagrees with FR
+    expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
     fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
       decision: "edit",
-      edited: { wikidata: "Q2", country: "FR", text_says: [] },
+      edited: { wikidata: "Q2", country: "FR" },
     });
   });
 
@@ -113,24 +115,27 @@ describe("PlaceCard", () => {
     fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
       decision: "edit",
-      edited: { wikidata: "Q999", country: "DE", text_says: [] },
+      edited: { wikidata: "Q999", country: "DE" },
     });
   });
 
-  it("unchecking the suggested text_says records an edit", () => {
-    const onDecide = renderCard(makeOp());
-    fireEvent.click(screen.getByRole("checkbox", { name: /the text says DE/i }));
-    fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
-    expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
-      decision: "edit",
-      edited: { wikidata: "Q1", country: "AT", text_says: [] },
-    });
+  it("a country that agrees with the Italian claim records no text_says", () => {
+    renderCard(makeOp());
+    fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "DE" } });
+    expect(screen.queryByTestId("text-says")).not.toBeInTheDocument();
+  });
+
+  it("claims that agree with the chosen country are not shown", () => {
+    const agrees = "Ad Fictiochia di Fictia, oggi in Austria";
+    renderCard(makeOp({ it: [claimIt, agrees], claims: [{ country: "DE", it: claimIt }, { country: "AT", it: agrees }] }));
+    expect(screen.getByTestId("text-says")).toHaveTextContent(claimIt);
+    expect(screen.getByTestId("text-says")).not.toHaveTextContent(agrees);
   });
 
   it("without a suggestion the top candidate is preselected and a disagreeing claim is prechecked", () => {
     const onDecide = renderCard(makeOp({ suggested: undefined }));
     expect(screen.getByLabelText(/Fictopolis —/)).toBeChecked();
-    expect(screen.getByRole("checkbox", { name: /the text says DE/i })).toBeChecked();
+    expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
     fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "accept" });
   });
@@ -145,7 +150,7 @@ describe("PlaceCard", () => {
     fireEvent.click(accept);
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
       decision: "edit",
-      edited: { wikidata: "Q3", country: "IT", text_says: [] },
+      edited: { wikidata: "Q3", country: "IT" },
     });
   });
 
@@ -231,10 +236,10 @@ describe("PlaceCard", () => {
   });
 
   it("resumes a saved edit", () => {
-    renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", country: "FR", text_says: [] } });
+    renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", country: "FR" } });
     expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
     expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
-    expect(screen.getByRole("checkbox", { name: /the text says DE/i })).not.toBeChecked();
+    expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
   });
 
   it("OperationCard renders a PlaceCard for resolve_place without fetching a eulogy", () => {
