@@ -1,7 +1,7 @@
 {
  "schema": "crmedr-changeset/v1",
  "generated_by": "scripts/build_gazetteer.py",
- "generated_at": "2026-10-01",
+ "generated_at": "2026-10-02",
  "base": {
   "edition": "martyrologium_romanum_2004",
   "registry": "data/places.json"
@@ -14513,9 +14513,9 @@
      "wikidata": "Q17058950",
      "label": "Denia",
      "description": "neighborhood in Haifa, Israel",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [],
      "p9314": false,
@@ -15646,98 +15646,6 @@
     "country": "CA"
    },
    "reasoning": "The province of Ontario, Canada; the item, not in the candidates, was verified.",
-   "confidence": "high",
-   "decision": null,
-   "edited": null
-  },
-  {
-   "op": "resolve_place",
-   "id": "In Suécia",
-   "la": "In Suécia",
-   "it": [
-    "In Svezia"
-   ],
-   "occurrences": [
-    "mr:0612-eskillus",
-    "mr:0728-botvidus"
-   ],
-   "claims": [],
-   "failed": [
-    "country: the item has no single current country ()"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q34",
-     "label": "Sweden",
-     "description": "stato dell'Europa settentrionale, membro dell'Unione Europea",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Suecia"
-     ],
-     "p9314": false,
-     "coords": [
-      61,
-      15
-     ],
-     "types": [
-      "Q3624078",
-      "Q6256",
-      "Q179164",
-      "Q63791824",
-      "Q41614"
-     ],
-     "evidence": [
-      "it",
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q62589",
-     "label": "Union between Sweden and Norway",
-     "description": "unione di Svezia e Norvegia (1814-1905)",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      62.232313,
-      12.282477
-     ],
-     "types": [
-      "Q188800",
-      "Q3024240"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3279296",
-     "label": "Sweden-Finland",
-     "description": "term used of Finland as a part of Sweden until 1809",
-     "country": "SE",
-     "countries": [
-      "SE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q2221906",
-      "Q1620908"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "suggested": {
-    "wikidata": "Q34",
-    "country": "SE"
-   },
-   "reasoning": "Sweden.",
    "confidence": "high",
    "decision": null,
    "edited": null
@@ -21508,7 +21416,7 @@
      "wikidata": "Q13353",
      "label": "Montserrat",
      "description": "territorio d'oltremare britannico",
-     "country": "GB",
+     "country": "MS",
      "countries": [
       "GB"
      ],
@@ -28726,9 +28634,9 @@
      "wikidata": "Q126084",
      "label": "Acre",
      "description": "città israeliana",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [
       "Acco",
@@ -35973,7 +35881,7 @@
      "wikidata": "Q781",
      "label": "Antigua and Barbuda",
      "description": "Stato insulare dell'America centrale",
-     "country": null,
+     "country": "AG",
      "countries": [],
      "la": [
       "Antiqua et Barbuda"
@@ -54716,9 +54624,9 @@
      "wikidata": "Q60956",
      "label": "Ashkelon",
      "description": "città israeliana",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [
       "Ascalon"
@@ -54743,7 +54651,7 @@
    ],
    "suggested": {
     "wikidata": "Q60956",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Ascalon is Ashkelon.",
    "confidence": "high",
@@ -75050,8 +74958,8 @@
    ],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian says TR, the item is in IL",
-    "country: region 'Cappadocia' is not in IL",
+    "country: the Italian says TR, the item is in PS",
+    "country: region 'Cappadocia' is not in PS",
     "region: the item is 686 km from 'Cappadocia'"
    ],
    "candidates": [
@@ -75059,9 +74967,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [],
      "p9314": false,
@@ -75151,9 +75059,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [
       "Caesarea Maritima",
@@ -79590,9 +79498,9 @@
      "wikidata": "Q2608946",
      "label": "Eleutheropolis",
      "description": "archaeological site in Palestine",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [],
      "p9314": false,
@@ -79613,7 +79521,7 @@
    ],
    "suggested": {
     "wikidata": "Q2608946",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Eleutheropolis (Beit Guvrin); the archaeological-site item has preferred country IL.",
    "confidence": "high",
@@ -88822,7 +88730,7 @@
      "wikidata": "Q785",
      "label": "Jersey",
      "description": "dipendenza della Corona britannica",
-     "country": "GB",
+     "country": "JE",
      "countries": [
       "GB"
      ],
@@ -89457,7 +89365,7 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: region 'Oceano Indiano' is not in FR",
+    "country: region 'Oceano Indiano' is not in RE",
     "region: the item is 2548 km from 'Oceano Indiano'"
    ],
    "candidates": [
@@ -89465,7 +89373,7 @@
      "wikidata": "Q17070",
      "label": "Réunion",
      "description": "dipartimento e regione d'oltremare della Francia",
-     "country": "FR",
+     "country": "RE",
      "countries": [
       "FR"
      ],
@@ -89512,7 +89420,7 @@
    ],
    "suggested": {
     "wikidata": "Q17070",
-    "country": "FR"
+    "country": "RE"
    },
    "reasoning": "Henosis insula is Réunion in the Indian Ocean; Wikidata's country is France (it is an overseas department), although ISO also assigns it its own code RE.",
    "confidence": "high",
@@ -91106,7 +91014,7 @@
      "description": "geo-political region in ancient times occupied by the Philistines",
      "country": null,
      "countries": [
-      "IL",
+      "PS",
       "Q617602"
      ],
      "la": [],
@@ -128147,7 +128055,7 @@
    ],
    "suggested": {
     "wikidata": "Q185318",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Mount Carmel, in today's Israel.",
    "confidence": "high",
@@ -128196,7 +128104,7 @@
    ],
    "suggested": {
     "wikidata": "Q185318",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Mount Carmel near the spring of Elijah (the wadi where the first Carmelites settled); the mountain item, as the spring has no item.",
    "confidence": "high",
@@ -181894,7 +181802,7 @@
      "wikidata": "Q13353",
      "label": "Montserrat",
      "description": "territorio d'oltremare britannico",
-     "country": "GB",
+     "country": "MS",
      "countries": [
       "GB"
      ],
@@ -184535,7 +184443,7 @@
      "description": "human settlement",
      "country": null,
      "countries": [
-      "IL",
+      "PS",
       "Q1003997"
      ],
      "la": [],
@@ -193334,7 +193242,7 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (IL, PS)"
+    "country: the item has no single current country (PS, PS)"
    ],
    "candidates": [
     {
@@ -193343,7 +193251,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "IL",
+      "PS",
       "PS"
      ],
      "la": [
@@ -193948,7 +193856,7 @@
      "countries": [
       "Q41642",
       "Q207118",
-      "IL"
+      "PS"
      ],
      "la": [
       "Antiochia Ptolemais",
@@ -194017,7 +193925,7 @@
    ],
    "suggested": {
     "wikidata": "Q126084",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Ptolemais in Palestine is Acre (Akko), off which Jordan of Saxony drowned; not Ptolemais in Cyrenaica.",
    "confidence": "high",
@@ -196250,9 +196158,9 @@
      "wikidata": "Q126084",
      "label": "Acre",
      "description": "città israeliana",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [
       "Acco",
@@ -196382,7 +196290,7 @@
    ],
    "suggested": {
     "wikidata": "Q126084",
-    "country": "IL"
+    "country": "PS"
    },
    "reasoning": "Ptolemais in Palestine is Acre (Akko), where Albert of Jerusalem was killed.",
    "confidence": "high",
@@ -205859,9 +205767,9 @@
      "wikidata": "Q1177750",
      "label": "City of David",
      "description": "nucleo originario di Gerusalemme",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [],
      "p9314": false,
@@ -205929,9 +205837,9 @@
      "wikidata": "Q332444",
      "label": "Mount Zion",
      "description": "monte in Israele, di grande importanza storica e religiosa",
-     "country": "IL",
+     "country": "PS",
      "countries": [
-      "IL"
+      "PS"
      ],
      "la": [
       "Sion"
