@@ -35,7 +35,7 @@ describe("DayPage", () => {
     expect(header.closest("p")).toHaveAttribute("data-unnumbered", "true");
     expect(header.closest("p")).not.toHaveTextContent(/^1/);
     expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("p")).toHaveTextContent(/^2\s*Romae/);
-    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^\*\s*3\s*Alibi/);
+    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^3\*\s*Alibi/);
   });
 
   it("closes with the conclusio, setting R. as a rubric, and omits an empty one", () => {
