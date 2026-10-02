@@ -87,8 +87,10 @@ npm run dev
 
 Then open:
 
-- [http://localhost:3000/compare](http://localhost:3000/compare)
-- [http://localhost:3000/review](http://localhost:3000/review)
+- [http://localhost:3000](http://localhost:3000): the bookshelf of editions
+- `http://localhost:3000/read/<edition>/<mm>/<dd>`: the reader, for example `/read/martyrologium_romanum_1749/10/02`
+- [http://localhost:3000/compare](http://localhost:3000/compare): compare two editions
+- [http://localhost:3000/review](http://localhost:3000/review): change-set review, for curators only. It needs the Zitadel project role `admin` or `martyrology_editor`, read at sign-in.
 
 `/compare` and eulogy text in `/review` require a reachable `martyrology-api`
 (`API_BASE`); if it's unreachable, the proxy returns a `502` with an
