@@ -8,12 +8,13 @@ vi.mock("@/lib/api", () => {
   class ApiError extends Error {
     constructor(public status: number, public title: string) { super(title); }
   }
-  return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), getElogium: vi.fn(), ApiError };
+  return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), getElogium: vi.fn(), getCatalog: vi.fn(), ApiError };
 });
 
 import Reader, { __resetReaderState } from "@/components/Reader";
 import styles from "@/components/page.module.css";
-import { getDay, getEditions, getAccess, getElogium, ApiError } from "@/lib/api";
+import { getDay, getEditions, getAccess, getElogium, getCatalog, ApiError } from "@/lib/api";
+import { __resetShowIds } from "@/lib/use-show-ids";
 import type { EditionOut } from "@/lib/types";
 
 function ed(edition_id: string, year: number, locale: string, nature: string, status: string): EditionOut {
@@ -27,9 +28,17 @@ const DAY = {
   metadata: { edition: "martyrologium_romanum_1749", month: 10, day: 2, access: "public" },
 };
 
+const CATALOG = [
+  { id: "mr:1002-modestus-sardus", subject: "Sanctus Modestus", anchor_day: "10-02", deprecated: false, present: true, day_printed: "10-02", entry: 2 },
+  { id: "mr:1225-anastasia", subject: "Sancta Anastasia", anchor_day: "12-25", deprecated: false, present: true, day_printed: "12-25", entry: 3 },
+];
+
 beforeEach(() => {
   __resetReaderState();
+  __resetShowIds();
+  window.localStorage.clear();
   push.mockReset();
+  vi.mocked(getCatalog).mockReset().mockResolvedValue(CATALOG);
   vi.mocked(getElogium).mockReset();
   vi.mocked(getDay).mockResolvedValue(DAY);
   vi.mocked(getEditions).mockResolvedValue([
@@ -329,5 +338,80 @@ describe("Reader, two editions", () => {
     const { container } = renderPair(10, 3);
     await screen.findAllByText("Romae passio sancti Modesti Sardi.");
     expect(container.querySelectorAll(`.${styles.turnNext}`)).toHaveLength(1);
+  });
+});
+
+describe("Reader, subject search", () => {
+  const search = async () => {
+    const box = screen.getByLabelText("Find a eulogy by subject");
+    await waitFor(() => expect(box).toBeEnabled());
+    return box;
+  };
+
+  it("lists the book's subjects with the day each is printed on, in the book's language", async () => {
+    render1749();
+    await search();
+    expect(getCatalog).toHaveBeenCalledWith("martyrologium_romanum_1749", "la");
+    expect([...document.querySelectorAll("#reader-subjects option")].map((o) => o.getAttribute("value"))).toEqual([
+      "Sancta Anastasia — 25 December", "Sanctus Modestus — 2 October",
+    ]);
+  });
+
+  it("goes to the day a picked subject is printed on, keeping the pairing, and finds it there", async () => {
+    const first = renderPair();
+    fireEvent.change(await search(), { target: { value: "Sancta Anastasia — 25 December" } });
+    expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/12/25?with=${EN}`);
+    first.unmount();
+    vi.mocked(getDay).mockResolvedValue({ ...DAY, elogia: [{ ...DAY.elogia[0], id: "mr:1225-anastasia", text: "Sirmii sanctae Anastasiae." }] });
+    renderPair(12, 25);
+    const [found] = await screen.findAllByText("Sirmii sanctae Anastasiae.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    expect(found.closest("[data-eulogy-id]")).toHaveFocus();
+  });
+
+  it("finds a subject on the open day without navigating, and takes typed text on Enter", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    const box = await search();
+    fireEvent.change(box, { target: { value: "modest" } });
+    fireEvent.keyDown(box, { key: "Enter" });
+    expect(push).not.toHaveBeenCalled();
+    expect(box).toHaveValue("");
+    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("[data-eulogy-id]")).toHaveAttribute("data-found");
+  });
+
+  it("still finds the eulogy when its day is drawn only after a retry", async () => {
+    const first = render1749();
+    fireEvent.change(await search(), { target: { value: "Sancta Anastasia — 25 December" } });
+    first.unmount();
+    vi.mocked(getDay).mockRejectedValueOnce(new ApiError(502, "API unreachable"));
+    vi.mocked(getDay).mockResolvedValueOnce({ ...DAY, elogia: [{ ...DAY.elogia[0], id: "mr:1225-anastasia", text: "Sirmii sanctae Anastasiae." }] });
+    render1749(12, 25);
+    fireEvent.click(await screen.findByRole("button", { name: "Retry" }));
+    const found = await screen.findByText("Sirmii sanctae Anastasiae.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+  });
+
+  it("stays disabled when the book's subjects cannot be loaded", async () => {
+    vi.mocked(getCatalog).mockRejectedValue(new Error("down"));
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    await waitFor(() => expect(getCatalog).toHaveBeenCalled());
+    expect(screen.getByLabelText("Find a eulogy by subject")).toBeDisabled();
+  });
+});
+
+describe("Reader, id switch", () => {
+  it("sets each eulogy's canonical id above it, and remembers the choice across days", async () => {
+    const first = renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.queryByText("mr:1002-modestus-sardus")).toBeNull();
+    fireEvent.click(screen.getByRole("switch", { name: "IDs" }));
+    expect(screen.getAllByText("mr:1002-modestus-sardus")).toHaveLength(2);
+    first.unmount();
+    render1749(10, 3);
+    expect(await screen.findByText("mr:1002-modestus-sardus")).toHaveClass(styles.idHint);
+    expect(screen.getByRole("switch", { name: "IDs" })).toBeChecked();
+    expect(window.localStorage.getItem("reader.showIds")).toBe("1");
   });
 });

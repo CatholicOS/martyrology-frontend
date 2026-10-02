@@ -74,9 +74,11 @@ function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day)
  * each sheet is a page of its own.
  */
 export default function Spread({
-  a, b, editions, mm, dd, signedIn, turn,
+  a, b, editions, mm, dd, signedIn, turn, showIds = false,
 }: {
   a: string; b: string; editions: EditionOut[]; mm: number; dd: number; signedIn: boolean;
+  /** Set each eulogy's canonical id above it. */
+  showIds?: boolean;
   /** The page-turn animation to play once both days have settled. */
   turn: "next" | "prev" | null;
 }) {
@@ -136,7 +138,7 @@ export default function Spread({
   if (!rows || sa.kind !== "ready" || sb.kind !== "ready") {
     const page = (s: SideInfo, d: typeof dayA) =>
       d.state.kind === "ready" ? (
-        <DayPage day={d.state.day} heading={dateHeading(day, s.lang)} lang={s.lang} edition={s.id} />
+        <DayPage day={d.state.day} heading={dateHeading(day, s.lang)} lang={s.lang} edition={s.id} showIds={showIds} />
       ) : (
         <DayStatus state={d.state} retry={d.retry} title={s.title} signedIn={signedIn} mm={mm} dd={dd} />
       );
@@ -172,7 +174,7 @@ export default function Spread({
     return (
       <>
         <span className={side === "b" ? styles.tag : styles.srOnly}>{s.name}</span>
-        {e ? <Eulogy e={e} edition={s.id} /> : <Gap note={note!} name={s.name} href={href} />}
+        {e ? <Eulogy e={e} edition={s.id} showId={showIds} /> : <Gap note={note!} name={s.name} href={href} />}
       </>
     );
   };

@@ -17,16 +17,16 @@ export function Conclusio({ text }: { text: string }) {
 
 /**
  * One day typeset as a printed page. `heading` is used when the edition prints no titulus;
- * `edition` (a CLBDR edition id) selects the misprint notes.
+ * `edition` (a CLBDR edition id) selects the misprint notes; `showIds` sets each eulogy's canonical id above it.
  */
 export default function DayPage({
-  day, heading, lang, edition,
-}: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en"; edition?: string }) {
+  day, heading, lang, edition, showIds = false,
+}: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en"; edition?: string; showIds?: boolean }) {
   return (
     <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
       {day.elogia.map((e, i) => (
-        <Eulogy key={e.id ?? i} e={e} edition={edition} />
+        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} />
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
     </article>
