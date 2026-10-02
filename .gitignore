@@ -9,3 +9,6 @@ coverage
 .zitadel-data/
 .stack-out/
 docker-compose.override.yml
+
+# Brainstorming mockups (superpowers visual companion)
+.superpowers/brainstorm/
