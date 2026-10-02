@@ -49,6 +49,21 @@ export function buildSnapshot(registry, la, it, en) {
   return out;
 }
 
+/**
+ * @typedef {object} Misprint
+ * @property {string} id
+ * @property {string} edition
+ * @property {string} printed
+ * @property {string} intended
+ *
+ * Keep what the reader needs to footnote a misprint (crmedr's `verified` is curation metadata).
+ * @param {{misprints: (Misprint & {verified?: string})[]}} doc
+ * @returns {Misprint[]}
+ */
+export function buildMisprints(doc) {
+  return doc.misprints.map(({ id, edition, printed, intended }) => ({ id, edition, printed, intended }));
+}
+
 function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -61,5 +76,9 @@ function main() {
   mkdirSync(dirname(dest), { recursive: true });
   writeFileSync(dest, JSON.stringify(snap) + "\n");
   console.log(`wrote ${dest}: ${Object.keys(snap).length} ids`);
+  const misprints = buildMisprints(JSON.parse(readFileSync(join(crmedr, "data", "misprints.json"), "utf8")));
+  const misprintsDest = join(here, "..", "data", "misprints-snapshot.json");
+  writeFileSync(misprintsDest, JSON.stringify(misprints, null, 2) + "\n");
+  console.log(`wrote ${misprintsDest}: ${misprints.length} misprints`);
 }
 if (import.meta.url === `file://${process.argv[1]}`) main();

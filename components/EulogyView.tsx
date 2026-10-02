@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
 import type { EulogyOut, Locale } from "@/lib/types";
 
@@ -109,12 +110,20 @@ export default function EulogyView({
               {!sel.isFallback && sel.editionId && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">{sel.editionId}</p>
               )}
-              <p className="mt-1">{sel.text ?? "(no text)"}</p>
+              <p className="mt-1">
+                {sel.text && sel.editionId ? <EulogyText text={sel.text} id={eulogy.id} edition={sel.editionId} /> : "(no text)"}
+              </p>
             </div>
             {showAlongside && alongside && (
               <div>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{alongside}</p>
-                <p className="mt-1">{eulogy.editions[alongside]?.text ?? `(no text in ${alongside})`}</p>
+                <p className="mt-1">
+                  {eulogy.editions[alongside]?.text ? (
+                    <EulogyText text={eulogy.editions[alongside].text} id={eulogy.id} edition={alongside} />
+                  ) : (
+                    `(no text in ${alongside})`
+                  )}
+                </p>
               </div>
             )}
           </div>

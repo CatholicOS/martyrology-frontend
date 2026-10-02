@@ -62,7 +62,9 @@ re-run them whenever the registry or the correction manifest changes upstream.
 
 ```bash
 # Rebuild data/registry-snapshot.json from ../crmedr's canonical registry
-# (data/martyrology_ids.json) + i18n subject files (i18n/{la,it,en}.json).
+# (data/martyrology_ids.json) + i18n subject files (i18n/{la,it,en}.json),
+# and data/misprints-snapshot.json from data/misprints.json (the verified
+# misprints the reader notes as "[sic! expected: …]").
 npm run snapshot-registry
 
 # Convert ../crmedr/data/deprecated_id_corrections.json into a

@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from "react";
 import type { CompareDayGroup, CompareRow } from "@/lib/compare";
+import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
 import type { EulogyOut } from "@/lib/types";
 
@@ -97,7 +98,9 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
                             <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
                               {editionId}:
                             </span>{" "}
-                            {placement.text}
+                            {placement.text && (
+                              <EulogyText text={placement.text} id={expanded[row.id]!.data!.id} edition={editionId} />
+                            )}
                           </p>
                         ))}
                       </div>

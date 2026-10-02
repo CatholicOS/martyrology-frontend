@@ -87,7 +87,7 @@ function DayView({
         </div>}
       {state.kind === "ready" && (
         <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-          <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} />
+          <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} />
         </div>
       )}
       {state.kind === "locked" && (

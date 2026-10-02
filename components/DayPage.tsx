@@ -1,3 +1,4 @@
+import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
 import type { DayContentOut } from "@/lib/types";
 
@@ -14,15 +15,22 @@ function Conclusio({ text }: { text: string }) {
   );
 }
 
-/** One day typeset as a printed page. `heading` is used when the edition prints no titulus. */
-export default function DayPage({ day, heading, lang }: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en" }) {
+/**
+ * One day typeset as a printed page. `heading` is used when the edition prints no titulus;
+ * `edition` (a CLBDR edition id) selects the misprint notes.
+ */
+export default function DayPage({
+  day, heading, lang, edition,
+}: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en"; edition?: string }) {
+  const text = (e: DayContentOut["elogia"][number]) =>
+    e.text && edition ? <EulogyText text={e.text} id={e.id} edition={edition} noteClassName={styles.sic} /> : e.text;
   return (
     <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
       {day.elogia.map((e, i) =>
         e.unnumbered ? (
           <p key={e.id ?? i} className={`${styles.entry} ${styles.unnumbered}`} data-unnumbered="true">
-            {e.text}
+            {text(e)}
           </p>
         ) : (
           <p key={e.id ?? i} className={styles.entry}>
@@ -30,7 +38,7 @@ export default function DayPage({ day, heading, lang }: { day: DayContentOut; he
               {e.entry}
               {e.asterisk ? "*" : ""}
             </span>
-            {e.text}
+            {text(e)}
           </p>
         ),
       )}
