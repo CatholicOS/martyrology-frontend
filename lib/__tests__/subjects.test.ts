@@ -29,6 +29,15 @@ describe("subjectOptions", () => {
     ]);
     expect(opts.map((o) => o.value)).toEqual(["Sancti Martyres — 10 March, n. 2", "Sancti Martyres — 10 March, n. 4"]);
   });
+
+  it("falls back to the id when such twins are unnumbered, so each stays pickable", () => {
+    const opts = subjectOptions([
+      entry("mr:0310-b", "Sancti Martyres", "03-10", null),
+      entry("mr:0310-a", "Sancti Martyres", "03-10", null),
+    ]);
+    expect(new Set(opts.map((o) => o.value)).size).toBe(2);
+    expect(opts.map((o) => o.value).sort()).toEqual(["Sancti Martyres — 10 March, mr:0310-a", "Sancti Martyres — 10 March, mr:0310-b"]);
+  });
 });
 
 describe("findSubject", () => {

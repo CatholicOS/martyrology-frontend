@@ -159,21 +159,16 @@ export default function Reader({
     return () => window.removeEventListener("keydown", onKey);
   }, [day, go]);
 
-  // The page may still be loading: watch for the eulogy until it is drawn.
+  // The page may still be loading, or be retried after an error: watch for the eulogy until it is drawn.
   useEffect(() => {
     const root = pages.current;
     if (!target || !root) return;
     if (reveal(root, target.id)) return;
     const watch = new MutationObserver(() => {
-      if (reveal(root, target.id)) stop();
+      if (reveal(root, target.id)) watch.disconnect();
     });
-    const timer = window.setTimeout(() => stop(), 15000);
-    function stop() {
-      watch.disconnect();
-      window.clearTimeout(timer);
-    }
     watch.observe(root, { childList: true, subtree: true });
-    return stop;
+    return () => watch.disconnect();
   }, [target]);
 
   const current = editions.find((e) => e.edition_id === edition);

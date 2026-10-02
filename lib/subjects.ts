@@ -11,7 +11,7 @@ export interface SubjectOption {
 /**
  * The subject search's options for one edition's catalog: only the eulogies it prints, each
  * labelled with the day it prints them on ("Sanctus Ioannes — 27 December"), since many subjects
- * recur. Two of one subject on one day are told apart by their number.
+ * recur. Two of one subject on one day are told apart by their number, or by their id if unnumbered.
  */
 export function subjectOptions(catalog: CatalogEntryOut[]): SubjectOption[] {
   const rows = catalog.flatMap((e) => {
@@ -31,7 +31,10 @@ export function subjectOptions(catalog: CatalogEntryOut[]): SubjectOption[] {
         (x.e.entry ?? Infinity) - (y.e.entry ?? Infinity),
     )
     .map((r) => ({
-      value: seen.get(r.base)! > 1 && r.e.entry !== null && r.e.entry !== undefined ? `${r.base}, n. ${r.e.entry}` : r.base,
+      value:
+        seen.get(r.base)! > 1
+          ? `${r.base}, ${r.e.entry !== null && r.e.entry !== undefined ? `n. ${r.e.entry}` : r.e.id}`
+          : r.base,
       id: r.e.id,
       day: r.day,
     }));

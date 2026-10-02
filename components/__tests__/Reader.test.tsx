@@ -380,6 +380,18 @@ describe("Reader, subject search", () => {
     expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("[data-eulogy-id]")).toHaveAttribute("data-found");
   });
 
+  it("still finds the eulogy when its day is drawn only after a retry", async () => {
+    const first = render1749();
+    fireEvent.change(await search(), { target: { value: "Sancta Anastasia — 25 December" } });
+    first.unmount();
+    vi.mocked(getDay).mockRejectedValueOnce(new ApiError(502, "API unreachable"));
+    vi.mocked(getDay).mockResolvedValueOnce({ ...DAY, elogia: [{ ...DAY.elogia[0], id: "mr:1225-anastasia", text: "Sirmii sanctae Anastasiae." }] });
+    render1749(12, 25);
+    fireEvent.click(await screen.findByRole("button", { name: "Retry" }));
+    const found = await screen.findByText("Sirmii sanctae Anastasiae.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+  });
+
   it("stays disabled when the book's subjects cannot be loaded", async () => {
     vi.mocked(getCatalog).mockRejectedValue(new Error("down"));
     render1749();

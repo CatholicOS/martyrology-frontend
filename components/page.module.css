@@ -16,8 +16,9 @@
 /* The eulogy the subject search went to: a brief wash that fades out. */
 .entry[data-found] { animation: found 2.4s ease-out; border-radius: 3px; }
 @keyframes found { from { background: rgba(214, 170, 60, 0.45); } to { background: transparent; } }
-/* It takes focus for screen readers; the wash, not a focus ring, shows it. */
+/* It takes focus for screen readers: the wash shows it at first, then a soft ring while it keeps focus. */
 .entry[tabindex="-1"]:focus { outline: none; }
+.entry[tabindex="-1"]:focus:not([data-found]) { outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; border-radius: 3px; }
 .sic { color: #5c4f45; font-size: 0.8em; }
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
