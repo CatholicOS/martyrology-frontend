@@ -191,18 +191,17 @@ export default function Reader({
         </button>
         <div className="flex-1">
           {withEdition ? (
-            <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-              {/* key resets both sheets' loading state for each pairing/day */}
-              <Spread
-                key={`${edition}+${withEdition}/${mm}/${dd}`}
-                a={edition}
-                b={withEdition}
-                editions={editions}
-                mm={mm}
-                dd={dd}
-                signedIn={signedIn}
-              />
-            </div>
+            /* key resets both sheets' loading state for each pairing/day */
+            <Spread
+              key={`${edition}+${withEdition}/${mm}/${dd}`}
+              a={edition}
+              b={withEdition}
+              editions={editions}
+              mm={mm}
+              dd={dd}
+              signedIn={signedIn}
+              turn={turn}
+            />
           ) : (
             /* key resets DayView's loading state for each day/edition */
             <DayView

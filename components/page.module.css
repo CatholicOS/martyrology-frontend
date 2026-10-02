@@ -31,7 +31,9 @@
   font-size: 1.05rem; line-height: 1.6; box-shadow: inset 0 0 40px rgba(120, 80, 40, 0.08), 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 .sheet { display: none; }
-.cellB { margin-left: 1rem; border-top: 1px solid rgba(120, 80, 40, 0.18); }
+.cellB { margin-left: 1rem; }
+.ruled { border-top: 1px solid rgba(120, 80, 40, 0.18); }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .tag { display: block; margin-top: 0.3rem; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: #5c4f45; }
 .caption { margin: -0.6rem 0 1rem; text-align: center; font-variant: small-caps; font-size: 0.85rem; color: #5c4f45; }
 .gap { margin: 0.6rem 0; font-size: 0.8em; color: #5c4f45; }
@@ -50,9 +52,10 @@
   .sheetB { grid-column: 3; }
   .cellA, .cellB { position: relative; grid-row: var(--row); padding: 0 2.25rem; }
   .cellA { grid-column: 1; }
-  .cellB { grid-column: 3; margin-left: 0; border-top: 0; }
+  .cellB { grid-column: 3; margin-left: 0; }
+  .ruled { border-top: 0; }
   .first { padding-top: 2rem; }
   .last { padding-bottom: 2rem; }
-  .tag { display: none; }
+  .tag { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .facing { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }

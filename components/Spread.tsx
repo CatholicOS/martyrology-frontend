@@ -73,9 +73,11 @@ function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day)
  * each sheet is a page of its own.
  */
 export default function Spread({
-  a, b, editions, mm, dd, signedIn,
+  a, b, editions, mm, dd, signedIn, turn,
 }: {
   a: string; b: string; editions: EditionOut[]; mm: number; dd: number; signedIn: boolean;
+  /** The page-turn animation to play once both days have settled. */
+  turn: "next" | "prev" | null;
 }) {
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
   const A = sideInfo(a, b, editions);
@@ -84,7 +86,9 @@ export default function Spread({
   const dayB = useDay(b, mm, dd);
   const sa = dayA.state;
   const sb = dayB.state;
-  const aligned = A.meta?.aligned !== false && B.meta?.aligned !== false;
+  // Rows only once both editions are known to be aligned; unknown metadata shows independent pages.
+  const aligned = !!A.meta && !!B.meta && A.meta.aligned !== false && B.meta.aligned !== false;
+  const turnClass = turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined;
 
   const rows = useMemo<Row[] | null>(
     () => (aligned && sa.kind === "ready" && sb.kind === "ready" ? buildRows(sa.day.elogia, sb.day.elogia) : null),
@@ -107,6 +111,16 @@ export default function Spread({
     </p>
   ));
 
+  if (sa.kind === "loading" || sb.kind === "loading") {
+    const skeleton = { kind: "loading" } as const;
+    return (
+      <div className={styles.facing}>
+        <DayStatus state={skeleton} retry={dayA.retry} title={A.title} signedIn={signedIn} mm={mm} dd={dd} />
+        <DayStatus state={skeleton} retry={dayB.retry} title={B.title} signedIn={signedIn} mm={mm} dd={dd} />
+      </div>
+    );
+  }
+
   if (!rows || sa.kind !== "ready" || sb.kind !== "ready") {
     const page = (s: SideInfo, d: typeof dayA) =>
       d.state.kind === "ready" ? (
@@ -115,13 +129,13 @@ export default function Spread({
         <DayStatus state={d.state} retry={d.retry} title={s.title} signedIn={signedIn} mm={mm} dd={dd} />
       );
     return (
-      <>
+      <div className={turnClass}>
         {notice}
         <div className={styles.facing}>
           <div>{page(A, dayA)}</div>
           <div>{page(B, dayB)}</div>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -140,13 +154,19 @@ export default function Spread({
     }
     if (r.kind === "conclusio") return d.conclusio ? <Conclusio text={d.conclusio} /> : null;
     const e = r[side];
-    if (e) return <Eulogy e={e} edition={s.id} />;
-    const note = gapNote(rows, i, s.id, placements, day);
-    return note ? <Gap note={note} name={s.name} href={href} /> : null;
+    const note = e ? null : gapNote(rows, i, s.id, placements, day);
+    if (!e && !note) return null;
+    // The edition's name labels the cell: visible on phones for B, otherwise for screen readers only.
+    return (
+      <>
+        <span className={side === "b" ? styles.tag : styles.srOnly}>{s.name}</span>
+        {e ? <Eulogy e={e} edition={s.id} /> : <Gap note={note!} name={s.name} href={href} />}
+      </>
+    );
   };
 
   return (
-    <>
+    <div className={turnClass}>
       {notice}
       <div className={styles.spread} style={{ "--rows": rows.length } as CSSProperties}>
         <div className={`${styles.sheet} ${styles.sheetA}`} aria-hidden />
@@ -154,19 +174,20 @@ export default function Spread({
         {rows.map((r, i) => {
           const edge = i === 0 ? styles.first : i === rows.length - 1 ? styles.last : "";
           const style = { "--row": i + 1 } as CSSProperties;
+          const cellA = cell(r, i, "a");
+          const cellB = cell(r, i, "b");
           return (
             <Fragment key={i}>
               <div className={`${styles.cellA} ${edge}`} style={style} data-row={i + 1} data-side="a" lang={A.lang}>
-                {cell(r, i, "a")}
+                {cellA}
               </div>
-              <div className={`${styles.cellB} ${edge}`} style={style} data-row={i + 1} data-side="b" lang={B.lang}>
-                {r.kind === "eulogy" && <span className={styles.tag}>{B.name}</span>}
-                {cell(r, i, "b")}
+              <div className={`${styles.cellB} ${cellB ? styles.ruled : ""} ${edge}`} style={style} data-row={i + 1} data-side="b" lang={B.lang}>
+                {cellB}
               </div>
             </Fragment>
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
