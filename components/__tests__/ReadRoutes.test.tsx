@@ -75,4 +75,11 @@ describe("/read routes", () => {
       title: "4 October — Martyrologium Romanum 2004 | Martyrologium Romanum 1749",
     });
   });
+
+  it("keys the reader by edition, day and pairing, so a query-only change remounts it", async () => {
+    const readerKey = (el: unknown) => (el as { props: { children: { key: string } } }).props.children.key;
+    const single = await DayRoute(withParams(P, {}));
+    const paired = await DayRoute(withParams(P, { with: "martyrologium_romanum_1749" }));
+    expect(readerKey(single)).not.toEqual(readerKey(paired));
+  });
 });

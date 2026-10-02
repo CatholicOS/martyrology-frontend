@@ -35,7 +35,8 @@ export default async function DayRoute({ params, searchParams }: { params: Param
   const viewer = await getViewer();
   return (
     <main className={w ? "mx-auto max-w-7xl p-4" : "mx-auto max-w-5xl p-4"}>
-      <Reader edition={edition} mm={day.mm} dd={day.dd} signedIn={viewer.signedIn} withEdition={w} />
+      {/* key: remount on every navigation, query-only ones included; Reader's navigation guard and turn snapshot assume it */}
+      <Reader key={`${edition}/${mm}/${dd}?with=${w ?? ""}`} edition={edition} mm={day.mm} dd={day.dd} signedIn={viewer.signedIn} withEdition={w} />
     </main>
   );
 }
