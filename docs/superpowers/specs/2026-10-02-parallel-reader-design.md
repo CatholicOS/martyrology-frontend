@@ -34,8 +34,8 @@ printed on another day).
   `unnumbered`, `text`) and `conclusio`. For a locked edition the `text` of
   each eulogy is null and `metadata.access` is `restricted-texts`.
 - `GET /api/v1/editions` gives each edition's `aligned` flag: `true` when its
-  eulogies are keyed by canonical ID, `false` when not yet (today the 1914
-  English translation), `null` when no texts are attached.
+  eulogies are keyed by canonical ID, `false` when not yet (none today; the
+  1914 English translation was, before its alignment), `null` when no texts are attached.
 - `GET /api/v1/elogium/{id}` returns one eulogy with its placement
   (`day_printed`, `entry`, `unnumbered`) in every edition that prints it.
 - `GET /api/v1/elogia?edition=…` (the catalog) is about 1 MB per edition, too
@@ -99,8 +99,11 @@ for the day, or failed to load, the two sheets are filled **independently**:
 the same grid holds one cell per side containing a whole `DayPage` (or that
 side's notice), still with the gutter, still turning together.
 
-- An unaligned edition adds one line under the reader bar: "The 1914 English
-  edition is not yet aligned, so its eulogies are not matched."
+- An unaligned edition adds one line under the reader bar, e.g. "The 1914
+  English edition is not yet aligned, so its eulogies are not matched."
+  Rows are built only once both editions' metadata is known and neither is
+  unaligned; until the editions list loads (or if it fails) the two
+  independent pages are shown.
 - A locked side shows the existing `LockedNotice` (with sign-in); the other
   side reads normally.
 - No text for the day, or an error with Retry, are shown per side as in the
@@ -121,7 +124,8 @@ Romanum 1749*.
 
 - Beside the book switcher, a second select, **Compare with…**: "— none —"
   plus every edition the viewer can open (`shelfState` "open"), except A.
-  Choosing one adds `?with=`; "— none —" removes it.
+  Choosing one adds `?with=`; "— none —" removes it. (As built, the empty
+  option is labelled "Compare with…".)
 - In paired mode two small buttons follow: **⇄** swaps the sheets
   (`/read/{B}/…?with={A}`) and **×** closes the second sheet.
 - Switching book A keeps B, unless the new A is B, in which case the pairing
@@ -223,17 +227,20 @@ Test-first, with Vitest and Testing Library, as in the rest of the repo.
   notes render, and the other-day note links to that day with `?with=`; the
   independent fallback with its unaligned note; a locked side shows the
   locked notice while the other reads.
-- `components/__tests__/ReaderBar.test.tsx` (new) and `Reader.test.tsx` —
+- `components/__tests__/Reader.test.tsx` (there is no separate
+  `ReaderBar.test.tsx`; the bar's cases live here) —
   choosing, swapping and closing a comparison; every navigation keeps
-  `?with=`; an invalid `with` is dropped; the paired turn animation runs
+  `?with=`; an invalid `with` is dropped (by a server `redirect()` to the plain path,
+  covered in `ReadRoutes.test.tsx`); the paired turn animation runs
   once.
 - `components/__tests__/ReadRoutes.test.tsx` — the `with` parameter and the
   paired title.
 - `components/__tests__/SiteHeader.test.tsx` — Compare hidden from
   non-curators; a gate test for `/compare` like the Review gate.
 - In the browser, at desktop and phone widths: 2004 Latin | 2004 CEI (nearly
-  all rows paired), 1749 | 2004 (many gaps and other-day notes), and the 1914
-  English (unaligned fallback).
+  all rows paired), 1749 | 2004 (many gaps and other-day notes), and the
+  independent fallback (unaligned editions: none today, so check it with the
+  editions list blocked or failing).
 
 ## Out of scope
 
