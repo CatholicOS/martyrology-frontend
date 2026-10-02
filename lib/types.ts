@@ -1,5 +1,15 @@
 export type Locale = "la" | "it" | "en";
 
+/** The printed copy an edition's texts were taken from (the API's `source.json`). */
+export interface EditionSource {
+  title: string;
+  imprint?: string | null;
+  year?: number | null;
+  rights?: string | null;
+  isbn?: string | null;
+  note?: string | null;
+}
+
 export interface EditionOut {
   edition_id: string;
   book: string;
@@ -13,6 +23,7 @@ export interface EditionOut {
   governance: { governing_body: string; type: string; nation?: string | null };
   availability: { status: string; note?: string | null };
   aligned?: boolean | null;
+  source?: EditionSource | null;
 }
 
 export interface CatalogEntryOut {

@@ -30,6 +30,12 @@ function natureRank(e: EditionOut): number {
   return e.nature === "editio_vernacula" ? 1 : 2;
 }
 
+/** "editio_typica_recognita" → "Editio typica recognita". */
+export function natureLabel(nature: string): string {
+  const s = nature.replace(/_/g, " ");
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 /** A Latin editio typica, as opposed to a vernacular edition or a translation. */
 export function isOriginal(e: EditionOut): boolean {
   return natureRank(e) === 0;

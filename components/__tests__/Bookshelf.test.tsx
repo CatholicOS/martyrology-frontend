@@ -39,8 +39,11 @@ beforeEach(() => {
 describe("Bookshelf", () => {
   it("shows the editions newest first", async () => {
     render(<Bookshelf signedIn={false} />);
-    await screen.findByRole("button", { name: /1749/ });
-    const names = screen.getAllByRole("button").map((b) => b.getAttribute("aria-label"));
+    await screen.findByRole("button", { name: "Martyrologium Romanum 1749, Latin" });
+    const names = screen
+      .getAllByRole("button")
+      .map((b) => b.getAttribute("aria-label"))
+      .filter((n) => !n?.startsWith("About this edition"));
     expect(names).toEqual(["Martyrologium Romanum 2004, Latin (locked)", "Martyrologium Romanum 1749, Latin"]);
     expect(screen.getByLabelText(/2001, Latin \(not yet available\)/)).toBeInTheDocument();
   });
