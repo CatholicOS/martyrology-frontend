@@ -14,7 +14,7 @@ from the API for the actual eulogy text.
   aligned by canonical ID. Deprecated-only IDs render RED, non-deprecated-only
   IDs render GREEN, and IDs that this edition places on a different physical
   day than the registry's canonical day (a "cross-day" placement) get a badge.
-- `/review` — load a bundled change-set (e.g. `deprecated-id-normalization`),
+- `/review` — load a bundled change-set (e.g. `gazetteer-review`),
   see each operation (rename/delete/merge/…) alongside the live 1749 Latin text
   for the affected ID(s), and Accept / Reject / Edit each one. Decisions persist
   in `localStorage` (reload-safe) and can be exported as a new

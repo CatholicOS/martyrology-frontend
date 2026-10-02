@@ -16,10 +16,10 @@
     "A Edessa nell’antica Siria"
    ],
    "occurrences": [
-    "mr:0129-sarbelius",
+    "mr:0129-sarbelius-et-bebaia",
     "mr:0130-barsimaeus",
     "mr:0902-habib",
-    "mr:1115-guria"
+    "mr:1115-guria-et-samona"
    ],
    "claims": [
     {
@@ -500,8 +500,8 @@
    "occurrences": [
     "mr:0917-emmanuel-nguyen-van-trieu",
     "mr:1017-isidorus-gagelin",
-    "mr:1024-iosephus-le",
-    "mr:1212-simon-phan"
+    "mr:1024-iosephus-le-dang-thi",
+    "mr:1212-simon-phan-dac-hoa"
    ],
    "claims": [
     {
@@ -1070,8 +1070,8 @@
    "occurrences": [
     "mr:0311-dominicus-cam",
     "mr:0601-iosephus-tuc",
-    "mr:0703-iosephus-nguyen",
-    "mr:0821-iosephus"
+    "mr:0703-iosephus-nguyen-dinh-uyen",
+    "mr:0821-iosephus-dang-dinh-vien"
    ],
    "claims": [
     {
@@ -1241,7 +1241,7 @@
     "mr:0415-crescens",
     "mr:0510-dioscoridis",
     "mr:0818-leo",
-    "mr:1104-nicandrus"
+    "mr:1104-nicandrus-et-hermes"
    ],
    "claims": [
     {
@@ -4805,7 +4805,7 @@
    ],
    "occurrences": [
     "mr:0321-thomas-pilchard",
-    "mr:0704-ioannes-cornelius",
+    "mr:0704-ioannes-cornelius-et-socii",
     "mr:0819-hugo-green"
    ],
    "claims": [],
@@ -5705,7 +5705,7 @@
    "occurrences": [
     "mr:0708-glyceria",
     "mr:1114-theodotus",
-    "mr:1119-mulieres-virgines-viduae-quadraginta-martyres-heracleae"
+    "mr:1119-quadraginta-martyres-heracleae"
    ],
    "claims": [
     {
@@ -6332,7 +6332,7 @@
    "occurrences": [
     "mr:0122-franciscus-gil-de-federich-et-matthaeus-alonso-de-leziniana",
     "mr:0130-thomas-khuong",
-    "mr:0525-petrus"
+    "mr:0525-petrus-doan-van-van"
    ],
    "claims": [
     {
@@ -6885,9 +6885,9 @@
     "Nella città di Đồng Hới nell’antico An Nam, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0526-ioannes",
+    "mr:0526-ioannes-doan-trinh-hoan-et-matthaeus-nguyen-van-phuong",
     "mr:0710-antonius-nguyen-huu-quynh-et-petrus-nguyen-khac-tu",
-    "mr:1124-petrus-dumoulin-borie"
+    "mr:1124-petrus-dumoulin-borie-et-socii"
    ],
    "claims": [
     {
@@ -7128,9 +7128,9 @@
     "A Omura in Giappone"
    ],
    "occurrences": [
-    "mr:0601-alphonsus-navarrete",
-    "mr:0729-ludovicus-bertran",
-    "mr:0912-apollinaris-franco"
+    "mr:0601-alphonsus-navarrete-et-socii",
+    "mr:0729-ludovicus-bertran-et-socii",
+    "mr:0912-apollinaris-franco-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -7861,7 +7861,7 @@
    ],
    "occurrences": [
     "mr:0403-chrestus-et-pappus",
-    "mr:0827-marcellinus",
+    "mr:0827-marcellinus-et-socii",
     "mr:0915-straton-et-socii"
    ],
    "claims": [
@@ -9158,8 +9158,8 @@
     "Ad Alzira nel territorio di Valencia sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0922-vincentius-pelufo-corts",
-    "mr:1025-maria-teresia-ferragud-roig"
+    "mr:0922-vincentius-pelufo-corts-et-iosepha-moscardo-montalva",
+    "mr:1025-maria-teresia-ferragud-roig-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -10565,7 +10565,7 @@
    ],
    "occurrences": [
     "mr:0916-andreas-kim-tae-gon",
-    "mr:0921-laurentius-imbert"
+    "mr:0921-laurentius-imbert-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -14672,7 +14672,7 @@
    ],
    "occurrences": [
     "mr:0126-theogenes",
-    "mr:1115-viginti-martyres-hippone-regio"
+    "mr:1115-viginti-martyres-hipponis-regii"
    ],
    "claims": [
     {
@@ -14757,7 +14757,7 @@
    ],
    "occurrences": [
     "mr:0517-restituta",
-    "mr:1017-volitani"
+    "mr:1017-martyres-volitani"
    ],
    "claims": [
     {
@@ -17890,7 +17890,7 @@
     "Nella città di Hải Dương nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0630-vincentius",
+    "mr:0630-vincentius-do-yen",
     "mr:1101-hieronymus-hermosilla-et-valentinus-berrio-ochoa"
    ],
    "claims": [
@@ -18054,7 +18054,7 @@
    ],
    "occurrences": [
     "mr:0427-laurentius-nguyen-van-huong",
-    "mr:0428-paulus-pham-khac-khoan"
+    "mr:0428-paulus-pham-khac-khoan-et-socii"
    ],
    "claims": [
     {
@@ -18433,7 +18433,7 @@
    ],
    "occurrences": [
     "mr:0602-dominicus-ninh",
-    "mr:0603-petrus"
+    "mr:0603-petrus-dong"
    ],
    "claims": [
     {
@@ -18461,7 +18461,7 @@
    ],
    "occurrences": [
     "mr:0115-romedius",
-    "mr:0529-sisinnius"
+    "mr:0529-sisinnius-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -19043,8 +19043,8 @@
     "Nel villaggio di Picadero de Paterna sempre nel territorio di Valencia"
    ],
    "occurrences": [
-    "mr:1209-richardus",
-    "mr:1229-henricus-ioannes-requena"
+    "mr:1209-richardus-de-los-rios-fabregat-et-socii",
+    "mr:1229-henricus-ioannes-requena-et-iosephus-perpina-nacher"
    ],
    "claims": [],
    "failed": [
@@ -21250,7 +21250,7 @@
     "A Magonza nella Gallia belgica, ora in Germania"
    ],
    "occurrences": [
-    "mr:0616-aureus",
+    "mr:0616-aureus-et-socii",
     "mr:1028-ferrutius"
    ],
    "claims": [
@@ -21790,7 +21790,7 @@
    ],
    "occurrences": [
     "mr:0630-ladislaus",
-    "mr:0717-zoerardus"
+    "mr:0717-zoerardus-et-benedictus"
    ],
    "claims": [
     {
@@ -22759,7 +22759,7 @@
    ],
    "occurrences": [
     "mr:0403-petrus-eduardus-dankowski",
-    "mr:1016-anicetus-koplinski"
+    "mr:1016-anicetus-koplinski-et-iosephus-jankowski"
    ],
    "claims": [],
    "failed": [
@@ -24059,7 +24059,7 @@
    ],
    "occurrences": [
     "mr:0708-mancius-arakus",
-    "mr:1101-petrus-paulus-navarro"
+    "mr:1101-petrus-paulus-navarro-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -24684,7 +24684,7 @@
     "A Srijem in Pannonia, nell’odierna Croazia"
    ],
    "occurrences": [
-    "mr:0326-montanus",
+    "mr:0326-montanus-et-maxima",
     "mr:0406-irenaeus"
    ],
    "claims": [
@@ -26660,7 +26660,7 @@
     "A Utica in Africa, nell’odierna Tunisia"
    ],
    "occurrences": [
-    "mr:0818-massa-candida",
+    "mr:0818-martyres-massae-candidae",
     "mr:0821-quadratus"
    ],
    "claims": [
@@ -27432,7 +27432,7 @@
     "A Warwick, in Inghilterra"
    ],
    "occurrences": [
-    "mr:0716-ioannes-sugar",
+    "mr:0716-ioannes-sugar-et-robertus-grissold",
     "mr:0813-gulielmus-freeman"
    ],
    "claims": [],
@@ -29596,7 +29596,7 @@
     "Sulle rive del fiume Beijang vicino alla città di Shaoguan nella provincia del Guandong in Cina"
    ],
    "occurrences": [
-    "mr:0225-aloysius-versiglia"
+    "mr:0225-aloysius-versiglia-et-callistus-caravario"
    ],
    "claims": [],
    "failed": [
@@ -30292,7 +30292,7 @@
     "Ad Aubenas nel territorio di Viviers in Francia"
    ],
    "occurrences": [
-    "mr:0207-iacobus-sales"
+    "mr:0207-iacobus-sales-et-gulielmus-saultemouche"
    ],
    "claims": [],
    "failed": [
@@ -31805,7 +31805,7 @@
     "Ad Almería sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0830-didacus-ventaja-milan"
+    "mr:0830-didacus-ventaja-milan-et-emmanuel-medina-olmos"
    ],
    "claims": [],
    "failed": [
@@ -32334,7 +32334,7 @@
     "Ad Alzira nel territorio di Valencia in Spagna"
    ],
    "occurrences": [
-    "mr:0821-bernardus"
+    "mr:0821-bernardus-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -35508,7 +35508,7 @@
     "In una sordida galera all’ancora davanti a Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0713-ludovicus-armandus-iosephus-adam"
+    "mr:0713-ludovicus-armandus-iosephus-adam-et-bartholomaeus-jarrige-de-la-morelie-de-biars"
    ],
    "claims": [],
    "failed": [
@@ -40363,7 +40363,7 @@
     "Presso Colonia in Germania"
    ],
    "occurrences": [
-    "mr:1021-virgines-coloniam-agrippinam"
+    "mr:1021-virgines-coloniae-agrippinae"
    ],
    "claims": [],
    "failed": [
@@ -47788,7 +47788,7 @@
     "Presso Sivas nell’antica Armenia"
    ],
    "occurrences": [
-    "mr:0309-quadraginta-milites-sebastem"
+    "mr:0309-quadraginta-milites-sebastes"
    ],
    "claims": [],
    "failed": [
@@ -47953,7 +47953,7 @@
     "A Ceuta nel territorio dell’odierno Marocco"
    ],
    "occurrences": [
-    "mr:1010-septem-martyres-presbyteri-septam"
+    "mr:1010-daniel-et-socii"
    ],
    "claims": [
     {
@@ -51151,7 +51151,7 @@
     "Nella fortezza di Quăng-Trị nell’An Nam, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0921-franciscus-jaccard"
+    "mr:0921-franciscus-jaccard-et-thomas-tran-van-thien"
    ],
    "claims": [
     {
@@ -52193,7 +52193,7 @@
     "Presso il fiume Žihun nei pressi della città di Maraš in Cilicia, nel territorio dell’odierna Turchia"
    ],
    "occurrences": [
-    "mr:1122-salvator-lilli"
+    "mr:1122-salvator-lilli-et-socii"
    ],
    "claims": [
     {
@@ -57706,7 +57706,7 @@
     "Ad Avignonet vicino a Tolosa in Francia"
    ],
    "occurrences": [
-    "mr:0529-gulielmus-arnaud"
+    "mr:0529-gulielmus-arnaud-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -66720,7 +66720,7 @@
     "A Cardiff in Galles"
    ],
    "occurrences": [
-    "mr:0722-philippus-evans"
+    "mr:0722-philippus-evans-et-ioannes-lloyd"
    ],
    "claims": [],
    "failed": [
@@ -76400,7 +76400,7 @@
     "A Disentis nella Rezia superiore, ora in Svizzera"
    ],
    "occurrences": [
-    "mr:0711-placidus"
+    "mr:0711-placidus-et-sigisbertus"
    ],
    "claims": [
     {
@@ -79487,7 +79487,7 @@
     "A Eleuteropoli in Palestina"
    ],
    "occurrences": [
-    "mr:1217-quinquaginta-milites-eleutheropoli"
+    "mr:1217-quinquaginta-milites-eleutheropolis"
    ],
    "claims": [],
    "failed": [
@@ -87238,7 +87238,7 @@
     "Nel regno dell’An Nam, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0522-michael-ho"
+    "mr:0522-michael-ho-dinh-hy"
    ],
    "claims": [
     {
@@ -89435,7 +89435,7 @@
     "Nella Spagna meridionale"
    ],
    "occurrences": [
-    "mr:0501-torquatus"
+    "mr:0501-torquatus-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -89724,7 +89724,7 @@
     "Nell’isola di Lérins nella Provenza in Francia"
    ],
    "occurrences": [
-    "mr:0812-porcarius"
+    "mr:0812-porcarius-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -90957,7 +90957,7 @@
     "Nella Pentapoli in Libia"
    ],
    "occurrences": [
-    "mr:0407-theodorus"
+    "mr:0407-theodorus-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -91392,7 +91392,7 @@
     "Nel Ponto"
    ],
    "occurrences": [
-    "mr:0205-plurimi-martyres-ponto"
+    "mr:0205-plurimi-martyres-ponti"
    ],
    "claims": [],
    "failed": [
@@ -96895,7 +96895,7 @@
     "Nella città di Cunhaú vicino a Natal in Brasile"
    ],
    "occurrences": [
-    "mr:0716-andreas-de-soveral"
+    "mr:0716-andreas-de-soveral-et-dominicus-carvalho"
    ],
    "claims": [],
    "failed": [
@@ -98545,7 +98545,7 @@
     "Nella città di Kori in Giappone"
    ],
    "occurrences": [
-    "mr:0522-petrus-ab-assumptione"
+    "mr:0522-petrus-ab-assumptione-et-ioannes-baptista-machado"
    ],
    "claims": [],
    "failed": [
@@ -102783,7 +102783,7 @@
     "Nel braccio di mare antistante Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0810-claudius-iosephus-jouffret-de-bonnefont"
+    "mr:0810-claudius-iosephus-jouffret-de-bonnefont-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -103494,7 +103494,7 @@
     "Nel monastero di Mar Saba in Palestina"
    ],
    "occurrences": [
-    "mr:0320-viginti-monachi-palaestina"
+    "mr:0320-viginti-monachi-palaestinae"
    ],
    "claims": [],
    "failed": [
@@ -104536,7 +104536,7 @@
     "In località Chalchihuites nel territorio di Durango in Messico"
    ],
    "occurrences": [
-    "mr:0815-aloysius-batis-sainz"
+    "mr:0815-aloysius-batis-sainz-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -104836,7 +104836,7 @@
     "In località Cây Mét vicino a Saigon in Cocincina, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0731-petrus"
+    "mr:0731-petrus-doan-cong-quy-et-emmanuel-phung"
    ],
    "claims": [
     {
@@ -105012,7 +105012,7 @@
     "In località Edo in Giappone"
    ],
    "occurrences": [
-    "mr:1204-franciscus-galvez"
+    "mr:1204-franciscus-galvez-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -107061,7 +107061,7 @@
     "In località Lüjiapo presso Qinghe nella provincia dello Hebei in Cina"
    ],
    "occurrences": [
-    "mr:0716-lang-yangzhi"
+    "mr:0716-lang-yangzhi-et-paulus-lang-fu"
    ],
    "claims": [],
    "failed": [
@@ -107125,7 +107125,7 @@
     "In località Majiazhuang vicino a Daining nella provincia dello Hebei in Cina"
    ],
    "occurrences": [
-    "mr:0722-anna-wang"
+    "mr:0722-anna-wang-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -108939,7 +108939,7 @@
     "In località Pont de Molins vicino a Gerona in Spagna"
    ],
    "occurrences": [
-    "mr:0207-anselmus-polanco"
+    "mr:0207-anselmus-polanco-et-philippus-ripoll"
    ],
    "claims": [],
    "failed": [
@@ -109076,7 +109076,7 @@
     "In località Qua Linh nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0617-petrus"
+    "mr:0617-petrus-da"
    ],
    "claims": [
     {
@@ -109477,7 +109477,7 @@
     "In località Sai-Nam-Hte in Corea"
    ],
    "occurrences": [
-    "mr:0311-marcus-chong-ui-ba"
+    "mr:0311-marcus-chong-ui-bae-et-alexius-u-se-yong"
    ],
    "claims": [],
    "failed": [
@@ -109532,7 +109532,7 @@
     "In località Sai-Nam-Hte sempre in Corea"
    ],
    "occurrences": [
-    "mr:0307-simeon-berneux"
+    "mr:0307-simeon-berneux-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -110174,7 +110174,7 @@
     "In località Tavernes de Valldigna nel territorio di Valencia in Spagna"
    ],
    "occurrences": [
-    "mr:0823-constantinus-carbonell-sempere"
+    "mr:0823-constantinus-carbonell-sempere-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -128339,7 +128339,7 @@
     "Sul monte Irschenberg nella Baviera, in Germania"
    ],
    "occurrences": [
-    "mr:1115-marinus"
+    "mr:1115-marinus-et-anianus"
    ],
    "claims": [],
    "failed": [
@@ -129035,7 +129035,7 @@
     "In una galera ancorata al largo di Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0716-nicolaus-savouret"
+    "mr:0716-nicolaus-savouret-et-claudius-beguignot"
    ],
    "claims": [],
    "failed": [
@@ -131150,7 +131150,7 @@
     "Nel territorio di Chợ-Rạ nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:1028-ioannes"
+    "mr:1028-ioannes-dat"
    ],
    "claims": [
     {
@@ -131668,7 +131668,7 @@
     "Nel territorio di Dujiadun sempre presso Shenxian"
    ],
    "occurrences": [
-    "mr:0629-maria-du-tianshi"
+    "mr:0629-maria-du-tianshi-et-magdalena-du-fengju"
    ],
    "claims": [],
    "failed": [
@@ -134948,7 +134948,7 @@
     "Nel villaggio di Nei-Ko-Ri in Corea"
    ],
    "occurrences": [
-    "mr:0309-petrus-ch"
+    "mr:0309-petrus-choe-hyong-et-ioannes-baptista-chon-chang-un"
    ],
    "claims": [],
    "failed": [
@@ -137370,7 +137370,7 @@
     "Nella cittadina di Su-Ryong in Corea"
    ],
    "occurrences": [
-    "mr:0330-antonius-daveluy"
+    "mr:0330-antonius-daveluy-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -139005,7 +139005,7 @@
     "Nel territorio di Xiaolüyi presso Shenxian nella provincia dello Hebei in Cina"
    ],
    "occurrences": [
-    "mr:0629-paulus-wu-juan"
+    "mr:0629-paulus-wu-juan-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -140052,7 +140052,7 @@
     "Nel mare antistante Rochefort in Francia in una sordida galera ferma all’ancora"
    ],
    "occurrences": [
-    "mr:0827-ioannes-baptista-de-souzy"
+    "mr:0827-ioannes-baptista-de-souzy-et-udalricus-guillaume"
    ],
    "claims": [],
    "failed": [
@@ -140102,7 +140102,7 @@
     "In una sordida galera all’ancora nel mare antistante Rochefort in Francia"
    ],
    "occurrences": [
-    "mr:0726-marcellus-gaucherius-labigne-de-reignefort"
+    "mr:0726-marcellus-gaucherius-labigne-de-reignefort-et-petrus-iosephus-le-groing-de-la-romagere"
    ],
    "claims": [],
    "failed": [
@@ -140201,7 +140201,7 @@
     "Nel braccio di mare antistante Rochefort sulla costa francese"
    ],
    "occurrences": [
-    "mr:0701-ioannes-baptista-duverneuil"
+    "mr:0701-ioannes-baptista-duverneuil-et-petrus-aredius-labrouhe-de-laborderie"
    ],
    "claims": [],
    "failed": [
@@ -140451,7 +140451,7 @@
     "Nella selva di Birok vicino alla città di Stradch nel territorio di Leopoli in Ucraina"
    ],
    "occurrences": [
-    "mr:0626-nicolaus-konrad"
+    "mr:0626-nicolaus-konrad-et-vladimirus-pryjma"
    ],
    "claims": [],
    "failed": [
@@ -140690,7 +140690,7 @@
     "Nella foresta presso la città di Nowogródek in Polonia"
    ],
    "occurrences": [
-    "mr:0801-maria-stella-a-sanctissimo-sacramento-mardosewicz"
+    "mr:0801-maria-stella-a-sanctissimo-sacramento-mardosewicz-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -142789,7 +142789,7 @@
     "Nel territorio di Limoges in Aquitania, ora in Francia"
    ],
    "occurrences": [
-    "mr:1016-amandus"
+    "mr:1016-amandus-et-iunianus"
    ],
    "claims": [
     {
@@ -145912,7 +145912,7 @@
     "Nella città di Lăng Cốc nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0616-dominicus-nguyen"
+    "mr:0616-dominicus-nguyen-et-socii"
    ],
    "claims": [
     {
@@ -145964,7 +145964,7 @@
     "Nella città di Maokou nella provincia del Guizhou in Cina"
    ],
    "occurrences": [
-    "mr:0128-agatha-lin-zhao"
+    "mr:0128-agatha-lin-zhao-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -146011,7 +146011,7 @@
     "Nella città di Nam-Định nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0509-iosephus"
+    "mr:0509-iosephus-do-quang-hien"
    ],
    "claims": [
     {
@@ -146336,7 +146336,7 @@
     "Nella città di Ninh Tai nel Tonchino, ora Viet Nam"
    ],
    "occurrences": [
-    "mr:0905-petrus-nguyen-van-tu"
+    "mr:0905-petrus-nguyen-van-tu-et-iosephus-hoang-luong-canh"
    ],
    "claims": [
     {
@@ -149863,7 +149863,7 @@
     "Nel villaggio di Benicalap nello stesso territorio in Spagna"
    ],
    "occurrences": [
-    "mr:0923-sophia-ximenez-ximenez"
+    "mr:0923-sophia-ximenez-ximenez-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -150593,7 +150593,7 @@
     "Nel villaggio di Benisoda nel territorio di Valencia in Spagna"
    ],
    "occurrences": [
-    "mr:0921-vincentius-galbis-girones"
+    "mr:0921-vincentius-galbis-girones-et-emmanuel-torro-garcia"
    ],
    "claims": [],
    "failed": [
@@ -152021,7 +152021,7 @@
     "Nel villaggio di Garraf nel territorio di Valencia in Spagna"
    ],
    "occurrences": [
-    "mr:1119-elisaeus-garcia"
+    "mr:1119-elisaeus-garcia-et-alexander-planas-sauri"
    ],
    "claims": [],
    "failed": [
@@ -155060,7 +155060,7 @@
     "Nel villaggio di Motril vicino a Granada sulla costa spagnola"
    ],
    "occurrences": [
-    "mr:0726-vincentius-pinilla"
+    "mr:0726-vincentius-pinilla-et-emmanuel-martin-sierra"
    ],
    "claims": [],
    "failed": [
@@ -156242,7 +156242,7 @@
     "Nel villaggio di Picadero de Paterna nello stesso territorio"
    ],
    "occurrences": [
-    "mr:1210-antonius-martin-hernandez"
+    "mr:1210-antonius-martin-hernandez-et-augustinus-garcia-calvo"
    ],
    "claims": [],
    "failed": [
@@ -157589,7 +157589,7 @@
     "Nel villaggio di Samalús vicino a Barcellona sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0803-alphonsus-lopez-lopez"
+    "mr:0803-alphonsus-lopez-lopez-et-michael-remon-salvador"
    ],
    "claims": [],
    "failed": [
@@ -158541,7 +158541,7 @@
     "Nel villaggio di Tomhom nell’isola di Guam in Oceania"
    ],
    "occurrences": [
-    "mr:0402-didacus-aloysius-de-san-vitores"
+    "mr:0402-didacus-aloysius-de-san-vitores-et-petrus-calungsod"
    ],
    "claims": [],
    "failed": [
@@ -159362,7 +159362,7 @@
     "Nel villaggio di Wuqiao Zhaojia sempre nello Hebei"
    ],
    "occurrences": [
-    "mr:0720-maria-zhao-guozhus"
+    "mr:0720-maria-zhao-guozhi-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -161042,7 +161042,7 @@
     "Nell’isola di Eigg nelle Ebridi al largo della Scozia"
    ],
    "occurrences": [
-    "mr:0417-donnanus"
+    "mr:0417-donnanus-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -161767,7 +161767,7 @@
     "Ad Aceh nell’isola di Sumatra"
    ],
    "occurrences": [
-    "mr:1129-dionysius-a-nativitate-berthelot"
+    "mr:1129-dionysius-a-nativitate-berthelot-et-redemptus-a-cruce-rodriguez"
    ],
    "claims": [],
    "failed": [
@@ -162437,7 +162437,7 @@
     "Nella cittadina di Azanuy nel territorio di Huesca ancora in Spagna"
    ],
    "occurrences": [
-    "mr:0809-faustinus-oteiza"
+    "mr:0809-faustinus-oteiza-et-florentinus-felipe"
    ],
    "claims": [],
    "failed": [
@@ -163186,7 +163186,7 @@
     "Nella cittadina di Carrión de Calatrava vicino a Ciudad Real sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0925-ioannes-petrus-bengoa-aranguren"
+    "mr:0925-ioannes-petrus-bengoa-aranguren-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -163279,7 +163279,7 @@
     "Nella cittadina di Castelserás vicino a Teruel sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0730-iosephus-maria-muro-sanmiguel"
+    "mr:0730-iosephus-maria-muro-sanmiguel-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -165429,7 +165429,7 @@
     "Nella cittadina di Liucun presso la città di Renqin sempre nello Hebei"
    ],
    "occurrences": [
-    "mr:0719-elisabeth-qin-bianzhi"
+    "mr:0719-elisabeth-qin-bianzhi-et-simon-qin-chunfu"
    ],
    "claims": [],
    "failed": [
@@ -167580,7 +167580,7 @@
     "Nella cittadina di Turís nel territorio di Valencia sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0916-laureanus-ferrer-cardet"
+    "mr:0916-laureanus-ferrer-cardet-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -169638,7 +169638,7 @@
     "A Kokura sempre in Giappone"
    ],
    "occurrences": [
-    "mr:0816-simon-bokusai-kyota"
+    "mr:0816-simon-bokusai-kyota-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -170337,7 +170337,7 @@
     "A Lambèse in Numidia, nell’odierna Algeria"
    ],
    "occurrences": [
-    "mr:0506-marianus"
+    "mr:0506-marianus-et-iacobus"
    ],
    "claims": [
     {
@@ -176388,7 +176388,7 @@
     "A Kilmallok in Irlanda"
    ],
    "occurrences": [
-    "mr:0813-patricius-o-healy"
+    "mr:0813-patricius-o-healy-et-connus-o-rourke"
    ],
    "claims": [],
    "failed": [
@@ -190258,7 +190258,7 @@
     "A Filomelio in Frigia, nell’odierna Turchia"
    ],
    "occurrences": [
-    "mr:0713-alexander"
+    "mr:0713-alexander-et-socii"
    ],
    "claims": [
     {
@@ -192469,7 +192469,7 @@
     "Vicino a Castellón de la Plana sulla costa spagnola"
    ],
    "occurrences": [
-    "mr:1002-franciscus-carceller"
+    "mr:1002-franciscus-carceller-et-isidorus-bover-oliver"
    ],
    "claims": [],
    "failed": [
@@ -192855,7 +192855,7 @@
     "Vicino a Talavera de la Reina nel territorio di Toledo sempre in Spagna"
    ],
    "occurrences": [
-    "mr:0725-fridericus-rubio-alvarez"
+    "mr:0725-fridericus-rubio-alvarez-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -195085,7 +195085,7 @@
     "Vicino alla città di Hengyang nella provincia dello Hunan in Cina"
    ],
    "occurrences": [
-    "mr:0707-antoninus-fantosati"
+    "mr:0707-antoninus-fantosati-et-iosephus-maria-gambaro"
    ],
    "claims": [],
    "failed": [
@@ -195826,7 +195826,7 @@
     "Vicino alla cittadina di Vallibona sempre nel territorio di Valencia in Spagna"
    ],
    "occurrences": [
-    "mr:0823-florentinus-perez-romero"
+    "mr:0823-florentinus-perez-romero-et-urbanus-gil-saez"
    ],
    "claims": [],
    "failed": [
@@ -200591,7 +200591,7 @@
     "Ad Arbal in Mauritania, nel territorio dell’odierna Algeria"
    ],
    "occurrences": [
-    "mr:0405-martyres-regiis"
+    "mr:0405-martyres-regiarum"
    ],
    "claims": [
     {
@@ -204912,7 +204912,7 @@
     "A Shimabara in Giappone"
    ],
    "occurrences": [
-    "mr:0825-michael-carvalho"
+    "mr:0825-michael-carvalho-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -208984,7 +208984,7 @@
     "A Saintes nell’Hainault, attualmente in territorio belga"
    ],
    "occurrences": [
-    "mr:0716-reinildis"
+    "mr:0716-reinildis-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -210135,7 +210135,7 @@
     "A Tarragona nella Spagna Citeriore"
    ],
    "occurrences": [
-    "mr:0121-fructuosus"
+    "mr:0121-fructuosus-et-socii"
    ],
    "claims": [],
    "failed": [
@@ -214492,7 +214492,7 @@
     "A Urda nella provincia di Toledo in Spagna"
    ],
    "occurrences": [
-    "mr:0725-petrus-a-corde-redondo"
+    "mr:0725-petrus-a-corde-redondo-et-socii"
    ],
    "claims": [],
    "failed": [
