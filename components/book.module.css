@@ -1,7 +1,7 @@
 /* A tooled-leather book standing on the shelf, drawn in CSS. */
 .slot { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; perspective: 900px; }
 .book {
-  position: relative; width: 7.5rem; height: 11rem; padding: 0; border: 0;
+  position: relative; box-sizing: border-box; width: 7.5rem; height: 11rem; padding: 0; border: 0;
   border-radius: 2px 6px 6px 2px; font-family: Georgia, "Times New Roman", serif; color: #e9c46a;
   box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.35);
   transform-origin: left center; transition: transform 0.35s ease, box-shadow 0.35s ease;

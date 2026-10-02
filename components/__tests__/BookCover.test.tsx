@@ -35,8 +35,7 @@ describe("BookCover", () => {
     const onClick = vi.fn();
     render(<BookCover edition={{ ...e1749, availability: { status: "unavailable" } }} state="unavailable" onClick={onClick} />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
-    const book = screen.getByLabelText("Martyrologium Romanum 1749, Latin (not yet available)");
-    expect(book).toHaveAttribute("aria-disabled", "true");
+    const book = screen.getByRole("img", { name: "Martyrologium Romanum 1749, Latin (not yet available)" });
     expect(screen.getByText("not yet available")).toBeInTheDocument();
     fireEvent.click(book);
     expect(onClick).not.toHaveBeenCalled();

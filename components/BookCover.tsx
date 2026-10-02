@@ -30,7 +30,7 @@ export default function BookCover({
   return (
     <div className={styles.slot}>
       {state === "unavailable" ? (
-        <div className={`${styles.book} ${tone}`} aria-disabled="true" aria-label={`${name} (not yet available)`} role="img">
+        <div className={`${styles.book} ${tone}`} aria-label={`${name} (not yet available)`} role="img">
           {face}
         </div>
       ) : (
