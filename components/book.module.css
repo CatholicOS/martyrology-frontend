@@ -1,0 +1,33 @@
+/* A tooled-leather book standing on the shelf, drawn in CSS. */
+.slot { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; perspective: 900px; }
+.book {
+  position: relative; box-sizing: border-box; width: 7.5rem; height: 11rem; padding: 0; border: 0;
+  border-radius: 2px 6px 6px 2px; font-family: Georgia, "Times New Roman", serif; color: #e9c46a;
+  box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.35);
+  transform-origin: left center; transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
+}
+.open { background: linear-gradient(90deg, #5a0f12 0 10px, #8b1a1f 10px); }
+.dark { background: linear-gradient(90deg, #3d0a0c 0 10px, #5e1216 10px); }
+.locked { background: linear-gradient(90deg, #4a3638 0 10px, #6e5557 10px); color: #c9b9a0; }
+.unavailable {
+  background: repeating-linear-gradient(45deg, #e9e4df 0 6px, #f3efea 6px 12px);
+  color: #9a8f86; border: 1px dashed #b8aca1; box-shadow: none; cursor: default;
+}
+.book:not(.unavailable):hover,
+.book:not(.unavailable):focus-visible { transform: rotateY(-14deg); box-shadow: 8px 6px 16px rgba(0, 0, 0, 0.4); }
+.opening { transform: rotateY(-75deg) !important; transition-duration: 0.45s; }
+.frame { position: absolute; inset: 10px 8px 10px 18px; border: 1px solid currentColor; opacity: 0.55; border-radius: 1px; }
+.title { position: absolute; top: 1.4rem; left: 1rem; right: 0.4rem; text-align: center; font-size: 0.7rem; letter-spacing: 0.08em; line-height: 1.4; }
+.lock { position: absolute; top: 4.6rem; left: 0; right: 0; text-align: center; font-size: 1.3rem; opacity: 0.8; }
+.year { position: absolute; bottom: 1rem; left: 0.6rem; right: 0; text-align: center; font-size: 1.1rem; }
+.label { font-size: 0.75rem; color: #6b625b; text-align: center; }
+
+@media (prefers-color-scheme: dark) {
+  .label { color: #b8aea4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book, .opening { transition: none; }
+  .book:not(.unavailable):hover, .book:not(.unavailable):focus-visible, .opening { transform: none !important; }
+}

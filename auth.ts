@@ -1,6 +1,7 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Zitadel from "next-auth/providers/zitadel";
 import type { ZitadelToken } from "@/lib/zitadel-token";
+import { isCurator, ROLES_CLAIM } from "@/lib/roles";
 
 // Exported so the callbacks can be unit tested without booting a provider.
 // The test that matters asserts the access token never reaches the Session —
@@ -8,7 +9,7 @@ import type { ZitadelToken } from "@/lib/zitadel-token";
 // callback returns as the body of GET /api/auth/session, so that property is a
 // security boundary, not a style choice, and it needs a permanent guard.
 export const callbacks = {
-  async jwt({ token, account }) {
+  async jwt({ token, account, profile }) {
     // Initial sign-in: account is present exactly once.
     if (account) {
       return {
@@ -16,6 +17,9 @@ export const callbacks = {
         access_token: account.access_token,
         refresh_token: account.refresh_token,
         expires_at: account.expires_at,
+        // A boolean only: the Session copies it, and the Session is browser-readable.
+        // Read once, at sign-in; a newly granted role needs a fresh sign-in.
+        curator: isCurator((profile as Record<string, unknown> | undefined)?.[ROLES_CLAIM]),
       };
     }
     // Deliberately no refresh here. This callback also runs under auth() in
@@ -38,6 +42,8 @@ export const callbacks = {
     // the header needs it to tell the curator to sign in again.
     const current = token as ZitadelToken;
     session.error = current.error;
+    // A boolean, never the roles claim itself.
+    session.curator = token.curator === true;
     return session;
   },
 } satisfies NonNullable<NextAuthConfig["callbacks"]>;

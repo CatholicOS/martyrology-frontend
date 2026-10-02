@@ -55,3 +55,20 @@ export interface DayContentOut {
   elogia: ElogiumOut[];
   conclusio: string | null;
 }
+
+export type AccessMap = Record<string, { can_read_texts: boolean }>;
+
+export interface AccessOut {
+  editions: AccessMap;
+}
+
+/** The day endpoint's full response; `access` is "restricted-texts" when the caller is denied. */
+export interface DayOut extends DayContentOut {
+  metadata: {
+    edition: string;
+    month: number;
+    day: number | null;
+    access?: string | null;
+    access_info?: string | null;
+  };
+}

@@ -1,7 +1,10 @@
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 
-export const metadata = { title: "Martyrology Curation", description: "CRMEDR curation tool" };
+export const metadata = {
+  title: "Roman Martyrology",
+  description: "The editions of the Roman Martyrology, read day by day.",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

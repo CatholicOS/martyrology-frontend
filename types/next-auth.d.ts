@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface Session {
     // Deliberately no accessToken — the session is browser-readable.
     error?: string;
+    curator?: boolean;
   }
 }
 
@@ -14,5 +15,6 @@ declare module "next-auth/jwt" {
     refresh_token?: string;
     expires_at?: number;
     error?: string;
+    curator?: boolean;
   }
 }

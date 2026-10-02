@@ -1,4 +1,4 @@
-import type { EditionOut, CatalogEntryOut, EulogyOut, DayContentOut, Locale } from "@/lib/types";
+import type { EditionOut, CatalogEntryOut, EulogyOut, DayOut, AccessMap, AccessOut, Locale } from "@/lib/types";
 
 export class ApiError extends Error {
   constructor(public status: number, public title: string) {
@@ -33,6 +33,10 @@ export async function getElogium(id: string): Promise<EulogyOut> {
   return get<EulogyOut>(`elogium/${encodeURIComponent(id)}`);
 }
 
-export async function getDay(edition: string, mm: string, dd: string): Promise<DayContentOut> {
-  return get<DayContentOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}`);
+export async function getDay(edition: string, mm: string, dd: string): Promise<DayOut> {
+  return get<DayOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}`);
+}
+
+export async function getAccess(): Promise<AccessMap> {
+  return (await get<AccessOut>("access")).editions;
 }
