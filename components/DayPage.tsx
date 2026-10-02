@@ -26,12 +26,12 @@ export default function DayPage({
   day, heading, lang, edition, showIds = false,
 }: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en"; edition?: string; showIds?: boolean }) {
   const notes = showIds ? pageNotes(day.elogia.map((e) => e.id), edition ?? "") : [];
-  const noteOf = new Map(notes.map((n) => [n.id, n]));
+  const noteAt = new Map(notes.map((n) => [n.at, n]));
   return (
     <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
       {day.elogia.map((e, i) => (
-        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} note={e.id ? noteOf.get(e.id) : undefined} />
+        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} note={noteAt.get(i)} />
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
       <CuratorNotes notes={notes} />

@@ -191,7 +191,7 @@ export default function Spread({
       <>
         <span className={side === "b" ? styles.tag : styles.srOnly}>{s.name}</span>
         {e ? (
-          <Eulogy e={e} edition={s.id} showId={showIds} note={notes[side].find((n) => n.id === e.id)} />
+          <Eulogy e={e} edition={s.id} showId={showIds} note={notes[side].find((n) => n.at === i)} />
         ) : (
           <Gap note={note!} name={s.name} href={href} />
         )}

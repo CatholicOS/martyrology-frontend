@@ -18,8 +18,10 @@ describe("pageNotes", () => {
     });
   });
 
-  it("notes a eulogy printed twice on the page once", () => {
-    expect(pageNotes(["mr:0220-a", "mr:0220-a"], "ed", all)).toHaveLength(1);
+  it("notes a eulogy printed twice on the page once, at its first printing", () => {
+    const notes = pageNotes([null, "mr:0220-a", "mr:0220-a"], "ed", all);
+    expect(notes).toHaveLength(1);
+    expect(notes[0].at).toBe(1);
   });
 
   it("reads the registry's notes by default", () => {

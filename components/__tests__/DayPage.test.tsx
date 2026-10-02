@@ -112,4 +112,13 @@ describe("DayPage, curators' notes", () => {
     expect(items[0]).toHaveTextContent(/^†Asterisked entry \(4\*\)/);
     expect(screen.getByRole("link", { name: "Back to the text of note 2" })).toHaveAttribute("href", `#${second.id}`);
   });
+
+  it("marks only the first of two printings of one noted eulogy, so its mark's id stays unique", () => {
+    const twice = { ...noted, elogia: [noted.elogia[0], { ...noted.elogia[0], entry: 9, text: "Iterum sancti Ferreoli." }] };
+    const { container } = render(<DayPage day={twice} heading="4 Ianuarii" edition="ed" showIds />);
+    expect(screen.getAllByRole("link", { name: "Editorial note 1" })).toHaveLength(1);
+    expect(screen.getByText("Iterum sancti Ferreoli.").closest("p")!.querySelector("a")).toBeNull();
+    const ids = [...container.querySelectorAll("[id]")].map((n) => n.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
 });

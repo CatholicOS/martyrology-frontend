@@ -9,6 +9,8 @@ export interface PageNote {
   anchor: string;
   /** The element id of its mark in the text, for the link back. */
   markAnchor: string;
+  /** Where the noted eulogy first comes in the page's list: only that one carries the mark. */
+  at: number;
 }
 
 const NOTES = snapshot as Record<string, string>;
@@ -22,11 +24,11 @@ const NOTES = snapshot as Record<string, string>;
 export function pageNotes(ids: (string | null)[], edition: string, all: Record<string, string> = NOTES): PageNote[] {
   const seen = new Set<string>();
   const out: PageNote[] = [];
-  for (const id of ids) {
-    if (!id || seen.has(id) || !all[id]) continue;
+  ids.forEach((id, at) => {
+    if (!id || seen.has(id) || !all[id]) return;
     seen.add(id);
     const anchor = `note-${edition}-${id}`;
-    out.push({ id, mark: "†".repeat(out.length + 1), note: all[id], anchor, markAnchor: `${anchor}-mark` });
-  }
+    out.push({ id, mark: "†".repeat(out.length + 1), note: all[id], anchor, markAnchor: `${anchor}-mark`, at });
+  });
   return out;
 }
