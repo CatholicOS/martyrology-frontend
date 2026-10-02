@@ -1,20 +1,15 @@
-import Link from "next/link";
+import Bookshelf from "@/components/Bookshelf";
+import { getViewer } from "@/lib/viewer";
 
-export default function Home() {
+export default async function Home() {
+  const viewer = await getViewer();
   return (
-    <main className="mx-auto max-w-3xl p-8">
-      <h1 className="text-2xl font-semibold">Martyrology Curation</h1>
-      <p className="mt-2 text-slate-600 dark:text-slate-400">
-        Review draft canonical IDs across editions of the Roman Martyrology.
+    <main className="mx-auto max-w-5xl p-6">
+      <h1 className="text-center font-serif text-3xl">Martyrologium Romanum</h1>
+      <p className="mt-2 text-center text-slate-600 dark:text-slate-400">
+        The editions of the Roman Martyrology, newest to oldest. Open a book to read today&apos;s page.
       </p>
-      <nav className="mt-6 flex gap-4">
-        <Link href="/compare" className="rounded bg-slate-900 px-4 py-2 text-white dark:bg-slate-100 dark:text-slate-900">
-          Compare editions
-        </Link>
-        <Link href="/review" className="rounded border border-slate-300 px-4 py-2 dark:border-slate-700">
-          Review change-set
-        </Link>
-      </nav>
+      <Bookshelf signedIn={viewer.signedIn} />
     </main>
   );
 }

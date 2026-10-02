@@ -1,0 +1,38 @@
+/** Why a copyrighted edition will not open, and what the reader can do about it. */
+export default function LockedNotice({
+  title,
+  signedIn,
+  accessInfo,
+  onSignIn,
+  onClose,
+}: {
+  title: string;
+  signedIn: boolean;
+  accessInfo?: string | null;
+  onSignIn: () => void;
+  onClose?: () => void;
+}) {
+  return (
+    <div role="status" className="mx-auto mt-6 max-w-xl rounded border border-amber-300 bg-amber-50 p-4 text-sm dark:border-amber-700 dark:bg-amber-950/40">
+      <p className="font-semibold">{title} is a copyrighted edition.</p>
+      {signedIn ? (
+        <p className="mt-1">
+          Your account doesn&apos;t have access to this edition.
+          {accessInfo && <span className="mt-1 block text-slate-600 dark:text-slate-400">{accessInfo}</span>}
+        </p>
+      ) : (
+        <p className="mt-1 flex items-center gap-3">
+          Sign in to open this edition.
+          <button type="button" className="rounded border border-slate-300 px-3 py-1 dark:border-slate-700" onClick={onSignIn}>
+            Sign in
+          </button>
+        </p>
+      )}
+      {onClose && (
+        <button type="button" className="mt-2 text-xs underline" onClick={onClose}>
+          Close
+        </button>
+      )}
+    </div>
+  );
+}
