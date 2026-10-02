@@ -43,3 +43,13 @@ describe("calendar", () => {
     expect(dateHeading({ mm: 12, dd: 25 }, "en")).toBe("25 December");
   });
 });
+
+describe("dayPath with a second edition", () => {
+  it("carries ?with= when given, and nothing otherwise", () => {
+    expect(dayPath("martyrologium_romanum_2004", { mm: 10, dd: 4 })).toBe("/read/martyrologium_romanum_2004/10/04");
+    expect(dayPath("martyrologium_romanum_2004", { mm: 10, dd: 4 }, null)).toBe("/read/martyrologium_romanum_2004/10/04");
+    expect(dayPath("martyrologium_romanum_2004", { mm: 10, dd: 4 }, "martyrologium_romanum_1749")).toBe(
+      "/read/martyrologium_romanum_2004/10/04?with=martyrologium_romanum_1749",
+    );
+  });
+});

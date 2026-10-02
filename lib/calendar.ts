@@ -47,8 +47,9 @@ export function pad2(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-export function dayPath(edition: string, d: Day): string {
-  return `/read/${encodeURIComponent(edition)}/${pad2(d.mm)}/${pad2(d.dd)}`;
+export function dayPath(edition: string, d: Day, withEdition?: string | null): string {
+  const path = `/read/${encodeURIComponent(edition)}/${pad2(d.mm)}/${pad2(d.dd)}`;
+  return withEdition ? `${path}?with=${encodeURIComponent(withEdition)}` : path;
 }
 
 export function monthName(mm: number, lang: Lang): string {

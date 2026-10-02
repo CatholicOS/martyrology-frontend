@@ -62,3 +62,15 @@ export function shelfState(e: EditionOut, access: AccessMap | null): ShelfState 
 export function titleCase(s: string): string {
   return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+const LANGUAGE_NAMES: Record<Lang, string> = { la: "Latin", it: "Italian", en: "English" };
+
+/** "1914 English", for notices. */
+export function yearAndLanguage(e: EditionOut): string {
+  return `${e.year} ${LANGUAGE_NAMES[editionLang(e)]}`;
+}
+
+/** How a note names `e` beside `other`: by its year, or by year and language when the two share a year. */
+export function shortName(e: EditionOut, other: EditionOut): string {
+  return e.year === other.year ? yearAndLanguage(e) : String(e.year);
+}
