@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import DayPage from "@/components/DayPage";
 import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";
+import Spread from "@/components/Spread";
 import styles from "@/components/page.module.css";
 import { getAccess, getEditions } from "@/lib/api";
 import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/lib/calendar";
@@ -59,7 +60,9 @@ function isFormField(t: EventTarget | null): boolean {
   return t instanceof HTMLElement && (t.isContentEditable || ["SELECT", "INPUT", "TEXTAREA"].includes(t.tagName));
 }
 
-export default function Reader({ edition, mm, dd, signedIn }: { edition: string; mm: number; dd: number; signedIn: boolean }) {
+export default function Reader({
+  edition, mm, dd, signedIn, withEdition = null,
+}: { edition: string; mm: number; dd: number; signedIn: boolean; withEdition?: string | null }) {
   const router = useRouter();
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
   const [editions, setEditions] = useState<EditionOut[]>(() => cached?.editions ?? []);
@@ -95,16 +98,24 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
     };
   }, []);
 
-  const go = useCallback(
-    (d: Day, direction: Turn = null, focusId: string | null = null) => {
+  // Every navigation goes through here: one push per remount, focus and turn handed to the next page.
+  const navigate = useCallback(
+    (path: string, direction: Turn = null, focusId: string | null = null) => {
       if (navigated.current) return;
-      if (d.mm === mm && d.dd === dd) return; // same URL: Next would not remount, leaving the guard stuck
       navigated.current = true;
       pendingTurn = direction;
       pendingFocus = focusId;
-      router.push(dayPath(edition, d));
+      router.push(path);
     },
-    [router, edition, mm, dd],
+    [router],
+  );
+
+  const go = useCallback(
+    (d: Day, direction: Turn = null, focusId: string | null = null) => {
+      if (d.mm === mm && d.dd === dd) return; // same URL: Next would not remount, leaving the guard stuck
+      navigate(dayPath(edition, d, withEdition), direction, focusId);
+    },
+    [navigate, edition, withEdition, mm, dd],
   );
 
   useEffect(() => {
@@ -130,17 +141,35 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
     // keep it as the first option so the select always shows what is open.
     return [{ id: edition, label: title }, ...options];
   }, [editions, access, edition, title]);
+  const compareBooks = useMemo(() => {
+    const others = books.filter((b) => b.id !== edition);
+    if (!withEdition || others.some((b) => b.id === withEdition)) return others;
+    // The second book is locked or not listed yet: keep it selectable so the select shows it.
+    const meta = editions.find((e) => e.edition_id === withEdition);
+    return [...others, { id: withEdition, label: meta ? `${titleCase(editionTitle(meta))} ${meta.year}` : withEdition }];
+  }, [books, edition, withEdition, editions]);
 
   return (
     <div>
-      <ReaderBar edition={edition} day={day} books={books} onGo={(d, focusId) => go(d, null, focusId)}
+      <ReaderBar
+        edition={edition}
+        day={day}
+        books={books}
+        onGo={(d, focusId) => go(d, null, focusId)}
         onSwitch={(id, focusId) => {
-          if (navigated.current || id === edition) return;
-          navigated.current = true;
-          pendingTurn = null;
-          pendingFocus = focusId;
-          router.push(dayPath(id, day));
-        }} />
+          if (id === edition) return;
+          navigate(dayPath(id, day, id === withEdition ? null : withEdition), null, focusId);
+        }}
+        compareWith={withEdition}
+        compareBooks={compareBooks}
+        onCompare={(id, focusId) => {
+          if (id === withEdition) return;
+          navigate(dayPath(edition, day, id), null, focusId);
+        }}
+        onSwap={() => {
+          if (withEdition) navigate(dayPath(withEdition, day, edition), null, "reader-swap");
+        }}
+      />
       <div
         className="flex items-stretch gap-2"
         onTouchStart={(e) => {
@@ -161,17 +190,32 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
           <span aria-hidden className={ARROW}>‹</span>
         </button>
         <div className="flex-1">
-          {/* key resets DayView's loading state for each day/edition */}
-          <DayView
-            key={`${edition}/${mm}/${dd}`}
-            edition={edition}
-            mm={mm}
-            dd={dd}
-            lang={lang}
-            title={title}
-            signedIn={signedIn}
-            turn={turn}
-          />
+          {withEdition ? (
+            <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
+              {/* key resets both sheets' loading state for each pairing/day */}
+              <Spread
+                key={`${edition}+${withEdition}/${mm}/${dd}`}
+                a={edition}
+                b={withEdition}
+                editions={editions}
+                mm={mm}
+                dd={dd}
+                signedIn={signedIn}
+              />
+            </div>
+          ) : (
+            /* key resets DayView's loading state for each day/edition */
+            <DayView
+              key={`${edition}/${mm}/${dd}`}
+              edition={edition}
+              mm={mm}
+              dd={dd}
+              lang={lang}
+              title={title}
+              signedIn={signedIn}
+              turn={turn}
+            />
+          )}
         </div>
         <button type="button" id="reader-next" aria-label="Next day" data-strip="true" className={STRIP} onClick={() => go(nextDay(day), "next", "reader-next")}>
           <span aria-hidden className={ARROW}>›</span>

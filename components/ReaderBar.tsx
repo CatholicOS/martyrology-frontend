@@ -11,12 +11,20 @@ export default function ReaderBar({
   books,
   onGo,
   onSwitch,
+  compareWith,
+  compareBooks,
+  onCompare,
+  onSwap,
 }: {
   edition: string;
   day: Day;
   books: { id: string; label: string }[];
   onGo: (d: Day, focusId: string) => void;
   onSwitch: (edition: string, focusId: string) => void;
+  compareWith: string | null;
+  compareBooks: { id: string; label: string }[];
+  onCompare: (id: string | null, focusId: string) => void;
+  onSwap: () => void;
 }) {
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -47,6 +55,24 @@ export default function ReaderBar({
           <option key={b.id} value={b.id}>{b.label}</option>
         ))}
       </select>
+      <label className="sr-only" htmlFor="reader-with">Compare with</label>
+      <select
+        id="reader-with"
+        className={control}
+        value={compareWith ?? ""}
+        onChange={(e) => onCompare(e.target.value || null, "reader-with")}
+      >
+        <option value="">Compare with…</option>
+        {compareBooks.map((b) => (
+          <option key={b.id} value={b.id}>{b.label}</option>
+        ))}
+      </select>
+      {compareWith && (
+        <>
+          <button type="button" id="reader-swap" className={control} aria-label="Swap the two editions" onClick={onSwap}>⇄</button>
+          <button type="button" id="reader-close" className={control} aria-label="Close the second edition" onClick={() => onCompare(null, "reader-with")}>×</button>
+        </>
+      )}
       <Link href="/" className="text-sm underline">⟵ Shelf</Link>
     </div>
   );

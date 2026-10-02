@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -8,12 +8,12 @@ vi.mock("@/lib/api", () => {
   class ApiError extends Error {
     constructor(public status: number, public title: string) { super(title); }
   }
-  return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), ApiError };
+  return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), getElogium: vi.fn(), ApiError };
 });
 
 import Reader, { __resetReaderState } from "@/components/Reader";
 import styles from "@/components/page.module.css";
-import { getDay, getEditions, getAccess, ApiError } from "@/lib/api";
+import { getDay, getEditions, getAccess, getElogium, ApiError } from "@/lib/api";
 import type { EditionOut } from "@/lib/types";
 
 function ed(edition_id: string, year: number, locale: string, nature: string, status: string): EditionOut {
@@ -30,6 +30,7 @@ const DAY = {
 beforeEach(() => {
   __resetReaderState();
   push.mockReset();
+  vi.mocked(getElogium).mockReset();
   vi.mocked(getDay).mockResolvedValue(DAY);
   vi.mocked(getEditions).mockResolvedValue([
     ed("martyrologium_romanum_1749", 1749, "la", "editio_typica_recognita", "public"),
@@ -255,5 +256,78 @@ describe("Reader", () => {
     await screen.findByText("Romae passio sancti Modesti Sardi.");
     fireEvent.keyDown(window, { key: "ArrowRight", altKey: true });
     expect(push).not.toHaveBeenCalled();
+  });
+});
+
+const EN = "martyrologium_romanum_1914_en_unofficial";
+const renderPair = (mm = 10, dd = 2) =>
+  render(<Reader edition="martyrologium_romanum_1749" mm={mm} dd={dd} signedIn={false} withEdition={EN} />);
+
+describe("Reader, two editions", () => {
+  it("shows both editions' texts", async () => {
+    renderPair();
+    expect(await screen.findAllByText("Romae passio sancti Modesti Sardi.")).toHaveLength(2);
+  });
+
+  it("keeps the pairing on every way of turning the day", async () => {
+    renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/10/03?with=${EN}`);
+  });
+
+  it("keeps the pairing from the strips and the day select", async () => {
+    const first = renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.click(screen.getByRole("button", { name: "Previous day" }));
+    expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/10/01?with=${EN}`);
+    first.unmount();
+    __resetReaderState();
+    renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.change(screen.getByLabelText("Day"), { target: { value: "15" } });
+    expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/10/15?with=${EN}`);
+  });
+
+  it("swaps the two editions, and closes the second", async () => {
+    const first = renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.click(screen.getByRole("button", { name: "Swap the two editions" }));
+    expect(push).toHaveBeenLastCalledWith(`/read/${EN}/10/02?with=martyrologium_romanum_1749`);
+    first.unmount();
+    __resetReaderState();
+    renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.click(screen.getByRole("button", { name: "Close the second edition" }));
+    expect(push).toHaveBeenLastCalledWith("/read/martyrologium_romanum_1749/10/02");
+  });
+
+  it("opens a comparison from the Compare with select, offering every other open book", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    const select = screen.getByLabelText("Compare with");
+    // The book list arrives with the editions, after the day.
+    await waitFor(() =>
+      expect([...select.querySelectorAll("option")].map((o) => o.textContent)).toEqual(["Compare with…", "Roman Martyrology 1914"]),
+    );
+    fireEvent.change(select, { target: { value: EN } });
+    expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/10/02?with=${EN}`);
+  });
+
+  it("drops the pairing when book A is switched to book B", async () => {
+    renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.change(screen.getByLabelText("Switch book"), { target: { value: EN } });
+    expect(push).toHaveBeenLastCalledWith(`/read/${EN}/10/02`);
+  });
+
+  it("turns the two sheets as one", async () => {
+    const first = renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.click(screen.getByRole("button", { name: "Next day" }));
+    first.unmount();
+    const { container } = renderPair(10, 3);
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    expect(container.querySelectorAll(`.${styles.turnNext}`)).toHaveLength(1);
   });
 });
