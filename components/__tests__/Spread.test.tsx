@@ -163,4 +163,21 @@ describe("Spread", () => {
     await screen.findByText("Sancti X antiqui.");
     expect(document.querySelector("[data-row]")).toBeNull();
   });
+
+  it("marks each sheet's curators' notes from * down that sheet, with the ids shown", async () => {
+    serve({
+      [A]: day(A, [el("mr:0104-ferreolus", 4, "Sancti Ferreoli."), el("mr:x", 5, "Sancti X.")]),
+      [B]: day(B, [el("mr:x", 1, "Sancti X, 1749."), el("mr:0220-eleutherius-et-socii", 3, "In Perside sancti Eleutherii.")]),
+    });
+    vi.mocked(getElogium).mockReturnValue(new Promise(() => {})); // the one-sided rows' placements
+    render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} showIds />);
+    await screen.findByText("Sancti Ferreoli.");
+    const notes = screen.getAllByRole("complementary", { name: "Editorial notes" });
+    expect(notes.map((n) => n.closest("[data-side]")!.getAttribute("data-side"))).toEqual(["a", "b"]);
+    expect(notes[1]).toHaveTextContent(/^\*The 1749 edition names Eleutherius/);
+    const marks = screen.getAllByRole("link", { name: "Editorial note 1" });
+    expect(marks.map((m) => m.getAttribute("href"))).toEqual([
+      `#note-${A}-mr:0104-ferreolus`, `#note-${B}-mr:0220-eleutherius-et-socii`,
+    ]);
+  });
 });

@@ -20,6 +20,17 @@
 .entry[tabindex="-1"]:focus { outline: none; }
 .entry[tabindex="-1"]:focus:not([data-found]) { outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; border-radius: 3px; }
 .sic { color: #5c4f45; font-size: 0.8em; }
+/* The curators' notes: red asterisks in the text, the notes under a short rule at the foot of the page. */
+.noteMark {
+  color: #a3161b; font-size: 0.8em; line-height: 0; vertical-align: super; margin-left: 0.1em;
+  text-decoration: none; font-style: normal; scroll-margin-top: 6rem;
+}
+.noteMark:hover, .noteMark:focus-visible { text-decoration: underline; }
+.notes { margin-top: 1.5rem; font-size: 0.8rem; line-height: 1.45; color: #5c4f45; }
+.notes::before { content: ""; display: block; width: 5rem; margin-bottom: 0.6rem; border-top: 1px solid rgba(120, 80, 40, 0.35); }
+.notes li { display: grid; grid-template-columns: 2.2em 1fr; margin: 0.35rem 0; scroll-margin-top: 6rem; border-radius: 3px; }
+.notes li .noteMark { font-size: 1em; vertical-align: baseline; line-height: inherit; margin: 0; text-align: right; padding-right: 0.5em; }
+.notes li:target { background: rgba(214, 170, 60, 0.25); }
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
 .conclusio .rubric { font-style: normal; }

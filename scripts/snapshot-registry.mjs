@@ -64,6 +64,19 @@ export function buildMisprints(doc) {
   return doc.misprints.map(({ id, edition, printed, intended }) => ({ id, edition, printed, intended }));
 }
 
+/**
+ * The curators' notes on registry entries (crmedr's `note`), by id: editorial remarks that are not
+ * part of any printed text, shown in the reader alongside the canonical ids.
+ * @param {{entries: (RegistryEntry & {note?: string|null})[]}} registry
+ * @returns {Record<string, string>}
+ */
+export function buildNotes(registry) {
+  /** @type {Record<string, string>} */
+  const out = {};
+  for (const e of registry.entries) if (e.note) out[e.id] = e.note;
+  return out;
+}
+
 function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -80,5 +93,9 @@ function main() {
   const misprintsDest = join(here, "..", "data", "misprints-snapshot.json");
   writeFileSync(misprintsDest, JSON.stringify(misprints, null, 2) + "\n");
   console.log(`wrote ${misprintsDest}: ${misprints.length} misprints`);
+  const notes = buildNotes(registry);
+  const notesDest = join(here, "..", "data", "notes-snapshot.json");
+  writeFileSync(notesDest, JSON.stringify(notes, null, 2) + "\n");
+  console.log(`wrote ${notesDest}: ${Object.keys(notes).length} notes`);
 }
 if (import.meta.url === `file://${process.argv[1]}`) main();

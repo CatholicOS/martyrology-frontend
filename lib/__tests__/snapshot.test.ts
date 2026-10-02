@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildMisprints, buildSnapshot } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildSnapshot } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -29,5 +29,16 @@ describe("buildMisprints", () => {
     expect(buildMisprints(doc)).toEqual([
       { id: "mr:0305-phoca", edition: "martyrologium_romanum_2004_it_IT", printed: "nell’odiena", intended: "nell’odierna" },
     ]);
+  });
+});
+
+describe("buildNotes", () => {
+  it("keeps the curators' notes by id, skipping entries without one", () => {
+    const doc = { entries: [
+      { id: "mr:0220-eleutherius-et-socii", month: 2, day: 20, note: "Probably mr:0218-sadoth-et-socii." },
+      { id: "mr:0104-titus", month: 1, day: 4, note: null },
+      { id: "mr:0101-basilius", month: 1, day: 1 },
+    ] };
+    expect(buildNotes(doc)).toEqual({ "mr:0220-eleutherius-et-socii": "Probably mr:0218-sadoth-et-socii." });
   });
 });
