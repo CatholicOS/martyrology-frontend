@@ -8,9 +8,14 @@ import { getViewer } from "@/lib/viewer";
 type Params = Promise<{ edition: string; mm: string; dd: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-/** The second edition of a pairing (`?with=`); a missing or repeated parameter is no pairing. */
+/** The raw `?with=`: undefined when absent; a repeated or empty one is not a single edition id. */
+async function rawWith(searchParams?: SearchParams): Promise<string | string[] | undefined> {
+  return (await searchParams)?.with;
+}
+
+/** The second edition of a pairing (`?with=`); null for no pairing, or for a value that is not a single id. */
 async function withParam(searchParams?: SearchParams): Promise<string | null> {
-  const w = (await searchParams)?.with;
+  const w = await rawWith(searchParams);
   return typeof w === "string" && w ? w : null;
 }
 
@@ -31,7 +36,9 @@ export default async function DayRoute({ params, searchParams }: { params: Param
   const day = parseDay(mm, dd);
   if (!day || !(await editionExists(edition))) notFound();
   const w = await withParam(searchParams);
-  if (w !== null && (w === edition || !(await editionExists(w)))) redirect(dayPath(edition, day));
+  // A `with` that is present but not a single known edition other than this one is dropped from the URL.
+  const present = (await rawWith(searchParams)) !== undefined;
+  if (present && (w === null || w === edition || !(await editionExists(w)))) redirect(dayPath(edition, day));
   const viewer = await getViewer();
   return (
     <main className={w ? "mx-auto max-w-7xl p-4" : "mx-auto max-w-5xl p-4"}>

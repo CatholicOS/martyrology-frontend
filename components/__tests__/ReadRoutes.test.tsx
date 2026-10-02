@@ -64,8 +64,9 @@ describe("/read routes", () => {
     await expect(DayRoute(withParams(P, { with: P.edition }))).rejects.toThrow("NEXT_REDIRECT /read/martyrologium_romanum_2004/10/04");
   });
 
-  it("treats a repeated with as no pairing", async () => {
-    expect(await DayRoute(withParams(P, { with: ["a", "b"] }))).toBeTruthy();
+  it("drops a repeated or empty with from the URL", async () => {
+    await expect(DayRoute(withParams(P, { with: ["a", "b"] }))).rejects.toThrow("NEXT_REDIRECT /read/martyrologium_romanum_2004/10/04");
+    await expect(DayRoute(withParams(P, { with: "" }))).rejects.toThrow("NEXT_REDIRECT /read/martyrologium_romanum_2004/10/04");
   });
 
   it("titles a pairing with both editions", async () => {
