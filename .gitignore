@@ -12,3 +12,6 @@ docker-compose.override.yml
 
 # Brainstorming mockups (superpowers visual companion)
 .superpowers/brainstorm/
+
+# Serena (local tool state; rewritten on most runs)
+.serena/
