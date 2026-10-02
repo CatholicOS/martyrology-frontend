@@ -78,7 +78,7 @@ export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
       <div className="flex flex-wrap items-end justify-center gap-6 border-b-[10px] border-[#6b4a2e] px-4 pb-4 pt-8">
         {editions === null
           ? Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className="h-44 w-30 animate-pulse rounded bg-slate-200 dark:bg-slate-800" aria-hidden />
+              <div key={i} className="h-[14.5rem] w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" aria-hidden />
             ))
           : editions.map((e) => {
               const state = shelfState(e, access);
