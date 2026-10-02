@@ -164,10 +164,14 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
   const lang = current ? editionLang(current) : "la";
   const title = current ? `${titleCase(editionTitle(current))} ${current.year}` : edition;
   const books = useMemo(() => {
-    const openable = editions.filter((e) => shelfState(e, access) === "open");
-    const list = openable.some((e) => e.edition_id === edition) || !current ? openable : [current, ...openable];
-    return list.map((e) => ({ id: e.edition_id, label: `${titleCase(editionTitle(e))} ${e.year}` }));
-  }, [editions, access, edition, current]);
+    const options = editions
+      .filter((e) => shelfState(e, access) === "open")
+      .map((e) => ({ id: e.edition_id, label: `${titleCase(editionTitle(e))} ${e.year}` }));
+    if (options.some((o) => o.id === edition)) return options;
+    // The current book is locked, or the list is still loading or failed to load:
+    // keep it as the first option so the select always shows what is open.
+    return [{ id: edition, label: title }, ...options];
+  }, [editions, access, edition, title]);
 
   return (
     <div>

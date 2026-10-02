@@ -150,6 +150,29 @@ describe("Reader", () => {
     expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1914_en_unofficial/10/02");
   });
 
+  it("keeps the current book selected in Switch book when the edition list cannot be loaded", async () => {
+    vi.mocked(getEditions).mockRejectedValue(new Error("down"));
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    const switcher = screen.getByLabelText("Switch book") as HTMLSelectElement;
+    expect([...switcher.querySelectorAll("option")].map((o) => o.value)).toEqual(["martyrologium_romanum_1749"]);
+    expect(switcher.value).toBe("martyrologium_romanum_1749");
+  });
+
+  it("keeps a locked current book selectable in Switch book", async () => {
+    vi.mocked(getDay).mockResolvedValue({ ...DAY, elogia: [{ ...DAY.elogia[0], text: null }],
+      metadata: { ...DAY.metadata, access: "restricted-texts" } });
+    render(<Reader edition="martyrologium_romanum_2004" mm={10} dd={2} signedIn={false} />);
+    await screen.findByText(/Sign in to open this edition/);
+    const switcher = screen.getByLabelText("Switch book") as HTMLSelectElement;
+    await vi.waitFor(() =>
+      expect([...switcher.querySelectorAll("option")].map((o) => o.value)).toEqual([
+        "martyrologium_romanum_2004", "martyrologium_romanum_1914_en_unofficial", "martyrologium_romanum_1749",
+      ]),
+    );
+    expect(switcher.value).toBe("martyrologium_romanum_2004");
+  });
+
   it("shows the locked notice, not blank eulogies, for a redacted edition", async () => {
     vi.mocked(getDay).mockResolvedValue({ ...DAY, elogia: [{ ...DAY.elogia[0], text: null }],
       metadata: { ...DAY.metadata, access: "restricted-texts", access_info: "https://example/licensing" } });
