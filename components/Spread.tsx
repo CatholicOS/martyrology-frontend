@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
 import DayPage, { Conclusio } from "@/components/DayPage";
+import CuratorNotes from "@/components/CuratorNotes";
 import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
 import { dateHeading, dayPath, monthName, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
+import { pageNotes } from "@/lib/notes";
 import { buildRows, gapNote, type GapNote, type Row } from "@/lib/parallel";
 import type { EditionOut } from "@/lib/types";
 import { useDay } from "@/lib/use-day";
@@ -105,6 +107,12 @@ export default function Spread({
     [rows],
   );
   const placements = usePlacements(oneSided);
+  // Each sheet marks its own curators' notes, †, ††, … down the sheet.
+  const notes = useMemo(() => {
+    const side = (s: "a" | "b", id: string) =>
+      showIds ? pageNotes((rows ?? []).map((r) => (r.kind === "eulogy" ? (r[s]?.id ?? null) : null)), id) : [];
+    return { a: side("a", a), b: side("b", b) };
+  }, [rows, showIds, a, b]);
   const href = (d: Day) => dayPath(a, d, b);
 
   const unaligned = [A, B].filter((s) => s.meta?.aligned === false);
@@ -166,7 +174,15 @@ export default function Spread({
         </>
       );
     }
-    if (r.kind === "conclusio") return d.conclusio ? <Conclusio text={d.conclusio} /> : null;
+    if (r.kind === "conclusio") {
+      if (!d.conclusio && notes[side].length === 0) return null;
+      return (
+        <>
+          {d.conclusio && <Conclusio text={d.conclusio} />}
+          <CuratorNotes notes={notes[side]} />
+        </>
+      );
+    }
     const e = r[side];
     const note = e ? null : gapNote(rows, i, s.id, placements, day);
     if (!e && !note) return null;
@@ -174,7 +190,11 @@ export default function Spread({
     return (
       <>
         <span className={side === "b" ? styles.tag : styles.srOnly}>{s.name}</span>
-        {e ? <Eulogy e={e} edition={s.id} showId={showIds} /> : <Gap note={note!} name={s.name} href={href} />}
+        {e ? (
+          <Eulogy e={e} edition={s.id} showId={showIds} note={notes[side].find((n) => n.at === i)} />
+        ) : (
+          <Gap note={note!} name={s.name} href={href} />
+        )}
       </>
     );
   };
