@@ -10,6 +10,7 @@ vi.mock("@/lib/api", () => {
 
 import { getElogium, ApiError } from "@/lib/api";
 import { usePlacements, __resetPlacements } from "@/lib/use-placements";
+import type { EulogyOut } from "@/lib/types";
 
 const placement = { day_printed: "10-05", entry: 3, asterisk: false, unnumbered: false, text: null };
 const eulogy = (id: string) => ({ id, subject: {}, anchor_day: "10-05", deprecated: false, editions: { e1749: placement } });
@@ -49,5 +50,59 @@ describe("usePlacements", () => {
     const { result } = renderHook(() => usePlacements([]));
     expect(result.current).toEqual({});
     expect(getElogium).not.toHaveBeenCalled();
+  });
+
+  it("adds the placements of the same eulogy printed on another day", async () => {
+    const june = { day_printed: "06-10", entry: 9, asterisk: true, unnumbered: false, text: null };
+    const december = { day_printed: "12-10", entry: 9, asterisk: true, unnumbered: false, text: null };
+    vi.mocked(getElogium).mockImplementation(async (id: string): Promise<EulogyOut> => {
+      if (id === "mr:0610-x") {
+        return { id, subject: {}, anchor_day: "06-10", deprecated: false, editions: { la: june }, same_eulogy: ["mr:1210-x"] };
+      } else {
+        return { id, subject: {}, anchor_day: "12-10", deprecated: false, editions: { it: december }, same_eulogy: ["mr:0610-x"] };
+      }
+    });
+    const { result } = renderHook(() => usePlacements(["mr:0610-x"]));
+    await waitFor(() => expect(result.current).toEqual({ "mr:0610-x": { la: june, it: december } }));
+  });
+
+  it("does not cache a eulogy whose twin failed to load, and asks again on the next mount", async () => {
+    vi.mocked(getElogium).mockImplementation(async (id: string) => {
+      if (id === "mr:0610-x") return { ...eulogy(id), same_eulogy: ["mr:1210-x"] };
+      throw new ApiError(500, "Server Error");
+    });
+    const first = renderHook(() => usePlacements(["mr:0610-x"]));
+    await waitFor(() => expect(getElogium).toHaveBeenCalledTimes(2));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(first.result.current).toEqual({});
+    first.unmount();
+    renderHook(() => usePlacements(["mr:0610-x"]));
+    await waitFor(() => expect(getElogium).toHaveBeenCalledTimes(4));
+  });
+
+  it("counts a twin the API does not know as printed nowhere, and caches the eulogy", async () => {
+    vi.mocked(getElogium).mockImplementation(async (id: string) => {
+      if (id === "mr:0610-x") return { ...eulogy(id), same_eulogy: ["mr:1210-x"] };
+      throw new ApiError(404, "Not Found");
+    });
+    const first = renderHook(() => usePlacements(["mr:0610-x"]));
+    await waitFor(() => expect(first.result.current).toEqual({ "mr:0610-x": { e1749: placement } }));
+    first.unmount();
+    renderHook(() => usePlacements(["mr:0610-x"]));
+    expect(getElogium).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps an edition's own placement over its twin's, and ignores a twin printed nowhere else", async () => {
+    const own = { day_printed: "06-10", entry: 9, asterisk: true, unnumbered: false, text: null };
+    vi.mocked(getElogium).mockImplementation(async (id: string): Promise<EulogyOut> => {
+      if (id === "mr:0610-x") {
+        return { id, subject: {}, anchor_day: "06-10", deprecated: false, editions: { la: own }, same_eulogy: ["mr:1210-x"] };
+      } else {
+        return { id, subject: {}, anchor_day: "12-10", deprecated: false, editions: {}, same_eulogy: ["mr:0610-x"] };
+      }
+    });
+    const { result } = renderHook(() => usePlacements(["mr:0610-x"]));
+    await waitFor(() => expect(result.current).toEqual({ "mr:0610-x": { la: own } }));
+    expect(getElogium).toHaveBeenCalledTimes(2);
   });
 });
