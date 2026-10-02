@@ -78,6 +78,24 @@ describe("Reader", () => {
     expect(push).toHaveBeenCalledTimes(1);
   });
 
+  it("Today on today's date does not navigate, jam the guard or leak focus", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(2026, 9, 2, 12));
+    try {
+      const first = render1749(10, 2);
+      await screen.findByText("Romae passio sancti Modesti Sardi.");
+      fireEvent.click(screen.getByRole("button", { name: "Today" }));
+      expect(push).not.toHaveBeenCalled();
+      fireEvent.click(screen.getByRole("button", { name: "Next day" }));
+      expect(push).toHaveBeenCalledTimes(1);
+      first.unmount();
+      render1749(10, 3);
+      expect(screen.getByRole("button", { name: "Next day" })).toHaveFocus();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("announces loading as a status", () => {
     render1749();
     expect(screen.getByRole("status")).toHaveTextContent("Loading…");

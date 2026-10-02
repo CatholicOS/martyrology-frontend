@@ -140,12 +140,13 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
   const go = useCallback(
     (d: Day, direction: Turn = null, focusId: string | null = null) => {
       if (navigated.current) return;
+      if (d.mm === mm && d.dd === dd) return; // same URL: Next would not remount, leaving the guard stuck
       navigated.current = true;
       pendingTurn = direction;
       pendingFocus = focusId;
       router.push(dayPath(edition, d));
     },
-    [router, edition],
+    [router, edition, mm, dd],
   );
 
   useEffect(() => {
@@ -172,7 +173,7 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
     <div>
       <ReaderBar edition={edition} day={day} books={books} onGo={(d, focusId) => go(d, null, focusId)}
         onSwitch={(id, focusId) => {
-          if (navigated.current) return;
+          if (navigated.current || id === edition) return;
           navigated.current = true;
           pendingTurn = null;
           pendingFocus = focusId;
