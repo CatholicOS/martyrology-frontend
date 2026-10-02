@@ -25,7 +25,14 @@ export function usePlacements(ids: string[]): Placements {
     Promise.all(
       missing.map((id) =>
         getElogium(id).then(
-          (e) => void cache.set(id, e.editions),
+          async (e) => {
+            // A eulogy another edition prints on another day has another ID there:
+            // add those placements for the editions this ID is not printed in.
+            const twins = await Promise.all(
+              (e.same_eulogy ?? []).map((t) => getElogium(t).then((x) => x.editions, () => ({}))),
+            );
+            cache.set(id, Object.assign({}, ...twins, e.editions));
+          },
           (err: unknown) => {
             if (err instanceof ApiError && err.status === 404) cache.set(id, {});
           },

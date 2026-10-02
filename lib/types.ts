@@ -50,6 +50,8 @@ export interface EulogyOut {
   anchor_day: string;
   deprecated: boolean;
   editions: Record<string, EditionPlacement>;
+  /** The same eulogy printed by another edition on another day (other IDs). */
+  same_eulogy?: string[];
 }
 
 export interface ElogiumOut {
