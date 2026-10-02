@@ -96,20 +96,20 @@ describe("DayPage, curators' notes", () => {
     expect(screen.queryByRole("complementary", { name: "Editorial notes" })).toBeNull();
   });
 
-  it("marks them *, ** in red after the text, linked to the notes at the foot of the page and back", () => {
+  it("marks them †, †† in red after the text, linked to the notes at the foot of the page and back", () => {
     render(<DayPage day={noted} heading="4 Ianuarii" edition="ed" showIds />);
     const first = screen.getByRole("link", { name: "Editorial note 1" });
     const second = screen.getByRole("link", { name: "Editorial note 2" });
-    expect(first).toHaveTextContent(/^\*$/);
-    expect(second).toHaveTextContent(/^\*\*$/);
-    expect(first.closest("p")).toHaveTextContent("Sancti Ferreoli.*");
-    expect(second.closest("p")).toHaveTextContent("Sancti Rigomeri.**");
+    expect(first).toHaveTextContent(/^†$/);
+    expect(second).toHaveTextContent(/^††$/);
+    expect(first.closest("p")).toHaveTextContent("Sancti Ferreoli.†");
+    expect(second.closest("p")).toHaveTextContent("Sancti Rigomeri.††");
     const notes = screen.getByRole("complementary", { name: "Editorial notes" });
     expect(notes).toHaveAttribute("lang", "en");
     const items = notes.querySelectorAll("li");
     expect(items).toHaveLength(2);
     expect(first).toHaveAttribute("href", `#${items[0].id}`);
-    expect(items[0]).toHaveTextContent(/^\*Asterisked entry \(4\*\)/);
+    expect(items[0]).toHaveTextContent(/^†Asterisked entry \(4\*\)/);
     expect(screen.getByRole("link", { name: "Back to the text of note 2" })).toHaveAttribute("href", `#${second.id}`);
   });
 });

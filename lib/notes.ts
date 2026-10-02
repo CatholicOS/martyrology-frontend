@@ -1,6 +1,6 @@
 import snapshot from "@/data/notes-snapshot.json";
 
-/** One curator's note set as a footnote on a page: "*", "**", … in page order. */
+/** One curator's note set as a footnote on a page: "†", "††", … in page order. */
 export interface PageNote {
   id: string;
   mark: string;
@@ -15,7 +15,8 @@ const NOTES = snapshot as Record<string, string>;
 
 /**
  * The curators' notes (crmedr's `note`, not part of any printed text) for a page's eulogies, in
- * the order they are printed: the first is marked "*", the second "**", and so on. `edition`
+ * the order they are printed: the first is marked "†", the second "††", and so on. Daggers, not
+ * asterisks, so they are never taken for the printed editions' own notes or asterisked entries. `edition`
  * keeps the anchors apart when two sheets face each other.
  */
 export function pageNotes(ids: (string | null)[], edition: string, all: Record<string, string> = NOTES): PageNote[] {
@@ -25,7 +26,7 @@ export function pageNotes(ids: (string | null)[], edition: string, all: Record<s
     if (!id || seen.has(id) || !all[id]) continue;
     seen.add(id);
     const anchor = `note-${edition}-${id}`;
-    out.push({ id, mark: "*".repeat(out.length + 1), note: all[id], anchor, markAnchor: `${anchor}-mark` });
+    out.push({ id, mark: "†".repeat(out.length + 1), note: all[id], anchor, markAnchor: `${anchor}-mark` });
   }
   return out;
 }

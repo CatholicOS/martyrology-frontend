@@ -107,7 +107,7 @@ export default function Spread({
     [rows],
   );
   const placements = usePlacements(oneSided);
-  // Each sheet marks its own curators' notes, *, **, … down the sheet.
+  // Each sheet marks its own curators' notes, †, ††, … down the sheet.
   const notes = useMemo(() => {
     const side = (s: "a" | "b", id: string) =>
       showIds ? pageNotes((rows ?? []).map((r) => (r.kind === "eulogy" ? (r[s]?.id ?? null) : null)), id) : [];

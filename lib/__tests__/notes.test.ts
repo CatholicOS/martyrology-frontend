@@ -4,10 +4,10 @@ import { pageNotes } from "@/lib/notes";
 const all = { "mr:0220-a": "First.", "mr:0220-c": "Second.", "mr:0220-d": "Third." };
 
 describe("pageNotes", () => {
-  it("marks a page's notes *, **, *** in the order their eulogies are printed", () => {
+  it("marks a page's notes †, ††, ††† in the order their eulogies are printed", () => {
     const notes = pageNotes(["mr:0220-c", null, "mr:0220-b", "mr:0220-a", "mr:0220-d"], "ed", all);
     expect(notes.map((n) => [n.id, n.mark, n.note])).toEqual([
-      ["mr:0220-c", "*", "Second."], ["mr:0220-a", "**", "First."], ["mr:0220-d", "***", "Third."],
+      ["mr:0220-c", "†", "Second."], ["mr:0220-a", "††", "First."], ["mr:0220-d", "†††", "Third."],
     ]);
   });
 

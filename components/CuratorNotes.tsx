@@ -1,7 +1,7 @@
 import styles from "@/components/page.module.css";
 import type { PageNote } from "@/lib/notes";
 
-/** A note's mark in the text: red asterisks, linked to the note at the foot of the page. */
+/** A note's mark in the text: red daggers, linked to the note at the foot of the page. */
 export function NoteMark({ note }: { note: PageNote }) {
   return (
     <a id={note.markAnchor} href={`#${note.anchor}`} className={styles.noteMark} aria-label={`Editorial note ${note.mark.length}`}>
