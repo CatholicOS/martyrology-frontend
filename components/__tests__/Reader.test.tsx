@@ -113,6 +113,19 @@ describe("Reader", () => {
     expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_1749", "10", "02");
   });
 
+  it("turns pages from full-height side strips whose arrows are pinned at the top", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    for (const [name, glyph] of [["Previous day", "‹"], ["Next day", "›"]]) {
+      const strip = screen.getByRole("button", { name });
+      // The strip itself is the target; the arrow inside is decoration pinned near the top.
+      expect(strip).toHaveAttribute("data-strip", "true");
+      const arrow = strip.querySelector("[aria-hidden]");
+      expect(arrow).toHaveTextContent(glyph);
+      expect(arrow?.className).toMatch(/\bsticky\b/);
+    }
+  });
+
   it("turns to the next and previous day, wrapping the year", async () => {
     const first = render1749(12, 31);
     await screen.findByText("Romae passio sancti Modesti Sardi.");
