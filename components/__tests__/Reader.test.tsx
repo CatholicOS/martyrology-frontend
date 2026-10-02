@@ -47,6 +47,48 @@ const render1749 = (mm = 10, dd = 2, signedIn = false) =>
   render(<Reader edition="martyrologium_romanum_1749" mm={mm} dd={dd} signedIn={signedIn} />);
 
 describe("Reader", () => {
+  it("restores focus to the control that navigated, after the remount", async () => {
+    const first = render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.change(screen.getByLabelText("Day"), { target: { value: "15" } });
+    first.unmount();
+    render1749(10, 15);
+    expect(screen.getByLabelText("Day")).toHaveFocus();
+  });
+
+  it("restores focus to Next day, and leaves it alone after an arrow key", async () => {
+    const first = render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.click(screen.getByRole("button", { name: "Next day" }));
+    first.unmount();
+    const second = render1749(10, 3);
+    expect(screen.getByRole("button", { name: "Next day" })).toHaveFocus();
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    second.unmount();
+    render1749(10, 4);
+    expect(document.body).toHaveFocus();
+  });
+
+  it("pushes once when Next day is clicked twice quickly", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    const next = screen.getByRole("button", { name: "Next day" });
+    fireEvent.click(next);
+    fireEvent.click(next);
+    expect(push).toHaveBeenCalledTimes(1);
+  });
+
+  it("announces loading as a status", () => {
+    render1749();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading…");
+  });
+
+  it("sets the page language from the edition", async () => {
+    render(<Reader edition="martyrologium_romanum_1914_en_unofficial" mm={10} dd={2} signedIn={false} />);
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.getByRole("article")).toHaveAttribute("lang", "en");
+  });
+
   it("shows the day's page", async () => {
     render1749();
     expect(await screen.findByText("Romae passio sancti Modesti Sardi.")).toBeInTheDocument();
@@ -54,12 +96,15 @@ describe("Reader", () => {
   });
 
   it("turns to the next and previous day, wrapping the year", async () => {
-    render1749(12, 31);
+    const first = render1749(12, 31);
     await screen.findByText("Romae passio sancti Modesti Sardi.");
     fireEvent.click(screen.getByRole("button", { name: "Next day" }));
     expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1749/01/01");
+    first.unmount(); // Next remounts the reader on each turn
+    render1749(1, 1);
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
     fireEvent.keyDown(window, { key: "ArrowLeft" });
-    expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1749/12/30");
+    expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1749/12/31");
   });
 
   it("leaves the arrow keys to a focused picker", async () => {
@@ -72,10 +117,13 @@ describe("Reader", () => {
   });
 
   it("jumps with the pickers, and Switch book keeps the date and lists only openable books", async () => {
-    render1749();
+    const first = render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");
     fireEvent.change(screen.getByLabelText("Day"), { target: { value: "15" } });
     expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1749/10/15");
+    first.unmount();
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
     const switcher = screen.getByLabelText("Switch book");
     expect([...switcher.querySelectorAll("option")].map((o) => o.value)).toEqual([
       "martyrologium_romanum_1914_en_unofficial", "martyrologium_romanum_1749",
@@ -88,7 +136,8 @@ describe("Reader", () => {
     vi.mocked(getDay).mockResolvedValue({ ...DAY, elogia: [{ ...DAY.elogia[0], text: null }],
       metadata: { ...DAY.metadata, access: "restricted-texts", access_info: "https://example/licensing" } });
     render(<Reader edition="martyrologium_romanum_2004" mm={10} dd={2} signedIn={false} />);
-    expect(await screen.findByRole("status")).toHaveTextContent("Sign in to open this edition");
+    await screen.findByText("Sign in to open this edition.", { exact: false });
+    expect(screen.getByRole("status")).toHaveTextContent("Sign in to open this edition");
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
   });
 

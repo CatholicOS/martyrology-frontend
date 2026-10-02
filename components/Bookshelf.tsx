@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import BookCover from "@/components/BookCover";
@@ -20,6 +20,14 @@ export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
   const [opening, setOpening] = useState<string | null>(null);
 
   const [attempt, setAttempt] = useState(0);
+  const swing = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (swing.current !== null) window.clearTimeout(swing.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -44,13 +52,14 @@ export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
   };
 
   const open = (e: EditionOut) => {
+    if (opening !== null) return;
     const path = `/read/${encodeURIComponent(e.edition_id)}`;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push(path);
       return;
     }
     setOpening(e.edition_id);
-    window.setTimeout(() => router.push(path), OPEN_MS);
+    swing.current = window.setTimeout(() => router.push(path), OPEN_MS);
   };
 
   if (failed) {

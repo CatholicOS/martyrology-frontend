@@ -1,3 +1,5 @@
+import { splitUrl } from "@/lib/text-url";
+
 /** Why a copyrighted edition will not open, and what the reader can do about it. */
 export default function LockedNotice({
   title,
@@ -18,7 +20,17 @@ export default function LockedNotice({
       {signedIn ? (
         <p className="mt-1">
           Your account doesn&apos;t have access to this edition.
-          {accessInfo && <span className="mt-1 block text-slate-600 dark:text-slate-400">{accessInfo}</span>}
+          {accessInfo && (
+            <span className="mt-1 block text-slate-600 dark:text-slate-400">
+              {splitUrl(accessInfo).map((p, i) =>
+                p.href ? (
+                  <a key={i} href={p.href} className="underline">{p.text}</a>
+                ) : (
+                  <span key={i}>{p.text}</span>
+                ),
+              )}
+            </span>
+          )}
         </p>
       ) : (
         <p className="mt-1 flex items-center gap-3">

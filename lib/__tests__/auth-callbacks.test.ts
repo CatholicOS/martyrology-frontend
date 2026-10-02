@@ -49,6 +49,17 @@ describe("session callback", () => {
   });
 });
 
+describe("session shape", () => {
+  it("has only whitelisted keys, even when the token carries secrets and roles", async () => {
+    const session = await callbacks.session({
+      session: { user: { email: "a@b.c" }, expires: "2099-01-01" },
+      token: { ...token, curator: true, "urn:zitadel:iam:org:project:roles": { martyrology_editor: {} }, roles: ["x"] },
+    } as never);
+    const allowed = ["user", "expires", "error", "curator"];
+    expect(Object.keys(session).filter((k) => !allowed.includes(k))).toEqual([]);
+  });
+});
+
 describe("jwt callback", () => {
   afterEach(() => {
     vi.restoreAllMocks();
@@ -84,6 +95,16 @@ describe("jwt callback", () => {
       profile: { "urn:zitadel:iam:org:project:roles": { martyrology_editor: { "1": "x" } } },
     } as never);
     expect(result).toMatchObject({ curator: true });
+  });
+
+  it("does not copy the roles claim onto the JWT", async () => {
+    const result = await callbacks.jwt({
+      token: { sub: "user-1" },
+      account: { provider: "zitadel", type: "oidc", providerAccountId: "user-1", access_token: "AT" },
+      profile: { "urn:zitadel:iam:org:project:roles": { martyrology_editor: { "1": "x" } } },
+    } as never);
+    expect(Object.keys(result as object)).not.toContain("urn:zitadel:iam:org:project:roles");
+    expect(JSON.stringify(result)).not.toContain("martyrology_editor");
   });
 
   it("does not mark a curator when the roles claim is missing or malformed", async () => {

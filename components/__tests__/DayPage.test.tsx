@@ -13,6 +13,12 @@ const day = {
 };
 
 describe("DayPage", () => {
+  it("marks the article with the edition's language", () => {
+    render(<DayPage day={day} heading="2 Octobris" lang="it" />);
+    expect(screen.getByRole("article")).toHaveAttribute("lang", "it");
+  });
+
+
   it("uses the edition's titulus as the heading", () => {
     render(<DayPage day={day} heading="2 Octobris" />);
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("2 Octobris Sexto Nonas Octobris. xxj. B");

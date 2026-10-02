@@ -23,6 +23,10 @@
 .year { position: absolute; bottom: 1rem; left: 0.6rem; right: 0; text-align: center; font-size: 1.1rem; }
 .label { font-size: 0.75rem; color: #6b625b; text-align: center; }
 
+@media (prefers-color-scheme: dark) {
+  .label { color: #b8aea4; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .book, .opening { transition: none; }
   .book:not(.unavailable):hover, .book:not(.unavailable):focus-visible, .opening { transform: none !important; }

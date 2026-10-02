@@ -26,11 +26,13 @@ type Turn = "next" | "prev" | null;
 // Next remounts the page when the day changes, so the turn direction and the
 // edition list must survive the remount. Written only from browser handlers/effects.
 let pendingTurn: Turn = null;
+let pendingFocus: string | null = null;
 let cached: { editions: EditionOut[]; access: AccessMap | null } | null = null;
 
 /** Test-only: clears the module state shared between Reader instances. */
 export function __resetReaderState() {
   pendingTurn = null;
+  pendingFocus = null;
   cached = null;
 }
 
@@ -71,10 +73,12 @@ function DayView({
 
   return (
     <>
-      {state.kind === "loading" && <div className="mx-auto min-h-96 max-w-[38rem] animate-pulse rounded bg-[#fbf6ec]" aria-label="Loading" />}
+      {state.kind === "loading" && <div role="status" className="mx-auto min-h-96 max-w-[38rem] animate-pulse rounded bg-[#fbf6ec]">
+          <span className="sr-only">Loading…</span>
+        </div>}
       {state.kind === "ready" && (
         <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-          <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} />
+          <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} />
         </div>
       )}
       {state.kind === "locked" && (
@@ -105,8 +109,14 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
   const [turn] = useState<Turn>(() => pendingTurn);
   const touch = useRef<{ x: number; y: number } | null>(null);
 
+  const navigated = useRef(false);
+
   useEffect(() => {
     pendingTurn = null; // consumed by the initialiser above
+    // Next remounts the page on a day change, which drops focus to <body>.
+    const id = pendingFocus;
+    pendingFocus = null;
+    if (id) document.getElementById(id)?.focus();
   }, []);
 
   useEffect(() => {
@@ -128,8 +138,11 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
   }, []);
 
   const go = useCallback(
-    (d: Day, direction: Turn = null) => {
+    (d: Day, direction: Turn = null, focusId: string | null = null) => {
+      if (navigated.current) return;
+      navigated.current = true;
       pendingTurn = direction;
+      pendingFocus = focusId;
       router.push(dayPath(edition, d));
     },
     [router, edition],
@@ -157,7 +170,14 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
 
   return (
     <div>
-      <ReaderBar edition={edition} day={day} books={books} onGo={(d) => go(d)} onSwitch={(id) => router.push(dayPath(id, day))} />
+      <ReaderBar edition={edition} day={day} books={books} onGo={(d, focusId) => go(d, null, focusId)}
+        onSwitch={(id, focusId) => {
+          if (navigated.current) return;
+          navigated.current = true;
+          pendingTurn = null;
+          pendingFocus = focusId;
+          router.push(dayPath(id, day));
+        }} />
       <div
         className="flex items-stretch gap-2"
         onTouchStart={(e) => {
@@ -174,7 +194,7 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
           else go(prevDay(day), "prev");
         }}
       >
-        <button type="button" aria-label="Previous day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100" onClick={() => go(prevDay(day), "prev")}>‹</button>
+        <button type="button" id="reader-prev" aria-label="Previous day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100 dark:text-red-300 dark:opacity-100" onClick={() => go(prevDay(day), "prev", "reader-prev")}>‹</button>
         <div className="flex-1">
           {/* key resets DayView's loading state for each day/edition */}
           <DayView
@@ -188,7 +208,7 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
             turn={turn}
           />
         </div>
-        <button type="button" aria-label="Next day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100" onClick={() => go(nextDay(day), "next")}>›</button>
+        <button type="button" id="reader-next" aria-label="Next day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100 dark:text-red-300 dark:opacity-100" onClick={() => go(nextDay(day), "next", "reader-next")}>›</button>
       </div>
     </div>
   );

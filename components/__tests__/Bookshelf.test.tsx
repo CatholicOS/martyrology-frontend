@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -65,6 +65,7 @@ describe("Bookshelf", () => {
     fireEvent.click(await screen.findByRole("button", { name: /2004, Latin \(locked\)/ }));
     expect(screen.getByRole("status")).toHaveTextContent("Your account doesn't have access to this edition");
     expect(screen.getByRole("status")).toHaveTextContent("See https://example/licensing");
+    expect(screen.getByRole("link", { name: "https://example/licensing" })).toHaveAttribute("href", "https://example/licensing");
   });
 
   it("still shows every available book as open when access cannot be loaded", async () => {
@@ -78,5 +79,31 @@ describe("Bookshelf", () => {
     render(<Bookshelf signedIn={false} />);
     fireEvent.click(await screen.findByRole("button", { name: "Retry" }));
     expect(await screen.findByRole("button", { name: "Martyrologium Romanum 1749, Latin" })).toBeInTheDocument();
+  });
+
+  describe("book-opening swing", () => {
+    beforeEach(() => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      window.matchMedia = vi.fn().mockReturnValue({ matches: false }) as never;
+    });
+    afterEach(() => vi.useRealTimers());
+
+    it("pushes once after the swing, ignoring a second click meanwhile", async () => {
+      render(<Bookshelf signedIn={false} />);
+      const book = await screen.findByRole("button", { name: "Martyrologium Romanum 1749, Latin" });
+      fireEvent.click(book);
+      fireEvent.click(book);
+      expect(push).not.toHaveBeenCalled();
+      act(() => { vi.advanceTimersByTime(450); });
+      expect(push).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not push if unmounted mid-swing", async () => {
+      const { unmount } = render(<Bookshelf signedIn={false} />);
+      fireEvent.click(await screen.findByRole("button", { name: "Martyrologium Romanum 1749, Latin" }));
+      unmount();
+      act(() => { vi.advanceTimersByTime(1000); });
+      expect(push).not.toHaveBeenCalled();
+    });
   });
 });

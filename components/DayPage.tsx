@@ -15,9 +15,9 @@ function Conclusio({ text }: { text: string }) {
 }
 
 /** One day typeset as a printed page. `heading` is used when the edition prints no titulus. */
-export default function DayPage({ day, heading }: { day: DayContentOut; heading: string }) {
+export default function DayPage({ day, heading, lang }: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en" }) {
   return (
-    <article className={styles.page}>
+    <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
       {day.elogia.map((e, i) =>
         e.unnumbered ? (
