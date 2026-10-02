@@ -14,10 +14,13 @@ export default function Eulogy({ e, edition }: { e: ElogiumOut; edition?: string
     </p>
   ) : (
     <p className={styles.entry}>
-      <span className={styles.rubric}>
-        {e.entry}
-        {e.asterisk ? "*" : ""}.
-      </span>
+      {/* Historical prints (1749, 1914) number no eulogies: the API sends no entry. */}
+      {e.entry !== null && (
+        <span className={styles.rubric}>
+          {e.entry}
+          {e.asterisk ? "*" : ""}.
+        </span>
+      )}
       {text}
     </p>
   );

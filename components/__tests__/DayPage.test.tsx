@@ -66,3 +66,17 @@ describe("DayPage misprints", () => {
     expect(screen.queryByText(/sic!/)).not.toBeInTheDocument();
   });
 });
+
+describe("DayPage, a print that numbers no eulogies", () => {
+  it("prints no number, asterisk or full stop when a eulogy has no entry", () => {
+    const unnumberedPrint = {
+      titulus: "4 Octobris",
+      elogia: [{ id: "mr:1004-petronius", entry: null, asterisk: false, unnumbered: false, anchor_day: "10-04", text: "Bononiae sancti Petronii." }],
+      conclusio: null,
+    };
+    render(<DayPage day={unnumberedPrint} heading="" />);
+    const p = screen.getByText("Bononiae sancti Petronii.").closest("p")!;
+    expect(p).toHaveTextContent(/^Bononiae/);
+    expect(p.querySelector("span")).toBeNull();
+  });
+});
