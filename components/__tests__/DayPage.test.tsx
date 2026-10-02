@@ -34,8 +34,9 @@ describe("DayPage", () => {
     const header = screen.getByText("Festum sanctorum Angelorum Custodum.");
     expect(header.closest("p")).toHaveAttribute("data-unnumbered", "true");
     expect(header.closest("p")).not.toHaveTextContent(/^1/);
-    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("p")).toHaveTextContent(/^2\s*Romae/);
-    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^3\*\s*Alibi/);
+    // As both 2004 prints set them: the number, its asterisk, then a full stop.
+    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("p")).toHaveTextContent(/^2\.\s*Romae/);
+    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^3\*\.\s*Alibi/);
   });
 
   it("closes with the conclusio, setting R. as a rubric, and omits an empty one", () => {

@@ -3,8 +3,8 @@ import styles from "@/components/page.module.css";
 import type { ElogiumOut } from "@/lib/types";
 
 /**
- * One eulogy as printed: its number and asterisk as rubrics, or, unnumbered, as a centred
- * heading. `edition` (a CLBDR edition id) selects the misprint notes.
+ * One eulogy as printed: its number, asterisk and full stop as rubrics ("3*."), or,
+ * unnumbered, as a centred heading. `edition` (a CLBDR edition id) selects the misprint notes.
  */
 export default function Eulogy({ e, edition }: { e: ElogiumOut; edition?: string }) {
   const text = e.text && edition ? <EulogyText text={e.text} id={e.id} edition={edition} noteClassName={styles.sic} /> : e.text;
@@ -16,7 +16,7 @@ export default function Eulogy({ e, edition }: { e: ElogiumOut; edition?: string
     <p className={styles.entry}>
       <span className={styles.rubric}>
         {e.entry}
-        {e.asterisk ? "*" : ""}
+        {e.asterisk ? "*" : ""}.
       </span>
       {text}
     </p>
