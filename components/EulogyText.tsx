@@ -3,10 +3,11 @@ import { misprintsFor, splitMisprints } from "@/lib/misprints";
 
 /**
  * A eulogy's text as printed in `edition`, with `[sic! expected: …]` after
- * each verified misprint. `noteClassName` styles the note for its setting.
+ * each verified misprint: the editorial note is set upright with *sic!* in
+ * italics, as in critical editions. `noteClassName` sets its size and colour.
  */
 export default function EulogyText({
-  text, id, edition, noteClassName = "text-[0.75em] text-slate-500 dark:text-slate-400",
+  text, id, edition, noteClassName = "text-[0.8em] text-slate-600 dark:text-slate-300",
 }: {
   text: string; id: string | null; edition: string; noteClassName?: string;
 }) {
@@ -17,7 +18,11 @@ export default function EulogyText({
       {splitMisprints(text, misprints).map((s, i) => (
         <Fragment key={i}>
           {s.text}
-          {s.intended && <span className={noteClassName}> [sic! expected: {s.intended}]</span>}
+          {s.intended && (
+            <span className={noteClassName} style={{ fontStyle: "normal" }}>
+              {" "}[<i>sic!</i> expected: {s.intended}]
+            </span>
+          )}
         </Fragment>
       ))}
     </>

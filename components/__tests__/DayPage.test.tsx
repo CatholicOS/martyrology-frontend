@@ -55,8 +55,9 @@ describe("DayPage misprints", () => {
 
   it("notes a verified misprint after the printed text", () => {
     render(<DayPage day={it2004} heading="" edition="martyrologium_romanum_2004_it_IT" />);
-    const note = screen.getByText("[sic! expected: nell’odierna]", { exact: false });
-    expect(note.closest("p")).toHaveTextContent("nell’odiena [sic! expected: nell’odierna] Turchia");
+    const sic = screen.getByText("sic!");
+    expect(sic.tagName).toBe("I");
+    expect(sic.closest("p")).toHaveTextContent("nell’odiena [sic! expected: nell’odierna] Turchia");
   });
 
   it("adds no note for another edition", () => {
