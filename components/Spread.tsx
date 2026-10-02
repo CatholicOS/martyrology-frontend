@@ -112,11 +112,22 @@ export default function Spread({
   ));
 
   if (sa.kind === "loading" || sb.kind === "loading") {
-    const skeleton = { kind: "loading" } as const;
+    // A ready side waits as a placeholder, so both sheets appear (and turn) together;
+    // a side that settled locked, without text or failed shows its notice at once.
+    const waiting = (s: SideInfo, d: typeof dayA) => (
+      <DayStatus
+        state={d.state.kind === "ready" ? { kind: "loading" } : d.state}
+        retry={d.retry}
+        title={s.title}
+        signedIn={signedIn}
+        mm={mm}
+        dd={dd}
+      />
+    );
     return (
       <div className={styles.facing}>
-        <DayStatus state={skeleton} retry={dayA.retry} title={A.title} signedIn={signedIn} mm={mm} dd={dd} />
-        <DayStatus state={skeleton} retry={dayB.retry} title={B.title} signedIn={signedIn} mm={mm} dd={dd} />
+        {waiting(A, dayA)}
+        {waiting(B, dayB)}
       </div>
     );
   }

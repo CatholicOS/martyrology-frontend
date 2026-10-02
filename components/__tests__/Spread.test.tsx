@@ -118,6 +118,19 @@ describe("Spread", () => {
     expect(container.querySelectorAll(`.${styles.turnPrev}`)).toHaveLength(0);
   });
 
+  it("shows a side that settled locked while the other is still loading", async () => {
+    vi.mocked(getDay).mockImplementation((edition: string) =>
+      edition === B
+        ? Promise.resolve(day(B, [{ ...el("mr:x", 4, ""), text: null }], "restricted-texts"))
+        : new Promise<DayOut>(() => {}), // A never settles in this test
+    );
+    render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
+    // B's locked notice (with its Sign in button) does not wait for A.
+    expect(await screen.findByText(/is a copyrighted edition/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(screen.getByText("Loading…")).toBeInTheDocument(); // A's placeholder
+  });
+
   it("labels every eulogy cell with its edition, for screen readers", async () => {
     serve({ [A]: day(A, [el("mr:x", 1, "Romae sancti X.")]), [B]: day(B, [el("mr:x", 4, "Romae passio sancti X.")]) });
     render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
