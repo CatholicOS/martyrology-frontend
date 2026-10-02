@@ -46,6 +46,21 @@ describe("buildRows", () => {
     expect(ids(buildRows([el("x"), el("x")], [el("x")]))).toEqual(["titulus", "x|x", "x|-", "conclusio"]);
   });
 
+  it("keeps each side in its printed order when an id repeats", () => {
+    const rows = buildRows([el("x"), el("y"), el("x")], [el("x"), el("x"), el("y")]);
+    const col = (side: "a" | "b") => rows.flatMap((r) => (r.kind === "eulogy" && r[side] ? [r[side]!.id] : []));
+    expect(col("b")).toEqual(["x", "x", "y"]);
+    expect(col("a")).toEqual(["x", "y", "x"]);
+    const back = buildRows([el("x"), el("x"), el("y")], [el("x"), el("y"), el("x")]);
+    expect(back.flatMap((r) => (r.kind === "eulogy" && r.b ? [r.b.id] : []))).toEqual(["x", "y", "x"]);
+  });
+
+  it("does not point a second copy at a row that is already paired", () => {
+    const rows = buildRows([el("x"), el("x")], [el("x")]);
+    expect((rows[2] as EulogyRow).counterpart).toBeNull();
+    expect(gapNote(rows, 2, B, {}, DAY)).toEqual({ kind: "pending" });
+  });
+
   it("frames an empty side with titulus and conclusio", () => {
     expect(ids(buildRows([el("x"), el("y")], []))).toEqual(["titulus", "x|-", "y|-", "conclusio"]);
   });
@@ -83,6 +98,18 @@ describe("gapNote", () => {
     const r = buildRows([el("x", 1), el("y", 2)], [el("y", 6), el("x", 7)]);
     expect(gapNote(r, 1, B, {}, DAY)).toEqual({ kind: "moved", direction: "below", entry: 7 });
     expect(gapNote(r, 3, "a-edition", {}, DAY)).toEqual({ kind: "moved", direction: "above", entry: 1 });
+  });
+
+  it("notes the empty A side of a B-only row", () => {
+    const r = buildRows([el("x")], [el("x"), el("z", 9)]);
+    expect(gapNote(r, 2, "a-edition", {}, DAY)).toEqual({ kind: "pending" });
+    const p: Placements = { z: { "a-edition": { day_printed: "10-06", entry: 2, asterisk: false, unnumbered: false, text: null } } };
+    expect(gapNote(r, 2, "a-edition", p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 6 }, entry: 2 });
+  });
+
+  it("has no note when the placement is on this very day", () => {
+    const p: Placements = { w: { [B]: { day_printed: "10-04", entry: 5, asterisk: false, unnumbered: false, text: null } } };
+    expect(gapNote(rows, w, B, p, DAY)).toBeNull();
   });
 
   it("has no note for a paired row, a frame row, or a eulogy without id", () => {

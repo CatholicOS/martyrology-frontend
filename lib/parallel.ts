@@ -23,16 +23,16 @@ export type GapNote =
 
 type Side = "a" | "b";
 
-/** The longest common subsequence of two id orders. */
-export function lcs(xs: string[], ys: string[]): string[] {
+/** The longest common subsequence of two id orders, as index pairs [into xs, into ys]. */
+function lcsPairs(xs: string[], ys: string[]): [number, number][] {
   const t: number[][] = Array.from({ length: xs.length + 1 }, () => new Array<number>(ys.length + 1).fill(0));
   for (let i = xs.length - 1; i >= 0; i--)
     for (let j = ys.length - 1; j >= 0; j--)
       t[i][j] = xs[i] === ys[j] ? t[i + 1][j + 1] + 1 : Math.max(t[i + 1][j], t[i][j + 1]);
-  const out: string[] = [];
+  const out: [number, number][] = [];
   for (let i = 0, j = 0; i < xs.length && j < ys.length; ) {
     if (xs[i] === ys[j]) {
-      out.push(xs[i]);
+      out.push([i, j]);
       i++;
       j++;
     } else if (t[i + 1][j] >= t[i][j + 1]) i++;
@@ -41,34 +41,40 @@ export function lcs(xs: string[], ys: string[]): string[] {
   return out;
 }
 
+/** The longest common subsequence of two id orders. */
+export function lcs(xs: string[], ys: string[]): string[] {
+  return lcsPairs(xs, ys).map(([i]) => xs[i]);
+}
+
 const idsOf = (xs: ElogiumOut[]) => new Set(xs.flatMap((e) => (e.id ? [e.id] : [])));
 
 /**
  * One day of two editions as rows: the eulogies both print in the same order share a row (the
- * longest common subsequence); every other eulogy has a row of its own, so each side still reads
- * in its own printed order. A B-only row goes after the row holding B's previous eulogy.
+ * longest common subsequence, matched by position so repeated ids pair one to one); every other
+ * eulogy has a row of its own, so each side still reads in its own printed order. A B-only row
+ * goes after the row holding B's previous eulogy.
  */
 export function buildRows(a: ElogiumOut[], b: ElogiumOut[]): Row[] {
   const inA = idsOf(a);
   const inB = idsOf(b);
-  const paired = new Set(
-    lcs(
-      a.flatMap((e) => (e.id && inB.has(e.id) ? [e.id] : [])),
-      b.flatMap((e) => (e.id && inA.has(e.id) ? [e.id] : [])),
-    ),
+  const sharedA = a.flatMap((e, i) => (e.id && inB.has(e.id) ? [i] : []));
+  const sharedB = b.flatMap((e, j) => (e.id && inA.has(e.id) ? [j] : []));
+  const pairOfB = new Map<number, number>(
+    lcsPairs(sharedA.map((i) => a[i].id!), sharedB.map((j) => b[j].id!)).map(([p, q]) => [sharedB[q], sharedA[p]]),
   );
   const body: EulogyRow[] = a.map((e) => ({ kind: "eulogy", a: e, b: null, counterpart: null }));
+  const rowOfA = [...body];
   let after = -1;
-  for (const e of b) {
-    const i = e.id && paired.has(e.id) ? body.findIndex((r) => r.a?.id === e.id && r.b === null) : -1;
-    if (i >= 0) {
-      body[i].b = e;
-      after = i;
+  b.forEach((e, j) => {
+    const p = pairOfB.get(j);
+    if (p !== undefined) {
+      rowOfA[p].b = e;
+      after = body.indexOf(rowOfA[p]);
     } else {
       after += 1;
       body.splice(after, 0, { kind: "eulogy", a: null, b: e, counterpart: null });
     }
-  }
+  });
   const rows: Row[] = [{ kind: "titulus" }, ...body, { kind: "conclusio" }];
   rows.forEach((r, i) => {
     if (r.kind !== "eulogy" || (r.a && r.b)) return;
@@ -76,7 +82,8 @@ export function buildRows(a: ElogiumOut[], b: ElogiumOut[]): Row[] {
     const other: Side = side === "a" ? "b" : "a";
     const id = r[side]?.id;
     if (!id) return;
-    const j = rows.findIndex((x, k) => k !== i && x.kind === "eulogy" && x[other]?.id === id);
+    // Only an unpaired occurrence on the other side can be this eulogy's counterpart.
+    const j = rows.findIndex((x, k) => k !== i && x.kind === "eulogy" && x[other]?.id === id && x[side] === null);
     if (j >= 0) r.counterpart = j;
   });
   return rows;
