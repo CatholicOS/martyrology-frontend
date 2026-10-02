@@ -27,8 +27,8 @@ export default function DayPage({ day, heading, lang }: { day: DayContentOut; he
         ) : (
           <p key={e.id ?? i} className={styles.entry}>
             <span className={styles.rubric}>
-              {e.asterisk ? "* " : ""}
               {e.entry}
+              {e.asterisk ? "*" : ""}
             </span>
             {e.text}
           </p>
