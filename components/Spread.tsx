@@ -41,7 +41,8 @@ function sideInfo(id: string, otherId: string, editions: EditionOut[]): SideInfo
 
 /** The editorial note on the empty side of a one-sided row, set like the misprint notes. */
 function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day) => string }) {
-  const n = (entry: number | null) => (entry === null ? "" : `, n. ${entry}`);
+  const star = note.kind === "moved" || note.kind === "elsewhere" ? (note.asterisk ? "*" : "") : "";
+  const n = (entry: number | null) => (entry === null ? "" : `, n. ${entry}${star}`);
   let body: ReactNode;
   switch (note.kind) {
     case "absent":
@@ -51,7 +52,7 @@ function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day)
       body = <><i>not on this day in</i> {name}</>;
       break;
     case "moved":
-      body = <><i>{name}:</i> {note.entry === null ? "" : `n. ${note.entry}, `}{note.direction}</>;
+      body = <><i>{name}:</i> {note.entry === null ? "" : `n. ${note.entry}${star}, `}{note.direction}</>;
       break;
     case "elsewhere":
       body = (

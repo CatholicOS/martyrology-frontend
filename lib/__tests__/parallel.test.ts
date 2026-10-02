@@ -86,25 +86,32 @@ describe("gapNote", () => {
 
   it("names the other day and entry when printed elsewhere", () => {
     const p: Placements = { w: { [B]: { day_printed: "10-05", entry: 3, asterisk: false, unnumbered: false, text: null } } };
-    expect(gapNote(rows, w, B, p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 5 }, entry: 3 });
+    expect(gapNote(rows, w, B, p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 5 }, entry: 3, asterisk: false });
+  });
+
+  it("carries the asterisk of the placement elsewhere, and of the counterpart that moved", () => {
+    const p: Placements = { w: { [B]: { day_printed: "10-05", entry: 9, asterisk: true, unnumbered: false, text: null } } };
+    expect(gapNote(rows, w, B, p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 5 }, entry: 9, asterisk: true });
+    const r = buildRows([el("x", 1), el("y", 2)], [{ ...el("y", 6) }, { ...el("x", 7), asterisk: true }]);
+    expect(gapNote(r, 1, B, {}, DAY)).toEqual({ kind: "moved", direction: "below", entry: 7, asterisk: true });
   });
 
   it("drops the entry of an unnumbered placement", () => {
     const p: Placements = { w: { [B]: { day_printed: "10-05", entry: 1, asterisk: false, unnumbered: true, text: null } } };
-    expect(gapNote(rows, w, B, p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 5 }, entry: null });
+    expect(gapNote(rows, w, B, p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 5 }, entry: null, asterisk: false });
   });
 
   it("says above or below for a eulogy printed on this day out of order", () => {
     const r = buildRows([el("x", 1), el("y", 2)], [el("y", 6), el("x", 7)]);
-    expect(gapNote(r, 1, B, {}, DAY)).toEqual({ kind: "moved", direction: "below", entry: 7 });
-    expect(gapNote(r, 3, "a-edition", {}, DAY)).toEqual({ kind: "moved", direction: "above", entry: 1 });
+    expect(gapNote(r, 1, B, {}, DAY)).toEqual({ kind: "moved", direction: "below", entry: 7, asterisk: false });
+    expect(gapNote(r, 3, "a-edition", {}, DAY)).toEqual({ kind: "moved", direction: "above", entry: 1, asterisk: false });
   });
 
   it("notes the empty A side of a B-only row", () => {
     const r = buildRows([el("x")], [el("x"), el("z", 9)]);
     expect(gapNote(r, 2, "a-edition", {}, DAY)).toEqual({ kind: "pending" });
     const p: Placements = { z: { "a-edition": { day_printed: "10-06", entry: 2, asterisk: false, unnumbered: false, text: null } } };
-    expect(gapNote(r, 2, "a-edition", p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 6 }, entry: 2 });
+    expect(gapNote(r, 2, "a-edition", p, DAY)).toEqual({ kind: "elsewhere", day: { mm: 10, dd: 6 }, entry: 2, asterisk: false });
   });
 
   it("has no note when the placement is on this very day", () => {

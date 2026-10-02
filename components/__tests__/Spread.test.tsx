@@ -67,6 +67,14 @@ describe("Spread", () => {
     expect(link.closest("[data-row]")!.getAttribute("data-row")).toBe(cellOf("Sancti W.").getAttribute("data-row"));
   });
 
+  it("keeps the asterisk in the note of a eulogy printed elsewhere", async () => {
+    serve({ [A]: day(A, [el("mr:w", 2, "Sancti W.")]), [B]: day(B, []) });
+    vi.mocked(getElogium).mockResolvedValue({ id: "mr:w", subject: {}, anchor_day: "10-05", deprecated: false,
+      editions: { [B]: { day_printed: "10-05", entry: 9, asterisk: true, unnumbered: false, text: null } } });
+    render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
+    expect(await screen.findByRole("link", { name: /5 October, n\. 9\*/ })).toBeInTheDocument();
+  });
+
   it("notes a eulogy the other edition does not print", async () => {
     serve({ [A]: day(A, [el("mr:w", 2, "Sancti W.")]), [B]: day(B, []) });
     vi.mocked(getElogium).mockResolvedValue({ id: "mr:w", subject: {}, anchor_day: "10-04", deprecated: false, editions: {} });

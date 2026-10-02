@@ -18,8 +18,8 @@ export type Row = { kind: "titulus" } | EulogyRow | { kind: "conclusio" };
 export type GapNote =
   | { kind: "absent" }
   | { kind: "pending" }
-  | { kind: "elsewhere"; day: Day; entry: number | null }
-  | { kind: "moved"; direction: "above" | "below"; entry: number | null };
+  | { kind: "elsewhere"; day: Day; entry: number | null; asterisk: boolean }
+  | { kind: "moved"; direction: "above" | "below"; entry: number | null; asterisk: boolean };
 
 type Side = "a" | "b";
 
@@ -102,7 +102,7 @@ export function gapNote(rows: Row[], index: number, emptyEdition: string, placem
   if (row.counterpart !== null) {
     const there = rows[row.counterpart] as EulogyRow;
     const c = there[empty];
-    return { kind: "moved", direction: row.counterpart < index ? "above" : "below", entry: c && !c.unnumbered ? c.entry : null };
+    return { kind: "moved", direction: row.counterpart < index ? "above" : "below", entry: c && !c.unnumbered ? c.entry : null, asterisk: !!c?.asterisk };
   }
   const known = placements[id];
   if (!known) return { kind: "pending" };
@@ -110,5 +110,5 @@ export function gapNote(rows: Row[], index: number, emptyEdition: string, placem
   if (!p) return { kind: "absent" };
   const [mm, dd] = p.day_printed.split("-").map(Number);
   if (mm === day.mm && dd === day.dd) return null;
-  return { kind: "elsewhere", day: { mm, dd }, entry: p.unnumbered ? null : p.entry };
+  return { kind: "elsewhere", day: { mm, dd }, entry: p.unnumbered ? null : p.entry, asterisk: p.asterisk };
 }
