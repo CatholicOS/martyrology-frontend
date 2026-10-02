@@ -7,11 +7,13 @@ import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";
 import Spread from "@/components/Spread";
 import styles from "@/components/page.module.css";
-import { getAccess, getEditions } from "@/lib/api";
+import { getAccess, getCatalog, getEditions } from "@/lib/api";
 import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, shelfState, sortForShelf, titleCase } from "@/lib/editions";
+import { subjectOptions, type SubjectOption } from "@/lib/subjects";
 import type { AccessMap, EditionOut } from "@/lib/types";
 import { useDay } from "@/lib/use-day";
+import { useShowIds } from "@/lib/use-show-ids";
 
 const SWIPE_PX = 50;
 
@@ -31,19 +33,42 @@ type Turn = "next" | "prev" | null;
 let pendingTurn: Turn = null;
 let pendingFocus: string | null = null;
 let cached: { editions: EditionOut[]; access: AccessMap | null } | null = null;
+// The eulogy a subject search went to, found once its page is drawn.
+let pendingTarget: string | null = null;
+// Each book's subject-search options, by "edition/locale".
+const subjectsCache = new Map<string, SubjectOption[]>();
 
 /** Test-only: clears the module state shared between Reader instances. */
 export function __resetReaderState() {
   pendingTurn = null;
   pendingFocus = null;
+  pendingTarget = null;
   cached = null;
+  subjectsCache.clear();
+}
+
+const FOUND_MS = 2400;
+
+/** Scroll to the eulogy and mark it briefly; false while it is not drawn yet. */
+function reveal(root: HTMLElement, id: string): boolean {
+  const el = [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
+  if (!el) return false;
+  const still = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  el.scrollIntoView?.({ block: "center", behavior: still ? "auto" : "smooth" });
+  el.tabIndex = -1;
+  el.focus({ preventScroll: true });
+  el.removeAttribute("data-found");
+  void el.offsetWidth; // restart the wash when the same eulogy is found again
+  el.setAttribute("data-found", "");
+  window.setTimeout(() => el.removeAttribute("data-found"), FOUND_MS);
+  return true;
 }
 
 /** One day's page; keyed by the parent on edition/day so each turn starts fresh in "loading". */
 function DayView({
-  edition, mm, dd, lang, title, signedIn, turn,
+  edition, mm, dd, lang, title, signedIn, turn, showIds,
 }: {
-  edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: Turn;
+  edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: Turn; showIds: boolean;
 }) {
   const { state, retry } = useDay(edition, mm, dd);
   if (state.kind !== "ready") {
@@ -51,7 +76,7 @@ function DayView({
   }
   return (
     <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-      <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} />
+      <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} showIds={showIds} />
     </div>
   );
 }
@@ -69,10 +94,15 @@ export default function Reader({
   const [access, setAccess] = useState<AccessMap | null>(() => cached?.access ?? null);
   const [turn] = useState<Turn>(() => pendingTurn);
   const touch = useRef<{ x: number; y: number } | null>(null);
+  const pages = useRef<HTMLDivElement>(null);
+  // A fresh object per search, so finding the same eulogy twice scrolls to it again.
+  const [target, setTarget] = useState<{ id: string } | null>(() => (pendingTarget ? { id: pendingTarget } : null));
+  const [showIds, setShowIds] = useShowIds();
 
   const navigated = useRef(false);
 
   useEffect(() => {
+    pendingTarget = null; // consumed by the initialiser above
     pendingTurn = null; // consumed by the initialiser above
     // Next remounts the page on a day change, which drops focus to <body>.
     const id = pendingFocus;
@@ -129,8 +159,47 @@ export default function Reader({
     return () => window.removeEventListener("keydown", onKey);
   }, [day, go]);
 
+  // The page may still be loading: watch for the eulogy until it is drawn.
+  useEffect(() => {
+    const root = pages.current;
+    if (!target || !root) return;
+    if (reveal(root, target.id)) return;
+    const watch = new MutationObserver(() => {
+      if (reveal(root, target.id)) stop();
+    });
+    const timer = window.setTimeout(() => stop(), 15000);
+    function stop() {
+      watch.disconnect();
+      window.clearTimeout(timer);
+    }
+    watch.observe(root, { childList: true, subtree: true });
+    return stop;
+  }, [target]);
+
   const current = editions.find((e) => e.edition_id === edition);
   const lang = current ? editionLang(current) : "la";
+  const subjectsKey = current ? `${edition}/${lang}` : null;
+  const [subjects, setSubjects] = useState<{ key: string; options: SubjectOption[] } | null>(null);
+  const subjectsNow = subjectsKey
+    ? (subjectsCache.get(subjectsKey) ?? (subjects?.key === subjectsKey ? subjects.options : null))
+    : null;
+
+  useEffect(() => {
+    if (!subjectsKey || subjectsCache.has(subjectsKey)) return;
+    let cancelled = false;
+    getCatalog(edition, lang).then(
+      (catalog) => {
+        const options = subjectOptions(catalog);
+        subjectsCache.set(subjectsKey, options);
+        if (!cancelled) setSubjects({ key: subjectsKey, options });
+      },
+      () => undefined, // no search for this book
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [subjectsKey, edition, lang]);
+
   const title = current ? `${titleCase(editionTitle(current))} ${current.year}` : edition;
   const books = useMemo(() => {
     const options = editions
@@ -169,6 +238,16 @@ export default function Reader({
         onSwap={() => {
           if (withEdition) navigate(dayPath(withEdition, day, edition), null, "reader-swap");
         }}
+        subjects={subjectsNow}
+        onFind={(o) => {
+          if (o.day.mm === mm && o.day.dd === dd) setTarget({ id: o.id });
+          else {
+            pendingTarget = o.id;
+            go(o.day);
+          }
+        }}
+        showIds={showIds}
+        onShowIds={setShowIds}
       />
       <div
         className="flex items-stretch gap-2"
@@ -189,7 +268,7 @@ export default function Reader({
         <button type="button" id="reader-prev" aria-label="Previous day" data-strip="true" className={STRIP} onClick={() => go(prevDay(day), "prev", "reader-prev")}>
           <span aria-hidden className={ARROW}>‹</span>
         </button>
-        <div className="flex-1">
+        <div ref={pages} className="flex-1">
           {withEdition ? (
             /* key resets both sheets' loading state for each pairing/day */
             <Spread
@@ -201,6 +280,7 @@ export default function Reader({
               dd={dd}
               signedIn={signedIn}
               turn={turn}
+              showIds={showIds}
             />
           ) : (
             /* key resets DayView's loading state for each day/edition */
@@ -213,6 +293,7 @@ export default function Reader({
               title={title}
               signedIn={signedIn}
               turn={turn}
+              showIds={showIds}
             />
           )}
         </div>

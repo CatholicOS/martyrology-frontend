@@ -7,6 +7,17 @@
 .heading { color: #a3161b; text-align: center; font-size: 1.15rem; font-weight: normal; margin-bottom: 1rem; }
 .rubric { color: #a3161b; font-size: 0.85em; margin-right: 0.35em; }
 .entry { margin: 0.6rem 0; }
+/* The canonical id over a eulogy: a monospace teal tag, plainly not part of the print. */
+.idHint {
+  margin: 0.9rem 0 -0.5rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem; line-height: 1.2; color: #0b6e7f; letter-spacing: 0.01em;
+}
+.idHint + .entry { margin-top: 0.5rem; }
+/* The eulogy the subject search went to: a brief wash that fades out. */
+.entry[data-found] { animation: found 2.4s ease-out; border-radius: 3px; }
+@keyframes found { from { background: rgba(214, 170, 60, 0.45); } to { background: transparent; } }
+/* It takes focus for screen readers; the wash, not a focus ring, shows it. */
+.entry[tabindex="-1"]:focus { outline: none; }
 .sic { color: #5c4f45; font-size: 0.8em; }
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
@@ -17,6 +28,7 @@
 @keyframes turnPrev { from { opacity: 0.2; transform: perspective(1200px) rotateY(-18deg); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   .turnNext, .turnPrev { animation: fade 0.2s ease; transform: none; }
+  .entry[data-found], .entry[data-found]:focus { animation: none; outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; }
   @keyframes fade { from { opacity: 0.4; } to { opacity: 1; } }
 }
 
