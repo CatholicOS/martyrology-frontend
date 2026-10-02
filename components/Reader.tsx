@@ -21,6 +21,15 @@ type State =
 
 const SWIPE_PX = 50;
 
+// The whole strip beside the page turns it; the arrow is pinned near the top
+// (sticky) so it keeps its place whatever the day's length.
+const STRIP =
+  "group flex w-10 shrink-0 cursor-pointer justify-center rounded sm:w-16 " +
+  "hover:bg-[#8b1a1f]/5 focus-visible:bg-[#8b1a1f]/5 dark:hover:bg-red-300/10 dark:focus-visible:bg-red-300/10";
+const ARROW =
+  "sticky top-20 mt-6 h-fit text-3xl text-[#8b1a1f] opacity-60 group-hover:opacity-100 " +
+  "group-focus-visible:opacity-100 dark:text-red-300 dark:opacity-100";
+
 type Turn = "next" | "prev" | null;
 
 // Next remounts the page when the day changes, so the turn direction and the
@@ -199,7 +208,9 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
           else go(prevDay(day), "prev");
         }}
       >
-        <button type="button" id="reader-prev" aria-label="Previous day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100 dark:text-red-300 dark:opacity-100" onClick={() => go(prevDay(day), "prev", "reader-prev")}>‹</button>
+        <button type="button" id="reader-prev" aria-label="Previous day" data-strip="true" className={STRIP} onClick={() => go(prevDay(day), "prev", "reader-prev")}>
+          <span aria-hidden className={ARROW}>‹</span>
+        </button>
         <div className="flex-1">
           {/* key resets DayView's loading state for each day/edition */}
           <DayView
@@ -213,7 +224,9 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
             turn={turn}
           />
         </div>
-        <button type="button" id="reader-next" aria-label="Next day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100 dark:text-red-300 dark:opacity-100" onClick={() => go(nextDay(day), "next", "reader-next")}>›</button>
+        <button type="button" id="reader-next" aria-label="Next day" data-strip="true" className={STRIP} onClick={() => go(nextDay(day), "next", "reader-next")}>
+          <span aria-hidden className={ARROW}>›</span>
+        </button>
       </div>
     </div>
   );
