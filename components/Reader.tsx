@@ -2,22 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 import DayPage from "@/components/DayPage";
-import LockedNotice from "@/components/LockedNotice";
+import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";
 import styles from "@/components/page.module.css";
-import { ApiError, getAccess, getDay, getEditions } from "@/lib/api";
-import { dateHeading, dayPath, monthName, nextDay, pad2, prevDay, type Day, type Lang } from "@/lib/calendar";
+import { getAccess, getEditions } from "@/lib/api";
+import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, shelfState, sortForShelf, titleCase } from "@/lib/editions";
-import type { AccessMap, DayOut, EditionOut } from "@/lib/types";
-
-type State =
-  | { kind: "loading" }
-  | { kind: "ready"; day: DayOut }
-  | { kind: "locked"; accessInfo: string | null }
-  | { kind: "notext" }
-  | { kind: "error" };
+import type { AccessMap, EditionOut } from "@/lib/types";
+import { useDay } from "@/lib/use-day";
 
 const SWIPE_PX = 50;
 
@@ -51,58 +44,14 @@ function DayView({
 }: {
   edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: Turn;
 }) {
-  const [state, setState] = useState<State>({ kind: "loading" });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let cancelled = false;
-    getDay(edition, pad2(mm), pad2(dd)).then(
-      (data) => {
-        if (cancelled) return;
-        if (data.metadata.access === "restricted-texts") {
-          setState({ kind: "locked", accessInfo: data.metadata.access_info ?? null });
-        } else {
-          setState({ kind: "ready", day: data });
-        }
-      },
-      (err: unknown) => {
-        if (cancelled) return;
-        setState(err instanceof ApiError && err.status === 404 ? { kind: "notext" } : { kind: "error" });
-      },
-    );
-    return () => {
-      cancelled = true;
-    };
-  }, [edition, mm, dd, attempt]);
-
-  const retry = () => {
-    setState({ kind: "loading" });
-    setAttempt((n) => n + 1);
-  };
-
+  const { state, retry } = useDay(edition, mm, dd);
+  if (state.kind !== "ready") {
+    return <DayStatus state={state} retry={retry} title={title} signedIn={signedIn} mm={mm} dd={dd} />;
+  }
   return (
-    <>
-      {state.kind === "loading" && <div role="status" className="mx-auto min-h-96 max-w-[38rem] animate-pulse rounded bg-[#fbf6ec]">
-          <span className="sr-only">Loading…</span>
-        </div>}
-      {state.kind === "ready" && (
-        <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-          <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} />
-        </div>
-      )}
-      {state.kind === "locked" && (
-        <LockedNotice title={title} signedIn={signedIn} accessInfo={state.accessInfo} onSignIn={() => void signIn("zitadel")} />
-      )}
-      {state.kind === "notext" && (
-        <p className="mt-10 text-center">This edition has no text for {dd} {monthName(mm, "en")}.</p>
-      )}
-      {state.kind === "error" && (
-        <p className="mt-10 text-center">
-          The text could not be loaded.{" "}
-          <button type="button" className="underline" onClick={retry}>Retry</button>
-        </p>
-      )}
-    </>
+    <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
+      <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} />
+    </div>
   );
 }
 
