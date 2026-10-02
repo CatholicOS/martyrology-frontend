@@ -34,8 +34,9 @@ describe("DayPage", () => {
     const header = screen.getByText("Festum sanctorum Angelorum Custodum.");
     expect(header.closest("p")).toHaveAttribute("data-unnumbered", "true");
     expect(header.closest("p")).not.toHaveTextContent(/^1/);
-    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("p")).toHaveTextContent(/^2\s*Romae/);
-    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^3\*\s*Alibi/);
+    // As both 2004 prints set them: the number, its asterisk, then a full stop.
+    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest("p")).toHaveTextContent(/^2\.\s*Romae/);
+    expect(screen.getByText("Alibi sancti X.").closest("p")).toHaveTextContent(/^3\*\.\s*Alibi/);
   });
 
   it("closes with the conclusio, setting R. as a rubric, and omits an empty one", () => {
@@ -63,5 +64,19 @@ describe("DayPage misprints", () => {
   it("adds no note for another edition", () => {
     render(<DayPage day={it2004} heading="" edition="martyrologium_romanum_2004" />);
     expect(screen.queryByText(/sic!/)).not.toBeInTheDocument();
+  });
+});
+
+describe("DayPage, a print that numbers no eulogies", () => {
+  it("prints no number, asterisk or full stop when a eulogy has no entry", () => {
+    const unnumberedPrint = {
+      titulus: "4 Octobris",
+      elogia: [{ id: "mr:1004-petronius", entry: null, asterisk: false, unnumbered: false, anchor_day: "10-04", text: "Bononiae sancti Petronii." }],
+      conclusio: null,
+    };
+    render(<DayPage day={unnumberedPrint} heading="" />);
+    const p = screen.getByText("Bononiae sancti Petronii.").closest("p")!;
+    expect(p).toHaveTextContent(/^Bononiae/);
+    expect(p.querySelector("span")).toBeNull();
   });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { editionLang, editionTitle, languageLabel, isOriginal, sortForShelf, shelfState, titleCase } from "@/lib/editions";
+import { editionLang, editionTitle, languageLabel, isOriginal, sortForShelf, shelfState, titleCase, shortName, yearAndLanguage } from "@/lib/editions";
 import type { EditionOut } from "@/lib/types";
 
 function ed(edition_id: string, year: number, locale: string, nature: string, status = "public"): EditionOut {
@@ -61,5 +61,17 @@ describe("editions", () => {
   it("title-cases cover titles", () => {
     expect(titleCase("MARTIROLOGIO ROMANO")).toBe("Martirologio Romano");
     expect(titleCase("ROMAN MARTYROLOGY")).toBe("Roman Martyrology");
+  });
+});
+
+describe("note names", () => {
+  it("names an edition by year, or by year and language when both share it", () => {
+    expect(shortName(E.e1749, E.e2004)).toBe("1749");
+    expect(shortName(E.e2004it, E.e2004)).toBe("2004 Italian");
+    expect(shortName(E.e2004, E.e2004it)).toBe("2004 Latin");
+  });
+
+  it("gives year and language for notices", () => {
+    expect(yearAndLanguage(E.e1914en)).toBe("1914 English");
   });
 });
