@@ -45,3 +45,22 @@ describe("DayPage", () => {
     expect(screen.queryByText("R.")).not.toBeInTheDocument();
   });
 });
+
+describe("DayPage misprints", () => {
+  const it2004 = {
+    titulus: null,
+    elogia: [{ id: "mr:0305-phoca", entry: 4, asterisk: false, unnumbered: false, anchor_day: "03-05", text: "Commemorazione nell’odiena Turchia di san Foca." }],
+    conclusio: null,
+  };
+
+  it("notes a verified misprint after the printed text", () => {
+    render(<DayPage day={it2004} heading="" edition="martyrologium_romanum_2004_it_IT" />);
+    const note = screen.getByText("[sic! expected: nell’odierna]", { exact: false });
+    expect(note.closest("p")).toHaveTextContent("nell’odiena [sic! expected: nell’odierna] Turchia");
+  });
+
+  it("adds no note for another edition", () => {
+    render(<DayPage day={it2004} heading="" edition="martyrologium_romanum_2004" />);
+    expect(screen.queryByText(/sic!/)).not.toBeInTheDocument();
+  });
+});
