@@ -38,6 +38,12 @@ describe("splitMisprints", () => {
     expect(splitMisprints("Ménel", [m("mr:a", LA, "nel", "x")])).toEqual([{ text: "Ménel" }]);
   });
 
+  it("treats combining marks as part of a word (decomposed accents)", () => {
+    const mp = [m("mr:a", IT, "Mel", "Nel")];
+    expect(splitMisprints("E\u0301Mel", mp)).toEqual([{ text: "E\u0301Mel" }]);
+    expect(splitMisprints("Mel\u0301", mp)).toEqual([{ text: "Mel\u0301" }]);
+  });
+
   it("marks the phrase at the end of the text", () => {
     expect(splitMisprints("in Bellrreguart", [m("mr:a", LA, "Bellrreguart", "Bellreguart")])).toEqual([
       { text: "in " },

@@ -31,7 +31,7 @@ const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export function splitMisprints(text: string, misprints: Misprint[]): TextSegment[] {
   let segments: TextSegment[] = [{ text }];
   for (const m of misprints) {
-    const re = new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(m.printed)}(?![\\p{L}\\p{N}])`, "gu");
+    const re = new RegExp(`(?<![\\p{L}\\p{M}\\p{N}])${escapeRegExp(m.printed)}(?![\\p{L}\\p{M}\\p{N}])`, "gu");
     const hits = segments.flatMap((s, i) => (s.intended ? [] : [...s.text.matchAll(re)].map((h) => ({ i, h }))));
     if (hits.length !== 1) continue;
     const { i, h } = hits[0];
