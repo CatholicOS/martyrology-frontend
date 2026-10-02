@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -11,7 +11,8 @@ vi.mock("@/lib/api", () => {
   return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), ApiError };
 });
 
-import Reader from "@/components/Reader";
+import Reader, { __resetReaderState } from "@/components/Reader";
+import styles from "@/components/page.module.css";
 import { getDay, getEditions, getAccess, ApiError } from "@/lib/api";
 import type { EditionOut } from "@/lib/types";
 
@@ -27,6 +28,7 @@ const DAY = {
 };
 
 beforeEach(() => {
+  __resetReaderState();
   push.mockReset();
   vi.mocked(getDay).mockResolvedValue(DAY);
   vi.mocked(getEditions).mockResolvedValue([
@@ -103,5 +105,52 @@ describe("Reader", () => {
     render1749();
     fireEvent.click(await screen.findByRole("button", { name: "Retry" }));
     expect(await screen.findByText("Romae passio sancti Modesti Sardi.")).toBeInTheDocument();
+  });
+
+  it("plays the turn on the incoming page after an arrow, not after a picker jump", async () => {
+    const first = render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.getByText("Romae passio sancti Modesti Sardi.").closest(`.${styles.turnNext}`)).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Next day" }));
+    first.unmount();
+    render1749(10, 3);
+    const text = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(text.closest(`.${styles.turnNext}`)).not.toBeNull();
+    cleanup();
+    fireEvent.change(render1749().getByLabelText("Day"), { target: { value: "15" } });
+    cleanup();
+    render1749(10, 15);
+    const jumped = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(jumped.closest(`.${styles.turnNext}`)).toBeNull();
+    expect(jumped.closest(`.${styles.turnPrev}`)).toBeNull();
+  });
+
+  it("a remounted reader has the book list at once, without refetching", async () => {
+    const first = render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    await screen.findAllByRole("option", { name: /1914/ });
+    first.unmount();
+    render1749(10, 3);
+    expect(screen.getAllByRole("option", { name: /1914/ }).length).toBeGreaterThan(0);
+    expect(getEditions).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores a mostly vertical swipe", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    const area = screen.getByRole("button", { name: "Next day" }).parentElement!;
+    fireEvent.touchStart(area, { touches: [{ clientX: 200, clientY: 100 }] });
+    fireEvent.touchEnd(area, { changedTouches: [{ clientX: 130, clientY: 300 }] });
+    expect(push).not.toHaveBeenCalled();
+    fireEvent.touchStart(area, { touches: [{ clientX: 200, clientY: 100 }] });
+    fireEvent.touchEnd(area, { changedTouches: [{ clientX: 130, clientY: 110 }] });
+    expect(push).toHaveBeenCalledWith("/read/martyrologium_romanum_1749/10/03");
+  });
+
+  it("ignores arrow keys combined with a modifier", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    fireEvent.keyDown(window, { key: "ArrowRight", altKey: true });
+    expect(push).not.toHaveBeenCalled();
   });
 });

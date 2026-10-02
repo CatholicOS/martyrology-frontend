@@ -21,11 +21,24 @@ type State =
 
 const SWIPE_PX = 50;
 
+type Turn = "next" | "prev" | null;
+
+// Next remounts the page when the day changes, so the turn direction and the
+// edition list must survive the remount. Written only from browser handlers/effects.
+let pendingTurn: Turn = null;
+let cached: { editions: EditionOut[]; access: AccessMap | null } | null = null;
+
+/** Test-only: clears the module state shared between Reader instances. */
+export function __resetReaderState() {
+  pendingTurn = null;
+  cached = null;
+}
+
 /** One day's page; keyed by the parent on edition/day so each turn starts fresh in "loading". */
 function DayView({
   edition, mm, dd, lang, title, signedIn, turn,
 }: {
-  edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: "next" | "prev" | null;
+  edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: Turn;
 }) {
   const [state, setState] = useState<State>({ kind: "loading" });
   const [attempt, setAttempt] = useState(0);
@@ -81,23 +94,30 @@ function DayView({
 }
 
 function isFormField(t: EventTarget | null): boolean {
-  return t instanceof HTMLElement && ["SELECT", "INPUT", "TEXTAREA"].includes(t.tagName);
+  return t instanceof HTMLElement && (t.isContentEditable || ["SELECT", "INPUT", "TEXTAREA"].includes(t.tagName));
 }
 
 export default function Reader({ edition, mm, dd, signedIn }: { edition: string; mm: number; dd: number; signedIn: boolean }) {
   const router = useRouter();
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
-  const [editions, setEditions] = useState<EditionOut[]>([]);
-  const [access, setAccess] = useState<AccessMap | null>(null);
-  const [turn, setTurn] = useState<"next" | "prev" | null>(null);
-  const touchX = useRef<number | null>(null);
+  const [editions, setEditions] = useState<EditionOut[]>(() => cached?.editions ?? []);
+  const [access, setAccess] = useState<AccessMap | null>(() => cached?.access ?? null);
+  const [turn] = useState<Turn>(() => pendingTurn);
+  const touch = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
+    pendingTurn = null; // consumed by the initialiser above
+  }, []);
+
+  useEffect(() => {
+    if (cached) return;
     let cancelled = false;
     Promise.all([getEditions(), getAccess().catch(() => null)]).then(
       ([eds, acc]) => {
         if (cancelled) return;
-        setEditions(sortForShelf(eds));
+        const sorted = sortForShelf(eds);
+        cached = { editions: sorted, access: acc };
+        setEditions(sorted);
         setAccess(acc);
       },
       () => undefined,
@@ -108,8 +128,8 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
   }, []);
 
   const go = useCallback(
-    (d: Day, direction: "next" | "prev" | null = null) => {
-      setTurn(direction);
+    (d: Day, direction: Turn = null) => {
+      pendingTurn = direction;
       router.push(dayPath(edition, d));
     },
     [router, edition],
@@ -117,6 +137,7 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.altKey || e.metaKey || e.ctrlKey || e.shiftKey || e.repeat || e.defaultPrevented) return;
       if (isFormField(e.target)) return;
       if (e.key === "ArrowRight") go(nextDay(day), "next");
       if (e.key === "ArrowLeft") go(prevDay(day), "prev");
@@ -139,17 +160,23 @@ export default function Reader({ edition, mm, dd, signedIn }: { edition: string;
       <ReaderBar edition={edition} day={day} books={books} onGo={(d) => go(d)} onSwitch={(id) => router.push(dayPath(id, day))} />
       <div
         className="flex items-stretch gap-2"
-        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchStart={(e) => {
+          touch.current = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+        }}
         onTouchEnd={(e) => {
-          if (touchX.current === null) return;
-          const dx = e.changedTouches[0].clientX - touchX.current;
-          touchX.current = null;
-          if (dx <= -SWIPE_PX) go(nextDay(day), "next");
-          if (dx >= SWIPE_PX) go(prevDay(day), "prev");
+          const start = touch.current;
+          touch.current = null;
+          if (!start || e.changedTouches.length !== 1) return;
+          const dx = e.changedTouches[0].clientX - start.x;
+          const dy = e.changedTouches[0].clientY - start.y;
+          if (Math.abs(dx) < SWIPE_PX || Math.abs(dx) <= 1.5 * Math.abs(dy)) return;
+          if (dx < 0) go(nextDay(day), "next");
+          else go(prevDay(day), "prev");
         }}
       >
         <button type="button" aria-label="Previous day" className="px-2 text-3xl text-[#8b1a1f] opacity-60 hover:opacity-100" onClick={() => go(prevDay(day), "prev")}>‹</button>
         <div className="flex-1">
+          {/* key resets DayView's loading state for each day/edition */}
           <DayView
             key={`${edition}/${mm}/${dd}`}
             edition={edition}
