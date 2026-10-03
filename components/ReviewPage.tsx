@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { parseChangeset, exportChangeset, opId, type Changeset } from "@/lib/changeset";
+import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp } from "@/lib/changeset";
 import {
   decisionsFromChangeset,
   decisionsKey,
@@ -17,6 +17,11 @@ import ReviewSummary from "@/components/ReviewSummary";
 
 // Cards render a page at a time: a gazetteer queue holds ~1,900 places.
 const PAGE_SIZE = 50;
+
+// A realign op is filtered by its action (split, rekey, …), other ops by their op.
+function opKind(op: Op): string {
+  return op.op === "realign" ? `realign:${(op as RealignOp).action}` : op.op;
+}
 
 function stripExt(name: string): string {
   return name.replace(/\.json$/i, "");
@@ -36,8 +41,9 @@ export default function ReviewPage() {
   const [confidenceFilter, setConfidenceFilter] = useState("");
   const [opFilter, setOpFilter] = useState("");
   const [undecidedOnly, setUndecidedOnly] = useState(false);
+  const [idFilter, setIdFilter] = useState("");
   // Paging restarts when the change-set or a filter changes (derived, not reset in an effect).
-  const pageKey = `${name}|${classFilter}|${confidenceFilter}|${opFilter}|${undecidedOnly}`;
+  const pageKey = `${name}|${classFilter}|${confidenceFilter}|${opFilter}|${undecidedOnly}|${idFilter}`;
   const [paging, setPaging] = useState({ key: pageKey, shown: PAGE_SIZE });
   const shown = paging.key === pageKey ? paging.shown : PAGE_SIZE;
 
@@ -117,11 +123,12 @@ export default function ReviewPage() {
     return cs.operations.filter((op) => {
       if (classFilter && op.class !== classFilter) return false;
       if (confidenceFilter && op.confidence !== confidenceFilter) return false;
-      if (opFilter && op.op !== opFilter) return false;
+      if (opFilter && opKind(op) !== opFilter) return false;
+      if (idFilter && !opId(op).includes(idFilter.trim())) return false;
       if (undecidedOnly && decisions[opId(op)]) return false;
       return true;
     });
-  }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, decisions]);
+  }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, idFilter, decisions]);
 
   const classOptions = useMemo(
     () => Array.from(new Set((cs?.operations ?? []).map((o) => o.class).filter(Boolean))) as string[],
@@ -131,7 +138,7 @@ export default function ReviewPage() {
     () => Array.from(new Set((cs?.operations ?? []).map((o) => o.confidence).filter(Boolean))) as string[],
     [cs]
   );
-  const opOptions = useMemo(() => Array.from(new Set((cs?.operations ?? []).map((o) => o.op))), [cs]);
+  const opOptions = useMemo(() => Array.from(new Set((cs?.operations ?? []).map(opKind))), [cs]);
 
   const summary = useMemo(() => (cs ? summarize(cs, decisions) : { accepted: 0, rejected: 0, edited: 0, undecided: 0 }), [cs, decisions]);
 
@@ -252,6 +259,15 @@ export default function ReviewPage() {
                   </option>
                 ))}
               </select>
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              ID contains
+              <input
+                className="w-40 rounded border border-slate-300 bg-white px-2 py-1 font-mono text-xs dark:border-slate-700 dark:bg-slate-900"
+                value={idFilter}
+                onChange={(e) => setIdFilter(e.target.value)}
+                placeholder="mr:0101"
+              />
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import EulogyView from "@/components/EulogyView";
 import PlaceCard from "@/components/PlaceCard";
+import RealignCard from "@/components/RealignCard";
 import { decisionClass as cardClass } from "@/components/decisionClass";
 import {
   isAdjudicable,
@@ -13,6 +14,7 @@ import {
   type MergeOp,
   type DecisionRecord,
   type ResolvePlaceOp,
+  type RealignOp,
 } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
@@ -34,6 +36,10 @@ export default function OperationCard(props: Props) {
   // A gazetteer place has its own card: no eulogy of its own, candidates instead.
   if (props.op.op === "resolve_place") {
     return <PlaceCard {...props} op={props.op as ResolvePlaceOp} />;
+  }
+  // A historical-edition finding (crmedr #51) carries its own texts and actions.
+  if (props.op.op === "realign") {
+    return <RealignCard {...props} op={props.op as RealignOp} />;
   }
   return <IdOperationCard {...props} />;
 }
