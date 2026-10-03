@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import DayPage from "@/components/DayPage";
+import styles from "@/components/page.module.css";
 
 const day = {
   titulus: "2 Octobris Sexto Nonas Octobris. xxj. B",
@@ -44,6 +45,23 @@ describe("DayPage", () => {
     expect(screen.getByText("R.")).toBeInTheDocument();
     rerender(<DayPage day={{ ...day, conclusio: "" }} heading="" />);
     expect(screen.queryByText("R.")).not.toBeInTheDocument();
+  });
+
+  it("sets each rubric in italics where the print has it: at the head, or after its eulogy", () => {
+    const rubricae = [
+      { after: null, text: "In anno Bissextili omittitur." },
+      { after: "mr:1002-angeli-custodes", text: "Quod sequitur, legitur in tono Lectionis." },
+    ];
+    render(<DayPage day={{ ...day, rubricae }} heading="" />);
+    const head = screen.getByText("In anno Bissextili omittitur.");
+    const after = screen.getByText("Quod sequitur, legitur in tono Lectionis.");
+    expect(head).toHaveClass(styles.rubrica);
+    const order = Array.from(screen.getByRole("article").querySelectorAll("p")).map((p) => p.textContent ?? "");
+    const at = (t: string) => order.findIndex((x) => x.includes(t));
+    expect(at("In anno Bissextili")).toBeLessThan(at("Festum sanctorum Angelorum"));
+    expect(at("Quod sequitur")).toBe(at("Festum sanctorum Angelorum") + 1);
+    expect(at("Quod sequitur")).toBeLessThan(at("Romae passio sancti Modesti"));
+    expect(after).toHaveClass(styles.rubrica);
   });
 });
 

@@ -46,6 +46,7 @@
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
 .conclusio .rubric { font-style: normal; }
+.rubrica { font-style: italic; }
 .turnNext { animation: turnNext 0.4s ease; transform-origin: left center; }
 .turnPrev { animation: turnPrev 0.4s ease; transform-origin: right center; }
 @keyframes turnNext { from { opacity: 0.2; transform: perspective(1200px) rotateY(18deg); } to { opacity: 1; transform: none; } }

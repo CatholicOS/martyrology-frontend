@@ -74,9 +74,17 @@ export interface ElogiumOut {
   footnotes?: Footnote[];
 }
 
+/** A rubric the print sets among the eulogies: `after` is the eulogy it follows, null at the head of the day. */
+export interface Rubrica {
+  after: string | null;
+  text: string;
+}
+
 export interface DayContentOut {
   titulus: string | null;
   elogia: ElogiumOut[];
+  /** Absent from APIs older than v0.11.0. */
+  rubricae?: Rubrica[];
   conclusio: string | null;
 }
 

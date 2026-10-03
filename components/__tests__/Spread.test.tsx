@@ -41,6 +41,15 @@ beforeEach(() => {
 });
 
 describe("Spread", () => {
+  it("sets each side's rubrics in that side's cell after the eulogy they follow", async () => {
+    const b = { ...day(B, [el("mr:x", 4, "Romae passio sancti X.")]), rubricae: [{ after: "mr:x", text: "Quod sequitur legitur." }] };
+    serve({ [A]: day(A, [el("mr:x", 1, "Romae sancti X.")]), [B]: b });
+    render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
+    const rubric = await screen.findByText("Quod sequitur legitur.");
+    expect(rubric).toHaveClass(styles.rubrica);
+    expect(cellOf("Quod sequitur legitur.")).toBe(cellOf("Romae passio sancti X."));
+  });
+
   it("sets a eulogy level with its counterpart, on its own sheet", async () => {
     serve({ [A]: day(A, [el("mr:x", 1, "Romae sancti X.")]), [B]: day(B, [el("mr:x", 4, "Romae passio sancti X.")]) });
     render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
