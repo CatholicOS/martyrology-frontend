@@ -23,6 +23,11 @@ export function misprintsFor(edition: string, id: string | null, all: Misprint[]
 
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+/** `phrase` as whole words: not inside a longer word on either side. */
+export function wholeWordRegExp(phrase: string): RegExp {
+  return new RegExp(`(?<![\\p{L}\\p{M}\\p{N}])${escapeRegExp(phrase)}(?![\\p{L}\\p{M}\\p{N}])`, "gu");
+}
+
 /**
  * Split `text` so each misprint's printed phrase is its own segment. crmedr
  * guarantees the phrase occurs exactly once as whole words; one that doesn't
@@ -31,7 +36,7 @@ const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export function splitMisprints(text: string, misprints: Misprint[]): TextSegment[] {
   let segments: TextSegment[] = [{ text }];
   for (const m of misprints) {
-    const re = new RegExp(`(?<![\\p{L}\\p{M}\\p{N}])${escapeRegExp(m.printed)}(?![\\p{L}\\p{M}\\p{N}])`, "gu");
+    const re = wholeWordRegExp(m.printed);
     const hits = segments.flatMap((s, i) => (s.intended ? [] : [...s.text.matchAll(re)].map((h) => ({ i, h }))));
     if (hits.length !== 1) continue;
     const { i, h } = hits[0];

@@ -180,4 +180,17 @@ describe("Spread", () => {
       `#note-${A}-mr:0104-ferreolus`, `#note-${B}-mr:0220-eleutherius-et-socii`,
     ]);
   });
+
+  it("sets each sheet's printed footnotes on that sheet only", async () => {
+    const withFn = (e: ElogiumOut, mark: string) => ({ ...e, footnotes: [{ mark, after: null, text: `Nota ${mark}.` }] });
+    serve({
+      [A]: day(A, [withFn(el("mr:x", 1, "Romae sancti X."), "1")]),
+      [B]: day(B, [el("mr:x", 4, "Romae passio sancti X.")]),
+    });
+    render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);
+    await screen.findByText(/Romae sancti X\./);
+    const lists = screen.getAllByRole("complementary", { name: "Footnotes" });
+    expect(lists.map((l) => l.closest("[data-side]")!.getAttribute("data-side"))).toEqual(["a"]);
+    expect(screen.getByRole("link", { name: "Footnote 1" })).toHaveAttribute("href", `#fn-${A}-mr:x-1`);
+  });
 });

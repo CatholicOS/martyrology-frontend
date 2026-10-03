@@ -36,12 +36,22 @@ export interface CatalogEntryOut {
   entry?: number | null;
 }
 
+/** A footnote as the edition prints it under a eulogy (the API's `footnotes.json`). */
+export interface Footnote {
+  /** The printed mark: "1", "12", "*". */
+  mark: string;
+  /** The phrase the mark follows in the text; null when it couldn't be anchored. */
+  after: string | null;
+  text: string;
+}
+
 export interface EditionPlacement {
   day_printed: string;
   entry: number | null;
   asterisk: boolean;
   unnumbered: boolean;
   text: string | null;
+  footnotes?: Footnote[];
 }
 
 export interface EulogyOut {
@@ -61,6 +71,7 @@ export interface ElogiumOut {
   unnumbered: boolean;
   anchor_day: string;
   text: string | null;
+  footnotes?: Footnote[];
 }
 
 export interface DayContentOut {
