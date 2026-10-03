@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import CuratorNotes from "@/components/CuratorNotes";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
@@ -19,6 +20,16 @@ export function Conclusio({ text }: { text: string }) {
   );
 }
 
+/** The rubrics a day prints after eulogy `after` (null: at the head of the day), in italics. */
+export function Rubricae({ day, after }: { day: DayContentOut; after: string | null }) {
+  const here = (day.rubricae ?? []).filter((r) => r.after === after);
+  return here.map((r, i) => (
+    <p key={i} className={styles.rubrica}>
+      {r.text}
+    </p>
+  ));
+}
+
 /**
  * One day typeset as a printed page. `heading` is used when the edition prints no titulus;
  * `edition` (a CLBDR edition id) selects the misprint notes; `showIds` sets each eulogy's canonical id above it
@@ -35,8 +46,12 @@ export default function DayPage({
   return (
     <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
+      <Rubricae day={day} after={null} />
       {day.elogia.map((e, i) => (
-        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} note={noteAt.get(i)} footnotes={footAt.get(i)} />
+        <Fragment key={e.id ?? i}>
+          <Eulogy e={e} edition={edition} showId={showIds} note={noteAt.get(i)} footnotes={footAt.get(i)} />
+          {e.id && <Rubricae day={day} after={e.id} />}
+        </Fragment>
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
       <PrintedFootnotes notes={footnotes} lang={lang} />

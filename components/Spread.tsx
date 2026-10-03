@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
-import DayPage, { Conclusio } from "@/components/DayPage";
+import DayPage, { Conclusio, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";
 import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
@@ -176,6 +176,7 @@ export default function Spread({
         <>
           <h2 className={styles.heading}>{d.titulus || dateHeading(day, s.lang)}</h2>
           <p className={styles.caption}>{s.caption}</p>
+          <Rubricae day={d} after={null} />
         </>
       );
     }
@@ -208,6 +209,7 @@ export default function Spread({
         ) : (
           <Gap note={note!} name={s.name} href={href} />
         )}
+        {e?.id && <Rubricae day={d} after={e.id} />}
       </>
     );
   };
