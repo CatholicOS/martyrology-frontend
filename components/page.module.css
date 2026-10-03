@@ -46,7 +46,8 @@
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
 .conclusio .rubric { font-style: normal; }
-.rubrica { font-style: italic; }
+/* A rubric is read, not recited: red, as the print sets it, a size below the text, upright. */
+.rubrica { color: #a3161b; font-size: 0.85em; }
 .turnNext { animation: turnNext 0.4s ease; transform-origin: left center; }
 .turnPrev { animation: turnPrev 0.4s ease; transform-origin: right center; }
 @keyframes turnNext { from { opacity: 0.2; transform: perspective(1200px) rotateY(18deg); } to { opacity: 1; transform: none; } }

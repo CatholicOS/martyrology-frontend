@@ -20,7 +20,7 @@ export function Conclusio({ text }: { text: string }) {
   );
 }
 
-/** The rubrics a day prints after eulogy `after` (null: at the head of the day), in italics. */
+/** The rubrics a day prints after eulogy `after` (null: at the head of the day), in red. */
 export function Rubricae({ day, after }: { day: DayContentOut; after: string | null }) {
   const here = (day.rubricae ?? []).filter((r) => r.after === after);
   return here.map((r, i) => (
