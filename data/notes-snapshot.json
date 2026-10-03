@@ -6,6 +6,7 @@
   "mr:0104-emmanuel-gonzalez-garcia": "Numbered 12* in the Latin editio altera 2004 print, 11* in the Italian (CEI) edition and in Mons. Barba's Word transcription; absent from the digitized workbook. Bl. Manuel González García was canonized in 2016: status change with no ID change.",
   "mr:0122-ladislaus-batthyany-strattmann": "Asterisked entry (15*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
   "mr:0323-rebecca-de-himlaya": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
+  "mr:0410-beda": "The unofficial English 2004 edition mistranslates the subject as \"Saint Peter the Younger\"; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin.",
   "mr:0502-boleslaus-strzelecki": "Asterisked entry (12*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
   "mr:0512-imelda-lambertini": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
   "mr:0524-servulus": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
@@ -35,5 +36,6 @@
   "mr:1212-simon-phan-dac-hoa": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
   "mr:1215-marinus": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
   "mr:1230-egwinus": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0220-eleutherius-et-socii": "The 1749 edition names Eleutherius, bishop, and 128 others in Persia on February 20; probably the eulogy of Sadoth, bishop, and 128 companions (mr:0218-sadoth-et-socii): same place, king (Sapor), number and refusal to adore the sun (#47)."
+  "mr:0220-eleutherius-et-socii": "The 1749 edition names Eleutherius, bishop, and 128 others in Persia on February 20; probably the eulogy of Sadoth, bishop, and 128 companions (mr:0218-sadoth-et-socii): same place, king (Sapor), number and refusal to adore the sun (#47).",
+  "mr:0504-triginta-novem-martyres-phaenonis": "The 1749 and 1914 editions print the thirty-nine martyrs of the mines of Phaeno as a eulogy of their own, after that of Silvanus of Gaza; the 2004 edition commemorates them together with him in mr:0504-silvanus-et-socii."
 }
