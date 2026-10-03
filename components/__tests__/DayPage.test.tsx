@@ -122,3 +122,63 @@ describe("DayPage, curators' notes", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 });
+
+describe("DayPage, printed footnotes", () => {
+  const withNotes = {
+    ...day,
+    elogia: [
+      { ...day.elogia[1], footnotes: [{ mark: "3", after: "Modesti", text: "Quorum nomina: Crescentia." }] },
+      { ...day.elogia[2], footnotes: [{ mark: "4", after: "nusquam", text: "Inter quos: Vitus." }] },
+    ],
+  };
+
+  it("shows them without the ids, marks as printed, linked both ways", () => {
+    render(<DayPage day={withNotes} heading="2 Octobris" edition="ed" lang="la" />);
+    const three = screen.getByRole("link", { name: "Footnote 3" });
+    expect(three).toHaveTextContent(/^3$/);
+    expect(three.closest("p")).toHaveTextContent("Romae passio sancti Modesti3 Sardi.");
+    const list = screen.getByRole("complementary", { name: "Footnotes" });
+    expect(list).toHaveAttribute("lang", "la");
+    const items = list.querySelectorAll("li");
+    expect(three).toHaveAttribute("href", `#${items[0].id}`);
+    expect(items[0]).toHaveTextContent(/^3Quorum nomina: Crescentia\.$/);
+    expect(screen.getByRole("link", { name: "Back to the text of footnote 3" })).toHaveAttribute("href", `#${three.id}`);
+  });
+
+  it("sets an unanchored mark at the end of the eulogy", () => {
+    render(<DayPage day={withNotes} heading="2 Octobris" edition="ed" />);
+    expect(screen.getByRole("link", { name: "Footnote 4" }).closest("p")).toHaveTextContent("Alibi sancti X.4");
+  });
+
+  it("lists printed footnotes before the curators' notes", () => {
+    const both = {
+      ...withNotes,
+      elogia: [...withNotes.elogia, { id: "mr:0104-ferreolus", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." }],
+    };
+    render(<DayPage day={both} heading="2 Octobris" edition="ed" showIds />);
+    const asides = screen.getAllByRole("complementary").map((a) => a.getAttribute("aria-label"));
+    expect(asides).toEqual(["Footnotes", "Editorial notes"]);
+  });
+
+  it("puts the mark right after a misprinted word, before the sic note", () => {
+    const sic = {
+      ...day,
+      elogia: [
+        {
+          id: "mr:0305-phoca", entry: 1, asterisk: false, unnumbered: false, anchor_day: "03-05",
+          text: "Commemorazione nell’odiena memoria.", footnotes: [{ mark: "1", after: "nell’odiena", text: "Nota." }],
+        },
+      ],
+    };
+    render(<DayPage day={sic} heading="5 marzo" edition="martyrologium_romanum_2004_it_IT" />);
+    expect(screen.getByRole("link", { name: "Footnote 1" }).closest("p")).toHaveTextContent(
+      /nell’odiena1 \[sic! expected: nell’odierna\] memoria\./,
+    );
+  });
+
+  it("renders a page without the field exactly as before", () => {
+    const { container } = render(<DayPage day={day} heading="2 Octobris" edition="ed" />);
+    expect(screen.queryByRole("complementary")).toBeNull();
+    expect(container.querySelectorAll("a")).toHaveLength(0);
+  });
+});

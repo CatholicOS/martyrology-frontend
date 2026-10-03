@@ -1,18 +1,25 @@
 import { NoteMark } from "@/components/CuratorNotes";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
+import type { PageFootnote } from "@/lib/footnotes";
 import type { PageNote } from "@/lib/notes";
 import type { ElogiumOut } from "@/lib/types";
 
 /**
  * One eulogy as printed: its number, asterisk and full stop as rubrics ("3*."), or,
  * unnumbered, as a centred heading. `edition` (a CLBDR edition id) selects the misprint notes;
- * `showId` sets the canonical id above it, and `note` marks the curators' note on it, for curators.
+ * `showId` sets the canonical id above it, and `note` marks the curators' note on it, for curators;
+ * `footnotes` are the edition's own footnotes on it, marked in the text.
  */
 export default function Eulogy({
-  e, edition, showId = false, note,
-}: { e: ElogiumOut; edition?: string; showId?: boolean; note?: PageNote }) {
-  const printed = e.text && edition ? <EulogyText text={e.text} id={e.id} edition={edition} noteClassName={styles.sic} /> : e.text;
+  e, edition, showId = false, note, footnotes,
+}: { e: ElogiumOut; edition?: string; showId?: boolean; note?: PageNote; footnotes?: PageFootnote[] }) {
+  // Without an edition no misprint matches, so such a page renders as before.
+  const printed = e.text ? (
+    <EulogyText text={e.text} id={e.id} edition={edition ?? ""} noteClassName={styles.sic} footnotes={footnotes} />
+  ) : (
+    e.text
+  );
   const text = note ? <>{printed}<NoteMark note={note} /></> : printed;
   const hint = showId && e.id ? <p className={styles.idHint}>{e.id}</p> : null;
   return e.unnumbered ? (

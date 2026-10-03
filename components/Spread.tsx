@@ -7,8 +7,10 @@ import CuratorNotes from "@/components/CuratorNotes";
 import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
+import PrintedFootnotes from "@/components/PrintedFootnotes";
 import { dateHeading, dayPath, monthName, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
+import { pageFootnotes } from "@/lib/footnotes";
 import { pageNotes } from "@/lib/notes";
 import { buildRows, gapNote, type GapNote, type Row } from "@/lib/parallel";
 import type { EditionOut } from "@/lib/types";
@@ -107,10 +109,13 @@ export default function Spread({
     [rows],
   );
   const placements = usePlacements(oneSided);
-  // Each sheet marks its own curators' notes, †, ††, … down the sheet.
+  // Each sheet marks its own curators' notes (†, ††, … down the sheet) and its edition's footnotes.
   const notes = useMemo(() => {
-    const side = (s: "a" | "b", id: string) =>
-      showIds ? pageNotes((rows ?? []).map((r) => (r.kind === "eulogy" ? (r[s]?.id ?? null) : null)), id) : [];
+    const ids = (s: "a" | "b") => (rows ?? []).map((r) => (r.kind === "eulogy" ? (r[s] ?? null) : null));
+    const side = (s: "a" | "b", id: string) => ({
+      curators: showIds ? pageNotes(ids(s).map((e) => e?.id ?? null), id) : [],
+      printed: pageFootnotes(ids(s), id),
+    });
     return { a: side("a", a), b: side("b", b) };
   }, [rows, showIds, a, b]);
   const href = (d: Day) => dayPath(a, d, b);
@@ -175,11 +180,13 @@ export default function Spread({
       );
     }
     if (r.kind === "conclusio") {
-      if (!d.conclusio && notes[side].length === 0) return null;
+      const n = notes[side];
+      if (!d.conclusio && n.curators.length === 0 && n.printed.length === 0) return null;
       return (
         <>
           {d.conclusio && <Conclusio text={d.conclusio} />}
-          <CuratorNotes notes={notes[side]} />
+          <PrintedFootnotes notes={n.printed} lang={s.lang} />
+          <CuratorNotes notes={n.curators} />
         </>
       );
     }
@@ -191,7 +198,13 @@ export default function Spread({
       <>
         <span className={side === "b" ? styles.tag : styles.srOnly}>{s.name}</span>
         {e ? (
-          <Eulogy e={e} edition={s.id} showId={showIds} note={notes[side].find((n) => n.at === i)} />
+          <Eulogy
+            e={e}
+            edition={s.id}
+            showId={showIds}
+            note={notes[side].curators.find((n) => n.at === i)}
+            footnotes={notes[side].printed.filter((f) => f.at === i)}
+          />
         ) : (
           <Gap note={note!} name={s.name} href={href} />
         )}

@@ -1,6 +1,8 @@
 import CuratorNotes from "@/components/CuratorNotes";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
+import PrintedFootnotes from "@/components/PrintedFootnotes";
+import { pageFootnotes, type PageFootnote } from "@/lib/footnotes";
 import { pageNotes } from "@/lib/notes";
 import type { DayContentOut } from "@/lib/types";
 
@@ -20,20 +22,24 @@ export function Conclusio({ text }: { text: string }) {
 /**
  * One day typeset as a printed page. `heading` is used when the edition prints no titulus;
  * `edition` (a CLBDR edition id) selects the misprint notes; `showIds` sets each eulogy's canonical id above it
- * and the curators' notes at the foot of the page.
+ * and the curators' notes at the foot of the page. The edition's own footnotes are always shown.
  */
 export default function DayPage({
   day, heading, lang, edition, showIds = false,
 }: { day: DayContentOut; heading: string; lang?: "la" | "it" | "en"; edition?: string; showIds?: boolean }) {
   const notes = showIds ? pageNotes(day.elogia.map((e) => e.id), edition ?? "") : [];
   const noteAt = new Map(notes.map((n) => [n.at, n]));
+  const footnotes = pageFootnotes(day.elogia, edition ?? "");
+  const footAt = new Map<number, PageFootnote[]>();
+  for (const f of footnotes) footAt.set(f.at, [...(footAt.get(f.at) ?? []), f]);
   return (
     <article className={styles.page} lang={lang}>
       <h2 className={styles.heading}>{day.titulus || heading}</h2>
       {day.elogia.map((e, i) => (
-        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} note={noteAt.get(i)} />
+        <Eulogy key={e.id ?? i} e={e} edition={edition} showId={showIds} note={noteAt.get(i)} footnotes={footAt.get(i)} />
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
+      <PrintedFootnotes notes={footnotes} lang={lang} />
       <CuratorNotes notes={notes} />
     </article>
   );
