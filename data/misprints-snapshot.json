@@ -1,5 +1,17 @@
 [
   {
+    "id": "mr:0116-marcellus-i",
+    "edition": "martyrologium_romanum_2004_it_IT",
+    "printed": "Marcellino",
+    "intended": "Marcello"
+  },
+  {
+    "id": "mr:0212-antonius-caulea",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "Caulphæ",
+    "intended": "Cauleas"
+  },
+  {
     "id": "mr:0305-phoca",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "nell’odiena",
@@ -12,7 +24,7 @@
     "intended": "in Inghilterra"
   },
   {
-    "id": "mr:0807-martinus-a-sancto-felice-woodcock-et-socii",
+    "id": "mr:0807-ioannes-woodcock-et-socii",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "Inghiltera",
     "intended": "Inghilterra"
