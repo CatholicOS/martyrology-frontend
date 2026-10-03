@@ -47,7 +47,7 @@ describe("DayPage", () => {
     expect(screen.queryByText("R.")).not.toBeInTheDocument();
   });
 
-  it("sets each rubric in italics where the print has it: at the head, or after its eulogy", () => {
+  it("sets each rubric as a rubric where the print has it: at the head, or after its eulogy", () => {
     const rubricae = [
       { after: null, text: "In anno Bissextili omittitur." },
       { after: "mr:1002-angeli-custodes", text: "Quod sequitur, legitur in tono Lectionis." },
