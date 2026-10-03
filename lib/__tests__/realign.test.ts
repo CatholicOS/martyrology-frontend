@@ -47,6 +47,7 @@ describe("realign ops", () => {
   it("are adjudicable and keyed by their uid", () => {
     expect(isAdjudicable(op)).toBe(true);
     expect(opId(op)).toBe("link:1749:mr:0101-circumcisio-domini");
+    expect(opId({ ...op, uid: "" })).toBe("mr:0101-circumcisio-domini");
   });
 
   it("describe their action", () => {

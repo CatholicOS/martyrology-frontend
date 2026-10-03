@@ -96,7 +96,8 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
       edited.new_id = newId;
       if (subjectLa) edited.subject_la = subjectLa;
     }
-    if (link) edited.same_eulogy_with = link;
+    // An empty string removes the proposed link (crmedr's apply reads it so).
+    if (link || op.same_eulogy_with) edited.same_eulogy_with = link;
     if (action === "split") {
       edited.first_id = firstId;
       edited.parts = parts.filter((p) => p.split_at && p.id);

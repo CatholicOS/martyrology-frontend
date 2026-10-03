@@ -60,4 +60,14 @@ describe("RealignCard", () => {
       },
     });
   });
+
+  it("records clearing a proposed link as an empty same_eulogy_with", () => {
+    const onDecide = vi.fn();
+    const link: RealignOp = { ...split, uid: "link:1749:x", action: "link", same_eulogy_with: "mr:1223-ioannes-de-kety" };
+    render(<OperationCard op={link} onDecide={onDecide} locale="la" baseEdition="martyrologium_romanum_1749" />);
+    fireEvent.click(screen.getByRole("button", { name: /^edit$/i }));
+    fireEvent.change(screen.getByPlaceholderText("mr:MMDD-…"), { target: { value: "" } });
+    fireEvent.click(screen.getByRole("button", { name: /save edit/i }));
+    expect(onDecide).toHaveBeenCalledWith("link:1749:x", { decision: "edit", edited: { action: "link", same_eulogy_with: "" } });
+  });
 });

@@ -15,6 +15,7 @@ export interface EditedFields {
   country?: string;
   // realign
   action?: RealignAction;
+  /** An empty string removes the proposed link. */
   same_eulogy_with?: string;
   parts?: SplitPart[];
   first_id?: string;
@@ -161,7 +162,7 @@ export function isAdjudicable(op: Op): boolean {
 }
 
 export function opId(op: Op): string {
-  if (op.uid) return op.uid;
+  if (typeof op.uid === "string" && op.uid !== "") return op.uid;
   if (op.op === "merge") return (op as MergeOp).ids.join("+");
   return (op as { id?: string }).id ?? JSON.stringify(op);
 }
