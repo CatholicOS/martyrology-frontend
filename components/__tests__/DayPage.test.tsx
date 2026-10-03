@@ -176,6 +176,13 @@ describe("DayPage, printed footnotes", () => {
     );
   });
 
+  it("still marks a footnote whose eulogy has no text, so the link back has a target", () => {
+    const empty = { ...day, elogia: [{ ...day.elogia[1], text: "", footnotes: [{ mark: "2", after: null, text: "Nota." }] }] };
+    render(<DayPage day={empty} heading="2 Octobris" edition="ed" />);
+    const mark = screen.getByRole("link", { name: "Footnote 2" });
+    expect(screen.getByRole("link", { name: "Back to the text of footnote 2" })).toHaveAttribute("href", `#${mark.id}`);
+  });
+
   it("renders a page without the field exactly as before", () => {
     const { container } = render(<DayPage day={day} heading="2 Octobris" edition="ed" />);
     expect(screen.queryByRole("complementary")).toBeNull();

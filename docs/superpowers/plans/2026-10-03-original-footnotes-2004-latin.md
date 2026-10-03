@@ -1479,7 +1479,7 @@ Then pick a footnoted eulogy from `footnotes.json`, e.g. the first January one, 
 
 - [ ] **Step 3: Open the three pull requests**, linking each other and the spec: `martyrology-api` (Tasks 1–2), `martyrology-frontend` (Tasks 3–4), `martyrology-texts` (Tasks 5–8). Each is safe alone: the API ignores a missing `footnotes.json`, the reader ignores a missing `footnotes` field, and the data is inert until the API reads it.
 
-- [ ] **Step 4: Release after merging.** The API deploy bundles `martyrology-texts`, so deploy the API after both of those are merged, then the frontend (`gh workflow run deploy.yml --ref main` in each repo, which the user starts). Check production: an anonymous `GET https://api.romanmartyrology.com/api/v1/elogium/<id>` shows `"footnotes": []` for the 2004 placement, and the reader shows the footnote to a signed-in reader with access.
+- [ ] **Step 4: Release after merging.** The API deploy bundles `martyrology-texts` through its `vendor/texts` submodule, so: merge the texts PR first; then in the API PR bump `vendor/texts` to that merge commit (`git update-index --cacheinfo 160000,<merge sha>,vendor/texts`, committed as "Bump martyrology-texts data pin") and check that `git ls-tree HEAD vendor/texts` shows the merged revision, since without it the deploy ships no `footnotes.json`; then merge and deploy the API, then the frontend (`gh workflow run deploy.yml --ref main` in each repo, which the user starts). Check production: an anonymous `GET https://api.romanmartyrology.com/api/v1/elogium/<id>` shows `"footnotes": []` for the 2004 placement, and the reader shows the footnote to a signed-in reader with access.
 
 ## Later plans (not in this slice)
 

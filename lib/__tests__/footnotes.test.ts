@@ -44,6 +44,11 @@ describe("footnoteOffsets", () => {
     expect(place(null)).toBe(text.length);
   });
 
+  it("counts overlapping occurrences, as the extractor does, before trusting a phrase", () => {
+    const at = footnoteOffsets("et et et.", pageFootnotes([{ id: "mr:a", footnotes: [fn("1", "et et")] }], "ed"))[0].at;
+    expect(at).toBe("et et et.".length);
+  });
+
   it("orders marks by position, keeping printed order at the same position", () => {
     const notes = pageFootnotes([{ id: "mr:a", footnotes: [fn("2", null), fn("1", "Argei"), fn("3", null)] }], "ed");
     expect(footnoteOffsets(text, notes).map((m) => m.footnote.mark)).toEqual(["1", "2", "3"]);

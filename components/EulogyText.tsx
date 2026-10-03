@@ -15,6 +15,8 @@ export default function EulogyText({
 }) {
   const misprints = misprintsFor(edition, id);
   if (misprints.length === 0 && footnotes.length === 0) return <>{text}</>;
+  // No text to place them in: the marks alone, so each footnote's link back has a target.
+  if (!text) return <>{footnotes.map((f) => <FootnoteMark key={f.anchor} note={f} />)}</>;
   const marks = footnoteOffsets(text, footnotes);
   // Each run's span of the text, so a mark lands in the run its offset falls in.
   const runs: { s: TextSegment; start: number; end: number }[] = [];

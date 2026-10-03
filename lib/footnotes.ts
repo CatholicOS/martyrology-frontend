@@ -31,6 +31,17 @@ export function pageFootnotes(elogia: (Pick<ElogiumOut, "id" | "footnotes"> | nu
   return out;
 }
 
+/** Where `phrase` starts in `text` as whole words, overlapping occurrences included (as the extractor counts). */
+function occurrences(text: string, phrase: string): number[] {
+  const re = wholeWordRegExp(phrase);
+  const starts: number[] = [];
+  for (let m = re.exec(text); m; m = re.exec(text)) {
+    starts.push(m.index);
+    re.lastIndex = m.index + 1;
+  }
+  return starts;
+}
+
 /**
  * Where each footnote's mark goes in `text`: right after its phrase when the phrase occurs exactly
  * once as whole words, otherwise at the end of the eulogy. Sorted by position, printed order kept.
@@ -38,8 +49,8 @@ export function pageFootnotes(elogia: (Pick<ElogiumOut, "id" | "footnotes"> | nu
 export function footnoteOffsets(text: string, footnotes: PageFootnote[]): { at: number; footnote: PageFootnote }[] {
   return footnotes
     .map((footnote, i) => {
-      const hits = footnote.after ? [...text.matchAll(wholeWordRegExp(footnote.after))] : [];
-      const at = hits.length === 1 ? hits[0].index! + footnote.after!.length : text.length;
+      const hits = footnote.after ? occurrences(text, footnote.after) : [];
+      const at = hits.length === 1 ? hits[0] + footnote.after!.length : text.length;
       return { at, footnote, i };
     })
     .sort((x, y) => x.at - y.at || x.i - y.i)
