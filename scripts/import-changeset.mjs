@@ -58,7 +58,7 @@ function main() {
   const name = process.argv[3] ?? "deprecated-id-normalization";
   const edition = process.argv[4] ?? "martyrologium_romanum_1749";
   const cs = toBundledChangeset(JSON.parse(readFileSync(src, "utf8")), { edition, registry: "crmedr@local" });
-  const destDir = join(here, "..", "public", "changesets");
+  const destDir = join(here, "..", "changesets");
   const dest = join(destDir, `${name}.json`);
   mkdirSync(destDir, { recursive: true });
   writeFileSync(dest, JSON.stringify(cs, null, 1) + "\n");
@@ -67,8 +67,9 @@ function main() {
 }
 
 /**
- * Regenerate public/changesets/index.json — the manifest the Review page
- * fetches to populate its bundled change-set picker. Lists every
+ * Regenerate changesets/index.json — the manifest the Review page
+ * fetches (through the curator-only /api/changesets) to populate its
+ * bundled change-set picker. Lists every
  * `*.json` file in the changesets directory except the index itself.
  * @param {string} destDir
  */

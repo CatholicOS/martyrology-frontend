@@ -51,7 +51,7 @@ export default function ReviewPage() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/changesets/index.json");
+        const res = await fetch("/api/changesets");
         if (!res.ok) return;
         const data = (await res.json()) as { changesets: string[] };
         if (!cancelled) setBundled(data.changesets ?? []);
@@ -69,7 +69,7 @@ export default function ReviewPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/changesets/${filename}`);
+      const res = await fetch(`/api/changesets/${encodeURIComponent(filename)}`);
       if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
       const text = await res.text();
       const parsed = parseChangeset(text);
