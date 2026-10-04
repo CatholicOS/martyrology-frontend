@@ -33,6 +33,11 @@ const config: NextConfig = {
     // workflow pins the runner to ubuntu-24.04 to match it. On any other
     // platform this glob matches nothing, which is harmless.
     "*": ["./node_modules/@img/sharp-libvips-linux-x64/lib/*"],
+    // The /review change-sets, read from disk by these routes (lib/changesets.ts).
+    // They are not in public/: they can quote the copyrighted 2004 edition, so
+    // only the curator-gated routes serve them.
+    "/api/changesets": ["./changesets/index.json"],
+    "/api/changesets/[name]": ["./changesets/*.json"],
   },
 };
 

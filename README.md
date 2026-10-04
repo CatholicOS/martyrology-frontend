@@ -68,9 +68,13 @@ re-run them whenever the registry or the correction manifest changes upstream.
 npm run snapshot-registry
 
 # Convert ../crmedr/data/deprecated_id_corrections.json into a
-# crmedr-changeset/v1 file under public/changesets/, and regenerate
-# public/changesets/index.json (the manifest the Review page's change-set
-# picker fetches).
+# crmedr-changeset/v1 file under changesets/, and regenerate
+# changesets/index.json (the manifest the Review page's change-set picker
+# fetches). Change-sets are not in public/: they can quote the copyrighted
+# 2004 edition, so only curators get them, through /api/changesets.
+# Change-sets that quote the 2004 edition are never committed here (this repo
+# is public): they go in the server directory named by CHANGESETS_DIR, outside
+# the deploy, and every *.json file there is listed.
 npm run import-changeset
 
 # Bundle crmedr's gazetteer review queue (already a crmedr-changeset/v1 file,

@@ -116,7 +116,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: .next/cache
-          key: nextjs-deploy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**/*.{ts,tsx,css}', 'lib/**/*.{ts,tsx,css}', 'components/**/*.{ts,tsx,css}', 'data/**/*.json', 'public/**/*.json', '*.ts', '*.mjs', 'tsconfig.json') }}
+          key: nextjs-deploy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**/*.{ts,tsx,css}', 'lib/**/*.{ts,tsx,css}', 'components/**/*.{ts,tsx,css}', 'data/**/*.json', 'public/**/*.json', 'changesets/**/*.json', '*.ts', '*.mjs', 'tsconfig.json') }}
           restore-keys: nextjs-deploy-${{ hashFiles('package-lock.json') }}-
 
       - name: Build
@@ -128,13 +128,15 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
           AUTH_ZITADEL_ISSUER: ${{ vars.AUTH_ZITADEL_ISSUER }}
           AUTH_ZITADEL_ID: ${{ vars.AUTH_ZITADEL_ID }}
+          CHANGESETS_DIR: ${{ vars.CHANGESETS_DIR }}
         run: |
           set -euo pipefail
 
           # `output: "standalone"` emits server.js and a pruned node_modules,
           # but deliberately omits both of these — they are the caller's job.
           # Without them the app boots and then serves every page unstyled and
-          # every /changesets/*.json as a 404.
+          # every file in public/ as a 404. (The /review change-sets are not in
+          # public/: next.config.ts traces changesets/ into the bundle.)
           cp -r .next/static .next/standalone/.next/static
           cp -r public .next/standalone/public
 
@@ -158,6 +160,10 @@ jobs:
             printf 'AUTH_ZITADEL_ISSUER=%s\n' "$AUTH_ZITADEL_ISSUER"
             printf 'AUTH_ZITADEL_ID=%s\n' "$AUTH_ZITADEL_ID"
             printf 'AUTH_URL=%s\n' "$SITE_URL"
+            # Optional: the server directory, outside the deploy, holding the
+            # /review change-sets that must not be in this public repo (they can
+            # quote the 2004 edition). The real, non-chroot path the app sees.
+            if [ -n "$CHANGESETS_DIR" ]; then printf 'CHANGESETS_DIR=%s\n' "$CHANGESETS_DIR"; fi
           } > .next/standalone/.env
 
           # Record what is live. Nothing reads this at runtime; it exists so
