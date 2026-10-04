@@ -28,13 +28,17 @@ async function bundledNames(dir: string): Promise<string[]> {
 async function privateNames(dir: string | undefined): Promise<string[]> {
   if (!dir) return [];
   try {
-    return (await readdir(dir)).filter((f) => f.endsWith(".json") && f !== "index.json").sort();
+    return (await readdir(dir)).filter((f) => f.endsWith(".json")).sort();
   } catch {
     return [];
   }
 }
 
-/** Every change-set a curator can open: the bundled ones, then the private ones. */
+/**
+ * Every change-set a curator can open: the bundled ones, then the private
+ * ones. A name in both is listed once and opens the bundled copy, so give a
+ * private change-set a name the repo does not use.
+ */
 export async function listChangesets(
   bundled = BUNDLED_DIR,
   privateDir = process.env.CHANGESETS_DIR,
