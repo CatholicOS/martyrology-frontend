@@ -8,7 +8,12 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
 
 // The map itself is Leaflet's business (EulogyMap.test); here it reports what it was given.
 vi.mock("@/components/EulogyMap", () => ({
-  default: ({ entries }: { entries: { id: string }[] }) => <div data-testid="map">{entries.map((e) => e.id).join(",")}</div>,
+  default: ({ entries, onPlace }: { entries: { id: string }[]; onPlace: (ids: string[]) => void }) => (
+    <>
+      <div data-testid="map">{entries.map((e) => e.id).join(",")}</div>
+      <button type="button" onClick={() => onPlace(entries.map((e) => e.id))}>cluster</button>
+    </>
+  ),
 }));
 
 vi.mock("@/lib/places", () => ({
@@ -89,6 +94,23 @@ describe("MapPage", () => {
     const values = [...(screen.getByLabelText("Edition") as HTMLSelectElement).options].map((o) => o.value);
     expect(values).not.toContain("mr_1914");
     expect(getCatalog).not.toHaveBeenCalledWith("mr_1914", expect.anything());
+  });
+
+  it("a clicked cluster lists its eulogies under their places' names", async () => {
+    render(<MapPage initialEdition={null} />);
+    await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent("mr:0101-b"));
+    fireEvent.click(screen.getByRole("button", { name: "cluster" }));
+    expect(screen.getByRole("heading", { name: "Rome / London — 2 eulogies" })).toBeInTheDocument();
+  });
+
+  it("switching edition clears the previous edition's markers, and keeps them cleared if the new one fails", async () => {
+    render(<MapPage initialEdition={null} />);
+    await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent("mr:0101-b"));
+    getCatalog.mockRejectedValue(new Error("down"));
+    fireEvent.change(screen.getByLabelText("Edition"), { target: { value: "mr_2004_it" } });
+    expect(screen.getByTestId("map")).toBeEmptyDOMElement();
+    await screen.findByRole("button", { name: "Retry" });
+    expect(screen.getByTestId("map")).toBeEmptyDOMElement();
   });
 
   it("searching narrows the map", async () => {

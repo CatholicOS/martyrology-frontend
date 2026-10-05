@@ -13,12 +13,12 @@ interface Props {
   edition: string;
   selected: string | null;
   onSelect: (id: string) => void;
-  /** A cluster whose eulogies all share one place was clicked: list that place's eulogies. */
-  onPlace: (qid: string) => void;
+  /** A cluster that zooming cannot split was clicked: list its eulogies (by ID). */
+  onPlace: (ids: string[]) => void;
 }
 
 type Leaflet = typeof import("leaflet");
-type PlacedMarker = CircleMarker & { qid?: string };
+type PlacedMarker = CircleMarker & { eulogyId?: string };
 
 const MARKER = { color: "#7f1d1d", fillColor: "#b91c1c", radius: 6, weight: 2, fillOpacity: 0.85 };
 
@@ -53,8 +53,9 @@ function popupFor(e: MapEntry, edition: string): HTMLElement {
 
 /**
  * An edition's eulogies on an OpenStreetMap base map, one circle marker each, clustered. A
- * cluster splits as one zooms; one whose eulogies all share a place (Rome holds hundreds) would
- * never split, so clicking it hands the place to the sidebar instead. Leaflet needs `window`,
+ * cluster splits as one zooms; one that cannot — its eulogies share one point (Rome holds
+ * hundreds; Kayseri and Caesarea of Cappadocia are two items at one point), or the map is at
+ * its deepest zoom (Rieti and Sabina, 29 m apart) — hands its eulogies to the sidebar instead. Leaflet needs `window`,
  * so it loads in the browser; markercluster extends the global `L`, so that is set first.
  */
 export default function EulogyMap({ entries, edition, selected, onSelect, onPlace }: Props) {
@@ -88,13 +89,17 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
           "and the GIS User Community",
       }).addTo(map);
-      const group = L.markerClusterGroup({ zoomToBoundsOnClick: false, spiderfyOnMaxZoom: false, chunkedLoading: true });
+      // No chunkedLoading: markercluster 1.5.3's chunked addLayers keeps adding a superseded set
+      // of markers after clearLayers.
+      const group = L.markerClusterGroup({ zoomToBoundsOnClick: false, spiderfyOnMaxZoom: false });
+      const mapRef = map;
       group.on("clusterclick", (ev) => {
         const cluster = (ev as unknown as { layer: { getAllChildMarkers(): PlacedMarker[]; zoomToBounds(): void } }).layer;
         const children = cluster.getAllChildMarkers();
         const first = children[0].getLatLng();
-        if (children.every((m) => m.getLatLng().equals(first))) {
-          if (children[0].qid) onPlaceRef.current(children[0].qid);
+        const onePoint = children.every((m) => m.getLatLng().equals(first));
+        if (onePoint || mapRef.getZoom() >= mapRef.getMaxZoom()) {
+          onPlaceRef.current(children.flatMap((m) => (m.eulogyId ? [m.eulogyId] : [])));
         } else {
           cluster.zoomToBounds();
         }
@@ -115,10 +120,11 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     group.clearLayers();
     markers.current.clear();
     const layers = entries.map((e) => {
+      // The popup is built when opened: thousands of markers are rebuilt as the filters change.
       const m: PlacedMarker = L.circleMarker(e.coords, MARKER)
-        .bindPopup(popupFor(e, edition))
+        .bindPopup(() => popupFor(e, edition))
         .on("click", () => onSelectRef.current(e.id));
-      m.qid = e.qid;
+      m.eulogyId = e.id;
       markers.current.set(e.id, m);
       return m;
     });

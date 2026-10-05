@@ -67,14 +67,17 @@ export function mapEntries(catalog: CatalogEntryOut[], snap: PlacesSnapshot): { 
   return { entries, unmapped };
 }
 
-/** Lower case, without accents, with æ/œ spelled out, so "caecilia" finds "Cæcilia". */
+/**
+ * Lower case, without accents, with æ/œ spelled out, so "caecilia" finds "Cæcilia". Accents go
+ * first: an accented ligature (ǽ) only becomes a plain æ once its accent is stripped.
+ */
 function fold(s: string): string {
   return s
     .toLowerCase()
-    .replace(/æ/g, "ae")
-    .replace(/œ/g, "oe")
     .normalize("NFD")
-    .replace(/\p{M}/gu, "");
+    .replace(/\p{M}/gu, "")
+    .replace(/æ/g, "ae")
+    .replace(/œ/g, "oe");
 }
 
 /** Whether the search text is in the eulogy's subject, ID, printed place or the place's label. */

@@ -4,19 +4,21 @@ import EulogyMap from "@/components/EulogyMap";
 import type { MapEntry } from "@/lib/map-data";
 
 type Fn = (...a: unknown[]) => void;
-interface FakeMarker { latlng: [number, number]; popup?: HTMLElement; handlers: Record<string, Fn>; opened: number }
+interface FakeMarker { latlng: [number, number]; popup?: HTMLElement | (() => HTMLElement); handlers: Record<string, Fn>; opened: number }
+const popupOf = (m: FakeMarker) => (typeof m.popup === "function" ? m.popup() : m.popup!);
 const groups: { layers: FakeMarker[]; handlers: Record<string, Fn>; opts: Record<string, unknown> }[] = [];
 const fitBounds = vi.fn();
 const remove = vi.fn();
+let zoom = 5;
 const zoomToShowLayer = vi.fn((m: FakeMarker, cb: () => void) => cb());
 
 vi.mock("leaflet", () => {
-  const map = () => ({ fitBounds, setView: vi.fn(), remove });
+  const map = () => ({ fitBounds, setView: vi.fn(), remove, getZoom: () => zoom, getMaxZoom: () => 18 });
   const tileLayer = () => ({ addTo: () => undefined });
   const circleMarker = (latlng: [number, number]) => {
     const m: FakeMarker & Record<string, unknown> = {
       latlng, handlers: {}, opened: 0,
-      bindPopup(el: HTMLElement) { m.popup = el; return m; },
+      bindPopup(el: HTMLElement | (() => HTMLElement)) { m.popup = el; return m; },
       on(ev: string, fn: Fn) { m.handlers[ev] = fn; return m; },
       openPopup() { m.opened++; return m; },
       getLatLng() {
@@ -53,12 +55,15 @@ describe("EulogyMap", () => {
     fitBounds.mockClear();
     remove.mockClear();
     zoomToShowLayer.mockClear();
+    zoom = 5;
   });
 
   it("puts one marker per eulogy in a cluster group and fits them", async () => {
     const { unmount } = render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
     expect(groups[0].opts).toMatchObject({ zoomToBoundsOnClick: false, spiderfyOnMaxZoom: false });
+    // Chunked loading keeps adding a superseded set after clearLayers (markercluster 1.5.3).
+    expect(groups[0].opts.chunkedLoading).toBeFalsy();
     expect(fitBounds).toHaveBeenCalled();
     unmount();
     expect(remove).toHaveBeenCalled();
@@ -67,7 +72,8 @@ describe("EulogyMap", () => {
   it("a marker's popup links to the eulogy in the reader", async () => {
     render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
-    const popup = groups[0].layers[0].popup!;
+    expect(typeof groups[0].layers[0].popup).toBe("function"); // built when opened, not per marker per keystroke
+    const popup = popupOf(groups[0].layers[0]);
     expect(popup.textContent).toContain("Subject mr:0102-a");
     expect(popup.querySelector("a[data-read]")!.getAttribute("href")).toBe("/read/mr_2004/01/02#mr:0102-a");
   });
@@ -87,10 +93,33 @@ describe("EulogyMap", () => {
     const [a, b, c] = groups[0].layers;
     const zoomToBounds = vi.fn();
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
-    expect(onPlace).toHaveBeenCalledWith("Q220");
+    expect(onPlace).toHaveBeenCalledWith(["mr:0102-a", "mr:0102-b"]);
     expect(zoomToBounds).not.toHaveBeenCalled();
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, c], zoomToBounds } });
     expect(zoomToBounds).toHaveBeenCalled();
+  });
+
+  it("a cluster of different places at one point lists them all", async () => {
+    const onPlace = vi.fn();
+    const twin = [e("mr:0521-a", "Q48338", [38.7, 35.5]), e("mr:0521-b", "Q10439273", [38.7, 35.5])];
+    render(<EulogyMap entries={twin} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={onPlace} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
+    const [a, b] = groups[0].layers;
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds: vi.fn() } });
+    expect(onPlace).toHaveBeenCalledWith(["mr:0521-a", "mr:0521-b"]);
+  });
+
+  it("a cluster that still holds several places at the deepest zoom lists them instead of zooming", async () => {
+    const onPlace = vi.fn();
+    const near = [e("mr:0101-rieti", "Q1", [42.4, 12.86]), e("mr:0101-sabina", "Q2", [42.4002, 12.8601])];
+    render(<EulogyMap entries={near} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={onPlace} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
+    zoom = 18;
+    const zoomToBounds = vi.fn();
+    const [a, b] = groups[0].layers;
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
+    expect(zoomToBounds).not.toHaveBeenCalled();
+    expect(onPlace).toHaveBeenCalledWith(["mr:0101-rieti", "mr:0101-sabina"]);
   });
 
   it("selecting a eulogy reveals and opens its marker", async () => {

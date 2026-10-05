@@ -66,6 +66,11 @@ describe("matchesQuery", () => {
     expect(matchesQuery(byId("mr:0103-thomas"), "london")).toBe(true);
   });
 
+  it("finds a place printed with an accented ligature (ǽ)", () => {
+    const nicaea = { ...byId("mr:0104-basilius"), la: "Nicǽæ in Bithýnia" };
+    expect(matchesQuery(nicaea, "nicaeae")).toBe(true);
+  });
+
   it("an empty or blank query matches everything", () => {
     expect(matchesQuery(byId("mr:0103-thomas"), "  ")).toBe(true);
   });

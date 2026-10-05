@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import EulogyMap from "@/components/EulogyMap";
 import MapSidebar from "@/components/MapSidebar";
@@ -12,6 +12,7 @@ import { getPlaces } from "@/lib/places";
 import type { EditionOut } from "@/lib/types";
 
 const NO_FILTERS: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
+const NOTHING_MAPPED: { entries: MapEntry[]; unmapped: number } = { entries: [], unmapped: 0 };
 
 /** The newest Latin editio typica, else the newest edition. */
 export function defaultEdition(editions: EditionOut[]): string | null {
@@ -24,9 +25,10 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   const router = useRouter();
   const [editions, setEditions] = useState<EditionOut[]>([]);
   const [edition, setEdition] = useState<string | null>(null);
-  const [mapped, setMapped] = useState<{ entries: MapEntry[]; unmapped: number }>({ entries: [], unmapped: 0 });
+  const [mapped, setMapped] = useState(NOTHING_MAPPED);
   const [filters, setFilters] = useState<MapFilters>(NO_FILTERS);
-  const [place, setPlace] = useState<string | null>(null);
+  // The eulogies of a cluster the map could not split, listed in the sidebar.
+  const [place, setPlace] = useState<string[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +74,10 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
         if (!cancelled) setMapped(mapEntries(catalog, getPlaces()));
       } catch (err) {
         console.error(`map: catalog ${edition}: ${describeError(err)}`);
-        if (!cancelled) setError("Could not load this edition's eulogies.");
+        if (!cancelled) {
+          setMapped(NOTHING_MAPPED);
+          setError("Could not load this edition's eulogies.");
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -84,6 +89,8 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
 
   const chooseEdition = (id: string) => {
     setEdition(id);
+    // The old edition's markers would link into the new one while its catalog loads.
+    setMapped(NOTHING_MAPPED);
     setFilters(NO_FILTERS);
     setPlace(null);
     setSelected(null);
@@ -95,10 +102,16 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
     setPlace(null);
   };
 
-  const filtered = useMemo(() => filterEntries(mapped.entries, filters), [mapped, filters]);
+  // The map redraws thousands of markers: it follows the typing at its own pace.
+  const deferred = useDeferredValue(filters);
+  const filtered = useMemo(() => filterEntries(mapped.entries, deferred), [mapped, deferred]);
   const facets = useMemo(() => facetCounts(mapped.entries, filters), [mapped, filters]);
-  const atPlace = useMemo(() => (place ? filtered.filter((e) => e.qid === place) : null), [filtered, place]);
-  const onPlace = useCallback((qid: string) => setPlace(qid), []);
+  const atPlace = useMemo(() => {
+    if (!place) return null;
+    const ids = new Set(place);
+    return filtered.filter((e) => ids.has(e.id));
+  }, [filtered, place]);
+  const onPlace = useCallback((ids: string[]) => setPlace(ids), []);
   const onSelect = useCallback((id: string) => setSelected(id), []);
 
   return (
@@ -120,7 +133,11 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
             results={atPlace ?? filtered}
             mapped={mapped.entries.length}
             unmapped={mapped.unmapped}
-            place={atPlace && atPlace.length > 0 ? { label: atPlace[0].label, count: atPlace.length } : null}
+            place={
+              atPlace && atPlace.length > 0
+                ? { label: [...new Set(atPlace.map((e) => e.label))].join(" / "), count: atPlace.length }
+                : null
+            }
             onShowAll={() => setPlace(null)}
             selected={selected}
             onSelect={onSelect}
