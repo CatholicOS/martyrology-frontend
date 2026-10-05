@@ -26,4 +26,10 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: "Compare" })).toHaveAttribute("href", "/compare");
     expect(screen.getByRole("link", { name: "Review" })).toHaveAttribute("href", "/review");
   });
+
+  it("links the map for everyone, signed in or not", async () => {
+    viewerMock.mockResolvedValue({ signedIn: false, curator: false });
+    render(await SiteHeader());
+    expect(screen.getByRole("link", { name: "Map" })).toHaveAttribute("href", "/map");
+  });
 });
