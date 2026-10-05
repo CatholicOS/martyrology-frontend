@@ -30,4 +30,20 @@ describe("SignOutButton", () => {
     expect(signOutMock).toHaveBeenCalledWith({ redirect: false });
     expect(order).toEqual(["signOut", "reload"]);
   });
+
+  it("does not reload, and says so, when signing out fails", async () => {
+    signOutMock.mockRejectedValue(new Error("network down"));
+    render(<SignOutButton className="c" />);
+    fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/sign-out failed/i);
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not reload when Auth.js answers with its error page", async () => {
+    signOutMock.mockResolvedValue({ url: "http://localhost:3000/api/auth/error?error=MissingCSRF" });
+    render(<SignOutButton className="c" />);
+    fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(reload).not.toHaveBeenCalled();
+  });
 });
