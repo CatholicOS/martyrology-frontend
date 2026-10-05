@@ -13,9 +13,9 @@ import type { EditionOut } from "@/lib/types";
 
 const NO_FILTERS: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
 
-/** The newest Latin editio typica, else the newest available edition. */
+/** The newest Latin editio typica, else the newest edition. */
 export function defaultEdition(editions: EditionOut[]): string | null {
-  const shelf = sortForShelf(editions.filter((e) => e.availability.status !== "unavailable"));
+  const shelf = sortForShelf(editions);
   return (shelf.find(isOriginal) ?? shelf[0])?.edition_id ?? null;
 }
 
@@ -37,8 +37,10 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   useEffect(() => {
     let cancelled = false;
     getEditions()
-      .then((eds) => {
+      .then((all) => {
         if (cancelled) return;
+        // An edition registered without texts has no catalog to map.
+        const eds = all.filter((e) => e.availability.status !== "unavailable");
         setEditions(eds);
         setEdition(eds.some((e) => e.edition_id === initialEdition) ? initialEdition : defaultEdition(eds));
       })

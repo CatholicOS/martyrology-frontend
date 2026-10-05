@@ -37,6 +37,7 @@ const editions = [
   ed("mr_2004_it", 2004, "it_IT", "editio_vernacula"),
   ed("mr_2004", 2004, "la", "editio_typica_altera"),
   ed("mr_1914_en", 1914, "en", "translation"),
+  { ...ed("mr_1914", 1914, "la", "editio_typica_recognita"), availability: { status: "unavailable" } },
 ];
 const cat = (id: string): CatalogEntryOut => ({ id, subject: `S ${id}`, anchor_day: "01-01", deprecated: false, present: true, day_printed: "01-01", entry: 1 });
 
@@ -80,6 +81,14 @@ describe("MapPage", () => {
     await waitFor(() => expect(getCatalog).toHaveBeenCalledWith("mr_2004_it", "it"));
     await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent(/^mr:0101-a$/));
     expect(screen.getByRole("checkbox", { name: /Italy/ })).not.toBeChecked();
+  });
+
+  it("offers only editions whose texts are attached; an unavailable ?edition= falls back", async () => {
+    render(<MapPage initialEdition="mr_1914" />);
+    await waitFor(() => expect(getCatalog).toHaveBeenCalledWith("mr_2004", "la"));
+    const values = [...(screen.getByLabelText("Edition") as HTMLSelectElement).options].map((o) => o.value);
+    expect(values).not.toContain("mr_1914");
+    expect(getCatalog).not.toHaveBeenCalledWith("mr_1914", expect.anything());
   });
 
   it("searching narrows the map", async () => {
