@@ -43,7 +43,9 @@
     }
   },
   "mr:0217-septem-fundatores-servorum-mariae": {
-    "note": "On this day the 1749 edition prints the eulogy of Alexius Falconieri alone, one of the seven founders; the 2004 edition commemorates the seven founders together. The historical eulogy is kept under this ID."
+    "editions": {
+      "martyrologium_romanum_1749": "This edition prints the eulogy of Alexius Falconieri alone, one of the seven founders; the 2004 edition commemorates the seven founders together. The historical eulogy is kept under this ID."
+    }
   },
   "mr:0323-rebecca-de-himlaya": {
     "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
@@ -98,13 +100,17 @@
     }
   },
   "mr:0709-maria-a-iesu-crucifixo": {
-    "note": "Entry 11* at July 9 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003."
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003."
+    }
   },
   "mr:0711-leontius": {
     "note": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
   },
   "mr:0712-proclus-et-hilarion": {
-    "note": "Entry 1 at July 12 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, whose July 12 numbering begins at 2 with the gap left unrenumbered."
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 12 numbering begins at 2 with the gap left unrenumbered."
+    }
   },
   "mr:0718-tarsicia-mackiv": {
     "note": "Asterisked entry (13*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
@@ -140,7 +146,9 @@
     }
   },
   "mr:0825-eusebius-et-socii": {
-    "note": "Entry 3 at August 25 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, where the day's numbered entries begin at 3 (Genesius) after the two unnumbered memorias."
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, where the day's numbered entries begin at 3 (Genesius) after the two unnumbered memorias."
+    }
   },
   "mr:0828-pelagius": {
     "editions": {
@@ -196,7 +204,9 @@
     "note": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
   },
   "mr:1210-marcus-antonius-durando": {
-    "note": "The CEI's placement (10 December, entry 9*) of the same eulogy the Latin print and the English edition give at 10 June (mr:0610-marcus-antonius-durando)."
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "The Latin print and the English edition give this eulogy at 10 June (mr:0610-marcus-antonius-durando)."
+    }
   },
   "mr:1212-simon-phan-dac-hoa": {
     "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
