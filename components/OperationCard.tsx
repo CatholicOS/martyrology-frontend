@@ -23,6 +23,9 @@ import type { Locale } from "@/lib/types";
 // deprecated id shows its own older edition. This is tied to whether the id HAS 2004, not
 // to which side is the winner, so flipping the winner never hides the 2004 text.
 const CURRENT_EDITION = "martyrologium_romanum_2004";
+// Beside a single eulogy: the Italian 2004, easier to read and precise about places (a current
+// id); else the 1914 English (a deprecated id, whose own text is the 1749 Latin).
+const ALONGSIDE = ["martyrologium_romanum_2004_it_IT", "martyrologium_romanum_1914_en_unofficial"];
 
 interface Props {
   op: Op;
@@ -124,7 +127,12 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
         </div>
       ) : (
         <div className="mb-2">
-          <EulogyView id={(op as { id?: string }).id ?? null} baseEdition={baseEdition} locale={locale} />
+          <EulogyView
+            id={(op as { id?: string }).id ?? null}
+            baseEdition={baseEdition}
+            locale={locale}
+            alongside={ALONGSIDE}
+          />
         </div>
       )}
 

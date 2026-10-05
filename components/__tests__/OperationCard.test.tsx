@@ -186,3 +186,56 @@ describe("OperationCard", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("OperationCard: a second edition beside the eulogy", () => {
+  const card = (id: string) =>
+    render(
+      <OperationCard
+        op={{ ...renameOp, id, new_id: `${id}-x` }}
+        onDecide={vi.fn()}
+        locale="en"
+        baseEdition="martyrologium_romanum_2004"
+      />,
+    );
+
+  it("shows a current ID's Latin 2004 text with the Italian 2004 beside it", async () => {
+    vi.mocked(getElogium).mockResolvedValue({
+      id: "mr:0202-fictitius",
+      subject: { la: "Fictitius" },
+      editions: {
+        martyrologium_romanum_2004: { text: "Fictópoli in Fíctia, sancti Fictitii." },
+        martyrologium_romanum_2004_it_IT: { text: "A Fictopoli nel Fictiense, san Fittizio." },
+        martyrologium_romanum_1914_en_unofficial: { text: "At Fictopolis, St. Fictitius." },
+      },
+    } as never);
+    card("mr:0202-fictitius");
+    expect(await screen.findByText("Fictópoli in Fíctia, sancti Fictitii.")).toBeInTheDocument();
+    expect(screen.getByText("A Fictopoli nel Fictiense, san Fittizio.")).toBeInTheDocument();
+    expect(screen.queryByText("At Fictopolis, St. Fictitius.")).not.toBeInTheDocument();
+  });
+
+  it("shows a deprecated ID's 1749 text with the 1914 English beside it", async () => {
+    vi.mocked(getElogium).mockResolvedValue({
+      id: "mr:0202-antiquus",
+      subject: { la: "Antiquus" },
+      editions: {
+        martyrologium_romanum_1749: { text: "Antiquopoli, sancti Antiqui." },
+        martyrologium_romanum_1914_en_unofficial: { text: "At Antiquopolis, St. Antiquus." },
+      },
+    } as never);
+    card("mr:0202-antiquus");
+    expect(await screen.findByText("Antiquopoli, sancti Antiqui.")).toBeInTheDocument();
+    expect(screen.getByText("At Antiquopolis, St. Antiquus.")).toBeInTheDocument();
+  });
+
+  it("shows no second column when no other edition has the text", async () => {
+    vi.mocked(getElogium).mockResolvedValue({
+      id: "mr:0202-solus",
+      subject: { la: "Solus" },
+      editions: { martyrologium_romanum_1749: { text: "Solopoli, sancti Soli." } },
+    } as never);
+    card("mr:0202-solus");
+    expect(await screen.findByText("Solopoli, sancti Soli.")).toBeInTheDocument();
+    expect(screen.queryByText(/no text in/)).not.toBeInTheDocument();
+  });
+});
