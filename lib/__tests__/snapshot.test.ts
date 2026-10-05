@@ -39,6 +39,18 @@ describe("buildNotes", () => {
       { id: "mr:0104-titus", month: 1, day: 4, note: null },
       { id: "mr:0101-basilius", month: 1, day: 1 },
     ] };
-    expect(buildNotes(doc)).toEqual({ "mr:0220-eleutherius-et-socii": "Probably mr:0218-sadoth-et-socii." });
+    expect(buildNotes(doc)).toEqual({ "mr:0220-eleutherius-et-socii": { note: "Probably mr:0218-sadoth-et-socii." } });
+  });
+
+  it("keeps the notes on one edition's text apart, by edition", () => {
+    const doc = { entries: [
+      { id: "mr:0625-prosperus", month: 6, day: 25,
+        edition_notes: { martyrologium_romanum_1914_en_unofficial: "Riez.", martyrologium_romanum_1749: "Conflated." } },
+      { id: "mr:1003-candida", month: 10, day: 3, note: "Candidus.", edition_notes: {} as Record<string, string> },
+    ] };
+    expect(buildNotes(doc)).toEqual({
+      "mr:0625-prosperus": { editions: { martyrologium_romanum_1914_en_unofficial: "Riez.", martyrologium_romanum_1749: "Conflated." } },
+      "mr:1003-candida": { note: "Candidus." },
+    });
   });
 });
