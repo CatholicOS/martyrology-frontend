@@ -49,6 +49,13 @@ export function __resetReaderState() {
 
 const FOUND_MS = 2400;
 
+/** The eulogy a link names in the address (`#mr:…`), if any. */
+function hashId(): string | null {
+  if (typeof window === "undefined") return null;
+  const id = decodeURIComponent(window.location.hash.slice(1));
+  return id.startsWith("mr:") ? id : null;
+}
+
 /** Scroll to the eulogy and mark it briefly; false while it is not drawn yet. */
 function reveal(root: HTMLElement, id: string): boolean {
   const el = [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
@@ -96,10 +103,24 @@ export default function Reader({
   const touch = useRef<{ x: number; y: number } | null>(null);
   const pages = useRef<HTMLDivElement>(null);
   // A fresh object per search, so finding the same eulogy twice scrolls to it again.
-  const [target, setTarget] = useState<{ id: string } | null>(() => (pendingTarget ? { id: pendingTarget } : null));
+  const [target, setTarget] = useState<{ id: string } | null>(() => {
+    if (pendingTarget) return { id: pendingTarget };
+    const id = hashId();
+    return id ? { id } : null;
+  });
   const [showIds, setShowIds] = useShowIds();
 
   const navigated = useRef(false);
+
+  // A link to a eulogy on the open day (a curator's note naming another ID) only changes the hash.
+  useEffect(() => {
+    const onHash = () => {
+      const id = hashId();
+      if (id) setTarget({ id });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   useEffect(() => {
     pendingTarget = null; // consumed by the initialiser above
