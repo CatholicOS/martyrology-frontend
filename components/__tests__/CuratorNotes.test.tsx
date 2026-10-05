@@ -12,7 +12,7 @@ describe("CuratorNotes", () => {
       />,
     );
     expect(screen.getByRole("link", { name: "mr:0218-sadoth-et-socii" })).toHaveAttribute(
-      "href", "/read/martyrologium_romanum_1749/02/18#mr:0218-sadoth-et-socii",
+      "href", "/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii",
     );
   });
 });

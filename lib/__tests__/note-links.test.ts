@@ -15,25 +15,27 @@ const LA = "martyrologium_romanum_2004";
 const Y1749 = "martyrologium_romanum_1749";
 
 describe("noteParts", () => {
-  it("links a current ID to its day in the page's edition, at the eulogy", () => {
+  it("links a current ID from a historical page to the 2004 Latin, where it is printed", () => {
     expect(noteParts("Probably mr:0218-sadoth-et-socii: same place.", Y1749, snap)).toEqual([
       { text: "Probably " },
-      { text: "mr:0218-sadoth-et-socii", href: "/read/martyrologium_romanum_1749/02/18#mr:0218-sadoth-et-socii" },
+      { text: "mr:0218-sadoth-et-socii", href: "/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii" },
       { text: ": same place." },
     ]);
   });
 
-  it("links a deprecated ID from a 2004 page to the edition it is attested in", () => {
-    expect(noteParts("See mr:0220-eleutherius-et-socii.", LA, snap)[1]).toEqual({
-      text: "mr:0220-eleutherius-et-socii",
-      href: "/read/martyrologium_romanum_1749/02/20#mr:0220-eleutherius-et-socii",
-    });
+  it("keeps a 2004 page's own edition for a current ID", () => {
+    expect(noteParts("mr:0821-paternus", "martyrologium_romanum_2004_it_IT", snap)[0].href).toBe(
+      "/read/martyrologium_romanum_2004_it_IT/08/21#mr:0821-paternus",
+    );
   });
 
-  it("keeps a historical page's edition for a deprecated ID", () => {
-    expect(noteParts("mr:0220-eleutherius-et-socii", "martyrologium_romanum_1914_en_unofficial", snap)[0].href).toBe(
-      "/read/martyrologium_romanum_1914_en_unofficial/02/20#mr:0220-eleutherius-et-socii",
-    );
+  it("links a deprecated ID to the edition it is attested in, from any page", () => {
+    for (const page of [LA, Y1749, "martyrologium_romanum_1914_en_unofficial"]) {
+      expect(noteParts("See mr:0220-eleutherius-et-socii.", page, snap)[1]).toEqual({
+        text: "mr:0220-eleutherius-et-socii",
+        href: "/read/martyrologium_romanum_1749/02/20#mr:0220-eleutherius-et-socii",
+      });
+    }
   });
 
   it("leaves an unknown ID, and text without IDs, as plain text", () => {
