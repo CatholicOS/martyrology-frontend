@@ -13,6 +13,12 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      # ESLint 10 breaks eslint-plugin-react 7.x (pulled in by
+      # eslint-config-next): context.getFilename() was removed. Revisit once
+      # eslint-config-next ships plugins that support ESLint 10.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
     labels:
       - "dependencies"
 
