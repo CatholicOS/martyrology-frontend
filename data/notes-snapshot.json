@@ -1,54 +1,291 @@
 {
-  "mr:0104-abrunculus": "Entry 2* in the Latin editio altera 2004 print; absent from the Italian (CEI) edition, from Mons. Barba's Word transcription, and from the digitized workbook.",
-  "mr:0104-ferreolus": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0104-rigomerus": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0104-pharaildis": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0104-emmanuel-gonzalez-garcia": "Numbered 12* in the Latin editio altera 2004 print, 11* in the Italian (CEI) edition and in Mons. Barba's Word transcription; absent from the digitized workbook. Bl. Manuel González García was canonized in 2016: status change with no ID change.",
-  "mr:0122-ladislaus-batthyany-strattmann": "Asterisked entry (15*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0130-theophilus-iuvenis": "The unofficial English 2004 edition renders the cognomen as \"the Youth\" (Latin cognoménto Iúvenis, Italian (CEI) detto il Giovane); \"the Younger\" is the conventional English epithet, which the English subject follows.",
-  "mr:0212-antonius-caulea": "The unofficial English 2004 edition dates him \"under Emperor Leo III the Isaurian\"; the Latin print has Leónis imperatóris Sexti and the Italian (CEI) Leone VI: the emperor is Leo VI the Wise.",
-  "mr:0217-septem-fundatores-servorum-mariae": "On this day the 1749 edition prints the eulogy of Alexius Falconieri alone, one of the seven founders; the 2004 edition commemorates the seven founders together. The historical eulogy is kept under this ID.",
-  "mr:0323-rebecca-de-himlaya": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:0410-beda": "The unofficial English 2004 edition mistranslates the subject as \"Saint Peter the Younger\"; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin.",
-  "mr:0502-boleslaus-strzelecki": "Asterisked entry (12*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0512-imelda-lambertini": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0524-servulus": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0610-marcus-antonius-durando": "Entry 9* at June 10 in the Latin editio altera 2004 print (verified on the page scan); the Italian (CEI) edition prints the same eulogy at December 10, entry 9* (mr:1210-marcus-antonius-durando).",
-  "mr:0611-bardo": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0624-gohardus": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0709-maria-a-iesu-crucifixo": "Entry 11* at July 9 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003.",
-  "mr:0711-leontius": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0712-proclus-et-hilarion": "Entry 1 at July 12 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, whose July 12 numbering begins at 2 with the gap left unrenumbered.",
-  "mr:0718-tarsicia-mackiv": "Asterisked entry (13*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0730-godeleva": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0802-betharius": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0807-donatus-vesontione": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0812-iacobus-do-mai-nam-et-socii": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:0821-iosephus-dang-dinh-vien": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:0825-eusebius-et-socii": "Entry 3 at August 25 in the Italian (CEI) edition; absent from the Latin editio altera 2004 print, where the day's numbered entries begin at 3 (Genesius) after the two unnumbered memorias.",
-  "mr:0909-franciscus-garate-aranguren": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1021-wendelinus": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1026-eata": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1103-libertinus": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1103-odrada": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1118-theofredus": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1119-eudo": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1201-domnolus": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:1203-lucius": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:1210-marcus-antonius-durando": "The CEI's placement (10 December, entry 9*) of the same eulogy the Latin print and the English edition give at 10 June (mr:0610-marcus-antonius-durando).",
-  "mr:1212-simon-phan-dac-hoa": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk.",
-  "mr:1215-marinus": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:1230-egwinus": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
-  "mr:0103-cyrinus-et-socii": "The 2004 edition reduces the eulogy to the sole Theogenes",
-  "mr:0114-triginta-octo-monachi-montis-sina": "2004 merged the Sinai (38) and Raithu (43) monks into one eulogy, so the Sinai eulogy may be same_eulogy with mr:0114-monachi-raithi; alternatively keep as its own deprecated ID. [Same-day: proposed as a merge, since only renamed celebrations get a same-day same_eulogy link.] [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]",
-  "mr:0114-euphrasius-africae": "The historical editions commemorate a bishop Euphrasius in Africa on this day; the 2004 edition's eulogy of the day is Euphrasius, bishop of Clermont (mr:0114-euphrasius). The two are keyed apart and linked as the same eulogy, whose subject the 2004 edition changed.",
-  "mr:0123-agathangelus": "The 2004 eulogy mr:0123-clemens-et-agathangelus joins Clement and Agathangelus; the historical editions give Agathangelus a separate line. Partial overlap; link rather than merge. [Same-day: proposed as a merge, since only renamed celebrations get a same-day same_eulogy link.] [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]",
-  "mr:0205-genuinus-et-albuinus": "The 1914 English fuses the eulogies of Ingenuinus and Albuinus of Brixen, which the 1749 edition and the 2004 edition print separately (mr:0205-ingenuinus, mr:0205-albuinus); it is linked to both.",
-  "mr:0214-valentinus-interamnae": "2004 has a single Valentine (via Flaminia), generally identified with the bishop of Terni; but 1749/1914 print both eulogies the same day, so a merge would put two historical eulogies on one ID — a same_eulogy link may be preferable. [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]",
-  "mr:0220-eleutherius-et-socii": "The 1749 edition names Eleutherius, bishop, and 128 others in Persia on February 20; probably the eulogy of Sadoth, bishop, and 128 companions (mr:0218-sadoth-et-socii): same place, king (Sapor), number and refusal to adore the sun (#47).",
-  "mr:0504-triginta-novem-martyres-phaenonis": "The 1749 and 1914 editions print the thirty-nine martyrs of the mines of Phaeno as a eulogy of their own, after that of Silvanus of Gaza; the 2004 edition commemorates them together with him in mr:0504-silvanus-et-socii.",
-  "mr:0813-hippolytus": "The legendary Hippolytus buried in the Ager Veranus is traditionally the same Hippolytus as the 2004 Pontian-and-Hippolytus eulogy. But the 2004 eulogy leads with Pontian and is a rewritten narrative, so a merge is doubtful.",
-  "mr:0905-quinctius-et-socii": "The 2004 edition reduces the eulogy to Quintus alone (mr:0905-quintus, see #52).",
-  "mr:0928-marcus-et-socii": "The 2004 edition drops Mark and leads with the three brothers.",
-  "mr:1030-maximus-apameae": "The historical editions place Maximus at Apamea, 2004 at Cumae: keyed apart and matched, as Euphrasius on 0114."
+  "mr:0104-abrunculus": {
+    "note": "Entry 2* in the Latin editio altera 2004 print; absent from the Italian (CEI) edition, from Mons. Barba's Word transcription, and from the digitized workbook."
+  },
+  "mr:0104-ferreolus": {
+    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0104-rigomerus": {
+    "note": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0104-pharaildis": {
+    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0104-emmanuel-gonzalez-garcia": {
+    "note": "Numbered 12* in the Latin editio altera 2004 print, 11* in the Italian (CEI) edition and in Mons. Barba's Word transcription; absent from the digitized workbook. Bl. Manuel González García was canonized in 2016: status change with no ID change."
+  },
+  "mr:0118-deicolus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'In monasterio Lutrensi, in Burgundia' is Lure, in Burgundy, not Brittany."
+    }
+  },
+  "mr:0122-ladislaus-batthyany-strattmann": {
+    "note": "Asterisked entry (15*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0127-angela-merici": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin Brixia is Brescia, not Brixen."
+    }
+  },
+  "mr:0130-theophilus-iuvenis": {
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Renders the cognomen as \"the Youth\" (Latin cognoménto Iúvenis, Italian (CEI) detto il Giovane); \"the Younger\" is the conventional English epithet, which the English subject follows."
+    }
+  },
+  "mr:0212-antonius-caulea": {
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Translation error: \"under Emperor Leo III the Isaurian\", where the Latin print has Leónis imperatóris Sexti and the Italian (CEI) Leone VI: the emperor is Leo VI the Wise."
+    }
+  },
+  "mr:0214-antoninus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin is Antoninus, not Antonius (Anthony)."
+    }
+  },
+  "mr:0217-septem-fundatores-servorum-mariae": {
+    "editions": {
+      "martyrologium_romanum_1749": "This edition prints the eulogy of Alexius Falconieri alone, one of the seven founders; the 2004 edition commemorates the seven founders together. The historical eulogy is kept under this ID."
+    }
+  },
+  "mr:0323-rebecca-de-himlaya": {
+    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:0410-beda": {
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Peter the Younger\" for the subject; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin."
+    }
+  },
+  "mr:0428-prudentius": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin has 'Episcopi et Confessoris', not a martyr."
+    }
+  },
+  "mr:0502-boleslaus-strzelecki": {
+    "note": "Asterisked entry (12*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0512-imelda-lambertini": {
+    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0524-servulus": {
+    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0529-maximinus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin has 'Maximini' (Maximinus of Trier), but the English says 'Maximus'."
+    }
+  },
+  "mr:0610-marcus-antonius-durando": {
+    "note": "Entry 9* at June 10 in the Latin editio altera 2004 print (verified on the page scan); the Italian (CEI) edition prints the same eulogy at December 10, entry 9* (mr:1210-marcus-antonius-durando)."
+  },
+  "mr:0611-bardo": {
+    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0624-gohardus": {
+    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0625-prosperus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Apud Rhegium' (Reggio) is rendered 'Riez'.",
+      "martyrologium_romanum_1749": "This eulogy conflates Prosper of Reggio with Prosper of Aquitaine, the anti-Pelagian writer."
+    }
+  },
+  "mr:0703-thomas-apostolus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Ortonam, apud Frentanos' is Ortona, not Tortona."
+    }
+  },
+  "mr:0708-eugenius-iii": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Eugenii Papae Tertii' is Eugenius III."
+    }
+  },
+  "mr:0709-maria-a-iesu-crucifixo": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003."
+    }
+  },
+  "mr:0711-leontius": {
+    "note": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0712-proclus-et-hilarion": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 12 numbering begins at 2 with the gap left unrenumbered."
+    }
+  },
+  "mr:0718-tarsicia-mackiv": {
+    "note": "Asterisked entry (13*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0719-macrina": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Misprint: 'Marcina' for Macrina."
+    }
+  },
+  "mr:0730-godeleva": {
+    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0802-betharius": {
+    "note": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0807-donatus-vesontione": {
+    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0812-iacobus-do-mai-nam-et-socii": {
+    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:0821-privatus": {
+    "editions": {
+      "martyrologium_romanum_1749": "This text joins the opening of Privatus's eulogy to the body of the eulogy of Paternus of Fondi (mr:0821-paternus): a line has evidently dropped. The 1914 English prints both eulogies."
+    }
+  },
+  "mr:0821-iosephus-dang-dinh-vien": {
+    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:0824-tatio": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: 'Domitian' where the Latin has 'persecutione Diocletiani' (Diocletian)."
+    }
+  },
+  "mr:0825-eusebius-et-socii": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, where the day's numbered entries begin at 3 (Genesius) after the two unnumbered memorias."
+    }
+  },
+  "mr:0828-pelagius": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Constantiae, in Germania' is Konstanz, not Coutances."
+    }
+  },
+  "mr:0829-basilla": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Apud Sirmium' is Sirmium, not Smyrna."
+    }
+  },
+  "mr:0909-franciscus-garate-aranguren": {
+    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1003-candida": {
+    "note": "The 1749 and 1914 editions commemorate a male martyr, Candidus; the 2004 edition has Candida, a woman, in the cemetery of Pontianus. It is probably the 2004 correction of the same commemoration."
+  },
+  "mr:1017-florentius": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin (and the 2004 entry) name Florentius, not Florentinus."
+    }
+  },
+  "mr:1021-wendelinus": {
+    "note": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1026-eata": {
+    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1102-victorinus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Poetovione, in Pannonia' is Pettau (Ptuj), not Poitiers."
+    }
+  },
+  "mr:1103-libertinus": {
+    "note": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1103-odrada": {
+    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1105-theotimus-et-socii": {
+    "note": "In the 1749 and 1914 editions this eulogy opens with Domninus, whom the 2004 edition commemorates separately (mr:1105-domninus); the rest of the group is Theotimus and companions."
+  },
+  "mr:1118-theofredus": {
+    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1119-eudo": {
+    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1201-domnolus": {
+    "note": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:1203-lucius": {
+    "note": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:1210-marcus-antonius-durando": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "The Latin print and the English edition give this eulogy at 10 June (mr:0610-marcus-antonius-durando)."
+    }
+  },
+  "mr:1212-simon-phan-dac-hoa": {
+    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
+  },
+  "mr:1215-marinus": {
+    "note": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:1218-gatianus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Misprints: 'Gratian' for Gatianus and 'Fabrian' for Fabianus."
+    }
+  },
+  "mr:1230-egwinus": {
+    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+  },
+  "mr:0103-cyrinus-et-socii": {
+    "note": "The 2004 edition reduces the eulogy to the sole Theogenes"
+  },
+  "mr:0114-triginta-octo-monachi-montis-sina": {
+    "note": "2004 merged the Sinai (38) and Raithu (43) monks into one eulogy, so the Sinai eulogy may be same_eulogy with mr:0114-monachi-raithi; alternatively keep as its own deprecated ID. [Same-day: proposed as a merge, since only renamed celebrations get a same-day same_eulogy link.] [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]"
+  },
+  "mr:0114-euphrasius-africae": {
+    "note": "The historical editions commemorate a bishop Euphrasius in Africa on this day; the 2004 edition's eulogy of the day is Euphrasius, bishop of Clermont (mr:0114-euphrasius). The two are keyed apart and linked as the same eulogy, whose subject the 2004 edition changed."
+  },
+  "mr:0119-canutus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "\"Whose birthday is the 7th of this month\" seems to be an error, as this would point to Canute Lavard (mr:0107-canutus-lavard), who was not a king."
+    }
+  },
+  "mr:0123-agathangelus": {
+    "note": "The 2004 eulogy mr:0123-clemens-et-agathangelus joins Clement and Agathangelus; the historical editions give Agathangelus a separate line. Partial overlap; link rather than merge. [Same-day: proposed as a merge, since only renamed celebrations get a same-day same_eulogy link.] [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]"
+  },
+  "mr:0205-genuinus-et-albuinus": {
+    "note": "The 1914 English fuses the eulogies of Ingenuinus and Albuinus of Brixen, which the 1749 edition and the 2004 edition print separately (mr:0205-ingenuinus, mr:0205-albuinus); it is linked to both."
+  },
+  "mr:0214-valentinus-interamnae": {
+    "note": "2004 has a single Valentine (via Flaminia), generally identified with the bishop of Terni; but 1749/1914 print both eulogies the same day, so a merge would put two historical eulogies on one ID — a same_eulogy link may be preferable. [Not a merge: both historical editions print the two eulogies separately on this day, so each keeps its own ID.]"
+  },
+  "mr:0220-eleutherius-et-socii": {
+    "note": "The 1749 edition names Eleutherius, bishop, and 128 others in Persia on February 20; probably the eulogy of Sadoth, bishop, and 128 companions (mr:0218-sadoth-et-socii): same place, king (Sapor), number and refusal to adore the sun (#47)."
+  },
+  "mr:0504-triginta-novem-martyres-phaenonis": {
+    "note": "The 1749 and 1914 editions print the thirty-nine martyrs of the mines of Phaeno as a eulogy of their own, after that of Silvanus of Gaza; the 2004 edition commemorates them together with him in mr:0504-silvanus-et-socii."
+  },
+  "mr:0513-mucius": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: 'Lucius' where the Latin has 'Mucii'."
+    }
+  },
+  "mr:0813-hippolytus": {
+    "note": "The legendary Hippolytus buried in the Ager Veranus is traditionally the same Hippolytus as the 2004 Pontian-and-Hippolytus eulogy. But the 2004 eulogy leads with Pontian and is a rewritten narrative, so a merge is doubtful."
+  },
+  "mr:0901-donatus-et-felix": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "This text is the rewritten eulogy of the Twelve Brothers of Benevento and does not name Donatus or Felix; it succeeds the 1749 eulogy, which mentions the twelve brothers' feast and Benevento, but its subject differs."
+    }
+  },
+  "mr:0905-quinctius-et-socii": {
+    "note": "The 2004 edition reduces the eulogy to Quintus alone (mr:0905-quintus, see #52)."
+  },
+  "mr:0915-octava-nativitatis-beatae-mariae": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "This text joins the Octave and the Seven Sorrows in one sentence, with no clean point to split it; the Seven Sorrows half corresponds to mr:0915-maria-perdolens."
+    }
+  },
+  "mr:0923-paternus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the 1749 Latin calls him 'Episcopi Abrincensis et Confessoris', not a martyr."
+    }
+  },
+  "mr:0928-marcus-et-socii": {
+    "note": "The 2004 edition drops Mark and leads with the three brothers."
+  },
+  "mr:1020-felicianus": {
+    "editions": {
+      "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin is a translation of relics (Translatio), not a birthday."
+    }
+  },
+  "mr:1030-maximus-apameae": {
+    "note": "The historical editions place Maximus at Apamea, 2004 at Cumae: keyed apart and matched, as Euphrasius on 0114."
+  }
 }

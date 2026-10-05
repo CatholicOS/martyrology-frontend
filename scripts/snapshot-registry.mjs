@@ -65,15 +65,21 @@ export function buildMisprints(doc) {
 }
 
 /**
- * The curators' notes on registry entries (crmedr's `note`), by id: editorial remarks that are not
- * part of any printed text, shown in the reader alongside the canonical ids.
- * @param {{entries: (RegistryEntry & {note?: string|null})[]}} registry
- * @returns {Record<string, string>}
+ * The curators' notes on registry entries, by id: editorial remarks that are not part of any
+ * printed text, shown in the reader alongside the canonical ids. `note` (crmedr's `note`) is about
+ * the eulogy and shows with every edition; `editions` (crmedr's `edition_notes`) is about one
+ * edition's text (a mistranslation, a misprint) and shows with that edition only.
+ * @param {{entries: (RegistryEntry & {note?: string|null, edition_notes?: Record<string, string>})[]}} registry
+ * @returns {Record<string, {note?: string, editions?: Record<string, string>}>}
  */
 export function buildNotes(registry) {
-  /** @type {Record<string, string>} */
+  /** @type {Record<string, {note?: string, editions?: Record<string, string>}>} */
   const out = {};
-  for (const e of registry.entries) if (e.note) out[e.id] = e.note;
+  for (const e of registry.entries) {
+    const editions = e.edition_notes && Object.keys(e.edition_notes).length ? e.edition_notes : undefined;
+    if (!e.note && !editions) continue;
+    out[e.id] = { ...(e.note ? { note: e.note } : {}), ...(editions ? { editions } : {}) };
+  }
   return out;
 }
 
