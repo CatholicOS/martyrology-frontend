@@ -36,8 +36,12 @@ interface Props {
   tone?: "neutral" | "winner" | "loser";
   /** Preferred edition to show first (e.g. the 2004 editio typica for a winner). */
   preferEdition?: string;
-  /** A second edition shown beside the first for comparison (e.g. the Italian 2004). */
-  alongside?: string;
+  /**
+   * A second edition shown beside the first for comparison (e.g. the Italian 2004). One edition
+   * is always shown, saying so when it has no text; a list shows the first that has text and is
+   * not the edition already shown, and nothing when none has.
+   */
+  alongside?: string | string[];
 }
 
 /** Fetches and renders one eulogy (subject + edition text) for a canonical id. */
@@ -85,7 +89,10 @@ export default function EulogyView({
         : "bg-slate-50 dark:bg-slate-900";
   const sel = eulogy ? pickEditionText(eulogy, baseEdition, preferEdition) : null;
   const wanted = preferEdition ?? baseEdition;
-  const showAlongside = Boolean(alongside) && alongside !== sel?.editionId;
+  const second = Array.isArray(alongside)
+    ? alongside.find((ed) => ed !== sel?.editionId && eulogy?.editions[ed]?.text)
+    : alongside;
+  const showAlongside = Boolean(second) && second !== sel?.editionId;
 
   return (
     <div className={`rounded p-2 ${toneClass}`}>
@@ -114,14 +121,14 @@ export default function EulogyView({
                 {sel.text && sel.editionId ? <EulogyText text={sel.text} id={eulogy.id} edition={sel.editionId} /> : "(no text)"}
               </p>
             </div>
-            {showAlongside && alongside && (
+            {showAlongside && second && (
               <div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{alongside}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{second}</p>
                 <p className="mt-1">
-                  {eulogy.editions[alongside]?.text ? (
-                    <EulogyText text={eulogy.editions[alongside].text} id={eulogy.id} edition={alongside} />
+                  {eulogy.editions[second]?.text ? (
+                    <EulogyText text={eulogy.editions[second].text} id={eulogy.id} edition={second} />
                   ) : (
-                    `(no text in ${alongside})`
+                    `(no text in ${second})`
                   )}
                 </p>
               </div>
