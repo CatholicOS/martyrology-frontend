@@ -1,6 +1,7 @@
 import { unstable_rethrow } from "next/navigation";
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { AuthStatusView } from "@/components/AuthStatusView";
+import { SignOutButton } from "@/components/SignOutButton";
 import { describeError } from "@/lib/describe-error";
 
 const buttonClass =
@@ -33,18 +34,7 @@ export async function AuthStatus() {
     </form>
   );
 
-  const signOutButton = (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      <button type="submit" className={buttonClass}>
-        Sign out
-      </button>
-    </form>
-  );
+  const signOutButton = <SignOutButton className={buttonClass} />;
 
   return (
     <AuthStatusView
