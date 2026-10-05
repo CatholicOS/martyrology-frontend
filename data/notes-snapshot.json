@@ -28,10 +28,14 @@
     }
   },
   "mr:0130-theophilus-iuvenis": {
-    "note": "The unofficial English 2004 edition renders the cognomen as \"the Youth\" (Latin cognoménto Iúvenis, Italian (CEI) detto il Giovane); \"the Younger\" is the conventional English epithet, which the English subject follows."
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Renders the cognomen as \"the Youth\" (Latin cognoménto Iúvenis, Italian (CEI) detto il Giovane); \"the Younger\" is the conventional English epithet, which the English subject follows."
+    }
   },
   "mr:0212-antonius-caulea": {
-    "note": "The unofficial English 2004 edition dates him \"under Emperor Leo III the Isaurian\"; the Latin print has Leónis imperatóris Sexti and the Italian (CEI) Leone VI: the emperor is Leo VI the Wise."
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Translation error: \"under Emperor Leo III the Isaurian\", where the Latin print has Leónis imperatóris Sexti and the Italian (CEI) Leone VI: the emperor is Leo VI the Wise."
+    }
   },
   "mr:0214-antoninus": {
     "editions": {
@@ -45,7 +49,9 @@
     "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print, visually verified on the page scan; the Italian (CEI) edition marks the entry with an asterisk."
   },
   "mr:0410-beda": {
-    "note": "The unofficial English 2004 edition mistranslates the subject as \"Saint Peter the Younger\"; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin."
+    "editions": {
+      "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Peter the Younger\" for the subject; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin."
+    }
   },
   "mr:0428-prudentius": {
     "editions": {
