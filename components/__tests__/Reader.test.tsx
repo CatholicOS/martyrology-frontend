@@ -415,3 +415,24 @@ describe("Reader, id switch", () => {
     expect(window.localStorage.getItem("reader.showIds")).toBe("1");
   });
 });
+
+describe("Reader, a link to a eulogy", () => {
+  it("finds the eulogy named in the address when the page opens", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#mr:1002-modestus-sardus");
+    render1749();
+    const found = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("finds it when only the address's eulogy changes, on the same day", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render1749();
+    const found = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(found.closest("[data-eulogy-id]")).not.toHaveAttribute("data-found");
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#mr:1002-modestus-sardus");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+});

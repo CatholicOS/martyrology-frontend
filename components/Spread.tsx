@@ -187,7 +187,7 @@ export default function Spread({
         <>
           {d.conclusio && <Conclusio text={d.conclusio} />}
           <PrintedFootnotes notes={n.printed} lang={s.lang} />
-          <CuratorNotes notes={n.curators} />
+          <CuratorNotes notes={n.curators} edition={s.id} />
         </>
       );
     }

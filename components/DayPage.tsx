@@ -55,7 +55,7 @@ export default function DayPage({
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
       <PrintedFootnotes notes={footnotes} lang={lang} />
-      <CuratorNotes notes={notes} />
+      <CuratorNotes notes={notes} edition={edition ?? ""} />
     </article>
   );
 }
