@@ -1,9 +1,33 @@
 [
   {
+    "id": "mr:0101-valentinus-paquay",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "leaSaint",
+    "intended": "least"
+  },
+  {
+    "id": "mr:0106-petrus-thomas",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "EaSaint",
+    "intended": "East"
+  },
+  {
     "id": "mr:0116-marcellus-i",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "Marcellino",
     "intended": "Marcello"
+  },
+  {
+    "id": "mr:0130-hyacintha-mariscotti",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "EuchariSaint",
+    "intended": "Eucharist"
+  },
+  {
+    "id": "mr:0131-iulius",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "prieSaint",
+    "intended": "priest"
   },
   {
     "id": "mr:0212-antonius-caulea",
@@ -16,6 +40,42 @@
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "nell’odiena",
     "intended": "nell’odierna"
+  },
+  {
+    "id": "mr:0310-attala",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "tala",
+    "intended": "Attala"
+  },
+  {
+    "id": "mr:0311-thomas-atkinson",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "kinson",
+    "intended": "Atkinson"
+  },
+  {
+    "id": "mr:0525-petrus-doan-van-van",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "Bdu N9",
+    "intended": "Bầu Nọ"
+  },
+  {
+    "id": "mr:0605-lucas-vu-ba-loan",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "Vil",
+    "intended": "Vũ"
+  },
+  {
+    "id": "mr:0612-laurentius-maria-a-sancto-francisco-xaverio",
+    "edition": "martyrologium_romanum_2004",
+    "printed": "dístulit",
+    "intended": "diffúdit"
+  },
+  {
+    "id": "mr:0630-vincentius-do-yen",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "Hdi Duding",
+    "intended": "Hải Dương"
   },
   {
     "id": "mr:0704-ioannes-cornelius-et-socii",
@@ -82,5 +142,167 @@
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "comemorazione",
     "intended": "commemorazione"
+  },
+  {
+    "id": "mr:1102-ambrosius",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1102-winefrida",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1103-ermengaudius",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "rebuilĐing",
+    "intended": "rebuilding"
+  },
+  {
+    "id": "mr:1104-carolus-borromeo",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "carĐinals",
+    "intended": "cardinals"
+  },
+  {
+    "id": "mr:1104-felix-de-valois",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "founĐing",
+    "intended": "founding"
+  },
+  {
+    "id": "mr:1105-dominicus-mau",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "beheaĐing",
+    "intended": "beheading"
+  },
+  {
+    "id": "mr:1105-gomida-keumurgian",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "beheaĐing",
+    "intended": "beheading"
+  },
+  {
+    "id": "mr:1105-maria-a-monte-carmelo-viel-ferrando",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1107-antonius-baldinucci",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "BalĐinucci",
+    "intended": "Baldinucci"
+  },
+  {
+    "id": "mr:1107-hyacinthus-castaneda-et-vincentius-le-quang-liem",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "shedĐing",
+    "intended": "shedding"
+  },
+  {
+    "id": "mr:1111-bartholomaeus",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "founĐing",
+    "intended": "founding"
+  },
+  {
+    "id": "mr:1112-nilus",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "spreaĐing",
+    "intended": "spreading"
+  },
+  {
+    "id": "mr:1113-abbo",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "defenĐing",
+    "intended": "defending"
+  },
+  {
+    "id": "mr:1113-varmundus",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1114-ioannes-liccio",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "spreaĐing",
+    "intended": "spreading"
+  },
+  {
+    "id": "mr:1115-desiderius",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "builĐings",
+    "intended": "buildings"
+  },
+  {
+    "id": "mr:1115-hugo-faringdon-et-socii",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "ReaĐing",
+    "intended": "Reading"
+  },
+  {
+    "id": "mr:1115-iosephus-pignatelli",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1115-rochus-gonzalez-et-alphonsus-rodriguez",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "founĐing",
+    "intended": "founding"
+  },
+  {
+    "id": "mr:1116-othmarus",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "defenĐing",
+    "intended": "defending"
+  },
+  {
+    "id": "mr:1117-gertrudis",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "preceĐing",
+    "intended": "preceding"
+  },
+  {
+    "id": "mr:1117-hilda",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "reaĐing",
+    "intended": "reading"
+  },
+  {
+    "id": "mr:1117-hugo-lincolniae",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "outstanĐing",
+    "intended": "outstanding"
+  },
+  {
+    "id": "mr:1117-hugo-lincolniae",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "defenĐing",
+    "intended": "defending"
+  },
+  {
+    "id": "mr:1118-grimoaldus-a-purificatione",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "FerĐinand",
+    "intended": "Ferdinand"
+  },
+  {
+    "id": "mr:1118-odo",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "accorĐing",
+    "intended": "according"
+  },
+  {
+    "id": "mr:1124-albertus-lovaniensis",
+    "edition": "martyrologium_romanum_2004_en_unofficial",
+    "printed": "defenĐing",
+    "intended": "defending"
   }
 ]
