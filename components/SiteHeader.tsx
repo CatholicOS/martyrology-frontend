@@ -11,6 +11,7 @@ export async function SiteHeader() {
           Martyrology
         </Link>
         <nav className="flex items-center gap-4 text-sm">
+          <Link href="/map">Map</Link>
           {viewer.curator && <Link href="/compare">Compare</Link>}
           {viewer.curator && <Link href="/review">Review</Link>}
           <AuthStatus />

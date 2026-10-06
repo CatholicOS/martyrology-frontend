@@ -83,7 +83,109 @@ export function buildNotes(registry) {
   return out;
 }
 
-function main() {
+/**
+ * @typedef {{role: string, la: string, it?: string, source?: string}} StatedPlace
+ * @typedef {{wikidata?: string|null, label?: string, country?: string, status: string}} GazetteerPlace
+ */
+
+/**
+ * A eulogy's first stated place that the gazetteer resolves to a Wikidata item, if any.
+ * @param {StatedPlace[]} stated
+ * @param {Record<string, GazetteerPlace>} gazetteer
+ */
+function firstResolved(stated, gazetteer) {
+  for (const s of stated) {
+    const g = gazetteer[s.la];
+    if (g?.wikidata) return { la: s.la, qid: g.wikidata, g };
+  }
+  return null;
+}
+
+/**
+ * The Wikidata items the eulogies' places resolve to, for the coordinates query.
+ * @param {{places: Record<string, StatedPlace[]>}} placesDoc
+ * @param {{places: Record<string, GazetteerPlace>}} gazetteerDoc
+ * @returns {string[]}
+ */
+export function resolvedQids(placesDoc, gazetteerDoc) {
+  /** @type {Set<string>} */
+  const qids = new Set();
+  for (const stated of Object.values(placesDoc.places)) {
+    const hit = firstResolved(stated, gazetteerDoc.places);
+    if (hit) qids.add(hit.qid);
+  }
+  return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+}
+
+/**
+ * The map's data: each current eulogy's place (the first it states that the gazetteer resolves),
+ * its typology, and each place's label, modern country and coordinates. A eulogy whose place has
+ * no coordinates is left out: the map cannot show it.
+ * @param {{places: Record<string, StatedPlace[]>}} placesDoc crmedr data/places.json (curated places included)
+ * @param {{places: Record<string, GazetteerPlace>}} gazetteerDoc crmedr data/gazetteer.json
+ * @param {{typology: Record<string, string>}} typologyDoc crmedr data/typology.json
+ * @param {Record<string, [number, number]>} coords [lat, lon] by QID
+ */
+export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords) {
+  /** @type {Record<string, {label: string, country: string, coords: [number, number]}>} */
+  const places = {};
+  /** @type {Record<string, {place: string, la: string, typology: string|null}>} */
+  const eulogies = {};
+  for (const [id, stated] of Object.entries(placesDoc.places)) {
+    const hit = firstResolved(stated, gazetteerDoc.places);
+    if (!hit || !coords[hit.qid]) continue;
+    places[hit.qid] ??= { label: hit.g.label ?? hit.qid, country: hit.g.country ?? "", coords: coords[hit.qid] };
+    eulogies[id] = { place: hit.qid, la: hit.la, typology: typologyDoc.typology[id] ?? null };
+  }
+  return { places, eulogies };
+}
+
+/**
+ * Wikidata's WKT literal "Point(lon lat)" as Leaflet's [lat, lon]; null for anything else
+ * (a coordinate on another globe carries an IRI prefix).
+ * @param {string} wkt
+ * @returns {[number, number] | null}
+ */
+export function parseWktPoint(wkt) {
+  const m = /^Point\((-?[\d.]+) (-?[\d.]+)\)$/.exec(wkt);
+  return m ? [Number(m[2]), Number(m[1])] : null;
+}
+
+const SPARQL = "https://query.wikidata.org/sparql";
+const USER_AGENT = "martyrology-frontend snapshot (https://github.com/CatholicOS/martyrology-frontend)";
+
+/**
+ * [lat, lon] by QID from Wikidata's coordinate location (P625), a few hundred items per query.
+ * @param {string[]} qids
+ * @returns {Promise<Record<string, [number, number]>>}
+ */
+export async function fetchCoords(qids) {
+  /** @type {Record<string, [number, number]>} */
+  const out = {};
+  for (let i = 0; i < qids.length; i += 300) {
+    const values = qids.slice(i, i + 300).map((q) => `wd:${q}`).join(" ");
+    const query = `SELECT ?item (SAMPLE(?c) AS ?coord) WHERE { VALUES ?item { ${values} } ?item wdt:P625 ?c } GROUP BY ?item`;
+    const res = await fetch(SPARQL, {
+      method: "POST",
+      headers: {
+        accept: "application/sparql-results+json",
+        "content-type": "application/x-www-form-urlencoded",
+        "user-agent": USER_AGENT,
+      },
+      body: new URLSearchParams({ query }),
+    });
+    if (!res.ok) throw new Error(`Wikidata SPARQL ${res.status}`);
+    const body = await res.json();
+    for (const b of body.results.bindings) {
+      const qid = b.item.value.split("/").pop();
+      const point = parseWktPoint(b.coord.value);
+      if (point) out[qid] = point;
+    }
+  }
+  return out;
+}
+
+async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
   const registry = JSON.parse(readFileSync(join(crmedr, "data", "martyrology_ids.json"), "utf8"));
@@ -103,5 +205,26 @@ function main() {
   const notesDest = join(here, "..", "data", "notes-snapshot.json");
   writeFileSync(notesDest, JSON.stringify(notes, null, 2) + "\n");
   console.log(`wrote ${notesDest}: ${Object.keys(notes).length} notes`);
+  const placesDoc = JSON.parse(readFileSync(join(crmedr, "data", "places.json"), "utf8"));
+  const gazetteerDoc = JSON.parse(readFileSync(join(crmedr, "data", "gazetteer.json"), "utf8"));
+  const typologyDoc = JSON.parse(readFileSync(join(crmedr, "data", "typology.json"), "utf8"));
+  const qids = resolvedQids(placesDoc, gazetteerDoc);
+  const placesDest = join(here, "..", "data", "places-snapshot.json");
+  /** @type {Record<string, [number, number]>} */
+  let coords;
+  try {
+    coords = await fetchCoords(qids);
+  } catch (err) {
+    // Offline: the previous snapshot's coordinates, so the rest of the snapshot still updates.
+    console.warn(`Wikidata unreachable (${err instanceof Error ? err.message : err}); reusing ${placesDest}`);
+    /** @type {{places: Record<string, {coords: [number, number]}>}} */
+    const prev = JSON.parse(readFileSync(placesDest, "utf8"));
+    coords = Object.fromEntries(Object.entries(prev.places).map(([q, p]) => [q, p.coords]));
+  }
+  const missing = qids.filter((q) => !coords[q]);
+  if (missing.length) console.log(`no coordinates on Wikidata for ${missing.length} places: ${missing.join(" ")}`);
+  const places = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords);
+  writeFileSync(placesDest, JSON.stringify(places) + "\n");
+  console.log(`wrote ${placesDest}: ${Object.keys(places.eulogies).length} eulogies at ${Object.keys(places.places).length} places`);
 }
-if (import.meta.url === `file://${process.argv[1]}`) main();
+if (import.meta.url === `file://${process.argv[1]}`) await main();

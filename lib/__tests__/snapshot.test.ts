@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildMisprints, buildNotes, buildSnapshot } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -52,5 +52,57 @@ describe("buildNotes", () => {
       "mr:0625-prosperus": { editions: { martyrologium_romanum_1914_en_unofficial: "Riez.", martyrologium_romanum_1749: "Conflated." } },
       "mr:1003-candida": { note: "Candidus." },
     });
+  });
+});
+
+describe("buildPlaces", () => {
+  const placesDoc = { places: {
+    "mr:0101-almachius": [{ role: "death", la: "Romæ", it: "A Roma", source: "lead" }],
+    "mr:0102-x": [
+      { role: "death", la: "Nusquam", source: "lead" },
+      { role: "burial", la: "Mediolani", source: "lead" },
+    ],
+    "mr:0103-y": [{ role: "death", la: "Nusquam", source: "lead" }],
+    "mr:0104-z": [{ role: "death", la: "Insula", source: "lead" }],
+  } };
+  const gazetteerDoc = { places: {
+    "Romæ": { wikidata: "Q220", label: "Rome", country: "IT", status: "auto" },
+    "Mediolani": { wikidata: "Q490", label: "Milan", country: "IT", status: "reviewed" },
+    "Insula": { wikidata: "Q999", label: "Island", country: "GR", status: "reviewed" },
+  } };
+  const typologyDoc = { typology: { "mr:0101-almachius": "dies_natalis", "mr:0102-x": "depositio", "mr:0104-z": "dies_natalis" } };
+  const coords = { Q220: [41.893, 12.483] as [number, number], Q490: [45.464, 9.19] as [number, number] };
+
+  it("gives each eulogy its first resolved place, with typology and the place's coordinates", () => {
+    expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords)).toEqual({
+      places: {
+        Q220: { label: "Rome", country: "IT", coords: [41.893, 12.483] },
+        Q490: { label: "Milan", country: "IT", coords: [45.464, 9.19] },
+      },
+      eulogies: {
+        "mr:0101-almachius": { place: "Q220", la: "Romæ", typology: "dies_natalis" },
+        "mr:0102-x": { place: "Q490", la: "Mediolani", typology: "depositio" },
+      },
+    });
+  });
+
+  it("lists the resolved QIDs once each, sorted", () => {
+    expect(resolvedQids(placesDoc, gazetteerDoc)).toEqual(["Q220", "Q490", "Q999"]);
+  });
+
+  it("a eulogy without typology gets null", () => {
+    const snap = buildPlaces(placesDoc, gazetteerDoc, { typology: {} }, coords);
+    expect(snap.eulogies["mr:0101-almachius"].typology).toBeNull();
+  });
+});
+
+describe("parseWktPoint", () => {
+  it("reads Wikidata's Point(lon lat) as [lat, lon]", () => {
+    expect(parseWktPoint("Point(12.4825 41.8931)")).toEqual([41.8931, 12.4825]);
+    expect(parseWktPoint("Point(-0.1275 51.507222222)")).toEqual([51.507222222, -0.1275]);
+  });
+  it("rejects anything else", () => {
+    expect(parseWktPoint("<http://www.wikidata.org/entity/Q405> Point(1 2)")).toBeNull();
+    expect(parseWktPoint("garbage")).toBeNull();
   });
 });
