@@ -11,9 +11,21 @@ const fitBounds = vi.fn();
 const remove = vi.fn();
 let zoom = 5;
 const zoomToShowLayer = vi.fn((m: FakeMarker, cb: () => void) => cb());
+const setView = vi.fn();
+// What the cluster group shows for a marker: itself, or the cluster it is folded into.
+let visibleParent: (m: FakeMarker) => unknown = (m) => m;
+const popups: { latlng?: [number, number]; content?: HTMLElement }[] = [];
 
 vi.mock("leaflet", () => {
-  const map = () => ({ fitBounds, setView: vi.fn(), remove, getZoom: () => zoom, getMaxZoom: () => 18 });
+  const map = () => ({ fitBounds, setView, remove, getZoom: () => zoom, getMaxZoom: () => 18 });
+  const popup = () => {
+    const p: { latlng?: [number, number]; content?: HTMLElement } & Record<string, unknown> = {
+      setLatLng(l: [number, number]) { p.latlng = l; return p; },
+      setContent(c: HTMLElement) { p.content = c; return p; },
+      openOn() { popups.push(p); return p; },
+    };
+    return p;
+  };
   const tileLayer = () => ({ addTo: () => undefined });
   const circleMarker = (latlng: [number, number]) => {
     const m: FakeMarker & Record<string, unknown> = {
@@ -36,10 +48,11 @@ vi.mock("leaflet", () => {
       clearLayers() { g.layers.length = 0; return g; },
       on(ev: string, fn: Fn) { g.handlers[ev] = fn; return g; },
       zoomToShowLayer,
+      getVisibleParent: (m: FakeMarker) => visibleParent(m),
     };
     return g;
   };
-  const L = { map, tileLayer, circleMarker, markerClusterGroup };
+  const L = { map, tileLayer, circleMarker, markerClusterGroup, popup };
   return { default: L, ...L };
 });
 vi.mock("leaflet.markercluster", () => ({}));
@@ -55,6 +68,9 @@ describe("EulogyMap", () => {
     fitBounds.mockClear();
     remove.mockClear();
     zoomToShowLayer.mockClear();
+    setView.mockClear();
+    visibleParent = (m) => m;
+    popups.length = 0;
     zoom = 5;
   });
 
@@ -122,12 +138,31 @@ describe("EulogyMap", () => {
     expect(onPlace).toHaveBeenCalledWith(["mr:0101-rieti", "mr:0101-sabina"]);
   });
 
-  it("selecting a eulogy reveals and opens its marker", async () => {
+  it("selecting a eulogy whose marker is shown opens its popup", async () => {
     const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
-    rerender(<EulogyMap entries={entries} edition="mr_2004" selected="mr:0102-c" onSelect={vi.fn()} onPlace={vi.fn()} />);
-    await waitFor(() => expect(zoomToShowLayer).toHaveBeenCalled());
-    expect(groups[0].layers[2].opened).toBe(1);
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0].layers[2].opened).toBe(1));
+    expect(zoomToShowLayer).not.toHaveBeenCalled();
+  });
+
+  it("selecting a eulogy folded into a cluster opens its popup at its place, without spiderfying the cluster", async () => {
+    const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
+    visibleParent = () => ({ cluster: true });
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-a", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    await waitFor(() => expect(popups).toHaveLength(1));
+    expect(popups[0].latlng).toEqual([41.9, 12.5]);
+    expect(popups[0].content!.textContent).toContain("Subject mr:0102-a");
+    expect(setView).toHaveBeenCalledWith([41.9, 12.5], expect.any(Number));
+    expect(zoomToShowLayer).not.toHaveBeenCalled();
+  });
+
+  it("selecting the same eulogy again reopens its popup", async () => {
+    const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0]?.layers[2]?.opened).toBe(1));
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 2 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0].layers[2].opened).toBe(2));
   });
 
   it("new entries replace the markers in the same group", async () => {

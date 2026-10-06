@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import type { CircleMarker, Map as LeafletMap, MarkerClusterGroup } from "leaflet";
+import type { CircleMarker, Map as LeafletMap, Marker, MarkerClusterGroup } from "leaflet";
 import { dayPath } from "@/lib/calendar";
+import { describeError } from "@/lib/describe-error";
 import { typologyLabel, type MapEntry } from "@/lib/map-data";
 
 interface Props {
   entries: MapEntry[];
   edition: string;
-  selected: string | null;
+  /** The eulogy to reveal; `n` changes with every pick, so picking it again reveals it again. */
+  selected: { id: string; n: number } | null;
   onSelect: (id: string) => void;
   /** A cluster that zooming cannot split was clicked: list its eulogies (by ID). */
   onPlace: (ids: string[]) => void;
@@ -21,6 +23,8 @@ type Leaflet = typeof import("leaflet");
 type PlacedMarker = CircleMarker & { eulogyId?: string };
 
 const MARKER = { color: "#7f1d1d", fillColor: "#b91c1c", radius: 6, weight: 2, fillOpacity: 0.85 };
+// How close a pick from the list brings the map when its marker is folded into a cluster.
+const REVEAL_ZOOM = 10;
 
 /**
  * The popup: subject, ID, typology, place as printed and on Wikidata, and a link into the reader.
@@ -61,7 +65,9 @@ function popupFor(e: MapEntry, edition: string): HTMLElement {
 export default function EulogyMap({ entries, edition, selected, onSelect, onPlace }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState<{ L: Leaflet; map: LeafletMap; group: MarkerClusterGroup } | null>(null);
-  const markers = useRef(new Map<string, PlacedMarker>());
+  const [failed, setFailed] = useState(false);
+  const markers = useRef(new Map<string, { marker: PlacedMarker; entry: MapEntry }>());
+  const editionRef = useRef(edition);
   const onSelectRef = useRef(onSelect);
   const onPlaceRef = useRef(onPlace);
   useEffect(() => {
@@ -74,9 +80,16 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     let map: LeafletMap | null = null;
     let cancelled = false;
     (async () => {
-      const L = (await import("leaflet")).default;
-      (window as unknown as { L: Leaflet }).L = L;
-      await import("leaflet.markercluster");
+      let L: Leaflet;
+      try {
+        L = (await import("leaflet")).default;
+        (window as unknown as { L: Leaflet }).L = L;
+        await import("leaflet.markercluster");
+      } catch (err) {
+        console.error(`map: Leaflet: ${describeError(err)}`);
+        if (!cancelled) setFailed(true);
+        return;
+      }
       if (cancelled || !el.current) return;
       map = L.map(el.current, { worldCopyJump: true });
       map.setView([30, 10], 2);
@@ -117,6 +130,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
   useEffect(() => {
     if (!ready) return;
     const { L, map, group } = ready;
+    editionRef.current = edition;
     group.clearLayers();
     markers.current.clear();
     const layers = entries.map((e) => {
@@ -125,19 +139,43 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
         .bindPopup(() => popupFor(e, edition))
         .on("click", () => onSelectRef.current(e.id));
       m.eulogyId = e.id;
-      markers.current.set(e.id, m);
+      markers.current.set(e.id, { marker: m, entry: e });
       return m;
     });
     group.addLayers(layers);
     if (entries.length > 0) map.fitBounds(entries.map((e) => e.coords), { padding: [24, 24], maxZoom: 9 });
   }, [ready, entries, edition]);
 
-  // Reveal the selected eulogy: zoom until its marker leaves its cluster, then open it.
+  // Reveal the picked eulogy. A marker on show opens its own popup; one folded into a cluster
+  // gets a popup at its place, since splitting the cluster could mean fanning out Rome's 205.
   useEffect(() => {
     if (!ready || !selected) return;
-    const m = markers.current.get(selected);
-    if (m) ready.group.zoomToShowLayer(m, () => m.openPopup());
+    const hit = markers.current.get(selected.id);
+    if (!hit) return;
+    const { L, map, group } = ready;
+    // Typed for Marker only; markercluster walks any layer's __parent the same way.
+    const shown: unknown = group.getVisibleParent(hit.marker as unknown as Marker);
+    if (shown === hit.marker) {
+      hit.marker.openPopup();
+      return;
+    }
+    map.setView(hit.entry.coords, Math.max(map.getZoom(), REVEAL_ZOOM));
+    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current)).openOn(map);
   }, [ready, selected]);
 
+  if (failed) {
+    return (
+      <div className="flex h-full min-h-[24rem] flex-col items-center justify-center gap-2 text-sm">
+        <p>The map could not load.</p>
+        <button
+          type="button"
+          className="rounded border border-slate-300 px-2 py-1 dark:border-slate-700"
+          onClick={() => window.location.reload()}
+        >
+          Reload
+        </button>
+      </div>
+    );
+  }
   return <div ref={el} className="h-full min-h-[24rem] w-full" data-testid="eulogy-map" />;
 }

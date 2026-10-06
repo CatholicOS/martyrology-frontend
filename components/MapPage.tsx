@@ -29,7 +29,8 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   const [filters, setFilters] = useState<MapFilters>(NO_FILTERS);
   // The eulogies of a cluster the map could not split, listed in the sidebar.
   const [place, setPlace] = useState<string[] | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
+  // `n` counts the picks, so picking the same eulogy again reveals it again.
+  const [selected, setSelected] = useState<{ id: string; n: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // Retry refetches whichever failed: the editions (nothing loaded yet) or the catalog.
@@ -44,6 +45,11 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
         // An edition registered without texts has no catalog to map.
         const eds = all.filter((e) => e.availability.status !== "unavailable");
         setEditions(eds);
+        if (eds.length === 0) {
+          setError("No edition has texts to map yet.");
+          setLoading(false);
+          return;
+        }
         setEdition(eds.some((e) => e.edition_id === initialEdition) ? initialEdition : defaultEdition(eds));
       })
       .catch((err) => {
@@ -112,7 +118,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
     return filtered.filter((e) => ids.has(e.id));
   }, [filtered, place]);
   const onPlace = useCallback((ids: string[]) => setPlace(ids), []);
-  const onSelect = useCallback((id: string) => setSelected(id), []);
+  const onSelect = useCallback((id: string) => setSelected((s) => ({ id, n: (s?.n ?? 0) + 1 })), []);
 
   return (
     <div className="flex h-[calc(100dvh-4.5rem)] min-h-[32rem] flex-col md:flex-row">
@@ -139,7 +145,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
                 : null
             }
             onShowAll={() => setPlace(null)}
-            selected={selected}
+            selected={selected?.id ?? null}
             onSelect={onSelect}
             status={{ loading, error }}
             onRetry={() => (editions.length ? setCatalogTry((n) => n + 1) : setEditionsTry((n) => n + 1))}

@@ -8,9 +8,14 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
 
 // The map itself is Leaflet's business (EulogyMap.test); here it reports what it was given.
 vi.mock("@/components/EulogyMap", () => ({
-  default: ({ entries, onPlace }: { entries: { id: string }[]; onPlace: (ids: string[]) => void }) => (
+  default: ({ entries, onPlace, selected }: {
+    entries: { id: string }[];
+    onPlace: (ids: string[]) => void;
+    selected: { id: string; n: number } | null;
+  }) => (
     <>
       <div data-testid="map">{entries.map((e) => e.id).join(",")}</div>
+      <div data-testid="selected">{selected ? `${selected.id}#${selected.n}` : ""}</div>
       <button type="button" onClick={() => onPlace(entries.map((e) => e.id))}>cluster</button>
     </>
   ),
@@ -111,6 +116,25 @@ describe("MapPage", () => {
     expect(screen.getByTestId("map")).toBeEmptyDOMElement();
     await screen.findByRole("button", { name: "Retry" });
     expect(screen.getByTestId("map")).toBeEmptyDOMElement();
+  });
+
+  it("picking the same result again asks the map to reveal it again", async () => {
+    render(<MapPage initialEdition={null} />);
+    await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent("mr:0101-b"));
+    const row = screen.getByRole("button", { name: /S mr:0101-a/ });
+    fireEvent.click(row);
+    const first = screen.getByTestId("selected").textContent;
+    fireEvent.click(row);
+    expect(screen.getByTestId("selected").textContent).toMatch(/^mr:0101-a#/);
+    expect(screen.getByTestId("selected").textContent).not.toBe(first);
+  });
+
+  it("says so when no edition has texts to map, instead of loading forever", async () => {
+    getEditions.mockResolvedValue([{ ...editions[3] }]); // mr_1914: unavailable
+    render(<MapPage initialEdition={null} />);
+    expect(await screen.findByText(/No edition has texts to map/)).toBeInTheDocument();
+    expect(screen.queryByText("Loading…")).not.toBeInTheDocument();
+    expect(getCatalog).not.toHaveBeenCalled();
   });
 
   it("searching narrows the map", async () => {
