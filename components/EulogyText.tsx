@@ -25,7 +25,9 @@ export function ErratumNote({ e, className }: { e: Erratum; className: string })
       aria-label={`Errata: ${said}. ${where}`}
       data-entry={where}
     >
-      {" "}[<span style={{ fontVariant: "small-caps" }}>Errata</span>: {reading}]
+      {/* set before the words an addition opens, after the words of any other */}
+      {e.position === "before" ? "" : " "}[<span style={{ fontVariant: "small-caps" }}>Errata</span>: {reading}]
+      {e.position === "before" ? " " : ""}
     </span>
   );
 }

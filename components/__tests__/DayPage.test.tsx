@@ -260,6 +260,12 @@ describe("DayPage, the edition's printed errata", () => {
     expect(note).toHaveAttribute("title", "Errata (p. 81, l. 20: 81.20. Modesti, Modesto.)");
   });
 
+  it("sets an addition that opens the eulogy before its first words", () => {
+    const opens = { ...day, elogia: [{ ...day.elogia[1], errata: [{ kind: "add" as const, printed: "Romae passio", corrected: "Item", ref: "197.12", entry: "197.12. post, sunt, adde, Item.", position: "before" as const }] }] };
+    const { container } = render(<DayPage day={opens} heading="2 Octobris" edition="ed" />);
+    expect(container.querySelector("p")?.textContent).toMatch(/\[Errata: adde Item\] Romae passio sancti Modesti Sardi\.$/);
+  });
+
   it("strikes through the words of a deletion", () => {
     const dele = { ...day, elogia: [{ ...day.elogia[1], errata: [{ kind: "delete" as const, printed: "Sardi.", corrected: "", ref: "1.1", entry: "1.1. dele Sardi." }] }] };
     const { container } = render(<DayPage day={dele} heading="2 Octobris" edition="ed" />);
