@@ -255,7 +255,9 @@ describe("DayPage, the edition's printed errata", () => {
     render(<DayPage day={withErrata} heading="2 Octobris" edition="ed" />);
     const p = screen.getByText(/Romae/).closest("p")!;
     expect(p).toHaveTextContent("Romae passio [Errata: adde sancti] sancti Modesti [Errata: Modesto] Sardi.");
-    expect(screen.getByTitle("Errata (p. 81, l. 20): 81.20. Modesti, Modesto.")).toBeInTheDocument();
+    const note = screen.getByRole("note", { name: "Errata: Modesto. p. 81, l. 20: 81.20. Modesti, Modesto." });
+    expect(note).toHaveAttribute("tabindex", "0");
+    expect(note).toHaveAttribute("title", "Errata (p. 81, l. 20: 81.20. Modesti, Modesto.)");
   });
 
   it("strikes through the words of a deletion", () => {

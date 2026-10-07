@@ -22,6 +22,9 @@
 .sic { color: #5c4f45; font-size: 0.8em; }
 /* The edition's own printed errata: set apart from our sic! notes and † notes, in a brown ink. */
 .errata { color: #7a4b12; font-size: 0.8em; }
+/* Keyboard readers: the erratum as printed and its place show while it has focus. */
+.errata[data-entry]:focus-visible { outline: 2px solid rgba(122, 75, 18, 0.5); outline-offset: 1px; border-radius: 2px; }
+.errata[data-entry]:focus-visible::after { content: " (" attr(data-entry) ")"; }
 /* The curators' notes: red daggers in the text, the notes under a short rule at the foot of the page. */
 .noteMark {
   color: #a3161b; font-size: 0.8em; line-height: 0; vertical-align: super; margin-left: 0.1em;

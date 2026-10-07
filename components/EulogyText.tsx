@@ -7,13 +7,24 @@ import type { Erratum } from "@/lib/types";
 
 /**
  * An erratum the edition prints, after the words it concerns: "[Errata: Bononiæ]",
- * "[Errata: adde Romæ]", "[Errata: dele]"; the erratum as printed and its place on hover.
+ * "[Errata: adde Romæ]", "[Errata: dele]". The erratum as printed and its place show on hover
+ * (title) and, for keyboard readers, while it has focus; screen readers get them in its name.
  */
 export function ErratumNote({ e, className }: { e: Erratum; className: string }) {
   const reading =
     e.kind === "replace" ? <i>{e.corrected}</i> : e.kind === "add" ? <>adde <i>{e.corrected}</i></> : <>dele</>;
+  const said = e.kind === "replace" ? e.corrected : e.kind === "add" ? `adde ${e.corrected}` : "dele";
+  const where = `${erratumPlace(e.ref)}: ${e.entry}`;
   return (
-    <span className={className} style={{ fontStyle: "normal" }} title={`Errata (${erratumPlace(e.ref)}): ${e.entry}`}>
+    <span
+      className={className}
+      style={{ fontStyle: "normal" }}
+      title={`Errata (${where})`}
+      tabIndex={0}
+      role="note"
+      aria-label={`Errata: ${said}. ${where}`}
+      data-entry={where}
+    >
       {" "}[<span style={{ fontVariant: "small-caps" }}>Errata</span>: {reading}]
     </span>
   );
