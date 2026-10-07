@@ -137,6 +137,9 @@ export default function ReaderBar({
         />
         IDs
       </label>
+      <Link href={`/read/${encodeURIComponent(edition)}/notes`} className="text-sm underline">
+        Notes &amp; errata
+      </Link>
       <Link href="/" className="text-sm underline">⟵ Shelf</Link>
     </div>
   );
