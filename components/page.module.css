@@ -97,3 +97,9 @@
   .tag { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .facing { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
+
+/* Phones: the page runs the full width of the screen, with a narrower inner margin. */
+@media (max-width: 639px) {
+  .page { padding: 1.25rem 1rem; }
+  .spread { padding: 1.25rem 1rem; }
+}

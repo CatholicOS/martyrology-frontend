@@ -45,7 +45,7 @@ export default function ReaderBar({
     return true;
   };
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
+    <div className="mb-4 flex flex-wrap items-center gap-2 px-4 sm:px-0">
       <label className="sr-only" htmlFor="reader-month">Month</label>
       <select
         id="reader-month"
