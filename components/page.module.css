@@ -20,6 +20,8 @@
 .entry[tabindex="-1"]:focus { outline: none; }
 .entry[tabindex="-1"]:focus:not([data-found]) { outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; border-radius: 3px; }
 .sic { color: #5c4f45; font-size: 0.8em; }
+/* The edition's own printed errata: set apart from our sic! notes and † notes, in a brown ink. */
+.errata { color: #7a4b12; font-size: 0.8em; }
 /* The curators' notes: red daggers in the text, the notes under a short rule at the foot of the page. */
 .noteMark {
   color: #a3161b; font-size: 0.8em; line-height: 0; vertical-align: super; margin-left: 0.1em;

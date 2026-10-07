@@ -1,4 +1,5 @@
 import snapshot from "@/data/misprints-snapshot.json";
+import type { Erratum } from "@/lib/types";
 
 /** A verified misprint in a printed edition (crmedr data/misprints.json). */
 export interface Misprint {
@@ -8,10 +9,14 @@ export interface Misprint {
   intended: string;
 }
 
-/** A run of eulogy text; `intended` is set on the run that is the misprint itself. */
+/**
+ * A run of eulogy text; `intended` is set on the run that is a misprint itself, `erratum` on the run
+ * an erratum the edition prints concerns (an empty run marks where an addition goes).
+ */
 export interface TextSegment {
   text: string;
   intended?: string;
+  erratum?: Erratum;
 }
 
 const MISPRINTS = snapshot as Misprint[];

@@ -236,3 +236,32 @@ describe("DayPage, margin notes", () => {
     expect(screen.queryByRole("note")).toBeNull();
   });
 });
+
+describe("DayPage, the edition's printed errata", () => {
+  const withErrata = {
+    ...day,
+    elogia: [
+      {
+        ...day.elogia[1],
+        errata: [
+          { kind: "replace" as const, printed: "Modesti", corrected: "Modesto", ref: "81.20", entry: "81.20. Modesti, Modesto." },
+          { kind: "add" as const, printed: "passio", corrected: "sancti", ref: "81.19", entry: "81.19. post passio, adde, sancti." },
+        ],
+      },
+    ],
+  };
+
+  it("keeps the printed text and sets each correction after its words, with the erratum on hover", () => {
+    render(<DayPage day={withErrata} heading="2 Octobris" edition="ed" />);
+    const p = screen.getByText(/Romae/).closest("p")!;
+    expect(p).toHaveTextContent("Romae passio [Errata: adde sancti] sancti Modesti [Errata: Modesto] Sardi.");
+    expect(screen.getByTitle("Errata (p. 81, l. 20): 81.20. Modesti, Modesto.")).toBeInTheDocument();
+  });
+
+  it("strikes through the words of a deletion", () => {
+    const dele = { ...day, elogia: [{ ...day.elogia[1], errata: [{ kind: "delete" as const, printed: "Sardi.", corrected: "", ref: "1.1", entry: "1.1. dele Sardi." }] }] };
+    const { container } = render(<DayPage day={dele} heading="2 Octobris" edition="ed" />);
+    expect(container.querySelector("del")).toHaveTextContent("Sardi.");
+    expect(container.querySelector("p")?.textContent).toContain("[Errata: dele]");
+  });
+});

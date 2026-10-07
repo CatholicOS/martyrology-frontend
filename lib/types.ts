@@ -54,6 +54,20 @@ export interface MarginNote {
   note: string | null;
 }
 
+/**
+ * A correction the edition itself prints in its errata (the API's `printed_errata.json`):
+ * `printed` occurs once in the text; `replace` reads it as `corrected`, `add` adds `corrected`
+ * after it, `delete` drops it. `ref` is the printed page.line ("vbique": everywhere), `entry`
+ * the erratum as printed. The text stays as printed.
+ */
+export interface Erratum {
+  kind: "replace" | "add" | "delete";
+  printed: string;
+  corrected: string;
+  ref: string;
+  entry: string;
+}
+
 export interface EditionPlacement {
   day_printed: string;
   entry: number | null;
@@ -62,6 +76,7 @@ export interface EditionPlacement {
   text: string | null;
   footnotes?: Footnote[];
   marginalia?: MarginNote[];
+  errata?: Erratum[];
 }
 
 export interface EulogyOut {
@@ -84,6 +99,8 @@ export interface ElogiumOut {
   footnotes?: Footnote[];
   /** Absent from APIs older than v0.13.0. */
   marginalia?: MarginNote[];
+  /** Absent from APIs older than v0.14.0. */
+  errata?: Erratum[];
 }
 
 /** A rubric the print sets among the eulogies: `after` is the eulogy it follows, null at the head of the day. */

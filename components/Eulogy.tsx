@@ -18,7 +18,10 @@ export default function Eulogy({
 }: { e: ElogiumOut; edition?: string; showId?: boolean; note?: PageNote; footnotes?: PageFootnote[] }) {
   // Without an edition no misprint matches, so such a page renders as before.
   const printed = e.text || footnotes?.length ? (
-    <EulogyText text={e.text ?? ""} id={e.id} edition={edition ?? ""} noteClassName={styles.sic} footnotes={footnotes} />
+    <EulogyText
+      text={e.text ?? ""} id={e.id} edition={edition ?? ""} noteClassName={styles.sic} footnotes={footnotes}
+      errata={e.errata} errataClassName={styles.errata}
+    />
   ) : (
     e.text
   );
