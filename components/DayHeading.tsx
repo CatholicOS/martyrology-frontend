@@ -115,7 +115,12 @@ export default function DayHeading({
           titulus
         )}
       </h2>
-      {!split && a && <p className={styles.lunaLine}>Luna {age}.</p>}
+      {!split && a && (
+        <p className={styles.lunaLine}>
+          {a.pronuntiatio.slice(0, a.pronuntiatio.length - ageWords(a.pronuntiatio).length)}
+          {age}.
+        </p>
+      )}
       <details className={styles.luna}>
         <summary>Lunar table</summary>
         <LunarTable luna={luna} column={a?.column ?? null} />

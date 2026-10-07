@@ -18,9 +18,9 @@ export function splitLuna(titulus: string): LunaHeading | null {
   return { before: titulus.slice(0, last.index), after: titulus.slice(last.index + last[0].length) };
 }
 
-/** The age announced, without "Luna": "Luna vigesima prima" → "vigesima prima". */
+/** The age announced, without "Luna": "Luna vigesima prima" → "vigesima prima"; the Italian "Luna: 20" → "20". */
 export function ageWords(pronuntiatio: string): string {
-  return pronuntiatio.replace(/^Luna\s+/, "");
+  return pronuntiatio.replace(/^Luna:?\s+/, "");
 }
 
 /** The table in its printed rows (`rows`: their lengths, 17 + 14 in 1630, 19 + 12 in 2004). Each cell keeps its

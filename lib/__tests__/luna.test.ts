@@ -12,6 +12,7 @@ describe("luna", () => {
 
   it("drops Luna from the announcement", () => {
     expect(ageWords("Luna vigesima prima")).toBe("vigesima prima");
+    expect(ageWords("Luna: 20")).toBe("20");
   });
 
   it("lays the table out in the print's two rows", () => {

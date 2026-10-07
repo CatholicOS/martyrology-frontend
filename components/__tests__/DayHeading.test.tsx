@@ -80,4 +80,10 @@ describe("DayHeading", () => {
     expect(red.map((th) => th.textContent)).toEqual(["F"]);
     expect(screen.queryByText(/In the margin/)).toBeNull();
   });
+
+  it("announces the Italian edition's lunar day as its number", () => {
+    const it = { ...luna2004(), annuntiatio: { ...luna2004().annuntiatio!, pronuntiatio: "Luna: 26" } };
+    render(<DayHeading titulus="25 agosto" edition="e" mm={8} dd={25} luna={it} />);
+    expect(screen.getByText("Luna:", { exact: false, selector: "p" }).textContent).toBe("Luna: 26.");
+  });
 });
