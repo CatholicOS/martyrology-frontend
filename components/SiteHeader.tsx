@@ -13,6 +13,7 @@ export async function SiteHeader() {
         </Link>
         <NavMenu>
           <Link href="/map">Map</Link>
+          <Link href="/scalar">API</Link>
           {viewer.curator && <Link href="/compare">Compare</Link>}
           {viewer.curator && <Link href="/review">Review</Link>}
           <AuthStatus />

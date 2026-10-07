@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+/* The page background, outside Tailwind's layers: the API reference's stylesheet (Scalar) sets an unlayered
+   body background, which would otherwise win over bg-white / dark:bg-slate-950, on /scalar and after leaving it. */
+html body {
+  background-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  html body {
+    background-color: #020617;
+  }
+}

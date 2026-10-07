@@ -17,6 +17,7 @@
     "import-changeset": "node scripts/import-changeset.mjs"
   },
   "dependencies": {
+    "@scalar/api-reference-react": "^0.9.78",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "next": "^16.3.6",
