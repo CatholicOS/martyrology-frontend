@@ -79,6 +79,15 @@ describe("Reader", () => {
     expect(document.body).toHaveFocus();
   });
 
+  it("keeps the day arrows for screen readers and keyboards, hidden on phones where swipe turns the page", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    for (const name of ["Previous day", "Next day"]) {
+      const strip = screen.getByRole("button", { name });
+      expect(strip).toHaveClass("max-sm:sr-only", "max-sm:focus-visible:not-sr-only", "flex");
+    }
+  });
+
   it("pushes once when Next day is clicked twice quickly", async () => {
     render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");

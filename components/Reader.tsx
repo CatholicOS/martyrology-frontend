@@ -18,9 +18,12 @@ import { useShowIds } from "@/lib/use-show-ids";
 const SWIPE_PX = 50;
 
 // The whole strip beside the page turns it; the arrow is pinned near the top
-// (sticky) so it keeps its place whatever the day's length.
+// (sticky) so it keeps its place whatever the day's length. On phones the strips take no
+// space (swipe turns the page there): visually hidden, they stay for screen readers and
+// keyboards, and show while focused.
 const STRIP =
   "group flex w-10 shrink-0 cursor-pointer justify-center rounded sm:w-16 " +
+  "max-sm:sr-only max-sm:focus-visible:not-sr-only " +
   "hover:bg-[#8b1a1f]/5 focus-visible:bg-[#8b1a1f]/5 dark:hover:bg-red-300/10 dark:focus-visible:bg-red-300/10";
 const ARROW =
   "sticky top-20 mt-6 h-fit text-3xl text-[#8b1a1f] opacity-60 group-hover:opacity-100 " +

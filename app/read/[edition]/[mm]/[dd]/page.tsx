@@ -41,7 +41,8 @@ export default async function DayRoute({ params, searchParams }: { params: Param
   if (present && (w === null || w === edition || !(await editionExists(w)))) redirect(dayPath(edition, day));
   const viewer = await getViewer();
   return (
-    <main className={w ? "mx-auto max-w-7xl p-4" : "mx-auto max-w-5xl p-4"}>
+    // Phones: no side margin, the page runs edge to edge (the reader bar keeps its own inset).
+    <main className={w ? "mx-auto max-w-7xl py-4 sm:p-4" : "mx-auto max-w-5xl py-4 sm:p-4"}>
       {/* key: remount on every navigation, query-only ones included; Reader's navigation guard and turn snapshot assume it */}
       <Reader key={`${edition}/${mm}/${dd}?with=${w ?? ""}`} edition={edition} mm={day.mm} dd={day.dd} signedIn={viewer.signedIn} withEdition={w} />
     </main>
