@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
-import DayPage, { Conclusio, Rubricae } from "@/components/DayPage";
+import DayPage, { Conclusio, DayTitle, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";
 import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
@@ -174,7 +174,7 @@ export default function Spread({
     if (r.kind === "titulus") {
       return (
         <>
-          <h2 className={styles.heading}>{d.titulus || dateHeading(day, s.lang)}</h2>
+          <DayTitle day={d} heading={dateHeading(day, s.lang)} edition={s.id} />
           <p className={styles.caption}>{s.caption}</p>
           <Rubricae day={d} after={null} />
         </>

@@ -112,12 +112,44 @@ export interface Rubrica {
   text: string;
 }
 
+/** One column of a day's lunar table: the letter of the Martyrology, its epact, the moon's age under it, and the
+ * number the edition prints there when it misprints it. */
+export interface LunaColumn {
+  letter: string;
+  epact: string;
+  age: number;
+  printed: number | null;
+}
+
+/** The moon announced under the day in `year` (Gregorian computus): the year's letter reads `column`. */
+export interface LunaAnnouncement {
+  year: number;
+  golden_number: number;
+  epact: string;
+  letter: string;
+  column: number;
+  age: number;
+  /** "Luna vigesima prima" */
+  pronuntiatio: string;
+}
+
+/** The calendar apparatus printed with the day: the lunar table (31 columns, in printed order), the margin's
+ * dominical letter and new-moon epacts, and the announcement (null before 1583). */
+export interface Luna {
+  dominical_letter: string;
+  epactae: string[];
+  tabula: LunaColumn[];
+  annuntiatio: LunaAnnouncement | null;
+}
+
 export interface DayContentOut {
   titulus: string | null;
   elogia: ElogiumOut[];
   /** Absent from APIs older than v0.11.0. */
   rubricae?: Rubrica[];
   conclusio: string | null;
+  /** Only for an edition that prints the lunar table; absent from APIs older than v0.15.0. */
+  luna?: Luna | null;
 }
 
 export type AccessMap = Record<string, { can_read_texts: boolean }>;

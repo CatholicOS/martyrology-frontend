@@ -1,11 +1,12 @@
 import { Fragment } from "react";
 import CuratorNotes from "@/components/CuratorNotes";
+import DayHeading from "@/components/DayHeading";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
 import PrintedFootnotes from "@/components/PrintedFootnotes";
 import { pageFootnotes, type PageFootnote } from "@/lib/footnotes";
 import { pageNotes } from "@/lib/notes";
-import type { DayContentOut } from "@/lib/types";
+import type { DayContentOut, DayOut } from "@/lib/types";
 
 /** Split "… R. Deo gratias." so the response mark can be set as a rubric. */
 export function Conclusio({ text }: { text: string }) {
@@ -31,6 +32,24 @@ export function Rubricae({ day, after }: { day: DayContentOut; after: string | n
 }
 
 /**
+ * A day's heading: its titulus (else `heading`), with the moon announced and the lunar table when the edition prints
+ * one. Keyed on the edition and day, so the year asked for starts afresh on each day.
+ */
+export function DayTitle({ day, heading, edition }: { day: DayContentOut; heading: string; edition?: string }) {
+  const meta = (day as Partial<DayOut>).metadata;
+  return (
+    <DayHeading
+      key={`${edition}|${meta?.month}|${meta?.day}`}
+      titulus={day.titulus || heading}
+      edition={edition}
+      mm={meta?.month}
+      dd={meta?.day ?? undefined}
+      luna={day.luna}
+    />
+  );
+}
+
+/**
  * One day typeset as a printed page. `heading` is used when the edition prints no titulus;
  * `edition` (a CLBDR edition id) selects the misprint notes; `showIds` sets each eulogy's canonical id above it
  * and the curators' notes at the foot of the page. The edition's own footnotes are always shown.
@@ -45,7 +64,7 @@ export default function DayPage({
   for (const f of footnotes) footAt.set(f.at, [...(footAt.get(f.at) ?? []), f]);
   return (
     <article className={styles.page} lang={lang}>
-      <h2 className={styles.heading}>{day.titulus || heading}</h2>
+      <DayTitle day={day} heading={heading} edition={edition} />
       <Rubricae day={day} after={null} />
       {day.elogia.map((e, i) => (
         <Fragment key={e.id ?? i}>
