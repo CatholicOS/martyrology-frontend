@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthStatus } from "@/components/AuthStatus";
+import { NavMenu } from "@/components/NavMenu";
 import { getViewer } from "@/lib/viewer";
 
 export async function SiteHeader() {
@@ -10,12 +11,12 @@ export async function SiteHeader() {
         <Link href="/" className="font-serif text-lg font-semibold">
           Martyrology
         </Link>
-        <nav className="flex items-center gap-4 text-sm">
+        <NavMenu>
           <Link href="/map">Map</Link>
           {viewer.curator && <Link href="/compare">Compare</Link>}
           {viewer.curator && <Link href="/review">Review</Link>}
           <AuthStatus />
-        </nav>
+        </NavMenu>
       </div>
     </header>
   );

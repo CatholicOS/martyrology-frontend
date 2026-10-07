@@ -17,9 +17,22 @@ describe("AuthStatusView", () => {
         onSignOut={<button>Sign out</button>}
       />,
     );
-    expect(screen.getByText("priest@johnromanodorazio.com")).toBeInTheDocument();
     expect(screen.getByText("Sign out")).toBeInTheDocument();
     expect(screen.queryByText("Sign in")).not.toBeInTheDocument();
+  });
+
+  it("shows a user icon instead of the address, which stays as tooltip and for screen readers", () => {
+    const { container } = render(
+      <AuthStatusView
+        email="priest@johnromanodorazio.com"
+        onSignIn={<button>Sign in</button>}
+        onSignOut={<button>Sign out</button>}
+      />,
+    );
+    expect(screen.getByText("Signed in as priest@johnromanodorazio.com")).toHaveClass("sr-only");
+    expect(container.querySelector('[title="priest@johnromanodorazio.com"] svg')).not.toBeNull();
+    // the address itself is not printed as visible text
+    expect(screen.queryByText("priest@johnromanodorazio.com")).not.toBeInTheDocument();
   });
 
   it("warns when the session carries a refresh error", () => {

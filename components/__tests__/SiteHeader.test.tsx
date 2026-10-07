@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 const { viewerMock } = vi.hoisted(() => ({ viewerMock: vi.fn() }));
 vi.mock("@/lib/viewer", () => ({ getViewer: viewerMock }));
 vi.mock("@/components/AuthStatus", () => ({ AuthStatus: () => <span>auth</span> }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 
 import { SiteHeader } from "@/components/SiteHeader";
 
