@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { Fragment, useEffect, useId, useState } from "react";
 import styles from "@/components/page.module.css";
 import { getDay } from "@/lib/api";
 import { pad2 } from "@/lib/calendar";
@@ -14,7 +14,7 @@ function derivation(a: LunaAnnouncement): string {
 
 /** The printed lunar table, its two rows as in the print, with the year's column marked. */
 function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
-  const misprinted = luna.tabula.some((c) => c.printed !== null);
+  const misprinted = luna.tabula.filter((c) => c.printed !== null);
   return (
     <div className={styles.lunaScroll}>
       <table className={styles.lunaTable}>
@@ -44,8 +44,17 @@ function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
           ])}
         </tbody>
       </table>
-      {misprinted && (
-        <p className={styles.lunaNote}>* As printed; hover for the age by the computus.</p>
+      {misprinted.length > 0 && (
+        <p className={styles.lunaNote}>
+          * As printed; by the computus{" "}
+          {misprinted.map((c, i) => (
+            <Fragment key={c.epact}>
+              {i > 0 && ", "}
+              <i>{c.letter}</i> {c.age}
+            </Fragment>
+          ))}
+          .
+        </p>
       )}
     </div>
   );

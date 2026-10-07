@@ -31,6 +31,7 @@ describe("DayHeading", () => {
     expect(current?.textContent).toBe("20");
     const sic = screen.getByTitle("printed 27; by the computus 5");
     expect(sic.textContent).toBe("27*");
+    expect(screen.getByText(/As printed; by the computus/).textContent).toBe("* As printed; by the computus F 5.");
     expect(screen.getByText(/dominical letter F; new moon of epact xxj/)).toBeInTheDocument();
   });
 
