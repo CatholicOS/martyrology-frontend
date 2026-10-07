@@ -19,7 +19,12 @@ export interface EditedFields {
   same_eulogy_with?: string;
   parts?: SplitPart[];
   first_id?: string;
+  /** realign: a curator note. attach_note (a mark without a note): the ref of the day's note it takes. */
   note?: string;
+  // attach_note: the eulogy, the anchor phrase (null: the mark at the end) and the letter
+  id?: string;
+  after?: string | null;
+  mark?: string;
 }
 
 export interface DecisionRecord {
@@ -124,13 +129,77 @@ export interface RealignOp extends Base {
   texts?: Record<string, Record<string, string>>;
 }
 
+export type AttachNoteClass = "no-mark" | "letter-differs" | "unanchored" | "mark-without-note";
+
+/** One of the day's notes, as an attach_note op lists them: `ref` is its key ("M-D|letter"). */
+export interface NoteRef {
+  ref: string;
+  mark: string;
+  lemma: string;
+}
+
+/**
+ * Where one of Baronius's notes in the 1630 edition is attached (martyrology-api's
+ * scripts/notationes_1630.py): the eulogy and the phrase its letter follows. Keyed "M-D|letter";
+ * a letter printed in a eulogy with no note found (class "mark-without-note") has uid
+ * "M-D|letter|mark" and no lemma or note. Reject: not a note of the day (not a reference letter).
+ */
+export interface AttachNoteOp extends Base {
+  op: "attach_note";
+  id: string;
+  /** "M-D" */
+  day: string;
+  mark: string;
+  lemma: string | null;
+  /** The note's text. */
+  note: string | null;
+  proposed: { id: string; after: string | null };
+  /** The day's eulogies, ID → 1630 text. */
+  texts: Record<string, string>;
+  notes: NoteRef[];
+  scan_page: number;
+}
+
+/** A note or a eulogy on a scan page, that a margin note may stand beside. */
+export interface MarginCandidate {
+  /** "M-D|letter" for a note, the eulogy's ID for a eulogy. */
+  ref: string;
+  kind: "note" | "eulogy";
+  lemma: string | null;
+  /** Its opening words. */
+  words: string;
+}
+
+/**
+ * A margin note of the 1630 edition and the note (or eulogy) it stands beside, keyed
+ * "<scan page>|<block key>". Reject: not a margin note.
+ */
+export interface PlaceMarginOp extends Base {
+  op: "place_margin";
+  id: string;
+  text: string;
+  proposed: { note?: string; id?: string } | null;
+  candidates: MarginCandidate[];
+  scan_page: number;
+  /** The page on Internet Archive. */
+  image: string;
+}
+
 export interface UnknownOp extends Base {
   op: string;
   id?: string;
   [k: string]: unknown;
 }
 
-export type Op = RenameOp | DeleteOp | MergeOp | ResolvePlaceOp | RealignOp | UnknownOp;
+export type Op =
+  | RenameOp
+  | DeleteOp
+  | MergeOp
+  | ResolvePlaceOp
+  | RealignOp
+  | AttachNoteOp
+  | PlaceMarginOp
+  | UnknownOp;
 
 export interface Changeset {
   schema: "crmedr-changeset/v1";
@@ -157,7 +226,9 @@ export function isAdjudicable(op: Op): boolean {
     op.op === "delete" ||
     op.op === "merge" ||
     op.op === "resolve_place" ||
-    op.op === "realign"
+    op.op === "realign" ||
+    op.op === "attach_note" ||
+    op.op === "place_margin"
   );
 }
 
