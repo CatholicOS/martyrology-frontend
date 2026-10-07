@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import AttachNoteCard from "@/components/AttachNoteCard";
 import EulogyView from "@/components/EulogyView";
+import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
 import { decisionClass as cardClass } from "@/components/decisionClass";
@@ -15,6 +17,8 @@ import {
   type DecisionRecord,
   type ResolvePlaceOp,
   type RealignOp,
+  type AttachNoteOp,
+  type PlaceMarginOp,
 } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
@@ -43,6 +47,13 @@ export default function OperationCard(props: Props) {
   // A historical-edition finding (crmedr #51) carries its own texts and actions.
   if (props.op.op === "realign") {
     return <RealignCard {...props} op={props.op as RealignOp} />;
+  }
+  // The 1630 Notationes (martyrology-api#100): a note's place, a margin note's place.
+  if (props.op.op === "attach_note") {
+    return <AttachNoteCard {...props} op={props.op as AttachNoteOp} />;
+  }
+  if (props.op.op === "place_margin") {
+    return <PlaceMarginCard {...props} op={props.op as PlaceMarginOp} />;
   }
   return <IdOperationCard {...props} />;
 }

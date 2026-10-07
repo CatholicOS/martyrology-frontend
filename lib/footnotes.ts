@@ -38,7 +38,7 @@ export function pageFootnotes(
 }
 
 /** Where `phrase` starts in `text` as whole words, overlapping occurrences included (as the extractor counts). */
-function occurrences(text: string, phrase: string): number[] {
+export function occurrences(text: string, phrase: string): number[] {
   const re = wholeWordRegExp(phrase);
   const starts: number[] = [];
   for (let m = re.exec(text); m; m = re.exec(text)) {
