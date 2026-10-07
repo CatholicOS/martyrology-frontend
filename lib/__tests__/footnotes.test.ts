@@ -26,6 +26,24 @@ describe("pageFootnotes", () => {
   it("tolerates eulogies without the field (an older API)", () => {
     expect(pageFootnotes([{ id: "mr:a" }], "ed")).toEqual([]);
   });
+
+  it("gives each footnote the margin notes printed beside it, not those beside the eulogy", () => {
+    const notes = pageFootnotes(
+      [
+        {
+          id: "mr:a",
+          footnotes: [fn("a", "Dominici"), fn("b", "Aristarchi")],
+          marginalia: [
+            { text: "To.12. An. 1170 n.62.", note: "a" },
+            { text: "cir. A. 1170.", note: null },
+            { text: "T. 4. An. 45.", note: "a" },
+          ],
+        },
+      ],
+      "ed",
+    );
+    expect(notes.map((n) => n.marginalia)).toEqual([["To.12. An. 1170 n.62.", "T. 4. An. 45."], []]);
+  });
 });
 
 describe("footnoteOffsets", () => {

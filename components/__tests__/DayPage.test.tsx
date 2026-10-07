@@ -205,5 +205,34 @@ describe("DayPage, printed footnotes", () => {
     const { container } = render(<DayPage day={day} heading="2 Octobris" edition="ed" />);
     expect(screen.queryByRole("complementary")).toBeNull();
     expect(container.querySelectorAll("a")).toHaveLength(0);
+  });});
+
+describe("DayPage, margin notes", () => {
+  const withMargins = {
+    ...day,
+    elogia: [
+      {
+        ...day.elogia[1],
+        footnotes: [{ mark: "a", after: "Modesti", text: "Modesti a.] De eodem Beda." }],
+        marginalia: [
+          { text: "T. 2. A. 254. n. 24.", note: "a" },
+          { text: "cir. A. 383.", note: null },
+        ],
+      },
+    ],
+  };
+
+  it("sets a margin note beside its footnote, and one beside the eulogy at the eulogy's side", () => {
+    render(<DayPage day={withMargins} heading="2 Octobris" edition="ed" />);
+    const [atEulogy, atNote] = screen.getAllByRole("note", { name: "In the margin" });
+    expect(atNote).toHaveTextContent("T. 2. A. 254. n. 24.");
+    expect(atNote.closest("li")).toHaveTextContent(/^aModesti a\.\] De eodem Beda\.T\. 2\. A\. 254\. n\. 24\.$/);
+    expect(atEulogy).toHaveTextContent("cir. A. 383.");
+    expect(atEulogy.closest("p")).toHaveTextContent("Romae passio sancti Modesti");
+  });
+
+  it("adds nothing to a page without margin notes", () => {
+    render(<DayPage day={day} heading="2 Octobris" edition="ed" />);
+    expect(screen.queryByRole("note")).toBeNull();
   });
 });
