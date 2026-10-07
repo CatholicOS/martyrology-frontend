@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import styles from "@/components/page.module.css";
 import { getDay } from "@/lib/api";
 import { pad2 } from "@/lib/calendar";
@@ -12,51 +12,56 @@ function derivation(a: LunaAnnouncement): string {
   return `${a.year}: golden number ${a.golden_number}, epact ${a.epact}, letter ${a.letter}`;
 }
 
-/** The printed lunar table, its two rows as in the print, with the year's column marked. */
+/** The printed lunar table in its printed rows, with the year's column marked. A misprinted cell shows the number as
+ * printed, with the age by the computus in a small row under it. */
 function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
-  const misprinted = luna.tabula.filter((c) => c.printed !== null);
+  const misprinted = luna.tabula.some((c) => c.printed !== null);
+  const mark = (k: number, red?: boolean) =>
+    [k === column ? styles.lunaYear : "", red ? styles.lunaRed : ""].join(" ").trim() || undefined;
   return (
-    <div className={styles.lunaScroll}>
-      <table className={styles.lunaTable}>
-        <caption className={styles.srOnly}>The moon&apos;s age under each letter of the Martyrology</caption>
-        <tbody>
-          {printedRows(luna.tabula).flatMap((row, r) => [
-            <tr key={`l${r}`} className={styles.lunaLetters}>
-              {row.map(({ column: k, cell }) => (
-                <th key={k} scope="col" className={k === column ? styles.lunaYear : undefined} title={`epact ${cell.epact}`}>
-                  {cell.letter}
-                </th>
-              ))}
-            </tr>,
-            <tr key={`a${r}`}>
-              {row.map(({ column: k, cell }) => (
-                <td
-                  key={k}
-                  className={k === column ? styles.lunaYear : undefined}
-                  aria-current={k === column ? "true" : undefined}
-                  title={cell.printed !== null ? `printed ${cell.printed}; by the computus ${cell.age}` : undefined}
-                >
-                  {cell.printed ?? cell.age}
-                  {cell.printed !== null && <span className={styles.lunaSic}>*</span>}
-                </td>
-              ))}
-            </tr>,
-          ])}
-        </tbody>
-      </table>
-      {misprinted.length > 0 && (
-        <p className={styles.lunaNote}>
-          * As printed; by the computus{" "}
-          {misprinted.map((c, i) => (
-            <Fragment key={c.epact}>
-              {i > 0 && ", "}
-              <i>{c.letter}</i> {c.age}
-            </Fragment>
-          ))}
-          .
-        </p>
-      )}
-    </div>
+    <>
+      <div className={styles.lunaScroll}>
+        <table className={styles.lunaTable}>
+          <caption className={styles.srOnly}>The moon&apos;s age under each letter of the Martyrology</caption>
+          <tbody>
+            {printedRows(luna.tabula, luna.rows).flatMap((row, r) => [
+              <tr key={`l${r}`} className={styles.lunaLetters}>
+                {row.map(({ column: k, cell }) => (
+                  <th key={k} scope="col" className={mark(k, cell.red)} title={`epact ${cell.epact}`}>
+                    {cell.letter}
+                  </th>
+                ))}
+              </tr>,
+              <tr key={`a${r}`}>
+                {row.map(({ column: k, cell }) => (
+                  <td
+                    key={k}
+                    className={mark(k)}
+                    aria-current={k === column ? "true" : undefined}
+                    title={cell.printed !== null ? `printed ${cell.printed}; by the computus ${cell.age}` : undefined}
+                  >
+                    {cell.printed ?? cell.age}
+                    {cell.printed !== null && <span className={styles.lunaSic}>*</span>}
+                  </td>
+                ))}
+              </tr>,
+              ...(row.some(({ cell }) => cell.printed !== null)
+                ? [
+                    <tr key={`c${r}`} className={styles.lunaComputed}>
+                      {row.map(({ column: k, cell }) => (
+                        <td key={k} className={mark(k)}>
+                          {cell.printed !== null ? cell.age : ""}
+                        </td>
+                      ))}
+                    </tr>,
+                  ]
+                : []),
+            ])}
+          </tbody>
+        </table>
+      </div>
+      {misprinted && <p className={styles.lunaNote}>* As printed; below it, the age by the computus.</p>}
+    </>
   );
 }
 
@@ -107,12 +112,10 @@ export default function DayHeading({
             {split.before}Luna{age ? <> {age}</> : null}.{split.after}
           </>
         ) : (
-          <>
-            {titulus}
-            {a && <> Luna {age}.</>}
-          </>
+          titulus
         )}
       </h2>
+      {!split && a && <p className={styles.lunaLine}>Luna {age}.</p>}
       <details className={styles.luna}>
         <summary>Lunar table</summary>
         <LunarTable luna={luna} column={a?.column ?? null} />
@@ -134,10 +137,12 @@ export default function DayHeading({
           )}
           {failed && <> The year couldn&apos;t be loaded.</>}
         </p>
-        <p className={styles.lunaNote}>
-          In the margin: dominical letter {luna.dominical_letter}
-          {luna.epactae.length > 0 && <>; new moon of epact {luna.epactae.join(", ")}</>}.
-        </p>
+        {luna.dominical_letter && (
+          <p className={styles.lunaNote}>
+            In the margin: dominical letter {luna.dominical_letter}
+            {luna.epactae && luna.epactae.length > 0 && <>; new moon of epact {luna.epactae.join(", ")}</>}.
+          </p>
+        )}
       </details>
     </>
   );

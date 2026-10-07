@@ -8,6 +8,7 @@ vi.mock("@/lib/api", () => ({ getDay: (...a: unknown[]) => getDay(...a), ApiErro
 
 const LETTERS = "a b c d e f g h i k l m n p q r s t u A B C D E f F G H M N P".split(" ");
 const luna = (year: number, column: number, age: number, pronuntiatio: string): Luna => ({
+  rows: [17, 14],
   dominical_letter: "F",
   epactae: ["xxj"],
   tabula: LETTERS.map((letter, i) => ({ letter, epact: String(i), age: ((i + 9) % 30) + 1, printed: i === 25 ? 27 : null })),
@@ -15,6 +16,21 @@ const luna = (year: number, column: number, age: number, pronuntiatio: string): 
 });
 
 beforeEach(() => getDay.mockReset());
+
+// The 2004 editions: no titulus (the heading is the date), rows of 19 and 12, two F (one red), no margin.
+const luna2004 = (): Luna => ({
+  ...luna(2026, 24, 26, "Luna vigesima sexta"),
+  rows: [19, 12],
+  dominical_letter: null,
+  epactae: null,
+  tabula: LETTERS.map((letter, i) => ({
+    letter: i === 24 ? "F" : letter,
+    epact: String(i),
+    age: i + 1,
+    printed: null,
+    red: i === 24,
+  })),
+});
 
 describe("DayHeading", () => {
   it("completes the heading's Luna with the year's age, the derivation on hover", () => {
@@ -31,7 +47,9 @@ describe("DayHeading", () => {
     expect(current?.textContent).toBe("20");
     const sic = screen.getByTitle("printed 27; by the computus 5");
     expect(sic.textContent).toBe("27*");
-    expect(screen.getByText(/As printed; by the computus/).textContent).toBe("* As printed; by the computus F 5.");
+    expect(screen.getByText(/As printed; below it, the age by the computus/)).toBeInTheDocument();
+    const computed = screen.getAllByRole("row").find((r) => r.className.includes("lunaComputed"));
+    expect(Array.from(computed!.querySelectorAll("td")).map((td) => td.textContent).filter(Boolean)).toEqual(["5"]);
     expect(screen.getByText(/dominical letter F; new moon of epact xxj/)).toBeInTheDocument();
   });
 
@@ -50,5 +68,16 @@ describe("DayHeading", () => {
     rerender(<DayHeading key="old" titulus="Pridie Nonas Augusti. Luna." luna={{ ...luna(1500, 0, 1, ""), annuntiatio: null }} />);
     expect(screen.getByRole("heading").textContent).toBe("Pridie Nonas Augusti. Luna.");
     expect(screen.getByText(/no announcement before the Gregorian reform/)).toBeInTheDocument();
+  });
+
+  it("sets a 2004 table in its rows, its red F in red, the moon on a line of its own", () => {
+    render(<DayHeading titulus="25 augusti" edition="e" mm={8} dd={25} luna={luna2004()} />);
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe("25 augusti");
+    expect(screen.getByText("Luna", { exact: false, selector: "p" }).textContent).toBe("Luna vigesima sexta.");
+    const letterRows = screen.getAllByRole("row").filter((_, i) => i % 2 === 0);
+    expect(letterRows.map((r) => r.querySelectorAll("th").length)).toEqual([19, 12]);
+    const red = screen.getAllByRole("columnheader").filter((th) => th.className.includes("lunaRed"));
+    expect(red.map((th) => th.textContent)).toEqual(["F"]);
+    expect(screen.queryByText(/In the margin/)).toBeNull();
   });
 });

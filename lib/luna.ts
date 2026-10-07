@@ -23,10 +23,17 @@ export function ageWords(pronuntiatio: string): string {
   return pronuntiatio.replace(/^Luna\s+/, "");
 }
 
-/** The table in its two printed rows: 17 columns (a–s), then 14 (t–P). Each cell keeps its column index. */
-export function printedRows(tabula: LunaColumn[]): { column: number; cell: LunaColumn }[][] {
+/** The table in its printed rows (`rows`: their lengths, 17 + 14 in 1630, 19 + 12 in 2004). Each cell keeps its
+ * column index. */
+export function printedRows(tabula: LunaColumn[], rows: number[] = [17, 14]): { column: number; cell: LunaColumn }[][] {
   const cells = tabula.map((cell, column) => ({ column, cell }));
-  return [cells.slice(0, 17), cells.slice(17)];
+  const out = [];
+  let at = 0;
+  for (const n of rows) {
+    out.push(cells.slice(at, at + n));
+    at += n;
+  }
+  return out;
 }
 
 /** A year a reader may ask for: a whole number the API accepts. */

@@ -119,6 +119,8 @@ export interface LunaColumn {
   epact: string;
   age: number;
   printed: number | null;
+  /** Printed in red (the 2004 edition tells its two F apart by colour). */
+  red?: boolean;
 }
 
 /** The moon announced under the day in `year` (Gregorian computus): the year's letter reads `column`. */
@@ -133,11 +135,13 @@ export interface LunaAnnouncement {
   pronuntiatio: string;
 }
 
-/** The calendar apparatus printed with the day: the lunar table (31 columns, in printed order), the margin's
- * dominical letter and new-moon epacts, and the announcement (null before 1583). */
+/** The calendar apparatus printed with the day: the lunar table (31 columns, in printed order, set in `rows` of
+ * that many), the margin's dominical letter and new-moon epacts (null when the edition prints no margin), and the
+ * announcement in the edition's language (null before 1583). */
 export interface Luna {
-  dominical_letter: string;
-  epactae: string[];
+  rows?: number[];
+  dominical_letter: string | null;
+  epactae: string[] | null;
   tabula: LunaColumn[];
   annuntiatio: LunaAnnouncement | null;
 }

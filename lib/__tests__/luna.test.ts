@@ -20,6 +20,7 @@ describe("luna", () => {
     expect(one).toHaveLength(17);
     expect(two).toHaveLength(14);
     expect(two[0]).toEqual({ column: 17, cell: tabula[17] });
+    expect(printedRows(tabula, [19, 12]).map((r) => r.length)).toEqual([19, 12]);
   });
 
   it("accepts a year the API takes", () => {

@@ -133,6 +133,15 @@
 /* The year's column: tinted like a rubric, its age in bold. */
 .lunaTable .lunaYear { background: rgba(163, 22, 27, 0.1); color: #a3161b; }
 .lunaTable td.lunaYear { font-weight: bold; }
+.lunaTable .lunaRed { color: #a3161b; }
+/* The announcement on a line of its own, for a heading that prints no "Luna" (the 2004 editions' data). */
+.lunaLine { margin: -0.75rem 0 1rem; text-align: center; color: #a3161b; }
+/* The ages by the computus under misprinted cells. */
+.lunaComputed td { font-size: 0.75em; line-height: 1; color: #5c4f45; }
+@media (max-width: 480px) {
+  .lunaTable th, .lunaTable td { padding: 0 0.08rem; }
+  .lunaTable { font-size: 0.72rem; }
+}
 .lunaSic { font-size: 0.75em; vertical-align: super; color: #a3161b; }
 .lunaNote { margin: 0.3rem 0; text-align: center; }
 .lunaYearInput { width: 4.5em; padding: 0 0.25rem; border: 1px solid #c9b9a3; border-radius: 3px; background: #fffdf8; color: #2a1a10; text-align: center; }
