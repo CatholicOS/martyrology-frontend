@@ -96,6 +96,7 @@ Then open:
 - [http://localhost:3000](http://localhost:3000): the bookshelf of editions
 - `http://localhost:3000/read/<edition>/<mm>/<dd>`: the reader, for example `/read/martyrologium_romanum_1749/10/02`
 - [http://localhost:3000/compare](http://localhost:3000/compare): compare two editions
+- [http://localhost:3000/scalar](http://localhost:3000/scalar): the API reference ([Scalar](https://scalar.com/products/api-references)), from the API's OpenAPI document. The site serves the document at `/scalar/openapi.json`, fetched from `API_BASE`, and Scalar's "Test request" goes through `/scalar/proxy` (GET only, and only to the API), since the API sends no CORS headers. The server the reference shows is `API_PUBLIC_URL` (default `https://api.romanmartyrology.com`); locally, set it to your API (`API_PUBLIC_URL=http://localhost:8000`) so that tried requests reach it.
 - [http://localhost:3000/review](http://localhost:3000/review): change-set review, for curators only. It needs the Zitadel project role `admin` or `martyrology_editor`, read at sign-in.
 
 `/compare` and eulogy text in `/review` require a reachable `martyrology-api`

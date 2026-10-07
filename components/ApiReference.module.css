@@ -1,0 +1,4 @@
+/* The reference fills the page between the site's header and footer; Scalar scrolls its sidebar itself. */
+.reference {
+  min-height: calc(100vh - 8rem);
+}
