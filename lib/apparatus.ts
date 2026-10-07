@@ -8,8 +8,11 @@ export interface ApparatusEntry {
   id: string;
   mm: number;
   dd: number;
-  /** Its printed number, if the edition numbers its eulogies. */
+  /** Its printed number, if the edition numbers its eulogies, and its asterisk, as this edition prints them. */
   entry: number | null;
+  asterisk: boolean;
+  /** Printed as a heading, unnumbered. */
+  unnumbered: boolean;
   /** Null where the text is redacted. */
   text: string | null;
   /** The curators' notes: on the eulogy (every edition), then on this edition's text. */
@@ -46,6 +49,8 @@ export function apparatus(
           mm: m.metadata.month,
           dd: Number(dd),
           entry: e.entry,
+          asterisk: e.asterisk,
+          unnumbered: e.unnumbered,
           text: e.text,
           notes: [n?.note, n?.editions?.[edition]].filter((x): x is string => Boolean(x)),
           misprints: misprints(edition, e.id),

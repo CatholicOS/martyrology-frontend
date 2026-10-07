@@ -33,6 +33,12 @@ describe("apparatus", () => {
     expect(out[2].errata).toEqual([erratum]);
   });
 
+  it("keeps each eulogy's number and asterisk as this edition prints them", () => {
+    const ms = [month(1, { "04": [el("mr:0104-abrunculus", { entry: 2, asterisk: true })] })];
+    const out = apparatus("ed", ms, { "mr:0104-abrunculus": { note: "Entry 2* in the Latin." } }, () => []);
+    expect(out[0]).toMatchObject({ entry: 2, asterisk: true, unnumbered: false });
+  });
+
   it("counts each kind and filters by kind", () => {
     const out = apparatus("ed", months, notes, misprints);
     expect([count(out, "notes"), count(out, "misprints"), count(out, "errata")]).toEqual([2, 1, 1]);

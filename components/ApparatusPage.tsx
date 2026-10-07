@@ -24,6 +24,16 @@ const KINDS: { key: ApparatusKind; label: string }[] = [
   { key: "errata", label: "Errata printed in the edition" },
 ];
 
+/** A eulogy's printed number and asterisk as this edition prints them ("3*."), as a rubric. */
+function Number({ e }: { e: ApparatusEntry }) {
+  return (
+    <span className={styles.rubric}>
+      {e.entry}
+      {e.asterisk ? "*" : ""}.
+    </span>
+  );
+}
+
 /**
  * An edition's whole apparatus on one page: every eulogy with a curator's note, a misprint the
  * curators verified, or a correction the edition prints in its own errata, in printed order, with
@@ -121,14 +131,20 @@ export default function ApparatusPage({ edition }: { edition: string }) {
                   <Link href={`${dayPath(edition, { mm: e.mm, dd: e.dd })}#${e.id}`} className="underline">
                     {e.dd} {monthName(e.mm, lang)}
                   </Link>
+                  {/* Without the text (no access), the printed number still shows here. */}
+                  {!e.text && e.entry !== null && (
+                    <>
+                      {" "}· <Number e={e} />
+                    </>
+                  )}
                   {snap[e.id] && <> · {snap[e.id].subject[lang]}</>}
                   <span className={styles.idHint} style={{ display: "inline", margin: "0 0 0 0.6em" }}>
                     {e.id}
                   </span>
                 </p>
                 {e.text && (
-                  <p className={styles.entry} lang={lang}>
-                    {e.entry !== null && <span className={styles.rubric}>{e.entry}.</span>}
+                  <p className={e.unnumbered ? `${styles.entry} ${styles.unnumbered}` : styles.entry} lang={lang}>
+                    {e.entry !== null && !e.unnumbered && <Number e={e} />}
                     <EulogyText
                       text={e.text} id={e.id} edition={edition} noteClassName={styles.sic}
                       errata={e.errata} errataClassName={styles.errata}
