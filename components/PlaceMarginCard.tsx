@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { decisionClass } from "@/components/decisionClass";
-import type { DecisionRecord, MarginCandidate, PlaceMarginOp } from "@/lib/changeset";
+import { opId, type DecisionRecord, type MarginCandidate, type PlaceMarginOp } from "@/lib/changeset";
 import { CLASS_WORDS, marginDecision, marginRef, proposedRef, scanImageUrl } from "@/lib/notationes";
 
 const button = "rounded px-2 py-1 text-xs font-medium text-white disabled:opacity-40";
@@ -32,13 +32,14 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
   const [selected, setSelected] = useState(marginRef(op, decision));
   const proposed = proposedRef(op);
   const chosen = op.candidates.find((c) => c.ref === selected);
-  const decide = (d: DecisionRecord) => onDecide(op.id, d);
+  const uid = opId(op);
+  const decide = (d: DecisionRecord) => onDecide(uid, d);
   const proposal = op.candidates.find((c) => c.ref === proposed);
 
   return (
     <div
       className={`mb-3 grid gap-3 rounded border p-3 text-sm md:grid-cols-2 ${decisionClass(decision)}`}
-      data-testid={`op-card-${op.id}`}
+      data-testid={`op-card-${uid}`}
     >
       <div>
         <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
@@ -75,7 +76,7 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
             <label key={c.ref} className="flex items-baseline gap-1">
               <input
                 type="radio"
-                name={`margin-${op.id}`}
+                name={`margin-${uid}`}
                 checked={selected === c.ref}
                 onChange={() => setSelected(c.ref)}
               />

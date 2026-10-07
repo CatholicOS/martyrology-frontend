@@ -111,6 +111,12 @@ describe("AttachNoteCard", () => {
 });
 
 describe("PlaceMarginCard", () => {
+  it("records decisions under the op's uid when it has one", () => {
+    const onDecide = renderCard({ ...margin, uid: "48|m|x" });
+    fireEvent.click(screen.getByRole("button", { name: "Not a margin note" }));
+    expect(onDecide).toHaveBeenLastCalledWith("48|m|x", { decision: "reject" });
+  });
+
   it("shows the margin note, the reviewer's comment, the candidates and the page image", () => {
     renderCard(margin);
     expect(screen.getAllByText("T. 2. A. 885. num. 5.").length).toBeGreaterThan(0);
