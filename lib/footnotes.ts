@@ -10,13 +10,18 @@ export interface PageFootnote extends Footnote {
   anchor: string;
   /** The element id of its mark in the text, for the link back. */
   markAnchor: string;
+  /** The notes the edition prints in the margin beside this footnote. */
+  marginalia: string[];
 }
 
 /**
  * The printed footnotes of a page's eulogies, in printed order, with their printed marks.
  * `edition` keeps the anchors apart when two sheets face each other.
  */
-export function pageFootnotes(elogia: (Pick<ElogiumOut, "id" | "footnotes"> | null)[], edition: string): PageFootnote[] {
+export function pageFootnotes(
+  elogia: (Pick<ElogiumOut, "id" | "footnotes" | "marginalia"> | null)[],
+  edition: string,
+): PageFootnote[] {
   const seen = new Set<string>();
   const out: PageFootnote[] = [];
   elogia.forEach((e, at) => {
@@ -25,7 +30,8 @@ export function pageFootnotes(elogia: (Pick<ElogiumOut, "id" | "footnotes"> | nu
     seen.add(id);
     e.footnotes.forEach((f, k) => {
       const anchor = `fn-${edition}-${id}-${k + 1}`;
-      out.push({ ...f, id, at, anchor, markAnchor: `${anchor}-mark` });
+      const marginalia = (e.marginalia ?? []).filter((m) => m.note === f.mark).map((m) => m.text);
+      out.push({ ...f, id, at, anchor, markAnchor: `${anchor}-mark`, marginalia });
     });
   });
   return out;

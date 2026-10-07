@@ -43,6 +43,16 @@
 .footnotes li .fnMark { font-size: 1em; vertical-align: baseline; line-height: inherit; margin: 0; text-align: right; padding-right: 0.5em; }
 .footnotes li:target { background: rgba(214, 170, 60, 0.25); }
 .footnotes + .notes { margin-top: 0.75rem; }
+/*
+ * Notes the edition prints in the margin (Baronius's references to his Annales): small italic
+ * side-notes. Beside a footnote they take a third column; beside a eulogy they float at its side.
+ */
+.marginNotes { font-style: italic; color: #5c4f45; line-height: 1.3; }
+.marginNote { display: block; }
+.marginNote + .marginNote { margin-top: 0.3em; }
+.footnotes li.withMargin { grid-template-columns: 2.2em 1fr 6.5rem; }
+.footnotes .marginNotes { font-size: 0.9em; padding-left: 0.75em; }
+.entry .marginNotes { float: right; width: 6.5rem; margin: 0.2rem 0 0.3rem 0.75rem; font-size: 0.72rem; }
 .unnumbered { text-align: center; font-style: italic; }
 .conclusio { margin-top: 1rem; font-style: italic; }
 .conclusio .rubric { font-style: normal; }
@@ -102,4 +112,8 @@
 @media (max-width: 639px) {
   .page { padding: 1.25rem 1rem; }
   .spread { padding: 1.25rem 1rem; }
+  /* No room for a third column: the margin notes go under the footnote. */
+  .footnotes li.withMargin { grid-template-columns: 2.2em 1fr; }
+  .footnotes .marginNotes { grid-column: 2; padding-left: 0; margin-top: 0.15rem; }
+  .entry .marginNotes { width: 5rem; }
 }

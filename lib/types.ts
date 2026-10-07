@@ -45,6 +45,15 @@ export interface Footnote {
   text: string;
 }
 
+/**
+ * A note the edition prints in the margin (the API's `marginalia.json`): `note` is the mark of the
+ * footnote it stands beside, null when it stands beside the eulogy's own text.
+ */
+export interface MarginNote {
+  text: string;
+  note: string | null;
+}
+
 export interface EditionPlacement {
   day_printed: string;
   entry: number | null;
@@ -52,6 +61,7 @@ export interface EditionPlacement {
   unnumbered: boolean;
   text: string | null;
   footnotes?: Footnote[];
+  marginalia?: MarginNote[];
 }
 
 export interface EulogyOut {
@@ -72,6 +82,8 @@ export interface ElogiumOut {
   anchor_day: string;
   text: string | null;
   footnotes?: Footnote[];
+  /** Absent from APIs older than v0.13.0. */
+  marginalia?: MarginNote[];
 }
 
 /** A rubric the print sets among the eulogies: `after` is the eulogy it follows, null at the head of the day. */

@@ -1,4 +1,5 @@
 import { NoteMark } from "@/components/CuratorNotes";
+import { MarginNotes } from "@/components/PrintedFootnotes";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
 import type { PageFootnote } from "@/lib/footnotes";
@@ -9,7 +10,8 @@ import type { ElogiumOut } from "@/lib/types";
  * One eulogy as printed: its number, asterisk and full stop as rubrics ("3*."), or,
  * unnumbered, as a centred heading. `edition` (a CLBDR edition id) selects the misprint notes;
  * `showId` sets the canonical id above it, and `note` marks the curators' note on it, for curators;
- * `footnotes` are the edition's own footnotes on it, marked in the text.
+ * `footnotes` are the edition's own footnotes on it, marked in the text; the notes the edition prints
+ * in the margin beside the eulogy (not beside one of its footnotes) are set at its side.
  */
 export default function Eulogy({
   e, edition, showId = false, note, footnotes,
@@ -20,7 +22,9 @@ export default function Eulogy({
   ) : (
     e.text
   );
-  const text = note ? <>{printed}<NoteMark note={note} /></> : printed;
+  const beside = (e.marginalia ?? []).filter((m) => m.note === null).map((m) => m.text);
+  const side = beside.length > 0 ? <MarginNotes notes={beside} /> : null;
+  const text = note ? <>{side}{printed}<NoteMark note={note} /></> : <>{side}{printed}</>;
   const hint = showId && e.id ? <p className={styles.idHint}>{e.id}</p> : null;
   return e.unnumbered ? (
     <>
