@@ -123,6 +123,12 @@ export interface AccessOut {
   editions: AccessMap;
 }
 
+/** The month endpoint's response: its days by "DD"; `access` is "restricted-texts" when the caller is denied. */
+export interface MonthOut {
+  metadata: { edition: string; month: number; access?: string | null; access_info?: string | null };
+  days: Record<string, DayContentOut>;
+}
+
 /** The day endpoint's full response; `access` is "restricted-texts" when the caller is denied. */
 export interface DayOut extends DayContentOut {
   metadata: {
