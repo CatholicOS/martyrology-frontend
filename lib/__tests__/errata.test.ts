@@ -17,6 +17,12 @@ describe("splitErrata", () => {
     expect(out.map((s) => [s.text, s.erratum?.kind])).toEqual([["Item", undefined], ["", "add"], [" beatæ Dafrosæ.", undefined]]);
   });
 
+  it("marks where an addition that opens the eulogy goes, right before the phrase", () => {
+    const e = { ...er("add", "In Persia", "Item", "197.12"), position: "before" as const };
+    const out = splitErrata([{ text: "In Persia sanctorum Parmenij." }], [e]);
+    expect(out.map((s) => [s.text, s.erratum?.kind])).toEqual([["", "add"], ["In Persia sanctorum Parmenij.", undefined]]);
+  });
+
   it("marks a deletion, even of the whole text", () => {
     const out = splitErrata([{ text: "Bergŏmi sancti Domnônis martyris." }], [er("delete", "Bergŏmi sancti Domnônis martyris.")]);
     expect(out).toHaveLength(1);

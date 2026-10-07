@@ -11,7 +11,8 @@ export function erratumPlace(ref: string): string {
 /**
  * Split `segments` so each erratum the edition prints for this eulogy is marked in place: a
  * replacement's or deletion's printed phrase becomes its own segment, and an addition gets an
- * empty segment right after the phrase it follows. The API guarantees the phrase occurs exactly
+ * empty segment right after the phrase it follows (or right before it, for one that opens the
+ * eulogy). The API guarantees the phrase occurs exactly
  * once as whole words; one that doesn't (in a run already marked as a misprint) is left unmarked.
  */
 export function splitErrata(segments: TextSegment[], errata: Erratum[]): TextSegment[] {
@@ -25,9 +26,10 @@ export function splitErrata(segments: TextSegment[], errata: Erratum[]): TextSeg
     const { i, at } = hits[0];
     const s = out[i].text;
     const end = at + e.printed.length;
+    const cut = e.position === "before" ? at : end;
     const parts: TextSegment[] =
       e.kind === "add"
-        ? [{ text: s.slice(0, end) }, { text: "", erratum: e }, { text: s.slice(end) }]
+        ? [{ text: s.slice(0, cut) }, { text: "", erratum: e }, { text: s.slice(cut) }]
         : [{ text: s.slice(0, at) }, { text: e.printed, erratum: e }, { text: s.slice(end) }];
     out = [...out.slice(0, i), ...parts.filter((p) => p.text || p.erratum), ...out.slice(i + 1)];
   }

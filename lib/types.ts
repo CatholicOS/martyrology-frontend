@@ -57,8 +57,9 @@ export interface MarginNote {
 /**
  * A correction the edition itself prints in its errata (the API's `printed_errata.json`):
  * `printed` occurs once in the text; `replace` reads it as `corrected`, `add` adds `corrected`
- * after it, `delete` drops it. `ref` is the printed page.line ("vbique": everywhere), `entry`
- * the erratum as printed. The text stays as printed.
+ * after it (before it when `position` is "before": an addition that opens the eulogy), `delete`
+ * drops it. `ref` is the printed page.line ("vbique": everywhere), `entry` the erratum as
+ * printed. The text stays as printed.
  */
 export interface Erratum {
   kind: "replace" | "add" | "delete";
@@ -66,6 +67,8 @@ export interface Erratum {
   corrected: string;
   ref: string;
   entry: string;
+  /** Absent from APIs older than v0.14.2; "after" by default. */
+  position?: "after" | "before";
 }
 
 export interface EditionPlacement {
