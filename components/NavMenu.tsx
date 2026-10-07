@@ -7,20 +7,22 @@ import { usePathname } from "next/navigation";
  * The header's navigation. From the `sm` breakpoint up its items sit in a row; below it a
  * hamburger button opens them as a vertical panel, the sign-in/out controls included. The
  * items are rendered once, so a server action inside them (sign-in) exists only once.
- * The panel closes on Escape, on a click outside, on following one of its links, and on any
- * navigation.
+ * The panel closes on Escape, on a click outside, on following one of its links, on a
+ * navigation to another page, and on Back/Forward.
  */
 export function NavMenu({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // The page the panel was opened on: it is open only while that page is shown, so any
-  // navigation (its links, or any other way the page changed) closes it.
-  const [openOn, setOpenOn] = useState<string | null>(null);
-  const open = openOn !== null && openOn === pathname;
-  const setOpen = (o: boolean | ((prev: boolean) => boolean)) =>
-    setOpenOn((prev) => {
-      const wasOpen = prev !== null && prev === pathname;
-      return (typeof o === "function" ? o(wasOpen) : o) ? pathname : null;
-    });
+  const [open, setOpen] = useState(false);
+  // A navigation to another page closes the panel, including a return to the page it was
+  // opened on: reset while rendering, when the pathname changes (React's pattern for state
+  // that follows a value; no effect needed). Query-only navigations are covered elsewhere:
+  // from the page they need a click outside the panel, which closes it; Back/Forward fire
+  // popstate (below).
+  const [shownFor, setShownFor] = useState(pathname);
+  if (pathname !== shownFor) {
+    setShownFor(pathname);
+    setOpen(false);
+  }
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -29,18 +31,21 @@ export function NavMenu({ children }: { children: React.ReactNode }) {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setOpenOn(null);
+        setOpen(false);
         buttonRef.current?.focus();
       }
     };
     const onPointer = (e: PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpenOn(null);
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
     };
+    const onPopState = () => setOpen(false);
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointer);
+    window.addEventListener("popstate", onPopState);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("popstate", onPopState);
     };
   }, [open]);
 

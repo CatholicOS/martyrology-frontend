@@ -71,21 +71,32 @@ describe("NavMenu", () => {
     expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("closes on navigation", () => {
-    const { rerender } = menu();
-    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
-    pathnameMock.mockReturnValue("/map");
-    rerender(
+  it("closes on navigation, and stays closed on returning to the page it was opened on", () => {
+    const tree = () => (
       <div>
         <NavMenu>
           <a href="/map" onClick={(e) => e.preventDefault()}>
-          Map
-        </a>
+            Map
+          </a>
           <button type="button">Sign in</button>
         </NavMenu>
         <p>outside</p>
-      </div>,
+      </div>
     );
+    const { rerender } = render(tree());
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    pathnameMock.mockReturnValue("/map");
+    rerender(tree());
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
+    pathnameMock.mockReturnValue("/");
+    rerender(tree());
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("closes on Back/Forward, which a query-only navigation may be", () => {
+    menu();
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    fireEvent(window, new PopStateEvent("popstate"));
     expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
   });
 });
