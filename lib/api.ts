@@ -33,8 +33,10 @@ export async function getElogium(id: string): Promise<EulogyOut> {
   return get<EulogyOut>(`elogium/${encodeURIComponent(id)}`);
 }
 
-export async function getDay(edition: string, mm: string, dd: string): Promise<DayOut> {
-  return get<DayOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}`);
+/** A day of an edition; `year` is the year its moon is announced for (an edition with lunar tables). */
+export async function getDay(edition: string, mm: string, dd: string, year?: number): Promise<DayOut> {
+  const q = year === undefined ? "" : `?year=${year}`;
+  return get<DayOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}${q}`);
 }
 
 export async function getMonth(edition: string, mm: string): Promise<MonthOut> {

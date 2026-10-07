@@ -129,7 +129,7 @@ describe("Reader", () => {
   it("shows the day's page", async () => {
     render1749();
     expect(await screen.findByText("Romae passio sancti Modesti Sardi.")).toBeInTheDocument();
-    expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_1749", "10", "02");
+    expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_1749", "10", "02", new Date().getFullYear());
   });
 
   it("turns pages from full-height side strips whose arrows are pinned at the top", async () => {

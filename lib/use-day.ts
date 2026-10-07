@@ -22,7 +22,8 @@ export function useDay(edition: string, mm: number, dd: number): { state: DaySta
 
   useEffect(() => {
     let cancelled = false;
-    getDay(edition, pad2(mm), pad2(dd)).then(
+    // The moon is announced for the reader's own year.
+    getDay(edition, pad2(mm), pad2(dd), new Date().getFullYear()).then(
       (data) => {
         if (cancelled) return;
         if (data.metadata.access === "restricted-texts") {
