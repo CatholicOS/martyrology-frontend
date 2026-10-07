@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { API_BASE, API_PUBLIC_URL, proxyTarget } from "@/lib/api-docs";
+import { API_BASE, API_PUBLIC_URL, proxiedLocation, proxyTarget } from "@/lib/api-docs";
 
 // The request headers worth passing on to the API, and the response headers worth passing back.
 const FORWARD = ["accept", "accept-language", "authorization", "x-curation-branch"];
@@ -27,6 +27,12 @@ async function proxy(req: NextRequest): Promise<Response> {
   for (const h of RETURN) {
     const v = res.headers.get(h);
     if (v) out.set(h, v);
+  }
+  // A redirect to the API (FastAPI's trailing-slash redirect) is followed through the proxy again.
+  const location = res.headers.get("location");
+  if (location && res.status >= 300 && res.status < 400) {
+    const next = proxiedLocation(location, target, API_BASE, API_PUBLIC_URL);
+    if (next) out.set("location", next);
   }
   return new Response(req.method === "HEAD" ? null : res.body, { status: res.status, headers: out });
 }

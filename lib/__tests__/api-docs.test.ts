@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { proxyTarget, withPublicServer, API_BASE, API_PUBLIC_URL } from "@/lib/api-docs";
+import { proxiedLocation, proxyTarget, withPublicServer, API_BASE, API_PUBLIC_URL } from "@/lib/api-docs";
 import { GET as openapi } from "@/app/scalar/openapi.json/route";
 import { GET as proxyGet, POST as proxyPost } from "@/app/scalar/proxy/route";
 
@@ -28,6 +28,25 @@ describe("the API reference helpers", () => {
 
 const req = (url: string, method = "GET", headers: Record<string, string> = {}) =>
   ({ nextUrl: new URL(url), method, headers: new Headers(headers) }) as never;
+
+describe("redirects from the API", () => {
+  it("are followed through the proxy when they stay on the API", () => {
+    const via = (u: string) => `/scalar/proxy?${new URLSearchParams([["scalar_url", u]])}`;
+    // FastAPI's own redirect names the address it was reached at (API_BASE)
+    expect(proxiedLocation(`${BASE}/api/v1/editions`, `${BASE}/api/v1/editions/`, BASE, PUB)).toBe(
+      via(`${PUB}/api/v1/editions`),
+    );
+    expect(proxiedLocation("/api/v1/editions?x=1", `${BASE}/api/v1/editions/`, BASE, PUB)).toBe(
+      via(`${PUB}/api/v1/editions?x=1`),
+    );
+    expect(proxiedLocation(`${PUB}/api/v1/x`, `${BASE}/y`, BASE, PUB)).toBe(via(`${PUB}/api/v1/x`));
+  });
+
+  it("are not followed elsewhere", () => {
+    expect(proxiedLocation("https://evil.example/", `${BASE}/y`, BASE, PUB)).toBeNull();
+    expect(proxiedLocation(`http://u:p@127.0.0.1:8412/x`, `${BASE}/y`, BASE, PUB)).toBeNull();
+  });
+});
 
 describe("/scalar/openapi.json", () => {
   it("serves the API's document with the public server", async () => {
@@ -61,6 +80,17 @@ describe("/scalar/proxy", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("set-cookie")).toBeNull();
     expect(await res.json()).toEqual({ editions: [] });
+  });
+
+  it("passes a redirect on the API back through the proxy", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 307, headers: { location: `${API_BASE}/api/v1/editions` } }),
+    );
+    const res = await proxyGet(req(`http://site.test/scalar/proxy?scalar_url=${target}%2F`));
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe(
+      `/scalar/proxy?${new URLSearchParams([["scalar_url", `${API_PUBLIC_URL}/api/v1/editions`]])}`,
+    );
   });
 
   it("refuses other hosts and writes", async () => {

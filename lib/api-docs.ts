@@ -4,7 +4,7 @@
  */
 
 /** Where the frontend reaches the API (server-side; may be an internal address). */
-export const API_BASE = process.env.API_BASE ?? "http://localhost:8000";
+export const API_BASE = (process.env.API_BASE ?? "http://localhost:8000").replace(/\/+$/, "");
 
 /** The API's public address, shown to readers of the reference as the server to call. */
 export const API_PUBLIC_URL = (process.env.API_PUBLIC_URL ?? "https://api.romanmartyrology.com").replace(/\/+$/, "");
@@ -30,4 +30,28 @@ export function proxyTarget(target: string | null, publicUrl: string, apiBase: s
   }
   if (url.origin !== pub.origin || url.username || url.password) return null;
   return `${apiBase.replace(/\/+$/, "")}${url.pathname}${url.search}`;
+}
+
+/**
+ * Where a redirect from the API sends the reader, through the proxy again: `location` (resolved against the URL that
+ * answered) must be on the API, reached at `apiBase` or at `publicUrl`; it comes back as `/scalar/proxy?scalar_url=`
+ * the public URL. Null for a redirect anywhere else, which the proxy doesn't follow.
+ */
+export function proxiedLocation(location: string, from: string, apiBase: string, publicUrl: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(location, from);
+  } catch {
+    return null;
+  }
+  const onApi = [apiBase, publicUrl].some((base) => {
+    try {
+      return url.origin === new URL(base).origin;
+    } catch {
+      return false;
+    }
+  });
+  if (!onApi || url.username || url.password) return null;
+  const pub = `${publicUrl.replace(/\/+$/, "")}${url.pathname}${url.search}`;
+  return `/scalar/proxy?${new URLSearchParams([["scalar_url", pub]]).toString()}`;
 }
