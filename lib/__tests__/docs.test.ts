@@ -58,13 +58,10 @@ describe("the docs registry", () => {
     expect(slugFromPath("/docs/ids/more")).toBeNull();
   });
 
-  it("serves each locale its own content where it exists, else the English", () => {
-    expect(DOC_CONTENT_LANGS).toEqual(["en", "it"]);
+  it("serves each locale its own content, and marks the unreviewed ones as drafts", () => {
+    expect(DOC_CONTENT_LANGS).toEqual(["en", "it", "fr", "de", "es", "pt"]);
     expect(REVIEWED_DOC_LANGS).toEqual(["en", "it"]);
-    expect(docContentLang("fr")).toBe("en");
-    expect(docContentLang("pt")).toBe("en");
-    expect(docContentLang("it")).toBe("it");
-    expect(docContentLang("en")).toBe("en");
+    for (const l of DOC_CONTENT_LANGS) expect(docContentLang(l)).toBe(l);
   });
 
   it("makes stable ASCII anchor ids from headings", () => {

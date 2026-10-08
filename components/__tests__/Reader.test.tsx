@@ -6,6 +6,10 @@ vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ push }), Link: ({ href
 vi.mock("next-auth/react", () => ({ signIn: signInMock }));
 // The subject search labels follow the interface language from the registry; these tests use the catalog's own subjects.
 vi.mock("@/lib/snapshot", () => ({ getSnapshot: () => ({}) }));
+// One curator's note, for the links to a note.
+vi.mock("@/data/notes-snapshot.json", () => ({
+  default: { "mr:1002-modestus-sardus": { editions: { martyrologium_romanum_1749: "A curator's note on Modestus." } } },
+}));
 vi.mock("@/lib/api", () => {
   class ApiError extends Error {
     constructor(public status: number, public title: string) { super(title); }
@@ -444,6 +448,27 @@ describe("Reader, a link to a eulogy", () => {
     window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#mr:1002-modestus-sardus");
     window.dispatchEvent(new HashChangeEvent("hashchange"));
     await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("shows the IDs and finds the curator's note named in the address when the page opens", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#note-martyrologium_romanum_1749-mr:1002-modestus-sardus");
+    render1749();
+    const note = await screen.findByText("A curator's note on Modestus.");
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
+    expect(screen.getByRole("switch", { name: "IDs" })).toBeChecked();
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("finds the note when only the address changes to it, on the same day", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.queryByText("A curator's note on Modestus.")).toBeNull();
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#note-martyrologium_romanum_1749-mr:1002-modestus-sardus");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    const note = await screen.findByText("A curator's note on Modestus.");
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
     window.history.replaceState(null, "", "/");
   });
 });

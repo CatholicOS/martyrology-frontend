@@ -25,7 +25,7 @@ export type DocPage = (typeof DOC_PAGES)[number];
 export type DocSlug = DocPage["slug"];
 
 /** The languages with their own content/docs/<lang> files; any other locale reads the English. */
-export const DOC_CONTENT_LANGS: readonly Locale[] = ["en", "it"];
+export const DOC_CONTENT_LANGS: readonly Locale[] = ["en", "it", "fr", "de", "es", "pt"];
 
 /** The languages whose docs a native speaker has reviewed; the others show the DraftNotice. */
 export const REVIEWED_DOC_LANGS: readonly Locale[] = ["en", "it"];
