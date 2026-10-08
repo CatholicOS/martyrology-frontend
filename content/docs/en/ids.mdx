@@ -1,0 +1,97 @@
+# Canonical eulogy IDs
+
+Every eulogy on this site has an identifier, such as `mr:0102-telesphorus`. This page explains why, and
+the rules that form one.
+
+<Banner>All identifiers are drafts pending review by a committee. The `mr:` prefix and the choice of the
+2004 edition as the anchor may still change; if they do, every identifier will be rewritten mechanically.</Banner>
+
+## Why identifiers
+
+The same eulogy appears in many editions and languages, worded differently, numbered differently, and
+sometimes on another day. To say "this eulogy" across all of them, it needs a name that belongs to none
+of them. An identifier lets one:
+
+- cite a eulogy without quoting it, in any language;
+- set two editions side by side, eulogy by eulogy;
+- attach data to it: its subject, its places, its notes;
+- keep that name when a text is corrected or a new edition appears.
+
+## The form: mr:MMDD-slug
+
+An identifier has two parts after the prefix `mr:`:
+
+- **`MMDD`**, the month and day on which the edition prints the eulogy: `0102` is 2 January. For the
+  eulogies of the current book this is the day of the *editio typica altera* of 2004.
+- **The slug**, the name of the eulogy's first-named subject in the Latin nominative, in lowercase
+  ASCII, with no honorific (*sanctus*, *beatus*): `telesphorus`, `basilius-magnus-et-gregorius-nazianzenus`.
+
+The registry holds 4,640 current identifiers, for the eulogies of the 2004 edition, and 1,616
+deprecated ones (see [Deprecated IDs](#deprecated-ids)).
+
+## What is identity, and what is not
+
+- **The day is part of the identity.** A eulogy that an edition prints on another day has its own
+  identifier there; the two are linked as the same eulogy (`same_eulogy`), never merged.
+- **Entry number, asterisk and unnumbered status are not.** They belong to each edition: the 2004
+  Latin and the Italian edition may number a day differently, or asterisk different entries, and the
+  identifier stays the same.
+- **The text is not.** An identifier names the eulogy, not its wording, so it survives corrections and
+  translations.
+- **Identifiers are unique**, and within a day no two share a slug.
+
+## Building the slug
+
+The slug is the Latin nominative of the first-named subject, folded to plain letters:
+
+- the genitive of the text turned back to the nominative: *sancti Basilii* → `basilius`;
+- lowercase, words joined by hyphens, diacritics folded (*æ* → `ae`, *ł* → `l`), classical *i* for *j*:
+  `ioannes`, not `joannes`;
+- no honorific, and no numbers: same-day namesakes are told apart by a place or an epithet
+  (`mr:0408-dionysius-corinthi`), never by `-2`;
+- one conventional name form: a religious name with its title, or given name and surname;
+- papal ordinals in roman numerals (`pius-v`); other regnal ordinals as Latin words (`ludovicus-nonus`);
+- an epithet the eulogy gives with *cognomento* is kept: `petrus-chrysologus`.
+
+### Several subjects and groups
+
+| Subjects | Slug | Example |
+|---|---|---|
+| Two | both, joined by `-et-` | `mr:0927-cosmas-et-damianus`, `mr:0622-ioannes-fisher-et-thomas-more` |
+| Three or more, or "and companions" | the first, then `-et-socii` | `mr:0206-paulus-miki-et-socii` |
+| An anonymous group | `[number-]class-` and the place in the genitive | `mr:0309-quadraginta-milites-sebastes` |
+| A group known by a name | `martyres-` and that name | `mr:0717-martyres-scillitani` |
+
+### Feasts and titled saints
+
+Feasts of the Lord, of Mary and other celebrations take a set phrase, without *sancti*/*sanctae*, except
+for the name of a church, the Holy Cross, All Saints and *beatae Mariae*. Prophets keep `-propheta`, the
+Twelve `-apostolus` (`mr:0629-petrus-et-paulus-apostoli`), the evangelists `-evangelista`.
+
+### No bare names
+
+A single name alone, like `dominicus`, says little: many saints share it. So a single-name slug takes a
+discriminator, the first of these that applies:
+
+1. the **surname**, when the saint is commonly known by it;
+2. the **place**, in the Latin genitive: a bishop's see, an abbot's monastery, otherwise the place of
+   death (Dominic, who died at Bologna, is drafted as `dominicus-bononiae`);
+3. an **epithet**, when there is no surname and no place: `-papa` for a pope with no ordinal, a biblical
+   title, or a byname the eulogy gives.
+
+The same saint carries the same discriminator on every day. These discriminators are being drafted for
+the whole registry and are under review.
+
+## Deprecated IDs
+
+Older editions contain eulogies that the 2004 book does not print, or prints on another day. Each has
+its own identifier, marked **deprecated**, with the edition it is attested in (`attested_in`) and, where
+there is one, a link to the same eulogy elsewhere. For example, `mr:0102-martinianus` is the eulogy of
+Martinian that the 1749 edition prints on 2 January; the 2004 edition prints it on 29 December, as
+`mr:1229-martinianus`. Deprecated identifiers follow the same rules and are never reused.
+
+## Recognizability
+
+The aim of all these rules is that a reader can recognize the eulogy from its identifier: who it is, and
+where needed, which one. Whether an identifier achieves that is a judgement that needs readers;
+see [How to contribute](/docs/en/contributing).
