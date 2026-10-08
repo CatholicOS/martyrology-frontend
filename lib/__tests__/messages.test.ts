@@ -56,7 +56,7 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Bookshelf.languageName.la": ["fr"], "Reader.placePageLine": ["fr"], "Reader.placePage": ["fr"],
   "Map.place.occurrences": ["fr"], "Review.realign.note": ["fr"], "Review.attach.note": ["fr"],
   "Review.margin.kind.note": ["fr"], "Docs.index.title": ["fr"], "Docs.finder.date": ["fr"],
-  "Compare.columns.status": ["de"],
+  "Compare.columns.status": ["de", "pt"], // Brazilian Portuguese says "Status"
 };
 
 describe("messages are translated", () => {

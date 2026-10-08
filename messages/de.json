@@ -12,7 +12,7 @@
   "Header": {
     "brand": "Martyrologium",
     "language": "Sprache",
-    "docs": "Handbuch",
+    "docs": "Dokumentation",
     "map": "Karte",
     "api": "API",
     "compare": "Vergleichen",
@@ -446,7 +446,7 @@
       "epact": "Epakte",
       "letter": "Buchstabe des Martyrologiums",
       "moon": "Anzukündigender Mond",
-      "reader": "Diesen Tag im Leser öffnen",
+      "reader": "Diesen Tag in der Leseansicht öffnen",
       "failed": "Der Mond konnte nicht geladen werden.",
       "loading": "Wird geladen…",
       "early": "Die Mondtafel gilt ab 1583, dem ersten vollen Jahr des gregorianischen Kalenders.",
