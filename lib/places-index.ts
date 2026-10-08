@@ -53,6 +53,16 @@ export function headingLetter(label: string): string {
   return first && FILING.test(first) ? first.toUpperCase() : "#";
 }
 
+/** Calendar order within a place: by day, then the unnumbered first on their day (as printed), then by number. */
+export function compareLines(a: PlaceLine, b: PlaceLine): number {
+  if (a.day.mm !== b.day.mm) return a.day.mm - b.day.mm;
+  if (a.day.dd !== b.day.dd) return a.day.dd - b.day.dd;
+  if (a.entry === b.entry) return 0;
+  if (a.entry === null) return -1;
+  if (b.entry === null) return 1;
+  return a.entry - b.entry;
+}
+
 const AZ = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 
 /**
@@ -103,7 +113,7 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
   const letters: IndexLetter[] = [];
   const byLetter = new Map<string, IndexLetter>();
   for (const p of places) {
-    p.lines.sort((a, b) => a.day.mm - b.day.mm || a.day.dd - b.day.dd || (a.entry ?? -Infinity) - (b.entry ?? -Infinity));
+    p.lines.sort(compareLines);
     const letter = filingLetter(p.label, collator);
     let l = byLetter.get(letter);
     if (!l) {

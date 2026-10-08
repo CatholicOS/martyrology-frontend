@@ -27,8 +27,10 @@ export default async function PlacesRoute({ params }: { params: Params }) {
   if (e) {
     try {
       index = placesIndex(await fetchCatalog(edition, editionLang(e)), getPlaces(), edition, locale as Locale);
-    } catch {
-      index = null; // the API could not give the catalog: PlacesIndex says so and offers to try again
+    } catch (err) {
+      // The API could not give the catalog: PlacesIndex says so and offers to try again; the log says why.
+      console.error(`index of places: the catalog of ${edition} could not be loaded`, err);
+      index = null;
     }
   }
   return (

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { headingLetter, placeLabel, placesIndex } from "@/lib/places-index";
+import { compareLines, headingLetter, placeLabel, placesIndex, type PlaceLine } from "@/lib/places-index";
 import type { PlacesSnapshot } from "@/lib/places";
 import type { CatalogEntryOut } from "@/lib/types";
 
@@ -141,5 +141,20 @@ describe("headingLetter", () => {
     expect(headingLetter("ʼs-Hertogenbosch")).toBe("S");
     expect(headingLetter("123")).toBe("#");
     expect(headingLetter("Łódź")).toBe("Ł");
+  });
+});
+
+describe("compareLines", () => {
+  const line = (mm: number, dd: number, entry: number | null): PlaceLine =>
+    ({ id: "x", day: { mm, dd }, entry, subject: "", printed: null, typology: null });
+
+  it("orders by day, then the unnumbered first, then by number", () => {
+    expect(compareLines(line(1, 2, 1), line(1, 3, 1))).toBeLessThan(0);
+    expect(compareLines(line(1, 2, null), line(1, 2, 1))).toBeLessThan(0);
+    expect(compareLines(line(1, 2, 3), line(1, 2, 2))).toBeGreaterThan(0);
+  });
+
+  it("is a tie, not NaN, between two unnumbered eulogies of the same day", () => {
+    expect(compareLines(line(1, 2, null), line(1, 2, null))).toBe(0);
   });
 });

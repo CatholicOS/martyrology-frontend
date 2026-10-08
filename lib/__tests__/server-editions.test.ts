@@ -88,6 +88,22 @@ describe("fetchCatalog", () => {
     expect(fetchMock.mock.calls[0][1]).toEqual({ next: { revalidate: 3600 } });
   });
 
+  it("asks again past the cache when a cached answer is not a catalog", async () => {
+    const elogia = [{ id: "mr:0101-basilius", subject: "Sanctus Basilius", anchor_day: "01-01", deprecated: false, present: true, day_printed: "01-01", entry: 2 }];
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response("<html>proxy error</html>"))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ elogia })));
+    expect(await fetchCatalog("x", "la")).toEqual(elogia);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][1]).toEqual({ cache: "no-store" });
+  });
+
+  it("throws when neither the cached nor a fresh answer is a catalog", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(async () => new Response(JSON.stringify({ title: "not a catalog" })));
+    await expect(fetchCatalog("x", "la")).rejects.toThrow(/not a catalog/);
+  });
+
   it("throws when the API answers with an error or cannot be reached", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("", { status: 503 }));
     await expect(fetchCatalog("x", "la")).rejects.toThrow();

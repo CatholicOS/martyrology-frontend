@@ -49,10 +49,14 @@ describe("/read/<edition>/places", () => {
     expect(props.index.letters[0].places[0].lines[0].subject).toBe("Sant’Almachio");
   });
 
-  it("renders the error state, not a crash, when the catalog cannot be loaded", async () => {
-    catalogMock.mockRejectedValue(new Error("down"));
+  it("renders the error state, not a crash, when the catalog cannot be loaded, and logs why", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const down = new Error("down");
+    catalogMock.mockRejectedValue(down);
     render(await PlacesRoute(params(E.edition_id)));
     expect(indexProps.mock.calls[0][0].index).toBeNull();
+    expect(log).toHaveBeenCalledWith(expect.stringContaining(E.edition_id), down);
+    log.mockRestore();
   });
 
   it("renders the error state when the edition list cannot be asked", async () => {
