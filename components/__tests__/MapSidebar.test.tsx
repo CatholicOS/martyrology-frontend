@@ -11,7 +11,7 @@ const edition = (id: string, year: number, locale: string, nature = "editio_typi
 const editions = [edition("mr_2004", 2004, "la"), edition("mr_1914_en", 1914, "en", "translation")];
 
 const entry = (id: string, subject: string, label: string): MapEntry => ({
-  id, subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, country: "IT", coords: [0, 0], typology: "dies_natalis",
+  id, subject, editionSubject: subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, country: "IT", coords: [0, 0], typology: "dies_natalis",
 });
 const results = [entry("mr:0101-almachius", "Sanctus Almachius", "Rome"), entry("mr:0102-x", "Sanctus X", "Rome")];
 const filters: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
