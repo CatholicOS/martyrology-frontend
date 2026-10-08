@@ -1,3 +1,101 @@
 # Gli identificatori canonici degli elogi
 
-Perché ogni elogio ha un identificatore, e le regole che lo formano.
+Ogni elogio di questo sito ha un identificatore, come `mr:0102-telesphorus`. Questa pagina spiega perché,
+e quali regole lo formano.
+
+<Banner>Tutti gli identificatori sono bozze in attesa della revisione di una commissione. Il prefisso
+`mr:` e la scelta dell’edizione del 2004 come riferimento possono ancora cambiare; in tal caso ogni
+identificatore sarà riscritto in modo meccanico.</Banner>
+
+## Perché gli identificatori
+
+Lo stesso elogio compare in molte edizioni e lingue, con parole diverse, con numeri diversi, e talvolta in
+un altro giorno. Per dire “questo elogio” in tutte, occorre un nome che non appartenga a nessuna di esse.
+Un identificatore permette di:
+
+- citare un elogio senza riportarne il testo, in qualunque lingua;
+- affiancare due edizioni, elogio per elogio;
+- collegargli dei dati: il suo soggetto, i suoi luoghi, le sue note;
+- conservare quel nome quando un testo viene corretto o esce una nuova edizione.
+
+## La forma: mr:MMDD-slug
+
+Un identificatore ha due parti dopo il prefisso `mr:`:
+
+- **`MMDD`**, il mese e il giorno in cui l’edizione stampa l’elogio: `0102` è il 2 gennaio. Per gli elogi
+  del libro attuale è il giorno dell’*editio typica altera* del 2004.
+- **Lo slug**, il nome del primo soggetto nominato nell’elogio, al nominativo latino, in lettere ASCII
+  minuscole, senza titoli onorifici (*sanctus*, *beatus*): `telesphorus`,
+  `basilius-magnus-et-gregorius-nazianzenus`.
+
+Il registro contiene 4.640 identificatori correnti, per gli elogi dell’edizione del 2004, e 1.616
+deprecati (vedi [Identificatori deprecati](#identificatori-deprecati)).
+
+## Che cosa fa parte dell’identità, e che cosa no
+
+- **Il giorno fa parte dell’identità.** Un elogio che un’edizione stampa in un altro giorno vi ha un proprio
+  identificatore; i due sono collegati come lo stesso elogio (`same_eulogy`), mai fusi.
+- **Numero, asterisco e assenza di numero non ne fanno parte.** Appartengono a ciascuna edizione: l’edizione
+  latina del 2004 e quella italiana possono numerare un giorno in modo diverso, o porre l’asterisco su elogi
+  diversi, e l’identificatore resta lo stesso.
+- **Il testo non ne fa parte.** Un identificatore nomina l’elogio, non le sue parole, e quindi sopravvive a
+  correzioni e traduzioni.
+- **Gli identificatori sono unici**, e in uno stesso giorno due slug non sono mai uguali.
+
+## Come si forma lo slug
+
+Lo slug è il nominativo latino del primo soggetto nominato, ridotto a lettere semplici:
+
+- il genitivo del testo riportato al nominativo: *sancti Basilii* → `basilius`;
+- minuscole, parole unite da trattini, segni diacritici semplificati (*æ* → `ae`, *ł* → `l`), *i* classica
+  al posto di *j*: `ioannes`, non `joannes`;
+- nessun titolo onorifico e nessun numero: gli omonimi dello stesso giorno si distinguono con un luogo o un
+  epiteto (`mr:0408-dionysius-corinthi`), mai con `-2`;
+- una sola forma convenzionale del nome: il nome religioso con il suo titolo, oppure nome e cognome;
+- gli ordinali dei papi in numeri romani (`pius-v`); gli altri ordinali dinastici come parole latine
+  (`ludovicus-nonus`);
+- un epiteto che l’elogio introduce con *cognomento* si conserva: `petrus-chrysologus`.
+
+### Più soggetti e gruppi
+
+| Soggetti | Slug | Esempio |
+|---|---|---|
+| Due | entrambi, uniti da `-et-` | `mr:0927-cosmas-et-damianus`, `mr:0622-ioannes-fisher-et-thomas-more` |
+| Tre o più, o “e compagni” | il primo, poi `-et-socii` | `mr:0206-paulus-miki-et-socii` |
+| Un gruppo anonimo | `[numero-]classe-` e il luogo al genitivo | `mr:0309-quadraginta-milites-sebastes` |
+| Un gruppo noto con un nome | `martyres-` e quel nome | `mr:0717-martyres-scillitani` |
+
+### Feste e santi con un titolo
+
+Le feste del Signore, di Maria e altre celebrazioni hanno una formula fissa, senza *sancti*/*sanctae*,
+tranne che per il nome di una chiesa, la Santa Croce, Tutti i Santi e *beatae Mariae*. I profeti conservano
+`-propheta`, i Dodici `-apostolus` (`mr:0629-petrus-et-paulus-apostoli`), gli evangelisti `-evangelista`.
+
+### Niente nomi nudi
+
+Un nome da solo, come `dominicus`, dice poco: molti santi lo portano. Perciò uno slug di un solo nome riceve
+un elemento distintivo, il primo di questi che si applica:
+
+1. il **cognome**, quando il santo è comunemente conosciuto con esso;
+2. il **luogo**, al genitivo latino: la sede di un vescovo, il monastero di un abate, altrimenti il luogo di
+   morte (Domenico, morto a Bologna, è proposto come `dominicus-bononiae`);
+3. un **epiteto**, quando non c’è né cognome né luogo: `-papa` per un papa senza ordinale, un titolo
+   biblico, o un appellativo che l’elogio dà.
+
+Lo stesso santo porta lo stesso elemento distintivo in ogni giorno. Questi elementi distintivi sono in
+corso di redazione per tutto il registro e sono in revisione.
+
+## Identificatori deprecati
+
+Le edizioni più antiche contengono elogi che il libro del 2004 non stampa, o stampa in un altro giorno.
+Ciascuno ha un proprio identificatore, segnato come **deprecato**, con l’edizione in cui è attestato
+(`attested_in`) e, se esiste, un collegamento allo stesso elogio altrove. Per esempio,
+`mr:0102-martinianus` è l’elogio di Martiniano che l’edizione del 1749 stampa il 2 gennaio; l’edizione del
+2004 lo stampa il 29 dicembre, come `mr:1229-martinianus`. Gli identificatori deprecati seguono le stesse
+regole e non vengono mai riutilizzati.
+
+## Riconoscibilità
+
+Lo scopo di tutte queste regole è che un lettore riconosca l’elogio dal suo identificatore: di chi si
+tratta e, se serve, di quale dei suoi omonimi. Se un identificatore ci riesca è un giudizio che ha bisogno
+di lettori; vedi [Come contribuire](/docs/it/contributing).
