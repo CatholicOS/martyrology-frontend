@@ -45,6 +45,6 @@ describe("SiteHeader", () => {
   it("offers the language picker", async () => {
     viewerMock.mockResolvedValue({ signedIn: false, curator: false });
     render(await SiteHeader());
-    expect(screen.getByRole("combobox", { name: "Language" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Language" })).toBeInTheDocument();
   });
 });
