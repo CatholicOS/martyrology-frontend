@@ -8,6 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default async function ScalarPage({ params }: { params: Promise<{ locale: string }> }) {
-  setRequestLocale((await params).locale as Locale);
-  return <ApiReference />;
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  return <ApiReference locale={locale} />;
 }
