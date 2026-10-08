@@ -1,0 +1,35 @@
+# Datos y fuentes
+
+Todo lo que este sitio sabe sobre un elogio, aparte de su texto, procede de un registro abierto que
+cualquiera puede utilizar. Los textos de las ediciones de 2004 están protegidos por derechos de autor y
+no forman parte de él.
+
+## El registro (CRMEDR)
+
+El Common Roman Martyrology Eulogy Data Repository,
+[CRMEDR](https://github.com/CatholicOS/crmedr), es un repositorio público de datos abiertos. Contiene:
+
+- los **identificadores** de cada elogio, vigentes y obsoletos, con el día, el número de entrada, el
+  asterisco y la edición en la que está atestiguado cada uno (véase
+  [Los identificadores canónicos de los elogios](/docs/ids));
+- el **sujeto** de cada elogio, el santo o la celebración de la que trata, en latín, italiano e inglés;
+- la **tipología** de cada fecha: si corresponde a un *dies natalis*, una sepultura, una traslación de
+  reliquias, un hallazgo, una dedicación, etc.;
+- los **lugares** que nombra cada elogio, con su función (lugar de muerte, sede, sepultura…), y un
+  **nomenclátor geográfico** que asocia cada lugar a un elemento de Wikidata y a su país actual, a partir
+  del cual se genera el [mapa](/map);
+- las **erratas** que los curadores han verificado en las ediciones impresas, y las **notas de los
+  curadores** (véase [Notas, erratas y fe de erratas](/docs/notes-and-marks)).
+
+## Lo que no contiene
+
+Los textos de las ediciones de 2004, protegidos por derechos de autor, están ausentes a propósito: el
+registro solo contiene datos estructurales sobre los elogios. La única excepción son los nombres de
+lugar, que son datos de hecho y se citan tal como están impresos. Los comienzos de los elogios, con la
+extensión de una cita breve, aparecen solo en el informe de trabajo del registro, para identificar las
+entradas.
+
+## La API
+
+El sitio lee sus textos y sus datos a través de una API pública. Su documentación de referencia, con
+todos los endpoints y una forma de probarlos, está en [/scalar](/scalar).
