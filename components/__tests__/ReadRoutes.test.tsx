@@ -45,6 +45,12 @@ describe("/read routes", () => {
     });
   });
 
+  it("spells the leap day in the title", async () => {
+    expect(await generateMetadata(params({ edition: "mr1749", mm: "02", dd: "29" }))).toEqual({
+      title: "29 February — Martyrologium Romanum 1749",
+    });
+  });
+
   it("falls back to the edition id when the list is unreachable, and to a generic title for bad params", async () => {
     metaMock.mockResolvedValue(null);
     expect(await generateMetadata(params({ edition: "mr1749", mm: "10", dd: "02" }))).toEqual({ title: "2 October — mr1749" });

@@ -123,7 +123,7 @@ export default function BookCover({
           aria-expanded={turned}
           aria-controls={backId}
           title={t("aboutEdition")}
-          onClick={() => setTurned((t) => !t)}
+          onClick={() => setTurned((v) => !v)}
         >
           ©
         </button>
