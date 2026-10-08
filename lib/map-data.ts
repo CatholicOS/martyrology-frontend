@@ -40,7 +40,7 @@ const TYPOLOGY_ORDER = [
 /**
  * The eulogies an edition prints (its catalog's `present` entries with a printed day) that have a
  * place on the map, in printed order; `unmapped` counts the printed ones that have none (no
- * resolved place, or a deprecated ID, which the gazetteer does not cover).
+ * resolved place, a place without coordinates, or a deprecated ID, which the gazetteer does not cover).
  */
 export function mapEntries(
   catalog: CatalogEntryOut[],
@@ -55,7 +55,7 @@ export function mapEntries(
     if (!m) continue;
     const ep = snap.eulogies[c.id];
     const place = ep ? snap.places[ep.place] : undefined;
-    if (!ep || !place) {
+    if (!ep || !place?.coords) {
       unmapped++;
       continue;
     }

@@ -143,6 +143,9 @@ export default function ReaderBar({
       <Link href={`/read/${encodeURIComponent(edition)}/notes`} className="text-sm underline">
         {t("notesLink")}
       </Link>
+      <Link href={`/read/${encodeURIComponent(edition)}/places`} className="text-sm underline">
+        {t("placesLink")}
+      </Link>
       <Link href="/" className="text-sm underline">{t("shelf")}</Link>
     </div>
   );
