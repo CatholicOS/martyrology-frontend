@@ -6,7 +6,7 @@
     "map": "Map",
     "apiReferenceTitle": "API reference · {book}",
     "apiReferenceDescription": "The Roman Martyrology API: its endpoints, parameters and responses, with requests to try.",
-    "dayTitle": "{day} — {books}",
+    "dayTitle": "{day} {month} — {books}",
     "notesTitle": "{edition}: notes, misprints and errata"
   },
   "Header": {
