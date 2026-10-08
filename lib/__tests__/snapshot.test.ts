@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, labelsQuery, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -73,17 +73,36 @@ describe("buildPlaces", () => {
   const typologyDoc = { typology: { "mr:0101-almachius": "dies_natalis", "mr:0102-x": "depositio", "mr:0104-z": "dies_natalis" } };
   const coords = { Q220: [41.893, 12.483] as [number, number], Q490: [45.464, 9.19] as [number, number] };
 
-  it("gives each eulogy its first resolved place, with typology and the place's coordinates", () => {
-    expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords)).toEqual({
+  it("gives each eulogy its first resolved place, its Italian form, typology, and the place's coordinates and labels", () => {
+    const labels = { Q220: { en: "Rome", it: "Roma", fr: "Rome" }, Q490: { it: "Milano" } };
+    expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels)).toEqual({
       places: {
-        Q220: { label: "Rome", country: "IT", coords: [41.893, 12.483] },
-        Q490: { label: "Milan", country: "IT", coords: [45.464, 9.19] },
+        Q220: { label: "Rome", country: "IT", coords: [41.893, 12.483], labels: { en: "Rome", it: "Roma", fr: "Rome" } },
+        Q490: { label: "Milan", country: "IT", coords: [45.464, 9.19], labels: { it: "Milano" } },
+        Q999: { label: "Island", country: "GR", coords: null },
       },
       eulogies: {
-        "mr:0101-almachius": { place: "Q220", la: "Romæ", typology: "dies_natalis" },
+        "mr:0101-almachius": { place: "Q220", la: "Romæ", it: "A Roma", typology: "dies_natalis" },
         "mr:0102-x": { place: "Q490", la: "Mediolani", typology: "depositio" },
+        "mr:0104-z": { place: "Q999", la: "Insula", typology: "dies_natalis" },
       },
     });
+  });
+
+  it("keeps a place without coordinates, for the index, with null coordinates", () => {
+    const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, {});
+    expect(snap.places.Q220.coords).toBeNull();
+    expect(snap.eulogies["mr:0101-almachius"].place).toBe("Q220");
+  });
+
+  it("gives the QID as the label of a place the gazetteer has no label for", () => {
+    const snap = buildPlaces(
+      { places: { "mr:0101-a": [{ role: "death", la: "Nullibi", source: "lead" }] } },
+      { places: { Nullibi: { wikidata: "Q5", status: "auto" } } },
+      { typology: {} },
+      {},
+    );
+    expect(snap.places.Q5.label).toBe("Q5");
   });
 
   it("lists the resolved QIDs once each, sorted", () => {
@@ -104,5 +123,14 @@ describe("parseWktPoint", () => {
   it("rejects anything else", () => {
     expect(parseWktPoint("<http://www.wikidata.org/entity/Q405> Point(1 2)")).toBeNull();
     expect(parseWktPoint("garbage")).toBeNull();
+  });
+});
+
+describe("labelsQuery", () => {
+  it("asks for the labels of the items in the six interface languages", () => {
+    const q = labelsQuery(["Q220", "Q490"]);
+    expect(q).toContain("VALUES ?item { wd:Q220 wd:Q490 }");
+    expect(q).toContain("rdfs:label ?label");
+    expect(q).toContain('FILTER(LANG(?label) IN ("en", "it", "fr", "de", "es", "pt"))');
   });
 });

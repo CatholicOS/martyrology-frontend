@@ -10,12 +10,14 @@ const snap: PlacesSnapshot = {
     Q220: { label: "Rome", country: "IT", coords: [41.9, 12.5] },
     Q84: { label: "London", country: "GB", coords: [51.5, -0.1] },
     Q1: { label: "Caesarea", country: "TR", coords: [38.7, 35.5] },
+    Q2: { label: "Nowhere", country: "", coords: null },
   },
   eulogies: {
     "mr:0101-almachius": { place: "Q220", la: "Romæ", typology: "dies_natalis" },
     "mr:0102-caecilia": { place: "Q220", la: "Romæ", typology: "depositio" },
     "mr:0103-thomas": { place: "Q84", la: "Londínii", typology: "dies_natalis" },
     "mr:0104-basilius": { place: "Q1", la: "Cæsaréæ in Cappadócia", typology: null },
+    "mr:0107-nemo": { place: "Q2", la: "Nusquam", typology: "dies_natalis" },
   },
 };
 
@@ -30,6 +32,7 @@ const catalog: CatalogEntryOut[] = [
   cat("mr:0104-basilius", "Sanctus Basilius", "01-04"),
   cat("mr:0105-absent", "Sanctus Absens", "01-05", 1, false),
   cat("mr:0106-martina", "Sancta Martina", "01-06"), // printed, but no place (deprecated ID)
+  cat("mr:0107-nemo", "Sanctus Nemo", "01-07"), // placed, but no coordinates: not on the map
 ];
 
 const all: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
@@ -38,7 +41,7 @@ describe("mapEntries", () => {
   it("keeps the eulogies the edition prints that have a place, in printed order, and counts the rest", () => {
     const { entries, unmapped } = mapEntries(catalog, snap);
     expect(entries.map((e) => e.id)).toEqual(["mr:0101-almachius", "mr:0102-caecilia", "mr:0103-thomas", "mr:0104-basilius"]);
-    expect(unmapped).toBe(1); // mr:0106-martina; mr:0105-absent is not printed at all
+    expect(unmapped).toBe(2); // mr:0106-martina has no place, mr:0107-nemo no coordinates; mr:0105-absent is not printed at all
     expect(entries[0]).toEqual({
       id: "mr:0101-almachius", subject: "Sanctus Almachius", editionSubject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
       qid: "Q220", la: "Romæ", label: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",

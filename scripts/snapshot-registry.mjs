@@ -96,7 +96,7 @@ export function buildNotes(registry) {
 function firstResolved(stated, gazetteer) {
   for (const s of stated) {
     const g = gazetteer[s.la];
-    if (g?.wikidata) return { la: s.la, qid: g.wikidata, g };
+    if (g?.wikidata) return { la: s.la, it: s.it, qid: g.wikidata, g };
   }
   return null;
 }
@@ -118,24 +118,31 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
 }
 
 /**
- * The map's data: each current eulogy's place (the first it states that the gazetteer resolves),
- * its typology, and each place's label, modern country and coordinates. A eulogy whose place has
- * no coordinates is left out: the map cannot show it.
+ * The places of the map and of the index: each current eulogy's place (the first it states that the
+ * gazetteer resolves), as the Latin 2004 and the Italian print it, its typology, and each place's
+ * label, its labels in the interface languages, modern country and coordinates (null when Wikidata
+ * has none: the index lists the place, the map leaves it out).
  * @param {{places: Record<string, StatedPlace[]>}} placesDoc crmedr data/places.json (curated places included)
  * @param {{places: Record<string, GazetteerPlace>}} gazetteerDoc crmedr data/gazetteer.json
  * @param {{typology: Record<string, string>}} typologyDoc crmedr data/typology.json
  * @param {Record<string, [number, number]>} coords [lat, lon] by QID
+ * @param {Record<string, Record<string, string>>} [labels] Wikidata labels by QID, then language
  */
-export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords) {
-  /** @type {Record<string, {label: string, country: string, coords: [number, number]}>} */
+export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels = {}) {
+  /** @type {Record<string, {label: string, country: string, coords: [number, number] | null, labels?: Record<string, string>}>} */
   const places = {};
-  /** @type {Record<string, {place: string, la: string, typology: string|null}>} */
+  /** @type {Record<string, {place: string, la: string, it?: string, typology: string|null}>} */
   const eulogies = {};
   for (const [id, stated] of Object.entries(placesDoc.places)) {
     const hit = firstResolved(stated, gazetteerDoc.places);
-    if (!hit || !coords[hit.qid]) continue;
-    places[hit.qid] ??= { label: hit.g.label ?? hit.qid, country: hit.g.country ?? "", coords: coords[hit.qid] };
-    eulogies[id] = { place: hit.qid, la: hit.la, typology: typologyDoc.typology[id] ?? null };
+    if (!hit) continue;
+    places[hit.qid] ??= {
+      label: hit.g.label ?? hit.qid,
+      country: hit.g.country ?? "",
+      coords: coords[hit.qid] ?? null,
+      ...(labels[hit.qid] ? { labels: labels[hit.qid] } : {}),
+    };
+    eulogies[id] = { place: hit.qid, la: hit.la, ...(hit.it ? { it: hit.it } : {}), typology: typologyDoc.typology[id] ?? null };
   }
   return { places, eulogies };
 }
@@ -185,6 +192,47 @@ export async function fetchCoords(qids) {
   return out;
 }
 
+/** The interface languages, whose Wikidata labels head the index of places. */
+export const LABEL_LANGS = ["en", "it", "fr", "de", "es", "pt"];
+
+/**
+ * The SPARQL query for the labels of `qids` in the interface languages.
+ * @param {string[]} qids
+ */
+export function labelsQuery(qids) {
+  const values = qids.map((q) => `wd:${q}`).join(" ");
+  const langs = LABEL_LANGS.map((l) => `"${l}"`).join(", ");
+  return `SELECT ?item ?label WHERE { VALUES ?item { ${values} } ?item rdfs:label ?label FILTER(LANG(?label) IN (${langs})) }`;
+}
+
+/**
+ * Each item's label by language, from Wikidata, a few hundred items per query.
+ * @param {string[]} qids
+ * @returns {Promise<Record<string, Record<string, string>>>}
+ */
+export async function fetchLabels(qids) {
+  /** @type {Record<string, Record<string, string>>} */
+  const out = {};
+  for (let i = 0; i < qids.length; i += 300) {
+    const res = await fetch(SPARQL, {
+      method: "POST",
+      headers: {
+        accept: "application/sparql-results+json",
+        "content-type": "application/x-www-form-urlencoded",
+        "user-agent": USER_AGENT,
+      },
+      body: new URLSearchParams({ query: labelsQuery(qids.slice(i, i + 300)) }),
+    });
+    if (!res.ok) throw new Error(`Wikidata SPARQL ${res.status}`);
+    const body = await res.json();
+    for (const b of body.results.bindings) {
+      const qid = b.item.value.split("/").pop();
+      (out[qid] ??= {})[b.label["xml:lang"]] = b.label.value;
+    }
+  }
+  return out;
+}
+
 async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -212,18 +260,24 @@ async function main() {
   const placesDest = join(here, "..", "data", "places-snapshot.json");
   /** @type {Record<string, [number, number]>} */
   let coords;
+  /** @type {Record<string, Record<string, string>>} */
+  let labels;
   try {
     coords = await fetchCoords(qids);
+    labels = await fetchLabels(qids);
   } catch (err) {
-    // Offline: the previous snapshot's coordinates, so the rest of the snapshot still updates.
+    // Offline: the previous snapshot's coordinates and labels, so the rest of the snapshot still updates.
     console.warn(`Wikidata unreachable (${err instanceof Error ? err.message : err}); reusing ${placesDest}`);
-    /** @type {{places: Record<string, {coords: [number, number]}>}} */
+    /** @type {{places: Record<string, {coords: [number, number] | null, labels?: Record<string, string>}>}} */
     const prev = JSON.parse(readFileSync(placesDest, "utf8"));
-    coords = Object.fromEntries(Object.entries(prev.places).map(([q, p]) => [q, p.coords]));
+    coords = Object.fromEntries(Object.entries(prev.places).flatMap(([q, p]) => (p.coords ? [[q, p.coords]] : [])));
+    labels = Object.fromEntries(Object.entries(prev.places).flatMap(([q, p]) => (p.labels ? [[q, p.labels]] : [])));
   }
   const missing = qids.filter((q) => !coords[q]);
-  if (missing.length) console.log(`no coordinates on Wikidata for ${missing.length} places: ${missing.join(" ")}`);
-  const places = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords);
+  if (missing.length) console.log(`no coordinates on Wikidata for ${missing.length} places (in the index, not on the map): ${missing.join(" ")}`);
+  const places = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels);
+  const unlabelled = Object.entries(places.places).filter(([q, p]) => p.label === q && !p.labels).map(([q]) => q);
+  if (unlabelled.length) console.log(`no label for ${unlabelled.length} places (the index heads them with the QID): ${unlabelled.join(" ")}`);
   writeFileSync(placesDest, JSON.stringify(places) + "\n");
   console.log(`wrote ${placesDest}: ${Object.keys(places.eulogies).length} eulogies at ${Object.keys(places.places).length} places`);
 }
