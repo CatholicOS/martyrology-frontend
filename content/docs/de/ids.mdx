@@ -1,0 +1,103 @@
+# Die kanonischen IDs der Elogien
+
+Jedes Elogium auf dieser Website hat eine Kennung, etwa `mr:0102-telesphorus`. Diese Seite erklärt,
+warum, und nach welchen Regeln eine Kennung gebildet wird.
+
+<Banner>Alle Kennungen sind Entwürfe, die noch von einem Gremium geprüft werden. Das Präfix `mr:` und die
+Wahl der Ausgabe von 2004 als Bezugspunkt können sich noch ändern; in diesem Fall wird jede Kennung
+maschinell umgeschrieben.</Banner>
+
+## Wozu Kennungen
+
+Dasselbe Elogium erscheint in vielen Ausgaben und Sprachen, anders formuliert, anders nummeriert und
+manchmal an einem anderen Tag. Um über alle hinweg „dieses Elogium“ sagen zu können, braucht es einen
+Namen, der keiner von ihnen gehört. Eine Kennung erlaubt es,
+
+- ein Elogium zu zitieren, ohne seinen Wortlaut anzuführen, in jeder Sprache;
+- zwei Ausgaben Elogium für Elogium nebeneinanderzustellen;
+- ihm Daten zuzuordnen: seine Person, seine Orte, seine Anmerkungen;
+- diesen Namen beizubehalten, wenn ein Text berichtigt wird oder eine neue Ausgabe erscheint.
+
+## Die Form: mr:MMDD-slug
+
+Eine Kennung besteht nach dem Präfix `mr:` aus zwei Teilen:
+
+- **`MMDD`**, Monat und Tag, an dem die Ausgabe das Elogium druckt: `0102` ist der 2. Januar. Für die
+  Elogien des geltenden Buches ist das der Tag in der *editio typica altera* von 2004.
+- **Der Slug**, der Name der zuerst genannten Person des Elogiums im lateinischen Nominativ, in
+  ASCII-Kleinbuchstaben, ohne Ehrentitel (*sanctus*, *beatus*): `telesphorus`,
+  `basilius-magnus-et-gregorius-nazianzenus`.
+
+Das Register enthält 4.640 aktuelle Kennungen für die Elogien der Ausgabe von 2004 und 1.616 veraltete
+(siehe [Veraltete IDs](#veraltete-ids)).
+
+## Was zur Identität gehört und was nicht
+
+- **Der Tag gehört zur Identität.** Ein Elogium, das eine Ausgabe an einem anderen Tag druckt, hat dort
+  seine eigene Kennung; die beiden werden als dasselbe Elogium verknüpft (`same_eulogy`), nie
+  zusammengelegt.
+- **Nummer, Sternchen und fehlende Nummer gehören nicht dazu.** Sie gehören zur jeweiligen Ausgabe: Die
+  lateinische Ausgabe von 2004 und die italienische können einen Tag unterschiedlich nummerieren oder
+  verschiedene Einträge mit Sternchen versehen, und die Kennung bleibt dieselbe.
+- **Der Text gehört nicht dazu.** Eine Kennung benennt das Elogium, nicht seinen Wortlaut; deshalb
+  übersteht sie Berichtigungen und Übersetzungen.
+- **Kennungen sind eindeutig**, und innerhalb eines Tages haben keine zwei denselben Slug.
+
+## Den Slug bilden
+
+Der Slug ist der lateinische Nominativ der zuerst genannten Person, auf einfache Buchstaben reduziert:
+
+- der Genitiv des Textes wird in den Nominativ zurückgeführt: *sancti Basilii* → `basilius`;
+- Kleinbuchstaben, Wörter durch Bindestriche verbunden, diakritische Zeichen vereinfacht (*æ* → `ae`,
+  *ł* → `l`), klassisches *i* statt *j*: `ioannes`, nicht `joannes`;
+- kein Ehrentitel und keine Ziffern: Namensgleiche desselben Tages werden durch einen Ort oder einen
+  Beinamen unterschieden (`mr:0408-dionysius-corinthi`), nie durch `-2`;
+- eine einzige übliche Namensform: ein Ordensname mit seinem Zusatz oder Vor- und Familienname;
+- Ordnungszahlen von Päpsten in römischen Ziffern (`pius-v`); andere Herrscherzählungen als lateinische
+  Wörter (`ludovicus-nonus`);
+- ein Beiname, den das Elogium mit *cognomento* angibt, bleibt erhalten: `petrus-chrysologus`.
+
+### Mehrere Personen und Gruppen
+
+| Personen | Slug | Beispiel |
+|---|---|---|
+| Zwei | beide, verbunden durch `-et-` | `mr:0927-cosmas-et-damianus`, `mr:0622-ioannes-fisher-et-thomas-more` |
+| Drei oder mehr, oder „und Gefährten“ | die erste, dann `-et-socii` | `mr:0206-paulus-miki-et-socii` |
+| Eine namenlose Gruppe | `[Zahl-]Gruppe-` und der Ort im Genitiv | `mr:0309-quadraginta-milites-sebastes` |
+| Eine Gruppe mit eigenem Namen | `martyres-` und dieser Name | `mr:0717-martyres-scillitani` |
+
+### Feste und Heilige mit Titel
+
+Herrenfeste, Marienfeste und andere Feiern erhalten eine feste Wendung, ohne *sancti*/*sanctae*, außer
+beim Namen einer Kirche, beim Heiligen Kreuz, bei Allerheiligen und bei *beatae Mariae*. Propheten
+behalten `-propheta`, die Zwölf `-apostolus` (`mr:0629-petrus-et-paulus-apostoli`), die Evangelisten
+`-evangelista`.
+
+### Keine bloßen Namen
+
+Ein einzelner Name wie `dominicus` sagt wenig: Viele Heilige tragen ihn. Deshalb erhält ein Slug mit nur
+einem Namen ein Unterscheidungsmerkmal, und zwar das erste der folgenden, das zutrifft:
+
+1. der **Familienname**, wenn der Heilige gewöhnlich unter ihm bekannt ist;
+2. der **Ort**, im lateinischen Genitiv: der Bischofssitz eines Bischofs, das Kloster eines Abtes, sonst
+   der Sterbeort (Dominikus, der in Bologna starb, ist im Entwurf `dominicus-bononiae`);
+3. ein **Beiname**, wenn es weder Familiennamen noch Ort gibt: `-papa` für einen Papst ohne Ordnungszahl,
+   ein biblischer Titel oder ein Beiname, den das Elogium angibt.
+
+Derselbe Heilige trägt an jedem Tag dasselbe Unterscheidungsmerkmal. Diese Merkmale werden derzeit für
+das ganze Register entworfen und sind in Prüfung.
+
+## Veraltete IDs
+
+Ältere Ausgaben enthalten Elogien, die das Buch von 2004 nicht oder an einem anderen Tag druckt. Jedes
+davon hat eine eigene Kennung, die als **veraltet** (*deprecated*) gekennzeichnet ist, mit der Ausgabe, in
+der es bezeugt ist (`attested_in`), und, wo es eines gibt, einem Verweis auf dasselbe Elogium an anderer
+Stelle. So ist zum Beispiel `mr:0102-martinianus` das Elogium des Martinianus, das die Ausgabe von 1749
+am 2. Januar druckt; die Ausgabe von 2004 druckt es am 29. Dezember als `mr:1229-martinianus`. Veraltete
+Kennungen folgen denselben Regeln und werden nie wiederverwendet.
+
+## Wiedererkennbarkeit
+
+Ziel all dieser Regeln ist, dass man das Elogium an seiner Kennung wiedererkennt: um wen es sich handelt
+und, wo nötig, um welchen von mehreren. Ob eine Kennung das leistet, ist ein Urteil, für das es Leser
+braucht; siehe [Mitarbeiten](/docs/contributing).
