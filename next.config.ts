@@ -43,7 +43,8 @@ const config: NextConfig = {
 };
 
 // MDX for the documentation section (content/docs). Compiled at build time: nothing is read from
-// disk at runtime, so nothing needs tracing into the standalone bundle.
-const withMDX = createMDX({});
+// disk at runtime, so nothing needs tracing into the standalone bundle. remark-gfm for tables; named
+// by string, since Turbopack cannot take plugin functions.
+const withMDX = createMDX({ options: { remarkPlugins: ["remark-gfm"] } });
 
 export default withMDX(config);
