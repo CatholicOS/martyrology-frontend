@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 import DayPage from "@/components/DayPage";
 import styles from "@/components/page.module.css";
 

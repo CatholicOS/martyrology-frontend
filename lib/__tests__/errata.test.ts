@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { erratumPlace, splitErrata } from "@/lib/errata";
+import en from "@/messages/en.json";
+import { createTranslator } from "next-intl";
 import type { Erratum } from "@/lib/types";
+
+const t = createTranslator({ locale: "en", messages: en, namespace: "Reader" });
 
 const er = (kind: Erratum["kind"], printed: string, corrected = "", ref = "81.20"): Erratum => ({
   kind, printed, corrected, ref, entry: `${ref}. ${printed}, ${corrected}.`,
@@ -39,7 +43,7 @@ describe("splitErrata", () => {
 
 describe("erratumPlace", () => {
   it("reads the printed page and line", () => {
-    expect(erratumPlace("81.20")).toBe("p. 81, l. 20");
-    expect(erratumPlace("vbique")).toBe("everywhere");
+    expect(erratumPlace(t, "81.20")).toBe("p. 81, l. 20");
+    expect(erratumPlace(t, "vbique")).toBe("everywhere");
   });
 });

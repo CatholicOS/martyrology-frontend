@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Fragment, type ReactNode } from "react";
 import { FootnoteMark } from "@/components/PrintedFootnotes";
 import { footnoteOffsets, type PageFootnote } from "@/lib/footnotes";
@@ -11,22 +12,23 @@ import type { Erratum } from "@/lib/types";
  * (title) and, for keyboard readers, while it has focus; screen readers get them in its name.
  */
 export function ErratumNote({ e, className }: { e: Erratum; className: string }) {
+  const t = useTranslations("Reader");
   const reading =
     e.kind === "replace" ? <i>{e.corrected}</i> : e.kind === "add" ? <>adde <i>{e.corrected}</i></> : <>dele</>;
   const said = e.kind === "replace" ? e.corrected : e.kind === "add" ? `adde ${e.corrected}` : "dele";
-  const where = `${erratumPlace(e.ref)}: ${e.entry}`;
+  const where = `${erratumPlace(t, e.ref)}: ${e.entry}`;
   return (
     <span
       className={className}
       style={{ fontStyle: "normal" }}
-      title={`Errata (${where})`}
+      title={t("erratumTitle", { where })}
       tabIndex={0}
       role="note"
-      aria-label={`Errata: ${said}. ${where}`}
+      aria-label={t("erratumLabel", { said, where })}
       data-entry={where}
     >
       {/* set before the words an addition opens, after the words of any other */}
-      {e.position === "before" ? "" : " "}[<span style={{ fontVariant: "small-caps" }}>Errata</span>: {reading}]
+      {e.position === "before" ? "" : " "}[<span style={{ fontVariant: "small-caps" }}>{t("errata")}</span>: {reading}]
       {e.position === "before" ? " " : ""}
     </span>
   );
@@ -46,6 +48,7 @@ export default function EulogyText({
   text: string; id: string | null; edition: string; noteClassName?: string; footnotes?: PageFootnote[];
   errata?: Erratum[]; errataClassName?: string;
 }) {
+  const t = useTranslations("Reader");
   const misprints = misprintsFor(edition, id);
   if (misprints.length === 0 && footnotes.length === 0 && errata.length === 0) return <>{text}</>;
   // No text to place them in: the marks alone, so each footnote's link back has a target.
@@ -74,7 +77,7 @@ export default function EulogyText({
         const words =
           e && e.kind !== "add" ? (
             e.kind === "delete" ? (
-              <del title={`Errata (${erratumPlace(e.ref)}): ${e.entry}`}>{parts}</del>
+              <del title={t("erratumTitle", { where: `${erratumPlace(t, e.ref)}: ${e.entry}` })}>{parts}</del>
             ) : (
               <span style={{ textDecoration: "underline dotted" }}>{parts}</span>
             )
@@ -87,7 +90,7 @@ export default function EulogyText({
             {e && <ErratumNote e={e} className={errataClassName} />}
             {s.intended && (
               <span className={noteClassName} style={{ fontStyle: "normal" }}>
-                {" "}[<i>sic!</i> expected: {s.intended}]
+                {" "}[{t.rich("sic", { intended: s.intended, i: (c) => <i>{c}</i> })}]
               </span>
             )}
           </Fragment>

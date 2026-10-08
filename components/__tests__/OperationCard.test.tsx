@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@/test/intl";
 import OperationCard from "@/components/OperationCard";
 import type { RenameOp, MergeOp } from "@/lib/changeset";
 import type { EulogyOut } from "@/lib/types";

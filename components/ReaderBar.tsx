@@ -1,8 +1,9 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
-import { daysInMonth, monthName, todayLocal, type Day } from "@/lib/calendar";
+import { daysInMonth, interfaceMonth, todayLocal, type Day } from "@/lib/calendar";
 import { findSubject, type SubjectOption } from "@/lib/subjects";
 
 const control = "rounded border border-slate-300 bg-white px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
@@ -37,6 +38,8 @@ export default function ReaderBar({
   showIds: boolean;
   onShowIds: (on: boolean) => void;
 }) {
+  const t = useTranslations("Reader");
+  const format = useFormatter();
   const [query, setQuery] = useState("");
   const pick = (o: SubjectOption | null) => {
     if (!o) return false;
@@ -46,7 +49,7 @@ export default function ReaderBar({
   };
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2 px-4 sm:px-0">
-      <label className="sr-only" htmlFor="reader-month">Month</label>
+      <label className="sr-only" htmlFor="reader-month">{t("month")}</label>
       <select
         id="reader-month"
         className={control}
@@ -57,24 +60,24 @@ export default function ReaderBar({
         }}
       >
         {Array.from({ length: 12 }, (_, i) => (
-          <option key={i + 1} value={i + 1}>{monthName(i + 1, "en")}</option>
+          <option key={i + 1} value={i + 1}>{interfaceMonth(format, i + 1)}</option>
         ))}
       </select>
-      <label className="sr-only" htmlFor="reader-day">Day</label>
+      <label className="sr-only" htmlFor="reader-day">{t("day")}</label>
       <select id="reader-day" className={control} value={day.dd} onChange={(e) => onGo({ mm: day.mm, dd: Number(e.target.value) }, "reader-day")}>
         {Array.from({ length: daysInMonth(day.mm) }, (_, i) => (
           <option key={i + 1} value={i + 1}>{i + 1}</option>
         ))}
       </select>
-      <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>Today</button>
-      <label className="sr-only" htmlFor="reader-subject">Find a eulogy by subject</label>
+      <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>{t("today")}</button>
+      <label className="sr-only" htmlFor="reader-subject">{t("findLabel")}</label>
       <input
         id="reader-subject"
         type="search"
         list="reader-subjects"
         autoComplete="off"
         className={`${control} min-w-40 max-w-xs flex-1`}
-        placeholder={subjects ? "Find a subject…" : "Loading subjects…"}
+        placeholder={subjects ? t("findPlaceholder") : t("findLoading")}
         disabled={!subjects}
         value={query}
         onChange={(e) => {
@@ -93,31 +96,31 @@ export default function ReaderBar({
       <datalist id="reader-subjects">
         {subjects?.map((o) => <option key={o.id} value={o.value} />)}
       </datalist>
-      <label className="sr-only" htmlFor="reader-book">Switch book</label>
+      <label className="sr-only" htmlFor="reader-book">{t("switchBook")}</label>
       <select id="reader-book" className={`${control} ml-auto`} value={edition} onChange={(e) => onSwitch(e.target.value, "reader-book")}>
         {books.map((b) => (
           <option key={b.id} value={b.id}>{b.label}</option>
         ))}
       </select>
-      <label className="sr-only" htmlFor="reader-with">Compare with</label>
+      <label className="sr-only" htmlFor="reader-with">{t("compareWith")}</label>
       <select
         id="reader-with"
         className={control}
         value={compareWith ?? ""}
         onChange={(e) => onCompare(e.target.value || null, "reader-with")}
       >
-        <option value="">Compare with…</option>
+        <option value="">{t("compareWithPlaceholder")}</option>
         {compareBooks.map((b) => (
           <option key={b.id} value={b.id}>{b.label}</option>
         ))}
       </select>
       {compareWith && (
         <>
-          <button type="button" id="reader-swap" className={control} aria-label="Swap the two editions" onClick={onSwap}>⇄</button>
-          <button type="button" id="reader-close" className={control} aria-label="Close the second edition" onClick={() => onCompare(null, "reader-with")}>×</button>
+          <button type="button" id="reader-swap" className={control} aria-label={t("swap")} onClick={onSwap}>⇄</button>
+          <button type="button" id="reader-close" className={control} aria-label={t("closeSecond")} onClick={() => onCompare(null, "reader-with")}>×</button>
         </>
       )}
-      <label className="flex cursor-pointer items-center gap-1.5 text-sm" title="Show each eulogy's canonical id">
+      <label className="flex cursor-pointer items-center gap-1.5 text-sm" title={t("showIdsTitle")}>
         <input
           id="reader-ids"
           type="checkbox"
@@ -135,12 +138,12 @@ export default function ReaderBar({
             "after:shadow after:transition-transform peer-checked:after:translate-x-4"
           }
         />
-        IDs
+        {t("ids")}
       </label>
       <Link href={`/read/${encodeURIComponent(edition)}/notes`} className="text-sm underline">
-        Notes &amp; errata
+        {t("notesLink")}
       </Link>
-      <Link href="/" className="text-sm underline">⟵ Shelf</Link>
+      <Link href="/" className="text-sm underline">{t("shelf")}</Link>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 // The Martyrology's calendar: every year has a 29 February page, and the book
 // turns over from 31 December to 1 January. Months and days are 1-based.
 
+import type { useFormatter } from "next-intl";
+
 export type Day = { mm: number; dd: number };
 export type Lang = "la" | "it" | "en";
 
@@ -54,6 +56,11 @@ export function dayPath(edition: string, d: Day, withEdition?: string | null): s
 
 export function monthName(mm: number, lang: Lang): string {
   return MONTHS[lang][mm - 1];
+}
+
+/** A month's name in the interface language (not the edition's: see `monthName`). */
+export function interfaceMonth(format: Pick<ReturnType<typeof useFormatter>, "dateTime">, mm: number): string {
+  return format.dateTime(new Date(Date.UTC(2000, mm - 1, 1)), { month: "long", timeZone: "UTC" });
 }
 
 export function dateHeading(d: Day, lang: Lang): string {

@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { createTranslator } from "next-intl";
+import en from "@/messages/en.json";
 import type { AttachNoteOp, PlaceMarginOp } from "@/lib/changeset";
 import {
   anchorProblem,
@@ -9,6 +11,8 @@ import {
   scanImageUrl,
   scanPageUrl,
 } from "@/lib/notationes";
+
+const t = createTranslator({ locale: "en", messages: en, namespace: "Notes" });
 
 const note: AttachNoteOp = {
   op: "attach_note",
@@ -51,10 +55,10 @@ describe("notationes review", () => {
 
   it("accepts an anchor found once as whole words, or none", () => {
     const text = note.texts["mr:0111-leucius"];
-    expect(anchorProblem(text, "Episcopi")).toBeNull();
-    expect(anchorProblem(text, "")).toBeNull();
-    expect(anchorProblem(text, "Episc")).toMatch(/not found/);
-    expect(anchorProblem("S. Leucij S. Leucij", "Leucij")).toMatch(/2 times/);
+    expect(anchorProblem(t, text, "Episcopi")).toBeNull();
+    expect(anchorProblem(t, text, "")).toBeNull();
+    expect(anchorProblem(t, text, "Episc")).toMatch(/not found/);
+    expect(anchorProblem(t, "S. Leucij S. Leucij", "Leucij")).toMatch(/2 times/);
   });
 
   it("records the proposal unchanged as an accept, any change as an edit", () => {

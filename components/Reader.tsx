@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import DayPage from "@/components/DayPage";
 import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";
@@ -98,6 +99,7 @@ function isFormField(t: EventTarget | null): boolean {
 export default function Reader({
   edition, mm, dd, signedIn, withEdition = null,
 }: { edition: string; mm: number; dd: number; signedIn: boolean; withEdition?: string | null }) {
+  const t = useTranslations("Reader");
   const router = useRouter();
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
   const [editions, setEditions] = useState<EditionOut[]>(() => cached?.editions ?? []);
@@ -284,7 +286,7 @@ export default function Reader({
           else go(prevDay(day), "prev");
         }}
       >
-        <button type="button" id="reader-prev" aria-label="Previous day" data-strip="true" className={STRIP} onClick={() => go(prevDay(day), "prev", "reader-prev")}>
+        <button type="button" id="reader-prev" aria-label={t("prevDay")} data-strip="true" className={STRIP} onClick={() => go(prevDay(day), "prev", "reader-prev")}>
           <span aria-hidden className={ARROW}>‹</span>
         </button>
         <div ref={pages} className="flex-1">
@@ -316,7 +318,7 @@ export default function Reader({
             />
           )}
         </div>
-        <button type="button" id="reader-next" aria-label="Next day" data-strip="true" className={STRIP} onClick={() => go(nextDay(day), "next", "reader-next")}>
+        <button type="button" id="reader-next" aria-label={t("nextDay")} data-strip="true" className={STRIP} onClick={() => go(nextDay(day), "next", "reader-next")}>
           <span aria-hidden className={ARROW}>›</span>
         </button>
       </div>

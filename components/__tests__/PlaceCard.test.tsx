@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@/test/intl";
 import OperationCard from "@/components/OperationCard";
 import PlaceCard from "@/components/PlaceCard";
 import type { ResolvePlaceOp, PlaceCandidate } from "@/lib/changeset";
