@@ -7,7 +7,7 @@ import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
 import { getEditions, getMonth } from "@/lib/api";
 import { apparatus, count, only, type ApparatusEntry, type ApparatusKind } from "@/lib/apparatus";
-import { dayPath, interfaceMonth, monthName, pad2 } from "@/lib/calendar";
+import { dayPath, interfaceMonth, pad2 } from "@/lib/calendar";
 import { erratumPlace } from "@/lib/errata";
 import { editionLang, editionTitle } from "@/lib/editions";
 import { noteParts } from "@/lib/note-links";
@@ -123,13 +123,13 @@ export default function ApparatusPage({ edition }: { edition: string }) {
       {visible.length === 0 && <p className="text-center text-slate-600">{t("nothing")}</p>}
       {[...byMonth.entries()].map(([mm, entries]) => (
         <section key={mm} aria-label={interfaceMonth(format, mm)}>
-          <h2 className={`${styles.heading} mt-6`}>{monthName(mm, lang)}</h2>
+          <h2 className={`${styles.heading} mt-6`}>{interfaceMonth(format, mm)}</h2>
           <ul>
             {entries.map((e) => (
               <li key={e.id} id={e.id} className="mb-5">
                 <p className="text-sm">
                   <Link href={`${dayPath(edition, { mm: e.mm, dd: e.dd })}#${e.id}`} className="underline">
-                    {e.dd} {monthName(e.mm, lang)}
+                    {e.dd} {interfaceMonth(format, e.mm)}
                   </Link>
                   {/* Without the text (no access), the printed number still shows here. */}
                   {!e.text && e.entry !== null && (

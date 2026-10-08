@@ -35,4 +35,17 @@ describe("ApparatusPage", () => {
     const id = await screen.findByText("mr:0104-abrunculus");
     expect(id.closest("p")).toHaveTextContent("2*.");
   });
+
+  it("names the months and days in the reader's language, as its sections' accessible names do", async () => {
+    vi.spyOn(api, "getEditions").mockResolvedValue([]);
+    vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
+      Number(mm) === 1
+        ? month(1, [{ id: "mr:0104-abrunculus", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
+        : month(Number(mm)),
+    );
+    render(<ApparatusPage edition="martyrologium_romanum_2004" />, { locale: "it" });
+    const section = await screen.findByRole("region", { name: "gennaio" });
+    expect(section.querySelector("h2")).toHaveTextContent("gennaio");
+    expect(screen.getByRole("link", { name: "4 gennaio" })).toHaveAttribute("href", "/it/read/martyrologium_romanum_2004/01/04#mr:0104-abrunculus");
+  });
 });
