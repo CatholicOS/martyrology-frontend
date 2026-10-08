@@ -377,5 +377,80 @@
         "eulogy": "eulogy"
       }
     }
+  },
+  "Docs": {
+    "index": {
+      "title": "Documentation",
+      "description": "The Roman Martyrology, its use and its editions, and the project behind this site."
+    },
+    "parts": {
+      "martyrology": "The Roman Martyrology",
+      "project": "The project"
+    },
+    "pages": {
+      "history": {
+        "title": "History of the Roman Martyrology",
+        "description": "From the early martyrologies to the editio typica altera of 2004."
+      },
+      "using": {
+        "title": "Using the Martyrology",
+        "description": "What the book is for, and how and when it is read."
+      },
+      "particular-calendars": {
+        "title": "The Martyrology and the particular calendars",
+        "description": "Proper calendars, the Propria of the Martyrology, and the editions of the conferences."
+      },
+      "reading-a-day": {
+        "title": "Reading a day’s page",
+        "description": "The Roman date, the moon, the order of the eulogies, and the asterisks."
+      },
+      "lunar-table": {
+        "title": "The lunar table",
+        "description": "Golden number, epact and the letters of the Martyrology: finding the moon to announce."
+      },
+      "editions": {
+        "title": "The editions on this site",
+        "description": "Each edition, its nature, and who can read it."
+      },
+      "notes-and-marks": {
+        "title": "Notes, misprints and errata",
+        "description": "What an edition prints, and what the curators add."
+      },
+      "ids": {
+        "title": "Canonical eulogy IDs",
+        "description": "Why every eulogy has an identifier, and the rules that form it."
+      },
+      "data": {
+        "title": "Data and sources",
+        "description": "The open registry behind the site, and its API."
+      },
+      "contributing": {
+        "title": "How to contribute",
+        "description": "What scholars and students can help review."
+      }
+    },
+    "contents": "Contents",
+    "prev": "Previous",
+    "next": "Next",
+    "cite": {
+      "praenotanda": "Praenotanda",
+      "ordo": "Ordo"
+    },
+    "draftNotice": "This page is a draft translation awaiting review by native speakers. <link>Help review it</link>.",
+    "sampleDay": {
+      "caption": "2 January in the 2004 Latin edition, in outline: each eulogy is shown by its subject only. Entries 3, 6–11 and 13–15 are left out."
+    },
+    "finder": {
+      "date": "Date",
+      "golden": "Golden number",
+      "epact": "Epact",
+      "letter": "Letter of the Martyrology",
+      "moon": "Moon to announce",
+      "reader": "Open this day in the reader",
+      "failed": "The moon couldn't be loaded.",
+      "loading": "Loading…",
+      "early": "The lunar table applies from 1583, the first full year of the Gregorian calendar.",
+      "none": "The book announces no moon for this date."
+    }
   }
 }

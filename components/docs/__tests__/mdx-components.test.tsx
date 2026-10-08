@@ -19,8 +19,8 @@ describe("the docs' MDX elements", () => {
   });
 
   it("keep internal links internal", () => {
-    render(<A href="/docs/en/ids">IDs</A>);
-    expect(screen.getByRole("link", { name: "IDs" })).toHaveAttribute("href", "/en/docs/en/ids");
+    render(<A href="/docs/ids">IDs</A>);
+    expect(screen.getByRole("link", { name: "IDs" })).toHaveAttribute("href", "/en/docs/ids");
     expect(screen.getByRole("link", { name: "IDs" })).not.toHaveAttribute("rel");
   });
 });

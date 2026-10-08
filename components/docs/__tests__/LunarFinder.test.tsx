@@ -19,7 +19,7 @@ describe("LunarFinder", () => {
 
   it("shows the year's golden number, epact and letter, and the day's moon", async () => {
     getDay.mockResolvedValue(day2005);
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("2005-01-01");
     expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_2004", "01", "01", 2005);
     expect(await screen.findByText("11")).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe("LunarFinder", () => {
   });
 
   it("asks for nothing while the date is empty or incomplete", () => {
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("");
     pick("0000-01-01");
     expect(getDay).not.toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe("LunarFinder", () => {
 
   it("says when the moon couldn't be loaded, and drops the previous answer", async () => {
     getDay.mockResolvedValueOnce(day2005).mockRejectedValueOnce(new Error("502"));
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("2005-01-01");
     expect(await screen.findByText("XIX")).toBeInTheDocument();
     pick("2006-01-01");
@@ -51,7 +51,7 @@ describe("LunarFinder", () => {
     getDay.mockReturnValueOnce(new Promise((r) => (resolveFirst = r))).mockResolvedValueOnce({
       luna: { annuntiatio: { ...day2005.luna.annuntiatio, year: 2006, golden_number: 12, epact: "*", letter: "P" } },
     });
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("2005-01-01");
     pick("2006-01-01");
     expect(await screen.findByText("P")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("LunarFinder", () => {
   });
 
   it("asks for nothing while a year is still being typed, nor before the table begins in 1583", () => {
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     for (const v of ["0002-01-01", "0020-01-01", "0201-01-01", "1582-12-31"]) pick(v);
     expect(getDay).not.toHaveBeenCalled();
     expect(screen.getByText(/from 1583/)).toBeInTheDocument();
@@ -69,16 +69,21 @@ describe("LunarFinder", () => {
 
   it("says so when the API announces no moon for the date", async () => {
     getDay.mockResolvedValue({ luna: { annuntiatio: null } });
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("2005-01-01");
     expect(await screen.findByText(/no moon/i)).toBeInTheDocument();
   });
 
   it("treats a day with no lunar data at all (an older API) as not loaded, not as no moon", async () => {
     getDay.mockResolvedValue({});
-    render(<LunarFinder lang="en" />);
+    render(<LunarFinder />);
     pick("2005-01-01");
     expect(await screen.findByText(/couldn.t be loaded/)).toBeInTheDocument();
     expect(screen.queryByText(/no moon/i)).not.toBeInTheDocument();
+  });
+
+  it("labels the finder in the interface language", () => {
+    render(<LunarFinder />, { locale: "it" });
+    expect(screen.getByLabelText("Data")).toBeInTheDocument();
   });
 });
