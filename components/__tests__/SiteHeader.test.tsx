@@ -38,7 +38,7 @@ describe("SiteHeader", () => {
     viewerMock.mockResolvedValue({ signedIn: false, curator: false });
     render(await SiteHeader());
     const links = screen.getAllByRole("link").map((a) => a.textContent);
-    expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs/en");
+    expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs");
     expect(links.indexOf("Docs")).toBe(links.indexOf("Map") - 1);
   });
 

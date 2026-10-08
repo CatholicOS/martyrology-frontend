@@ -15,7 +15,7 @@ export async function SiteHeader() {
           {t("brand")}
         </Link>
         <NavMenu>
-          <Link href="/docs/en">{t("docs")}</Link>
+          <Link href="/docs">{t("docs")}</Link>
           <Link href="/map">{t("map")}</Link>
           <Link href="/scalar">{t("api")}</Link>
           {viewer.curator && <Link href="/compare">{t("compare")}</Link>}

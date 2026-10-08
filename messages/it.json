@@ -377,5 +377,80 @@
         "eulogy": "eulogy"
       }
     }
+  },
+  "Docs": {
+    "index": {
+      "title": "Documentazione",
+      "description": "Il Martirologio Romano, il suo uso e le sue edizioni, e il progetto di questo sito."
+    },
+    "parts": {
+      "martyrology": "Il Martirologio Romano",
+      "project": "Il progetto"
+    },
+    "pages": {
+      "history": {
+        "title": "Storia del Martirologio Romano",
+        "description": "Dai primi martirologi all’editio typica altera del 2004."
+      },
+      "using": {
+        "title": "L’uso del Martirologio",
+        "description": "A che cosa serve il libro, e come e quando si legge."
+      },
+      "particular-calendars": {
+        "title": "Il Martirologio e i calendari particolari",
+        "description": "I calendari propri, i Propri del Martirologio e le edizioni delle Conferenze Episcopali."
+      },
+      "reading-a-day": {
+        "title": "Leggere la pagina di un giorno",
+        "description": "La data romana, la luna, l’ordine degli elogi e gli asterischi."
+      },
+      "lunar-table": {
+        "title": "La tavola lunare",
+        "description": "Numero aureo, epatta e lettere del Martirologio: come trovare la luna da enunciare."
+      },
+      "editions": {
+        "title": "Le edizioni di questo sito",
+        "description": "Ogni edizione, la sua natura e chi può leggerla."
+      },
+      "notes-and-marks": {
+        "title": "Note, refusi ed errata",
+        "description": "Ciò che un’edizione stampa e ciò che aggiungono i curatori."
+      },
+      "ids": {
+        "title": "Gli identificatori canonici degli elogi",
+        "description": "Perché ogni elogio ha un identificatore, e le regole che lo formano."
+      },
+      "data": {
+        "title": "Dati e fonti",
+        "description": "Il registro aperto su cui si basa il sito, e la sua API."
+      },
+      "contributing": {
+        "title": "Come contribuire",
+        "description": "Che cosa studiosi e studenti possono aiutare a rivedere."
+      }
+    },
+    "contents": "Indice",
+    "prev": "Precedente",
+    "next": "Successivo",
+    "cite": {
+      "praenotanda": "Premesse",
+      "ordo": "Rito"
+    },
+    "draftNotice": "Questa pagina è una bozza di traduzione in attesa di revisione da parte di madrelingua. <link>Aiuta a rivederla</link>.",
+    "sampleDay": {
+      "caption": "Il 2 gennaio nell’edizione latina del 2004, in schema: ogni elogio è indicato solo dal suo soggetto. Sono omessi gli elogi 3, 6–11 e 13–15."
+    },
+    "finder": {
+      "date": "Data",
+      "golden": "Numero aureo",
+      "epact": "Epatta",
+      "letter": "Lettera del Martirologio",
+      "moon": "Luna da enunciare",
+      "reader": "Apri questo giorno nel lettore",
+      "failed": "Non è stato possibile caricare la luna.",
+      "loading": "Caricamento…",
+      "early": "La tavola lunare vale dal 1583, primo anno completo del calendario gregoriano.",
+      "none": "Per questa data il libro non annuncia la luna."
+    }
   }
 }

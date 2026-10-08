@@ -11,7 +11,7 @@ function textOf(n: ReactNode): string {
   return "";
 }
 
-/** A section heading that links to itself, so any section can be linked: /docs/en/reading-a-day#asterisks. */
+/** A section heading that links to itself, so any section can be linked: /docs/reading-a-day#asterisks. */
 function heading(Tag: "h2" | "h3") {
   return function Heading({ children }: { children?: ReactNode }) {
     const id = headingId(textOf(children));

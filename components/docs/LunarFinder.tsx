@@ -1,25 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useEffect, useId, useState } from "react";
 import { getDay } from "@/lib/api";
-import type { DocLang } from "@/lib/docs";
 import type { LunaAnnouncement } from "@/lib/types";
 
 const EDITION = "martyrologium_romanum_2004";
 /** The first year of the Gregorian calendar, whose computus the lunar table follows; the API announces no moon before it. */
 const FIRST_YEAR = 1583;
-
-const T: Record<DocLang, Record<"date" | "golden" | "epact" | "letter" | "moon" | "reader" | "failed" | "loading" | "early" | "none", string>> = {
-  en: { date: "Date", golden: "Golden number", epact: "Epact", letter: "Letter of the Martyrology", moon: "Moon to announce",
-        reader: "Open this day in the reader", failed: "The moon couldn't be loaded.", loading: "Loading…",
-        early: "The lunar table applies from 1583, the first full year of the Gregorian calendar.",
-        none: "The book announces no moon for this date." },
-  it: { date: "Data", golden: "Numero aureo", epact: "Epatta", letter: "Lettera del Martirologio", moon: "Luna da enunciare",
-        reader: "Apri questo giorno nel lettore", failed: "Non è stato possibile caricare la luna.", loading: "Caricamento…",
-        early: "La tavola lunare vale dal 1583, primo anno completo del calendario gregoriano.",
-        none: "Per questa data il libro non annuncia la luna." },
-};
 
 /** "2005-01-01" → { year: 2005, mm: "01", dd: "01" }; null for an empty or partial value or year 0. */
 function parseDate(v: string): { year: number; mm: string; dd: string } | null {
@@ -32,8 +21,8 @@ function parseDate(v: string): { year: number; mm: string; dd: string } | null {
  * Pick a date: the year's golden number, epact and Martyrology letter, and the moon the 2004 edition
  * announces on that day, as the API computes them (the page explains the method; this does not redo it).
  */
-export function LunarFinder({ lang }: { lang: DocLang }) {
-  const t = T[lang];
+export function LunarFinder() {
+  const t = useTranslations("Docs.finder");
   const inputId = useId();
   const [value, setValue] = useState("");
   const [state, setState] = useState<{ for: string; luna?: LunaAnnouncement | null; failed?: boolean } | null>(null);
@@ -59,23 +48,23 @@ export function LunarFinder({ lang }: { lang: DocLang }) {
   const shown = date && state?.for === value ? state : null;
   return (
     <div className="my-6 rounded border border-slate-200 p-4 dark:border-slate-800">
-      <label htmlFor={inputId} className="mr-2">{t.date}</label>
+      <label htmlFor={inputId} className="mr-2">{t("date")}</label>
       <input id={inputId} type="date" min="1583-01-01" value={value} onChange={(e) => setValue(e.target.value)}
              className="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900" />
-      {early && <p className="mt-3 text-sm">{t.early}</p>}
-      {date && !shown && <p className="mt-3 text-sm">{t.loading}</p>}
-      {shown && !shown.failed && !shown.luna && <p className="mt-3 text-sm">{t.none}</p>}
-      {shown?.failed && <p className="mt-3 text-sm">{t.failed}</p>}
+      {early && <p className="mt-3 text-sm">{t("early")}</p>}
+      {date && !shown && <p className="mt-3 text-sm">{t("loading")}</p>}
+      {shown && !shown.failed && !shown.luna && <p className="mt-3 text-sm">{t("none")}</p>}
+      {shown?.failed && <p className="mt-3 text-sm">{t("failed")}</p>}
       {shown?.luna && (
         <>
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-            <dt>{t.golden}</dt><dd>{shown.luna.golden_number}</dd>
-            <dt>{t.epact}</dt><dd>{shown.luna.epact}</dd>
-            <dt>{t.letter}</dt><dd>{shown.luna.letter}</dd>
-            <dt>{t.moon}</dt><dd lang="la" className="italic">{shown.luna.pronuntiatio}</dd>
+            <dt>{t("golden")}</dt><dd>{shown.luna.golden_number}</dd>
+            <dt>{t("epact")}</dt><dd>{shown.luna.epact}</dd>
+            <dt>{t("letter")}</dt><dd>{shown.luna.letter}</dd>
+            <dt>{t("moon")}</dt><dd lang="la" className="italic">{shown.luna.pronuntiatio}</dd>
           </dl>
           <p className="mt-3 text-sm">
-            <Link href={`/read/${EDITION}/${date!.mm}/${date!.dd}`} className="underline">{t.reader}</Link>
+            <Link href={`/read/${EDITION}/${date!.mm}/${date!.dd}`} className="underline">{t("reader")}</Link>
           </p>
         </>
       )}
