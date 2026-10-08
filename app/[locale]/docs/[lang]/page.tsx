@@ -1,14 +1,15 @@
 import { Link } from "@/i18n/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { docsComponents } from "@/components/docs/mdx";
 import { DOC_INDEX, DOC_PAGES, DOC_PARTS, docHref, isDocLang } from "@/lib/docs";
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; lang: string }> }) {
+  const { locale, lang } = await params;
   if (!isDocLang(lang)) return {};
-  return { title: `${DOC_INDEX[lang].title} — Roman Martyrology`, description: DOC_INDEX[lang].description };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Metadata" });
+  return { title: t("titleWithBook", { title: DOC_INDEX[lang].title, book: t("bookTitle") }), description: DOC_INDEX[lang].description };
 }
 
 export default async function DocsIndex({ params }: { params: Promise<{ locale: string; lang: string }> }) {

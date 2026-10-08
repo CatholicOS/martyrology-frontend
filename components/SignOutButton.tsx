@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
 
 /**
@@ -11,6 +12,7 @@ import { signOut } from "next-auth/react";
  * URL (or the request throws), and a reload then would show the reader still signed in.
  */
 export function SignOutButton({ className }: { className: string }) {
+  const t = useTranslations("Auth");
   const [failed, setFailed] = useState(false);
   return (
     <span className="flex items-center gap-2">
@@ -32,11 +34,11 @@ export function SignOutButton({ className }: { className: string }) {
           window.location.reload();
         }}
       >
-        Sign out
+        {t("signOut")}
       </button>
       {failed && (
         <span role="alert" className="text-sm text-red-700 dark:text-red-400">
-          Sign-out failed; try again.
+          {t("signOutFailed")}
         </span>
       )}
     </span>

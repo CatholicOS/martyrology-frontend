@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 // Presentational only. The sign-in and sign-out controls are passed in as
 // elements so this component has no dependency on Auth.js and can be
 // rendered in a plain jsdom test.
@@ -12,13 +14,14 @@ export function AuthStatusView({
   onSignIn: React.ReactNode;
   onSignOut: React.ReactNode;
 }) {
+  const t = useTranslations("Auth");
   if (!email) return <div className="flex flex-wrap items-center gap-3">{onSignIn}</div>;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
       {error ? (
         <span role="status" className="text-sm text-amber-700 dark:text-amber-400">
-          Session expired — sign in again
+          {t("sessionExpired")}
         </span>
       ) : null}
       {/* An icon, not the address: the full email took too much of the header. The address
@@ -28,7 +31,7 @@ export function AuthStatusView({
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21a8 8 0 0 1 16 0" />
         </svg>
-        <span className="sr-only">Signed in as {email}</span>
+        <span className="sr-only">{t("signedInAs", { email })}</span>
       </span>
       {/* The message asks the curator to sign in again, so offer the control. */}
       {error ? onSignIn : null}

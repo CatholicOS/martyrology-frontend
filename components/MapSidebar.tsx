@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { natureLabel, sortForShelf, yearAndLanguage } from "@/lib/editions";
 import { typologyLabel, type MapEntry, type MapFilters } from "@/lib/map-data";
 import type { EditionOut } from "@/lib/types";
@@ -48,6 +49,7 @@ function toggle(set: Set<string>, key: string): Set<string> {
 
 /** The map's controls and results: edition, search, typology and country filters, and the eulogies shown. */
 export default function MapSidebar(p: Props) {
+  const tShelf = useTranslations("Bookshelf");
   const [countryQuery, setCountryQuery] = useState("");
   const countries = useMemo(
     () =>
@@ -68,7 +70,7 @@ export default function MapSidebar(p: Props) {
         <select className={INPUT} value={p.edition} onChange={(e) => p.onEdition(e.target.value)}>
           {sortForShelf(p.editions).map((e) => (
             <option key={e.edition_id} value={e.edition_id}>
-              {yearAndLanguage(e)} — {natureLabel(e.nature)}
+              {yearAndLanguage(tShelf, e)} — {natureLabel(tShelf, e.nature)}
             </option>
           ))}
         </select>

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { DocsPager } from "@/components/docs/DocsPager";
@@ -11,11 +11,12 @@ export function generateStaticParams() {
   return DOC_LANGS.flatMap((lang) => DOC_PAGES.map((p) => ({ lang, page: p.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string; page: string }> }) {
-  const { lang, page } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; lang: string; page: string }> }) {
+  const { locale, lang, page } = await params;
   const p = findPage(page);
   if (!isDocLang(lang) || !p) return {};
-  return { title: `${p.text[lang].title} — Roman Martyrology`, description: p.text[lang].description };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Metadata" });
+  return { title: t("titleWithBook", { title: p.text[lang].title, book: t("bookTitle") }), description: p.text[lang].description };
 }
 
 export default async function DocPage({ params }: { params: Promise<{ locale: string; lang: string; page: string }> }) {

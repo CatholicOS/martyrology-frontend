@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
+import { createTranslator } from "next-intl";
+import en from "@/messages/en.json";
 import { editionLang, editionTitle, languageLabel, isOriginal, sortForShelf, shelfState, titleCase, shortName, yearAndLanguage } from "@/lib/editions";
 import type { EditionOut } from "@/lib/types";
+
+const t = createTranslator({ locale: "en", messages: en, namespace: "Bookshelf" });
 
 function ed(edition_id: string, year: number, locale: string, nature: string, status = "public"): EditionOut {
   return {
@@ -34,7 +38,7 @@ describe("editions", () => {
     expect(editionTitle(E.e1749)).toBe("MARTYROLOGIUM ROMANUM");
     expect(editionTitle(E.e2004it)).toBe("MARTIROLOGIO ROMANO");
     expect(editionTitle(E.e1914en)).toBe("ROMAN MARTYROLOGY");
-    expect([languageLabel(E.e1749), languageLabel(E.e2004it), languageLabel(E.e2004en)])
+    expect([languageLabel(t, E.e1749), languageLabel(t, E.e2004it), languageLabel(t, E.e2004en)])
       .toEqual(["Latin", "Italiano (CEI)", "English"]);
     expect(editionLang(ed("x", 2000, "de", "translatio"))).toBe("la");
   });
@@ -66,12 +70,12 @@ describe("editions", () => {
 
 describe("note names", () => {
   it("names an edition by year, or by year and language when both share it", () => {
-    expect(shortName(E.e1749, E.e2004)).toBe("1749");
-    expect(shortName(E.e2004it, E.e2004)).toBe("2004 Italian");
-    expect(shortName(E.e2004, E.e2004it)).toBe("2004 Latin");
+    expect(shortName(t, E.e1749, E.e2004)).toBe("1749");
+    expect(shortName(t, E.e2004it, E.e2004)).toBe("2004 Italian");
+    expect(shortName(t, E.e2004, E.e2004it)).toBe("2004 Latin");
   });
 
   it("gives year and language for notices", () => {
-    expect(yearAndLanguage(E.e1914en)).toBe("1914 English");
+    expect(yearAndLanguage(t, E.e1914en)).toBe("1914 English");
   });
 });
