@@ -26,7 +26,7 @@ const CUSTOM_CSS = `
  * The API reference (Scalar): the API's OpenAPI document, served by this site at /scalar/openapi.json, and its
  * "Test request" through /scalar/proxy (the API sends no CORS headers).
  */
-export default function ApiReference({ locale }: { locale: string }) {
+export default function ApiReference({ locale, title }: { locale: string; title: string }) {
   // null while rendering on the server: Scalar mounts once the scheme is known (it sets the body's light-mode or
   // dark-mode class, which paints the page), and again when it changes.
   const dark = useSyncExternalStore(subscribe, prefersDark, () => null);
@@ -55,7 +55,8 @@ export default function ApiReference({ locale }: { locale: string }) {
           showDeveloperTools: "never",
           documentDownloadType: "json",
           defaultHttpClient: { targetKey: "shell", clientKey: "curl" },
-          metaData: { title: "API reference · Roman Martyrology" },
+          // the page's localized title (Scalar applies this client-side, over the server-rendered one)
+          metaData: { title },
         }}
       />
     </div>
