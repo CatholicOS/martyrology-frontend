@@ -13,11 +13,11 @@ const FIRST_YEAR = 1583;
 const T: Record<DocLang, Record<"date" | "golden" | "epact" | "letter" | "moon" | "reader" | "failed" | "loading" | "early" | "none", string>> = {
   en: { date: "Date", golden: "Golden number", epact: "Epact", letter: "Letter of the Martyrology", moon: "Moon to announce",
         reader: "Open this day in the reader", failed: "The moon couldn't be loaded.", loading: "Loading…",
-        early: "The lunar table applies from 1583, the first year of the Gregorian calendar.",
+        early: "The lunar table applies from 1583, the first full year of the Gregorian calendar.",
         none: "The book announces no moon for this date." },
   it: { date: "Data", golden: "Numero aureo", epact: "Epatta", letter: "Lettera del Martirologio", moon: "Luna da enunciare",
         reader: "Apri questo giorno nel lettore", failed: "Non è stato possibile caricare la luna.", loading: "Caricamento…",
-        early: "La tavola lunare vale dal 1583, primo anno del calendario gregoriano.",
+        early: "La tavola lunare vale dal 1583, primo anno completo del calendario gregoriano.",
         none: "Per questa data il libro non annuncia la luna." },
 };
 
@@ -47,7 +47,8 @@ export function LunarFinder({ lang }: { lang: DocLang }) {
     if (!date) return;
     let live = true;
     getDay(EDITION, date.mm, date.dd, date.year).then(
-      (day) => live && setState({ for: value, luna: day.luna?.annuntiatio ?? null }),
+      // No `luna` at all (an API before v0.15.0) is a failure to load; `annuntiatio: null` is the book announcing no moon.
+      (day) => live && setState(day.luna ? { for: value, luna: day.luna.annuntiatio } : { for: value, failed: true }),
       () => live && setState({ for: value, failed: true }),
     );
     return () => {

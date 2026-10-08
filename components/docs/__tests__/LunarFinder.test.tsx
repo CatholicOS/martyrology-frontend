@@ -73,4 +73,12 @@ describe("LunarFinder", () => {
     pick("2005-01-01");
     expect(await screen.findByText(/no moon/i)).toBeInTheDocument();
   });
+
+  it("treats a day with no lunar data at all (an older API) as not loaded, not as no moon", async () => {
+    getDay.mockResolvedValue({});
+    render(<LunarFinder lang="en" />);
+    pick("2005-01-01");
+    expect(await screen.findByText(/couldn.t be loaded/)).toBeInTheDocument();
+    expect(screen.queryByText(/no moon/i)).not.toBeInTheDocument();
+  });
 });
