@@ -296,10 +296,11 @@ jobs:
 
           # Passenger starts the app lazily, on the first request after
           # restart.txt changes, and a cold Next boot is not instant. Retry
-          # rather than race it.
+          # rather than race it. "/" redirects to the default locale ("/en"),
+          # so follow the redirect: the 200 must come from a rendered page.
           echo "Smoke testing $SITE_URL"
           for attempt in 1 2 3 4 5; do
-            STATUS=$(curl -sS -o /dev/null -w '%{http_code}' \
+            STATUS=$(curl -sS -L --max-redirs 3 -o /dev/null -w '%{http_code}' \
               --connect-timeout 10 --max-time 45 "$SITE_URL/" || echo "000")
             if [ "$STATUS" = "200" ]; then
               echo "Home page: HTTP 200"
