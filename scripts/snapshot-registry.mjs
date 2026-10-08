@@ -233,6 +233,40 @@ export async function fetchLabels(qids) {
   return out;
 }
 
+/**
+ * The places' coordinates and labels from Wikidata, each query falling back on its own to the
+ * previous snapshot's when it fails (offline, rate-limited), so one failure keeps the other's fresh data.
+ * @param {string[]} qids
+ * @param {() => {places: Record<string, {coords: [number, number] | null, labels?: Record<string, string>}>}} readPrevious
+ * @param {{coords: typeof fetchCoords, labels: typeof fetchLabels}} [fetchers]
+ * @returns {Promise<{coords: Record<string, [number, number]>, labels: Record<string, Record<string, string>>}>}
+ */
+export async function fetchPlaceData(qids, readPrevious, fetchers = { coords: fetchCoords, labels: fetchLabels }) {
+  /** @type {ReturnType<typeof readPrevious> | undefined} */
+  let prev;
+  const previous = () => (prev ??= readPrevious()).places;
+  /**
+   * @template T
+   * @param {string} what
+   * @param {() => Promise<T>} fresh
+   * @param {() => T} old
+   * @returns {Promise<T>}
+   */
+  const orPrevious = async (what, fresh, old) => {
+    try {
+      return await fresh();
+    } catch (err) {
+      console.warn(`Wikidata ${what} unavailable (${err instanceof Error ? err.message : err}); reusing the previous snapshot's`);
+      return old();
+    }
+  };
+  const coords = await orPrevious("coordinates", () => fetchers.coords(qids), () =>
+    Object.fromEntries(Object.entries(previous()).flatMap(([q, p]) => (p.coords ? [[q, p.coords]] : []))));
+  const labels = await orPrevious("labels", () => fetchers.labels(qids), () =>
+    Object.fromEntries(Object.entries(previous()).flatMap(([q, p]) => (p.labels ? [[q, p.labels]] : []))));
+  return { coords, labels };
+}
+
 async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -258,21 +292,7 @@ async function main() {
   const typologyDoc = JSON.parse(readFileSync(join(crmedr, "data", "typology.json"), "utf8"));
   const qids = resolvedQids(placesDoc, gazetteerDoc);
   const placesDest = join(here, "..", "data", "places-snapshot.json");
-  /** @type {Record<string, [number, number]>} */
-  let coords;
-  /** @type {Record<string, Record<string, string>>} */
-  let labels;
-  try {
-    coords = await fetchCoords(qids);
-    labels = await fetchLabels(qids);
-  } catch (err) {
-    // Offline: the previous snapshot's coordinates and labels, so the rest of the snapshot still updates.
-    console.warn(`Wikidata unreachable (${err instanceof Error ? err.message : err}); reusing ${placesDest}`);
-    /** @type {{places: Record<string, {coords: [number, number] | null, labels?: Record<string, string>}>}} */
-    const prev = JSON.parse(readFileSync(placesDest, "utf8"));
-    coords = Object.fromEntries(Object.entries(prev.places).flatMap(([q, p]) => (p.coords ? [[q, p.coords]] : [])));
-    labels = Object.fromEntries(Object.entries(prev.places).flatMap(([q, p]) => (p.labels ? [[q, p.labels]] : [])));
-  }
+  const { coords, labels } = await fetchPlaceData(qids, () => JSON.parse(readFileSync(placesDest, "utf8")));
   const missing = qids.filter((q) => !coords[q]);
   if (missing.length) console.log(`no coordinates on Wikidata for ${missing.length} places (in the index, not on the map): ${missing.join(" ")}`);
   const places = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels);

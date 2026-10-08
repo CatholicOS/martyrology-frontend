@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, labelsQuery, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { describe, it, expect, vi } from "vitest";
+import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, fetchPlaceData, labelsQuery, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -132,5 +132,40 @@ describe("labelsQuery", () => {
     expect(q).toContain("VALUES ?item { wd:Q220 wd:Q490 }");
     expect(q).toContain("rdfs:label ?label");
     expect(q).toContain('FILTER(LANG(?label) IN ("en", "it", "fr", "de", "es", "pt"))');
+  });
+});
+
+describe("fetchPlaceData", () => {
+  const previous = {
+    places: {
+      Q220: { coords: [41, 12] as [number, number], labels: { en: "Rome (old)" } },
+      Q999: { coords: null, labels: { en: "Island (old)" } },
+    },
+  };
+  const fresh = {
+    coords: async () => ({ Q220: [41.9, 12.5] as [number, number], Q490: [45.5, 9.2] as [number, number] }),
+    labels: async () => ({ Q220: { en: "Rome" }, Q490: { en: "Milan" } }),
+  };
+  const down = async () => { throw new Error("Wikidata SPARQL 429"); };
+
+  it("keeps what Wikidata gives when both queries answer", async () => {
+    const readPrevious = vi.fn(() => previous);
+    expect(await fetchPlaceData(["Q220", "Q490"], readPrevious, fresh)).toEqual({
+      coords: { Q220: [41.9, 12.5], Q490: [45.5, 9.2] },
+      labels: { Q220: { en: "Rome" }, Q490: { en: "Milan" } },
+    });
+    expect(readPrevious).not.toHaveBeenCalled();
+  });
+
+  it("keeps the fresh coordinates when only the labels query fails", async () => {
+    const data = await fetchPlaceData(["Q220", "Q490"], () => previous, { ...fresh, labels: down });
+    expect(data.coords).toEqual({ Q220: [41.9, 12.5], Q490: [45.5, 9.2] });
+    expect(data.labels).toEqual({ Q220: { en: "Rome (old)" }, Q999: { en: "Island (old)" } });
+  });
+
+  it("keeps the fresh labels when only the coordinates query fails", async () => {
+    const data = await fetchPlaceData(["Q220", "Q490"], () => previous, { ...fresh, coords: down });
+    expect(data.coords).toEqual({ Q220: [41, 12] });
+    expect(data.labels).toEqual({ Q220: { en: "Rome" }, Q490: { en: "Milan" } });
   });
 });
