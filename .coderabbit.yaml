@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit review settings.
+reviews:
+  # The lockfile is generated; review package.json instead.
+  path_filters:
+    - "!**/package-lock.json"
+  auto_review:
+    enabled: true
+    # Besides main, review PRs stacked on the i18n branches (a large change split into PRs under 100 files).
+    base_branches:
+      - "main"
+      - "i18n/.*"

@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 const { pathname } = vi.hoisted(() => ({ pathname: { current: "/docs/en/lunar-table" } }));
-vi.mock("next/navigation", () => ({ usePathname: () => pathname.current }));
+vi.mock("@/i18n/navigation", () => ({ usePathname: () => pathname.current, Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 
 import { DocsNav } from "@/components/docs/DocsNav";
 

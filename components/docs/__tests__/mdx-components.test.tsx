@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 import { components } from "@/mdx-components";
 
 const H2 = components.h2 as (p: { children?: React.ReactNode }) => React.ReactElement;
@@ -20,7 +20,7 @@ describe("the docs' MDX elements", () => {
 
   it("keep internal links internal", () => {
     render(<A href="/docs/en/ids">IDs</A>);
-    expect(screen.getByRole("link", { name: "IDs" })).toHaveAttribute("href", "/docs/en/ids");
+    expect(screen.getByRole("link", { name: "IDs" })).toHaveAttribute("href", "/en/docs/en/ids");
     expect(screen.getByRole("link", { name: "IDs" })).not.toHaveAttribute("rel");
   });
 });

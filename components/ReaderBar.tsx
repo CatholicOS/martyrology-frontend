@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useState } from "react";
 import { daysInMonth, monthName, todayLocal, type Day } from "@/lib/calendar";
 import { findSubject, type SubjectOption } from "@/lib/subjects";

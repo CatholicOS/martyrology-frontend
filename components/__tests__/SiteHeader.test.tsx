@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 
 const { viewerMock } = vi.hoisted(() => ({ viewerMock: vi.fn() }));
 vi.mock("@/lib/viewer", () => ({ getViewer: viewerMock }));
 vi.mock("@/components/AuthStatus", () => ({ AuthStatus: () => <span>auth</span> }));
-vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
+vi.mock("@/i18n/navigation", () => ({ usePathname: () => "/", useRouter: () => ({ replace: vi.fn() }), Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -40,5 +40,11 @@ describe("SiteHeader", () => {
     const links = screen.getAllByRole("link").map((a) => a.textContent);
     expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs/en");
     expect(links.indexOf("Docs")).toBe(links.indexOf("Map") - 1);
+  });
+
+  it("offers the language picker", async () => {
+    viewerMock.mockResolvedValue({ signedIn: false, curator: false });
+    render(await SiteHeader());
+    expect(screen.getByRole("combobox", { name: "Language" })).toBeInTheDocument();
   });
 });

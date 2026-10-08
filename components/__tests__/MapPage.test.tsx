@@ -4,7 +4,7 @@ import MapPage, { defaultEdition } from "@/components/MapPage";
 import type { CatalogEntryOut, EditionOut } from "@/lib/types";
 
 const replace = vi.fn();
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace }) }));
+vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ replace }), Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 
 // The map itself is Leaflet's business (EulogyMap.test); here it reports what it was given.
 vi.mock("@/components/EulogyMap", () => ({

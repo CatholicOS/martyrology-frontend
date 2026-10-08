@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useId, useState } from "react";
-import { usePathname } from "next/navigation";
 import { DOC_INDEX, DOC_PAGES, DOC_PARTS, LANG_NAMES, docHref, otherLang, slugFromPath, type DocLang } from "@/lib/docs";
 
 const CONTENTS: Record<DocLang, string> = { en: "Contents", it: "Indice" };

@@ -9,7 +9,9 @@ vi.mock("next/navigation", () => ({
 }));
 vi.mock("@/components/ComparePage", () => ({ default: () => <p>compare ui</p> }));
 
-import CompareRoute from "@/app/compare/page";
+import CompareRoute from "@/app/[locale]/compare/page";
+
+const PARAMS = { params: Promise.resolve({ locale: "en" }) };
 
 describe("/compare gate", () => {
   beforeEach(() => {
@@ -18,16 +20,16 @@ describe("/compare gate", () => {
 
   it("is a 404 when signed out", async () => {
     viewerMock.mockResolvedValue({ signedIn: false, curator: false });
-    await expect(CompareRoute()).rejects.toThrow("NEXT_NOT_FOUND");
+    await expect(CompareRoute(PARAMS)).rejects.toThrow("NEXT_NOT_FOUND");
   });
 
   it("is a 404 for a signed-in reader without a curation role", async () => {
     viewerMock.mockResolvedValue({ signedIn: true, curator: false });
-    await expect(CompareRoute()).rejects.toThrow("NEXT_NOT_FOUND");
+    await expect(CompareRoute(PARAMS)).rejects.toThrow("NEXT_NOT_FOUND");
   });
 
   it("renders the compare UI for a curator", async () => {
     viewerMock.mockResolvedValue({ signedIn: true, curator: true });
-    expect(await CompareRoute()).toBeTruthy();
+    expect(await CompareRoute(PARAMS)).toBeTruthy();
   });
 });

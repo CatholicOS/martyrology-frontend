@@ -1,5 +1,6 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { AuthStatus } from "@/components/AuthStatus";
+import { LocalePicker } from "@/components/LocalePicker";
 import { NavMenu } from "@/components/NavMenu";
 import { getViewer } from "@/lib/viewer";
 
@@ -17,6 +18,7 @@ export async function SiteHeader() {
           <Link href="/scalar">API</Link>
           {viewer.curator && <Link href="/compare">Compare</Link>}
           {viewer.curator && <Link href="/review">Review</Link>}
+          <LocalePicker />
           <AuthStatus />
         </NavMenu>
       </div>

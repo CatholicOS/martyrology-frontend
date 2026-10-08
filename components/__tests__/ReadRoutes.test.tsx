@@ -5,15 +5,17 @@ vi.mock("@/lib/server-editions", () => ({ editionExists: existsMock, editionMeta
 vi.mock("@/lib/viewer", () => ({ getViewer: viewerMock }));
 vi.mock("next/navigation", () => ({
   notFound: () => { throw new Error("NEXT_NOT_FOUND"); },
-  redirect: (to: string) => { throw new Error(`NEXT_REDIRECT ${to}`); },
+}));
+vi.mock("@/i18n/navigation", () => ({
+  redirect: ({ href }: { href: string }) => { throw new Error(`NEXT_REDIRECT ${href}`); },
 }));
 vi.mock("@/components/Reader", () => ({ default: () => null }));
 vi.mock("@/components/TodayRedirect", () => ({ default: () => null }));
 
-import DayRoute, { generateMetadata } from "@/app/read/[edition]/[mm]/[dd]/page";
-import EditionRoute from "@/app/read/[edition]/page";
+import DayRoute, { generateMetadata } from "@/app/[locale]/read/[edition]/[mm]/[dd]/page";
+import EditionRoute from "@/app/[locale]/read/[edition]/page";
 
-const params = <T,>(p: T) => ({ params: Promise.resolve(p) });
+const params = <T,>(p: T) => ({ params: Promise.resolve({ locale: "en", ...p }) });
 
 describe("/read routes", () => {
   beforeEach(() => {
@@ -50,7 +52,7 @@ describe("/read routes", () => {
   });
 
   const withParams = (p: { edition: string; mm: string; dd: string }, sp: Record<string, string | string[]>) => ({
-    params: Promise.resolve(p), searchParams: Promise.resolve(sp),
+    params: Promise.resolve({ locale: "en", ...p }), searchParams: Promise.resolve(sp),
   });
   const P = { edition: "martyrologium_romanum_2004", mm: "10", dd: "04" };
 

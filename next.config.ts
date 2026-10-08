@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const config: NextConfig = {
   // Required by the deploy: Plesk's Node extension runs this app under
@@ -42,9 +43,11 @@ const config: NextConfig = {
   },
 };
 
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+
 // MDX for the documentation section (content/docs). Compiled at build time: nothing is read from
 // disk at runtime, so nothing needs tracing into the standalone bundle. remark-gfm for tables; named
 // by string, since Turbopack cannot take plugin functions.
 const withMDX = createMDX({ options: { remarkPlugins: ["remark-gfm"] } });
 
-export default withMDX(config);
+export default withNextIntl(withMDX(config));

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import EulogyMap from "@/components/EulogyMap";
 import MapSidebar from "@/components/MapSidebar";
 import { getCatalog, getEditions } from "@/lib/api";
