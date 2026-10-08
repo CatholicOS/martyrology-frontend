@@ -1,0 +1,43 @@
+# Comment contribuer
+
+Ce site est l’œuvre de quelques personnes, consacrée à un livre de plusieurs milliers d’éloges en
+plusieurs éditions. Il a besoin de plus de regards. Si vous êtes chercheur ou étudiant en liturgie, en
+hagiographie, en latin ou en histoire de l’Église, votre relecture peut l’améliorer pour tous ceux qui
+le lisent.
+
+## Ce qui demande à être relu
+
+- **Les textes.** Les textes des éloges sur ce site correspondent-ils mot pour mot aux originaux
+  imprimés ?
+- **Les coquilles.** Avez-vous trouvé dans une édition une coquille que le site ne signale pas encore par
+  *[sic! lire : …]* ? (Voir [Notes, coquilles et errata](/docs/notes-and-marks).)
+- **Les identifiants.** Un identifiant suit-il les [règles](/docs/ids) ? Et surtout, reconnaissez-vous
+  l’éloge à partir de lui : voit-on clairement de qui il s’agit, et duquel ?
+- **Les éloges fusionnés.** Y a-t-il des endroits où deux éloges ont été réunis en un seul et doivent être
+  séparés ?
+- **Les sujets.** Le sujet d’un éloge, le saint ou la célébration qu’il nomme, est-il correctement donné
+  en latin, en italien et en anglais ?
+- **Les lieux.** Chaque lieu nommé par un éloge est-il correctement identifié, sur la [carte](/map) et
+  dans ses données ?
+- **Tout le reste** de ce qui serait erroné, obscur ou manquant.
+
+## Comment
+
+Des outils de curation **arrivent bientôt** sur ce site : les utilisateurs habilités pourront proposer
+des corrections directement depuis la page qu’ils lisent. Cette page y renverra dès qu’ils seront prêts.
+
+## Les dépôts
+
+Le site est construit à partir de quatre dépôts sur GitHub, dont trois publics :
+
+- [**martyrology-api**](https://github.com/CatholicOS/martyrology-api) : l’API qui fournit les éditions,
+  leurs jours et leurs éloges à ce site et à quiconque (voir [Données et sources](/docs/data#lapi)).
+- [**martyrology-frontend**](https://github.com/CatholicOS/martyrology-frontend) : ce site web.
+- [**crmedr**](https://github.com/CatholicOS/crmedr) : le registre ouvert des identifiants, des sujets,
+  des lieux et des coquilles (voir [Données et sources](/docs/data)). C’est là que doivent aller les
+  corrections des identifiants, des sujets et des lieux.
+- **martyrology-texts** : les textes des éloges. Ce dépôt est privé, car les textes des éditions de 2004
+  sont protégés par le droit d’auteur ; l’API les y lit.
+
+Si vous trouvez un problème avant que les outils de curation soient prêts, vous pouvez ouvrir un ticket
+(issue) sur le dépôt public concerné.
