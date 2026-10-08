@@ -16,14 +16,14 @@ const entry = (id: string, subject: string, label: string): MapEntry => ({
 const results = [entry("mr:0101-almachius", "Sanctus Almachius", "Rome"), entry("mr:0102-x", "Sanctus X", "Rome")];
 const filters: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
 
-function setup(over: Partial<React.ComponentProps<typeof MapSidebar>> = {}) {
+function setup(over: Partial<React.ComponentProps<typeof MapSidebar>> = {}, locale: "en" | "it" = "en") {
   const props: React.ComponentProps<typeof MapSidebar> = {
     editions, edition: "mr_2004", onEdition: vi.fn(), filters, onFilters: vi.fn(),
     facets: { typologies: [["dies_natalis", 2], ["none", 1]], countries: [["IT", 2], ["DE", 1]] },
     results, mapped: 3, unmapped: 5, place: null, onShowAll: vi.fn(), selected: null, onSelect: vi.fn(),
     status: { loading: false, error: null }, onRetry: vi.fn(), ...over,
   };
-  render(<MapSidebar {...props} />);
+  render(<MapSidebar {...props} />, { locale });
   return props;
 }
 
@@ -56,6 +56,12 @@ describe("MapSidebar", () => {
     expect(labels).toEqual(["Germany (1)", "Italy (2)"]);
     fireEvent.click(within(group).getByRole("checkbox", { name: /Italy/ }));
     expect(p.onFilters).toHaveBeenCalledWith({ ...filters, countries: new Set(["IT"]) });
+  });
+
+  it("names the countries in the reader's language", () => {
+    setup({}, "it");
+    const group = screen.getByRole("group", { name: "Country" });
+    expect(within(group).getAllByRole("checkbox").map((b) => b.closest("label")!.textContent)).toEqual(["Germania (1)", "Italia (2)"]);
   });
 
   it("narrows the country list by name", () => {

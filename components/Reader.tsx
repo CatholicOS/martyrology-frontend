@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import DayPage from "@/components/DayPage";
 import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";
@@ -100,6 +100,8 @@ export default function Reader({
   edition, mm, dd, signedIn, withEdition = null,
 }: { edition: string; mm: number; dd: number; signedIn: boolean; withEdition?: string | null }) {
   const t = useTranslations("Reader");
+  const format = useFormatter();
+  const locale = useLocale();
   const router = useRouter();
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
   const [editions, setEditions] = useState<EditionOut[]>(() => cached?.editions ?? []);
@@ -199,7 +201,7 @@ export default function Reader({
 
   const current = editions.find((e) => e.edition_id === edition);
   const lang = current ? editionLang(current) : "la";
-  const subjectsKey = current ? `${edition}/${lang}` : null;
+  const subjectsKey = current ? `${edition}/${lang}/${locale}` : null;
   const [subjects, setSubjects] = useState<{ key: string; options: SubjectOption[] } | null>(null);
   const subjectsNow = subjectsKey
     ? (subjectsCache.get(subjectsKey) ?? (subjects?.key === subjectsKey ? subjects.options : null))
@@ -210,7 +212,7 @@ export default function Reader({
     let cancelled = false;
     getCatalog(edition, lang).then(
       (catalog) => {
-        const options = subjectOptions(catalog);
+        const options = subjectOptions(catalog, format);
         subjectsCache.set(subjectsKey, options);
         if (!cancelled) setSubjects({ key: subjectsKey, options });
       },
@@ -219,7 +221,7 @@ export default function Reader({
     return () => {
       cancelled = true;
     };
-  }, [subjectsKey, edition, lang]);
+  }, [subjectsKey, edition, lang, format]);
 
   const title = current ? `${titleCase(editionTitle(current))} ${current.year}` : edition;
   const books = useMemo(() => {

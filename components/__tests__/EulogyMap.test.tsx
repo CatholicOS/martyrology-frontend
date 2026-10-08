@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@/test/intl";
 import EulogyMap from "@/components/EulogyMap";
 import type { MapEntry } from "@/lib/map-data";
 

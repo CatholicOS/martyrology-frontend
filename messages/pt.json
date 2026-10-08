@@ -163,5 +163,74 @@
       "anchorNotFound": "not found as whole words in this eulogy",
       "anchorRepeated": "found {count} times: add a word or two"
     }
+  },
+  "Map": {
+    "filters": "Filters",
+    "error": {
+      "noEditions": "No edition has texts to map yet.",
+      "editionsFailed": "Could not load the editions.",
+      "catalogFailed": "Could not load this edition's eulogies."
+    },
+    "edition": "Edition",
+    "searchLabel": "Search subject or ID",
+    "searchPlaceholder": "Sanctus…, mr:0101-…, Rome",
+    "typologyLegend": "Typology",
+    "countryLegend": "Country",
+    "filterCountries": "Filter countries",
+    "allCountries": "All countries",
+    "unknownCountry": "Unknown",
+    "retry": "Retry",
+    "loading": "Loading…",
+    "summary": "{shown} shown · {mapped} mapped · {unmapped} not mapped in this edition",
+    "placeHeading": "{label} — {count, plural, one {# eulogy} other {# eulogies}}",
+    "showAll": "Show all",
+    "noMatches": "No eulogy matches these filters.",
+    "moreRows": "and {count} more — narrow the search to list them.",
+    "typology": {
+      "none": "Not classified",
+      "dies_natalis": "Dies natalis",
+      "depositio": "Depositio",
+      "translatio": "Translatio",
+      "inventio": "Inventio",
+      "dedicatio": "Dedicatio",
+      "ordinatio": "Ordinatio",
+      "celebratio": "Celebratio",
+      "commemoratio": "Commemoratio"
+    },
+    "mapLoadFailed": "The map could not load.",
+    "reload": "Reload",
+    "read": "Read",
+    "noCoordinates": "No candidate has coordinates.",
+    "eulogy": {
+      "loading": "Loading eulogy…",
+      "unavailable": "text unavailable",
+      "unavailableTitled": "text unavailable ({title})",
+      "noPlacement": "no {wanted} placement — showing {shown}",
+      "noText": "(no text)",
+      "noTextIn": "(no text in {edition})"
+    },
+    "place": {
+      "occurrences": "{count, plural, one {# occurrence} other {# occurrences}}",
+      "notAutomatic": "Not automatic: {reasons}",
+      "suggested": "Suggested <qid>{wikidata}</qid> ({country})",
+      "noneSuggested": "No item suggested",
+      "confidence": "confidence: {value}",
+      "candidates": "Candidates",
+      "noDescription": "(no description)",
+      "suggestedTag": "suggested",
+      "otherQid": "Other QID",
+      "qidPlaceholder": "Q…",
+      "hideMap": "Hide map",
+      "showMap": "Show map",
+      "country": "Country",
+      "italianSays": "The Italian says {claimed} (“{phrase}”), not {country}: recorded as text_says.",
+      "accept": "Accept",
+      "acceptEdited": "Accept (edited)",
+      "reject": "Reject",
+      "reason": "Reason",
+      "reasonPlaceholder": "why no Wikidata item fits",
+      "confirmReject": "Confirm reject",
+      "cancel": "Cancel"
+    }
   }
 }
