@@ -1,5 +1,5 @@
 import { editionTitle, titleCase } from "@/lib/editions";
-import type { EditionOut } from "@/lib/types";
+import type { CatalogEntryOut, EditionOut, Locale } from "@/lib/types";
 
 const API_BASE = process.env.API_BASE ?? "http://localhost:8000";
 
@@ -47,4 +47,19 @@ export async function editionExists(id: string): Promise<boolean> {
 export async function editionMeta(id: string): Promise<{ title: string; year: number } | null> {
   const e = await findEdition(id);
   return e ? { title: titleCase(editionTitle(e)), year: e.year } : null;
+}
+
+/** The edition as the API describes it: undefined when the API cannot be asked, null when it does not know the edition. */
+export async function editionInfo(id: string): Promise<EditionOut | null | undefined> {
+  return findEdition(id);
+}
+
+/** The edition's catalog (every eulogy, with its subject in `lang`), from the data cache (revalidated hourly) or fresh. Throws when the API cannot give it. */
+export async function fetchCatalog(edition: string, lang: Locale): Promise<CatalogEntryOut[]> {
+  const res = await fetch(
+    `${API_BASE}/api/v1/elogia?edition=${encodeURIComponent(edition)}&locale=${lang}`,
+    { next: { revalidate: 3600 } },
+  );
+  if (!res.ok) throw new Error(`catalog ${res.status}`);
+  return ((await res.json()) as { elogia: CatalogEntryOut[] }).elogia;
 }

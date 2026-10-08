@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { editionExists, editionMeta } from "@/lib/server-editions";
+import { editionExists, editionInfo, editionMeta, fetchCatalog } from "@/lib/server-editions";
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -65,5 +65,33 @@ describe("editionMeta after a release", () => {
       .mockResolvedValueOnce(new Response(JSON.stringify({ editions: [] })))
       .mockResolvedValueOnce(new Response(JSON.stringify({ editions: [{ edition_id: "mr1630", year: 1630, locale: "la" }] })));
     expect(await editionMeta("mr1630")).toEqual({ title: "Martyrologium Romanum", year: 1630 });
+  });
+});
+
+describe("editionInfo", () => {
+  it("returns the API's edition, null when unknown, undefined when the API cannot be asked", async () => {
+    const e = { edition_id: "mr1749", year: 1749, locale: "la" };
+    vi.spyOn(globalThis, "fetch").mockImplementation(async () => new Response(JSON.stringify({ editions: [e] })));
+    expect(await editionInfo("mr1749")).toEqual(e);
+    expect(await editionInfo("nope")).toBeNull();
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("down"));
+    expect(await editionInfo("mr1749")).toBeUndefined();
+  });
+});
+
+describe("fetchCatalog", () => {
+  it("asks the API for the edition's catalog in the given language, cached hourly", async () => {
+    const elogia = [{ id: "mr:0101-basilius", subject: "Sanctus Basilius", anchor_day: "01-01", deprecated: false, present: true, day_printed: "01-01", entry: 2 }];
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({ elogia })));
+    expect(await fetchCatalog("martyrologium_romanum_2004_it_IT", "it")).toEqual(elogia);
+    expect(String(fetchMock.mock.calls[0][0])).toMatch(/\/api\/v1\/elogia\?edition=martyrologium_romanum_2004_it_IT&locale=it$/);
+    expect(fetchMock.mock.calls[0][1]).toEqual({ next: { revalidate: 3600 } });
+  });
+
+  it("throws when the API answers with an error or cannot be reached", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("", { status: 503 }));
+    await expect(fetchCatalog("x", "la")).rejects.toThrow();
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("down"));
+    await expect(fetchCatalog("x", "la")).rejects.toThrow();
   });
 });
