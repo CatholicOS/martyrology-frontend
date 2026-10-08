@@ -117,7 +117,7 @@
     "editorialNotes": "Notes éditoriales",
     "backToNote": "Retour au texte de la note {n}",
     "gapAbsent": "<i>absent de</i> {name}",
-    "gapPending": "<i>pas à ce jour dans</i> {name}",
+    "gapPending": "<i>pas ce jour-là dans</i> {name}",
     "gapEntry": "n° {entry}",
     "gapAbove": "plus haut",
     "gapBelow": "plus bas",
