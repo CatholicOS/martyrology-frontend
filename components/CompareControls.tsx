@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { EditionOut } from "@/lib/types";
 
 const MONTHS = [
@@ -25,16 +26,17 @@ export default function CompareControls({
   month,
   onMonthChange,
 }: Props) {
+  const t = useTranslations("Compare");
   return (
     <div className="mb-4 flex flex-wrap items-center gap-4">
       <label className="flex items-center gap-2 text-sm">
-        Edition A
+        {t("editionA")}
         <select
           className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
           value={editionA}
           onChange={(e) => onEditionAChange(e.target.value)}
         >
-          <option value="">— select —</option>
+          <option value="">{t("select")}</option>
           {editions.map((e) => (
             <option key={e.edition_id} value={e.edition_id}>
               {e.edition_id} ({e.year})
@@ -43,13 +45,13 @@ export default function CompareControls({
         </select>
       </label>
       <label className="flex items-center gap-2 text-sm">
-        Edition B
+        {t("editionB")}
         <select
           className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
           value={editionB}
           onChange={(e) => onEditionBChange(e.target.value)}
         >
-          <option value="">— select —</option>
+          <option value="">{t("select")}</option>
           {editions.map((e) => (
             <option key={e.edition_id} value={e.edition_id}>
               {e.edition_id} ({e.year})
@@ -58,13 +60,13 @@ export default function CompareControls({
         </select>
       </label>
       <label className="flex items-center gap-2 text-sm">
-        Month
+        {t("month")}
         <select
           className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
           value={month ?? ""}
           onChange={(e) => onMonthChange(e.target.value || null)}
         >
-          <option value="">All months</option>
+          <option value="">{t("allMonths")}</option>
           {MONTHS.map((m) => (
             <option key={m} value={m}>
               {m}

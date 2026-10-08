@@ -30,6 +30,16 @@ describe("subjectOptions", () => {
     expect(opts[0].value).toBe("Sanctus Ioannes — 27 dicembre");
   });
 
+  it("labels each eulogy with the subject in the interface language", () => {
+    const registry: Record<string, { la: string; it?: string; en: string }> = {
+      "mr:1227-ioannes": { la: "Sanctus Ioannes", it: "San Giovanni", en: "Saint John" },
+    };
+    const subjectOf = (loc: string) => (id: string, own: string) => subjectFor(registry[id], loc, own);
+    const cat = [entry("mr:1227-ioannes", "Saint John the Apostle", "12-27")];
+    expect(subjectOptions(cat, createFormatter({ locale: "it" }), subjectOf("it"))[0].value).toBe("San Giovanni — 27 dicembre");
+    expect(subjectOptions(cat, createFormatter({ locale: "fr" }), subjectOf("fr"))[0].value).toBe("Saint John — 27 décembre");
+  });
+
   it("tells apart two eulogies of the same subject on the same day by their number", () => {
     const opts = subjectOptions([
       entry("mr:0310-a", "Sancti Martyres", "03-10", 4),

@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
-  DOC_LANGS, DOC_PAGES, DOC_PARTS, DOC_INDEX, docHref, findPage, headingId, isDocLang, neighbours, otherLang, slugFromPath,
+  DOC_CONTENT_LANGS, DOC_PAGES, DOC_PARTS, REVIEWED_DOC_LANGS, docContentLang, docHref, findPage, headingId, neighbours, slugFromPath,
 } from "@/lib/docs";
+import en from "@/messages/en.json";
 
 describe("the docs registry", () => {
   it("lists the ten pages in reading order, Part I then Part II", () => {
@@ -15,22 +16,21 @@ describe("the docs registry", () => {
     ]);
   });
 
-  it("has unique slugs and a title and description in every language", () => {
+  it("holds only each page's slug and part; the text is in the messages", () => {
+    for (const p of DOC_PAGES) expect(Object.keys(p).sort()).toEqual(["part", "slug"]);
     expect(new Set(DOC_PAGES.map((p) => p.slug)).size).toBe(DOC_PAGES.length);
-    for (const p of DOC_PAGES)
-      for (const l of DOC_LANGS) {
-        expect(p.text[l].title.trim()).not.toBe("");
-        expect(p.text[l].description.trim()).not.toBe("");
-      }
-    for (const l of DOC_LANGS) expect(DOC_INDEX[l].title.trim()).not.toBe("");
-    expect(DOC_PARTS.map((p) => p.part)).toEqual(["martyrology", "project"]);
+    expect(DOC_PARTS).toEqual(["martyrology", "project"]);
   });
 
-  it("recognizes only its languages", () => {
-    expect(isDocLang("en")).toBe(true);
-    expect(isDocLang("it")).toBe(true);
-    expect(isDocLang("la")).toBe(false);
-    expect(isDocLang("")).toBe(false);
+  it("has a title and description in the English messages for every page, part and the index", () => {
+    const pages = en.Docs.pages as Record<string, { title: string; description: string }>;
+    for (const p of DOC_PAGES) {
+      expect(pages[p.slug]?.title?.trim()).toBeTruthy();
+      expect(pages[p.slug]?.description?.trim()).toBeTruthy();
+    }
+    const parts = en.Docs.parts as Record<string, string>;
+    for (const part of DOC_PARTS) expect(parts[part]?.trim()).toBeTruthy();
+    expect(en.Docs.index.title.trim()).toBeTruthy();
   });
 
   it("finds pages by slug", () => {
@@ -38,9 +38,9 @@ describe("the docs registry", () => {
     expect(findPage("nope")).toBeUndefined();
   });
 
-  it("builds hrefs for the index and a page", () => {
-    expect(docHref("en")).toBe("/docs/en");
-    expect(docHref("it", "lunar-table")).toBe("/docs/it/lunar-table");
+  it("builds locale-less hrefs for the index and a page", () => {
+    expect(docHref()).toBe("/docs");
+    expect(docHref("lunar-table")).toBe("/docs/lunar-table");
   });
 
   it("gives neighbours, open at both ends and across the parts", () => {
@@ -50,17 +50,21 @@ describe("the docs registry", () => {
     expect(neighbours("nope")).toEqual({});
   });
 
-  it("switches language", () => {
-    expect(otherLang("en")).toBe("it");
-    expect(otherLang("it")).toBe("en");
+  it("reads the page from a locale-less pathname", () => {
+    expect(slugFromPath("/docs")).toEqual({ slug: undefined });
+    expect(slugFromPath("/docs/")).toEqual({ slug: undefined });
+    expect(slugFromPath("/docs/ids")).toEqual({ slug: "ids" });
+    expect(slugFromPath("/map")).toBeNull();
+    expect(slugFromPath("/docs/ids/more")).toBeNull();
   });
 
-  it("reads the language and page from a pathname", () => {
-    expect(slugFromPath("/docs/en")).toEqual({ lang: "en", slug: undefined });
-    expect(slugFromPath("/docs/it/")).toEqual({ lang: "it", slug: undefined });
-    expect(slugFromPath("/docs/it/lunar-table")).toEqual({ lang: "it", slug: "lunar-table" });
-    expect(slugFromPath("/docs/fr/history")).toBeNull();
-    expect(slugFromPath("/map")).toBeNull();
+  it("serves each locale its own content where it exists, else the English", () => {
+    expect(DOC_CONTENT_LANGS).toEqual(["en", "it"]);
+    expect(REVIEWED_DOC_LANGS).toEqual(["en", "it"]);
+    expect(docContentLang("fr")).toBe("en");
+    expect(docContentLang("pt")).toBe("en");
+    expect(docContentLang("it")).toBe("it");
+    expect(docContentLang("en")).toBe("en");
   });
 
   it("makes stable ASCII anchor ids from headings", () => {

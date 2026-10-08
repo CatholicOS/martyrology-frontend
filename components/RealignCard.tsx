@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
-import { decisionClass as cardClass } from "@/components/decisionClass";
+import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type EditedFields, type RealignAction, type RealignOp, type SplitPart } from "@/lib/changeset";
-import { currentTargets, describeRealign, splitText } from "@/lib/realign";
+import { currentTargets, opLabel, splitText } from "@/lib/realign";
 import { getSnapshot } from "@/lib/snapshot";
 import type { Locale } from "@/lib/types";
 
@@ -23,6 +24,7 @@ const input = "flex-1 rounded border border-slate-300 px-2 py-1 font-mono text-x
 
 /** The registry's subject and status for an ID, or "new" for one the op would coin. */
 function IdTag({ id }: { id?: string }) {
+  const t = useTranslations("Review.idStatus");
   if (!id) return null;
   const e = getSnapshot()[id];
   const status = !e ? "new" : e.deprecated ? "deprecated" : "current";
@@ -35,7 +37,7 @@ function IdTag({ id }: { id?: string }) {
   return (
     <span className="inline-flex flex-wrap items-baseline gap-1">
       <span className="font-mono text-xs">{id}</span>
-      <span className={`rounded px-1 text-[10px] uppercase ${tone}`}>{status}</span>
+      <span className={`rounded px-1 text-[10px] uppercase ${tone}`}>{t(status)}</span>
       {e?.subject.la && <span className="text-xs text-slate-500 dark:text-slate-400">{e.subject.la}</span>}
     </span>
   );
@@ -43,6 +45,7 @@ function IdTag({ id }: { id?: string }) {
 
 /** A run-in text cut at its split points, each part labelled with the ID it takes. */
 function SplitView({ text, firstId, parts }: { text: string; firstId: string; parts: SplitPart[] }) {
+  const t = useTranslations("Review.realign");
   const { segments, missing } = splitText(text, firstId, parts);
   return (
     <div className="flex flex-col gap-1">
@@ -54,7 +57,7 @@ function SplitView({ text, firstId, parts }: { text: string; firstId: string; pa
       ))}
       {missing.map((p, i) => (
         <p key={`m${i}`} className="text-xs text-red-700 dark:text-red-300">
-          split_at not found in the text: “{p.split_at}” ({p.id})
+          {t("splitMissing", { splitAt: p.split_at, id: p.id })}
         </p>
       ))}
     </div>
@@ -62,6 +65,8 @@ function SplitView({ text, firstId, parts }: { text: string; firstId: string; pa
 }
 
 export default function RealignCard({ op, decision, onDecide, locale, baseEdition }: Props) {
+  const t = useTranslations("Review");
+  const tr = useTranslations("Review.realign");
   const ed: EditedFields = decision?.edited ?? {};
   const [editing, setEditing] = useState(false);
   const [show2004, setShow2004] = useState(false);
@@ -123,19 +128,19 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
             </span>
           )}
           {decision && (
-            <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decision.decision}</span>
+            <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decisionLabel(t, decision)}</span>
           )}
         </span>
       </div>
 
-      <p className="mb-2 font-medium">{describeRealign(shown)}</p>
+      <p className="mb-2 font-medium">{opLabel(t, shown)}</p>
 
       <div className="mb-2 rounded bg-slate-50 p-2 dark:bg-slate-900/40">
         <p className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">
           {op.edition} · <IdTag id={op.id} />
         </p>
         {own === undefined ? (
-          <p className="text-xs italic text-slate-500">No {op.edition} text under this key.</p>
+          <p className="text-xs italic text-slate-500">{tr("noText", { edition: op.edition })}</p>
         ) : shown.action === "split" ? (
           <SplitView text={own} firstId={shown.first_id ?? op.id} parts={shown.parts ?? []} />
         ) : (
@@ -144,7 +149,7 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
         {others.map(([e, t]) => (
           <details key={e} className="mt-2">
             <summary className="cursor-pointer text-xs text-slate-500 dark:text-slate-400">
-              {e} text under the same key
+              {tr("sameKey", { edition: e })}
             </summary>
             <p className="mt-1 font-serif text-slate-700 dark:text-slate-300">{t}</p>
           </details>
@@ -166,7 +171,7 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
           </p>
         )}
         {op.explanation && <p className="text-slate-700 dark:text-slate-300">{op.explanation}</p>}
-        {decision?.edited?.note && <p className="text-xs italic">Curator note: {decision.edited.note}</p>}
+        {decision?.edited?.note && <p className="text-xs italic">{tr("curatorNote", { note: decision.edited.note })}</p>}
       </div>
 
       {targets.length > 0 && (
@@ -176,7 +181,7 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
             className="text-xs text-sky-700 underline dark:text-sky-300"
             onClick={() => setShow2004(!show2004)}
           >
-            {show2004 ? "Hide" : "Show"} the 2004 text of {targets.join(", ")}
+            {show2004 ? tr("hide2004", { ids: targets.join(", ") }) : tr("show2004", { ids: targets.join(", ") })}
           </button>
           {show2004 && (
             <div className="mt-1 grid gap-2 md:grid-cols-2">
@@ -195,27 +200,27 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
             onClick={() => decide({ decision: "accept" })}
           >
-            Accept
+            {t("actions.accept")}
           </button>
           <button
             type="button"
             className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700"
             onClick={() => decide({ decision: "reject" })}
           >
-            Reject
+            {t("actions.reject")}
           </button>
           <button
             type="button"
             className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
             onClick={() => setEditing(true)}
           >
-            Edit
+            {t("actions.edit")}
           </button>
         </div>
       ) : (
         <div className="flex flex-col gap-2">
           <label className="flex items-center gap-2 text-xs">
-            action
+            {tr("action")}
             <select className={input} value={action} onChange={(e) => setAction(e.target.value as RealignAction)}>
               {ACTIONS.map((a) => (
                 <option key={a} value={a}>
@@ -239,20 +244,20 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
           {action === "split" && (
             <>
               <label className="flex items-center gap-2 text-xs">
-                first part
+                {tr("firstPart")}
                 <input className={input} value={firstId} onChange={(e) => setFirstId(e.target.value)} />
               </label>
               {parts.map((p, i) => (
                 <div key={i} className="flex flex-wrap items-center gap-2 text-xs">
-                  <span>part {i + 2}</span>
+                  <span>{tr("part", { n: i + 2 })}</span>
                   <input
-                    aria-label={`split_at ${i + 2}`}
+                    aria-label={tr("ariaSplitAt", { n: i + 2 })}
                     className={input}
                     value={p.split_at}
                     onChange={(e) => setPart(i, { split_at: e.target.value })}
                   />
                   <input
-                    aria-label={`id ${i + 2}`}
+                    aria-label={tr("ariaId", { n: i + 2 })}
                     className={input}
                     value={p.id}
                     onChange={(e) => setPart(i, { id: e.target.value })}
@@ -262,7 +267,7 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
                     className="text-red-700 dark:text-red-300"
                     onClick={() => setParts(parts.filter((_, j) => j !== i))}
                   >
-                    remove
+                    {tr("remove")}
                   </button>
                 </div>
               ))}
@@ -271,7 +276,7 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
                 className="self-start text-xs text-sky-700 underline dark:text-sky-300"
                 onClick={() => setParts([...parts, { split_at: "", id: "" }])}
               >
-                add a part
+                {tr("addPart")}
               </button>
             </>
           )}
@@ -280,8 +285,8 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
             <input className={input} value={link} onChange={(e) => setLink(e.target.value)} placeholder="mr:MMDD-…" />
           </label>
           <label className="flex items-center gap-2 text-xs">
-            note
-            <input className={input} value={note} onChange={(e) => setNote(e.target.value)} placeholder="curator note" />
+            {tr("note")}
+            <input className={input} value={note} onChange={(e) => setNote(e.target.value)} placeholder={tr("notePlaceholder")} />
           </label>
           <div className="flex gap-2">
             <button
@@ -289,14 +294,14 @@ export default function RealignCard({ op, decision, onDecide, locale, baseEditio
               className="rounded bg-amber-600 px-2 py-1 text-xs font-medium text-white hover:bg-amber-700"
               onClick={saveEdit}
             >
-              Save edit
+              {t("actions.saveEdit")}
             </button>
             <button
               type="button"
               className="rounded bg-slate-400 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500"
               onClick={() => setEditing(false)}
             >
-              Cancel
+              {t("actions.cancel")}
             </button>
           </div>
         </div>

@@ -13,19 +13,23 @@ export interface SubjectOption {
  * labelled with the day it prints them on ("Sanctus Ioannes — 27 December"), since many subjects
  * recur, the month in the interface language. Two of one subject on one day are told apart by their number, or by their id if unnumbered.
  */
-export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<typeof interfaceMonth>[0]): SubjectOption[] {
+export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<typeof interfaceMonth>[0],
+  /** The subject to show for an eulogy (the interface language's); the catalog's own by default. */
+  subjectOf: (id: string, catalogSubject: string) => string = (_id, own) => own,
+): SubjectOption[] {
   const rows = catalog.flatMap((e) => {
     const m = e.present !== false && e.subject ? /^(\d{2})-(\d{2})$/.exec(e.day_printed ?? "") : null;
     if (!m) return [];
     const day = { mm: Number(m[1]), dd: Number(m[2]) };
-    return [{ e, day, base: `${e.subject} — ${day.dd} ${interfaceMonth(format, day.mm)}` }];
+    const subject = subjectOf(e.id, e.subject!);
+    return [{ e, subject, day, base: `${subject} — ${day.dd} ${interfaceMonth(format, day.mm)}` }];
   });
   const seen = new Map<string, number>();
   for (const r of rows) seen.set(r.base, (seen.get(r.base) ?? 0) + 1);
   return rows
     .sort(
       (x, y) =>
-        x.e.subject!.localeCompare(y.e.subject!) ||
+        x.subject.localeCompare(y.subject) ||
         x.day.mm - y.day.mm ||
         x.day.dd - y.day.dd ||
         (x.e.entry ?? Infinity) - (y.e.entry ?? Infinity),

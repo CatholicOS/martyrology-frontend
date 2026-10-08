@@ -238,4 +238,12 @@ describe("OperationCard: a second edition beside the eulogy", () => {
     expect(await screen.findByText("Solopoli, sancti Soli.")).toBeInTheDocument();
     expect(screen.queryByText(/no text in/)).not.toBeInTheDocument();
   });
+
+  it("labels the delete edit form's reason field", () => {
+    vi.mocked(getElogium).mockResolvedValue(fixtureEulogy);
+    const del = { op: "delete", id: "mr:0101-circumcisio-domini", reason: "dup", decision: null } as unknown as import("@/lib/changeset").DeleteOp;
+    render(<OperationCard op={del} onDecide={vi.fn()} locale="la" baseEdition="martyrologium_romanum_1749" />);
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.getByLabelText("reason")).toBeInTheDocument();
+  });
 });

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { decisionClass } from "@/components/decisionClass";
+import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type MarginCandidate, type PlaceMarginOp } from "@/lib/changeset";
 import { classWords, marginDecision, marginRef, proposedRef, scanImageUrl } from "@/lib/notationes";
 
@@ -31,6 +31,8 @@ function Candidate({ c }: { c: MarginCandidate }) {
  */
 export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
   const t = useTranslations("Notes");
+  const r = useTranslations("Review");
+  const m = useTranslations("Review.margin");
   const [selected, setSelected] = useState(marginRef(op, decision));
   const proposed = proposedRef(op);
   const chosen = op.candidates.find((c) => c.ref === selected);
@@ -46,7 +48,7 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
       <div>
         <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
           <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-            {op.op} · scan page {op.scan_page}
+            {op.op} · {m("scanSummary", { page: op.scan_page })}
           </span>
           <span className="flex gap-1 text-xs">
             {op.class && <span className="rounded bg-slate-100 px-2 py-0.5 dark:bg-slate-800">{op.class}</span>}
@@ -58,7 +60,7 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
               </span>
             )}
             {decision && (
-              <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decision.decision}</span>
+              <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decisionLabel(r, decision)}</span>
             )}
           </span>
         </div>
@@ -67,13 +69,14 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
           {op.text}
         </p>
         <p className="mb-2 font-medium">{classWords(t, op.class)}</p>
-        {op.reasoning && <p className="mb-2 text-slate-700 dark:text-slate-300">Reviewer: {op.reasoning}</p>}
+        {op.reasoning && <p className="mb-2 text-slate-700 dark:text-slate-300">{m("reviewer", { text: op.reasoning })}</p>}
         <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
-          Proposed: {proposal ? <Candidate c={proposal} /> : proposed || "nothing"}
+          {m("proposed")}
+          {proposal ? <Candidate c={proposal} /> : proposed || m("nothing")}
         </p>
 
         <fieldset className="mb-2 flex flex-col gap-1">
-          <legend className="text-xs font-medium">Beside</legend>
+          <legend className="text-xs font-medium">{m("beside")}</legend>
           {op.candidates.map((c) => (
             <label key={c.ref} className="flex items-baseline gap-1">
               <input
@@ -82,7 +85,7 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
                 checked={selected === c.ref}
                 onChange={() => setSelected(c.ref)}
               />
-              <span className="text-[10px] uppercase text-slate-500">{c.kind}</span>
+              <span className="text-[10px] uppercase text-slate-500">{m(`kind.${c.kind}`)}</span>
               <Candidate c={c} />
             </label>
           ))}
@@ -95,10 +98,10 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
             className={`${button} bg-green-600 hover:bg-green-700`}
             onClick={() => chosen && decide(marginDecision(op, chosen))}
           >
-            Accept{chosen && chosen.ref !== proposed ? " (edited)" : ""}
+            {chosen && chosen.ref !== proposed ? m("acceptEdited") : m("accept")}
           </button>
           <button type="button" className={`${button} bg-red-600 hover:bg-red-700`} onClick={() => decide({ decision: "reject" })}>
-            Not a margin note
+            {m("notMargin")}
           </button>
         </div>
       </div>
@@ -106,11 +109,11 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
       <figure>
         <a href={op.image} target="_blank" rel="noreferrer">
           {/* eslint-disable-next-line @next/next/no-img-element -- a remote scan, shown as is */}
-          <img className="w-full border" src={scanImageUrl(op.scan_page)} alt={`Scan page ${op.scan_page}`} loading="lazy" />
+          <img className="w-full border" src={scanImageUrl(op.scan_page)} alt={m("scanPage", { page: op.scan_page })} loading="lazy" />
         </a>
         <figcaption className="mt-1 text-xs">
           <a className="text-sky-700 underline dark:text-sky-300" href={op.image} target="_blank" rel="noreferrer">
-            Scan page {op.scan_page} on Internet Archive
+            {m("scanOnArchive", { page: op.scan_page })}
           </a>
         </figcaption>
       </figure>

@@ -15,7 +15,7 @@ describe("LocalePicker", () => {
 
   it("lists the six languages in their own names, the current one selected", () => {
     render(<LocalePicker />, { locale: "it" });
-    const select = screen.getByRole("combobox", { name: "Language" });
+    const select = screen.getByRole("combobox", { name: "Lingua" });
     expect(select).toHaveValue("it");
     expect(screen.getAllByRole("option").map((o) => o.textContent)).toEqual(["English", "Italiano", "Français", "Deutsch", "Español", "Português"]);
   });

@@ -58,7 +58,7 @@ vi.mock("leaflet", () => {
 vi.mock("leaflet.markercluster", () => ({}));
 
 const e = (id: string, qid: string, coords: [number, number]): MapEntry => ({
-  id, subject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", country: "IT", coords, typology: "dies_natalis",
+  id, subject: `Subject ${id}`, editionSubject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", country: "IT", coords, typology: "dies_natalis",
 });
 const entries = [e("mr:0102-a", "Q220", [41.9, 12.5]), e("mr:0102-b", "Q220", [41.9, 12.5]), e("mr:0102-c", "Q84", [51.5, -0.1])];
 
@@ -91,7 +91,13 @@ describe("EulogyMap", () => {
     expect(typeof groups[0].layers[0].popup).toBe("function"); // built when opened, not per marker per keystroke
     const popup = popupOf(groups[0].layers[0]);
     expect(popup.textContent).toContain("Subject mr:0102-a");
-    expect(popup.querySelector("a[data-read]")!.getAttribute("href")).toBe("/read/mr_2004/01/02#mr:0102-a");
+    expect(popup.querySelector("a[data-read]")!.getAttribute("href")).toBe("/en/read/mr_2004/01/02#mr:0102-a");
+  });
+
+  it("the popup's link keeps the interface language", async () => {
+    render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />, { locale: "it" });
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
+    expect(popupOf(groups[0].layers[0]).querySelector("a[data-read]")!.getAttribute("href")).toBe("/it/read/mr_2004/01/02#mr:0102-a");
   });
 
   it("clicking a marker selects its eulogy", async () => {

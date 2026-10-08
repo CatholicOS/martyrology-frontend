@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { getCatalog, getEditions, ApiError } from "@/lib/api";
 import { getSnapshot } from "@/lib/snapshot";
 import { buildComparison, type CompareDayGroup } from "@/lib/compare";
@@ -14,6 +15,7 @@ function localeOf(edition: EditionOut | undefined): Locale {
 }
 
 export default function ComparePage() {
+  const t = useTranslations("Compare");
   const [editions, setEditions] = useState<EditionOut[]>([]);
   const [editionA, setEditionA] = useState("");
   const [editionB, setEditionB] = useState("");
@@ -43,8 +45,8 @@ export default function ComparePage() {
         if (!cancelled) {
           setError(
             err instanceof ApiError
-              ? "API unreachable — is martyrology-api running on API_BASE?"
-              : "Failed to load editions",
+              ? t("apiUnreachable")
+              : t("loadEditionsFailed"),
           );
         }
       } finally {
@@ -54,6 +56,8 @@ export default function ComparePage() {
     return () => {
       cancelled = true;
     };
+    // t is stable for the locale; the editions load once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -75,8 +79,8 @@ export default function ComparePage() {
         if (!cancelled) {
           setError(
             err instanceof ApiError
-              ? "API unreachable — is martyrology-api running on API_BASE?"
-              : "Failed to load catalogs",
+              ? t("apiUnreachable")
+              : t("loadCatalogsFailed"),
           );
         }
       } finally {
@@ -99,9 +103,9 @@ export default function ComparePage() {
 
   return (
     <main className="mx-auto max-w-5xl p-8">
-      <h1 className="text-2xl font-semibold">Compare editions</h1>
+      <h1 className="text-2xl font-semibold">{t("title")}</h1>
       <p className="mt-2 text-slate-600 dark:text-slate-400">
-        Eulogies organized by physical day, aligned by canonical ID between two editions.
+        {t("intro")}
       </p>
 
       <div className="mt-6">
@@ -122,10 +126,10 @@ export default function ComparePage() {
         </div>
       )}
 
-      {loading && !error && <p className="text-slate-500 dark:text-slate-400">Loading…</p>}
+      {loading && !error && <p className="text-slate-500 dark:text-slate-400">{t("loading")}</p>}
 
       {!loading && !error && groups && filteredGroups.length === 0 && (
-        <p className="text-slate-500 dark:text-slate-400">No entries for this selection.</p>
+        <p className="text-slate-500 dark:text-slate-400">{t("empty")}</p>
       )}
 
       {!loading &&

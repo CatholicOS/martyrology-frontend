@@ -1,9 +1,11 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { CompareDayGroup, CompareRow } from "@/lib/compare";
 import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
+import { apiErrorTitle } from "@/lib/api-error-title";
 import type { EulogyOut } from "@/lib/types";
 
 function rowClass(row: CompareRow): string {
@@ -19,6 +21,8 @@ interface ExpandedState {
 }
 
 export default function CompareDay({ group }: { group: CompareDayGroup }) {
+  const t = useTranslations("Compare");
+  const tErrors = useTranslations("Errors");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, ExpandedState>>({});
 
@@ -34,7 +38,7 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
       const data = await getElogium(id);
       setExpanded((prev) => ({ ...prev, [id]: { loading: false, error: null, data } }));
     } catch (err) {
-      const message = err instanceof ApiError ? err.title : "Failed to load eulogy";
+      const message = err instanceof ApiError ? apiErrorTitle(err, tErrors("unreachable")) : t("loadEulogyFailed");
       setExpanded((prev) => ({ ...prev, [id]: { loading: false, error: message, data: null } }));
     }
   };
@@ -44,18 +48,20 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
       <h3 className="flex items-center gap-3 text-lg font-semibold">
         {group.day}
         <span className="text-sm font-normal text-slate-500 dark:text-slate-400">
-          {group.counts.both} both · {group.counts.aOnly} A-only · {group.counts.bOnly} B-only ·{" "}
-          <span className="text-red-600 dark:text-red-400">{group.counts.red} red</span> ·{" "}
-          <span className="text-green-600 dark:text-green-400">{group.counts.green} green</span>
+          {t.rich("counts", {
+            ...group.counts,
+            red: (chunks) => <span className="text-red-600 dark:text-red-400">{chunks}</span>,
+            green: (chunks) => <span className="text-green-600 dark:text-green-400">{chunks}</span>,
+          })}
         </span>
       </h3>
       <table className="mt-2 w-full border-collapse text-sm">
         <thead>
           <tr className="border-b border-slate-300 text-left dark:border-slate-700">
-            <th className="py-1 pr-2">ID</th>
-            <th className="py-1 pr-2">Subject</th>
-            <th className="py-1 pr-2">Status</th>
-            <th className="py-1 pr-2">Country</th>
+            <th className="py-1 pr-2">{t("columns.id")}</th>
+            <th className="py-1 pr-2">{t("columns.subject")}</th>
+            <th className="py-1 pr-2">{t("columns.status")}</th>
+            <th className="py-1 pr-2">{t("columns.country")}</th>
           </tr>
         </thead>
         <tbody>
@@ -70,17 +76,17 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
                   {row.subject}
                   {row.crossDay && (
                     <span className="ml-2 rounded bg-amber-200 px-1.5 py-0.5 text-xs text-amber-900 dark:bg-amber-900/60 dark:text-amber-200">
-                      cross-day: {row.anchorDay}
+                      {t("crossDay", { day: row.anchorDay ?? "" })}
                     </span>
                   )}
                 </td>
-                <td className="py-1 pr-2">{row.status}</td>
+                <td className="py-1 pr-2">{t(`status.${row.status}`)}</td>
                 <td className="py-1 pr-2">{row.country ?? ""}</td>
               </tr>
               {expandedId === row.id && (
                 <tr>
                   <td colSpan={4} className="bg-slate-50 p-3 text-sm dark:bg-slate-900">
-                    {expanded[row.id]?.loading && <p>Loading…</p>}
+                    {expanded[row.id]?.loading && <p>{t("loading")}</p>}
                     {expanded[row.id]?.error && (
                       <p className="text-red-600 dark:text-red-400">{expanded[row.id]?.error}</p>
                     )}

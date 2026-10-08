@@ -40,7 +40,7 @@ describe("mapEntries", () => {
     expect(entries.map((e) => e.id)).toEqual(["mr:0101-almachius", "mr:0102-caecilia", "mr:0103-thomas", "mr:0104-basilius"]);
     expect(unmapped).toBe(1); // mr:0106-martina; mr:0105-absent is not printed at all
     expect(entries[0]).toEqual({
-      id: "mr:0101-almachius", subject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
+      id: "mr:0101-almachius", subject: "Sanctus Almachius", editionSubject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
       qid: "Q220", la: "Romæ", label: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",
     });
   });
@@ -59,6 +59,13 @@ describe("mapEntries", () => {
 describe("matchesQuery", () => {
   const { entries } = mapEntries(catalog, snap);
   const byId = (id: string) => entries.find((e) => e.id === id)!;
+
+  it("matches both the interface subject and the catalog's own (Latin) one", () => {
+    const e = { ...byId("mr:0101-almachius"), subject: "Saint Telesphorus", editionSubject: "Sanctus Telesphorus" };
+    expect(matchesQuery(e, "Sanctus")).toBe(true);
+    expect(matchesQuery(e, "Saint")).toBe(true);
+    expect(matchesQuery(e, "Beatus")).toBe(false);
+  });
 
   it("matches subject and ID, ignoring case, accents and the æ/œ ligatures", () => {
     expect(matchesQuery(byId("mr:0102-caecilia"), "caecilia")).toBe(true);

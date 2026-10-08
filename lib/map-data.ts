@@ -6,7 +6,10 @@ import type { CatalogEntryOut } from "@/lib/types";
 /** One eulogy an edition prints, at its place. */
 export interface MapEntry {
   id: string;
+  /** The interface language's subject. */
   subject: string;
+  /** The catalog's own (edition, Latin) subject, kept for searching. */
+  editionSubject: string;
   day: Day;
   entry: number | null;
   qid: string;
@@ -59,6 +62,7 @@ export function mapEntries(
     entries.push({
       id: c.id,
       subject: subjectOf(c.id, c.subject ?? c.id),
+      editionSubject: c.subject ?? c.id,
       day: { mm: Number(m[1]), dd: Number(m[2]) },
       entry: c.entry ?? null,
       qid: ep.place,
@@ -92,7 +96,7 @@ function fold(s: string): string {
 export function matchesQuery(e: MapEntry, query: string): boolean {
   const q = fold(query.trim());
   if (!q) return true;
-  return [e.subject, e.id, e.la, e.label].some((s) => fold(s).includes(q));
+  return [e.subject, e.editionSubject, e.id, e.la, e.label].some((s) => fold(s).includes(q));
 }
 
 const typologyKey = (e: MapEntry) => e.typology ?? NO_TYPOLOGY;

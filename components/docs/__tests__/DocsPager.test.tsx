@@ -3,18 +3,18 @@ import { render, screen } from "@/test/intl";
 import { DocsPager } from "@/components/docs/DocsPager";
 
 describe("DocsPager", () => {
-  it("links the previous and next pages, in the page's language", () => {
-    render(<DocsPager lang="it" slug="using" />);
-    expect(screen.getByRole("link", { name: /Storia del Martirologio Romano/ })).toHaveAttribute("href", "/en/docs/it/history");
-    expect(screen.getByRole("link", { name: /Il Martirologio e i calendari particolari/ })).toHaveAttribute("href", "/en/docs/it/particular-calendars");
+  it("links the previous and next pages, in the interface language", () => {
+    render(<DocsPager slug="using" />, { locale: "it" });
+    expect(screen.getByRole("link", { name: /Precedente: Storia del Martirologio Romano/ })).toHaveAttribute("href", "/it/docs/history");
+    expect(screen.getByRole("link", { name: /Successivo: Il Martirologio e i calendari particolari/ })).toHaveAttribute("href", "/it/docs/particular-calendars");
   });
 
   it("has no previous link on the first page and no next link on the last", () => {
-    const { unmount } = render(<DocsPager lang="en" slug="history" />);
+    const { unmount } = render(<DocsPager slug="history" />);
     expect(screen.getAllByRole("link")).toHaveLength(1);
     unmount();
-    render(<DocsPager lang="en" slug="contributing" />);
+    render(<DocsPager slug="contributing" />);
     expect(screen.getAllByRole("link")).toHaveLength(1);
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/en/docs/en/data");
+    expect(screen.getByRole("link")).toHaveAttribute("href", "/en/docs/data");
   });
 });

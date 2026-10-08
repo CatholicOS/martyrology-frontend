@@ -3,6 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { ApiReferenceReact } from "@scalar/api-reference-react";
 import "@scalar/api-reference-react/style.css";
+import scalarIt from "@/messages/scalar/it.json";
 import styles from "@/components/ApiReference.module.css";
 
 // The site follows the system's colour scheme (Tailwind's default `dark:`), and so does the reference.
@@ -25,7 +26,7 @@ const CUSTOM_CSS = `
  * The API reference (Scalar): the API's OpenAPI document, served by this site at /scalar/openapi.json, and its
  * "Test request" through /scalar/proxy (the API sends no CORS headers).
  */
-export default function ApiReference() {
+export default function ApiReference({ locale, title }: { locale: string; title: string }) {
   // null while rendering on the server: Scalar mounts once the scheme is known (it sets the body's light-mode or
   // dark-mode class, which paints the page), and again when it changes.
   const dark = useSyncExternalStore(subscribe, prefersDark, () => null);
@@ -35,12 +36,14 @@ export default function ApiReference() {
   return (
     <div className={styles.reference}>
       <ApiReferenceReact
-        key={dark ? "dark" : "light"}
+        key={`${dark ? "dark" : "light"}-${locale}`}
         configuration={{
           url: "/scalar/openapi.json",
           proxyUrl: "/scalar/proxy",
           theme: "default",
           layout: "modern",
+          // Italian is not among Scalar's built-in locales: ours; the others are built in
+          localization: locale === "it" ? { locale, translations: scalarIt } : { locale },
           customCss: CUSTOM_CSS,
           forceDarkModeState: dark ? "dark" : "light",
           hideDarkModeToggle: true,
@@ -52,7 +55,8 @@ export default function ApiReference() {
           showDeveloperTools: "never",
           documentDownloadType: "json",
           defaultHttpClient: { targetKey: "shell", clientKey: "curl" },
-          metaData: { title: "API reference · Roman Martyrology" },
+          // the page's localized title (Scalar applies this client-side, over the server-rendered one)
+          metaData: { title },
         }}
       />
     </div>

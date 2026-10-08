@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { splitText, describeRealign, currentTargets } from "@/lib/realign";
+import { createTranslator } from "next-intl";
+import en from "@/messages/en.json";
+import { splitText, opLabel, currentTargets } from "@/lib/realign";
 import { opId, isAdjudicable, type RealignOp } from "@/lib/changeset";
 
 const TEXT =
@@ -33,6 +35,8 @@ describe("splitText", () => {
   });
 });
 
+const t = createTranslator({ locale: "en", messages: en, namespace: "Review" });
+
 const op: RealignOp = {
   op: "realign",
   uid: "link:1749:mr:0101-circumcisio-domini",
@@ -51,8 +55,8 @@ describe("realign ops", () => {
   });
 
   it("describe their action", () => {
-    expect(describeRealign(op)).toBe("Link mr:0101-circumcisio-domini ⇄ mr:0101-maria-dei-genetrix (same_eulogy)");
-    expect(describeRealign({ ...op, action: "rekey", new_id: "mr:0101-x", target: "new" })).toBe(
+    expect(opLabel(t, op)).toBe("Link mr:0101-circumcisio-domini ⇄ mr:0101-maria-dei-genetrix (same_eulogy)");
+    expect(opLabel(t, { ...op, action: "rekey", new_id: "mr:0101-x", target: "new" })).toBe(
       "1749: key this text as mr:0101-x (new deprecated ID)"
     );
   });

@@ -111,6 +111,12 @@ describe("AttachNoteCard", () => {
 });
 
 describe("PlaceMarginCard", () => {
+  it("labels each candidate with its kind in words", () => {
+    renderCard(margin);
+    expect(screen.getByText("note", { selector: "span.uppercase" })).toBeInTheDocument();
+    expect(screen.getByText("eulogy", { selector: "span.uppercase" })).toBeInTheDocument();
+  });
+
   it("records decisions under the op's uid when it has one", () => {
     const onDecide = renderCard({ ...margin, uid: "48|m|x" });
     fireEvent.click(screen.getByRole("button", { name: "Not a margin note" }));
