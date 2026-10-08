@@ -12,9 +12,16 @@ const CONTENTS: Record<DocLang, string> = { en: "Contents", it: "Indice" };
  * same page in the other language. Below `sm` the list folds behind a "Contents" button.
  */
 export function DocsNav({ lang }: { lang: DocLang }) {
-  const here = slugFromPath(usePathname());
-  const slug = here?.slug;
+  const pathname = usePathname();
+  const slug = slugFromPath(pathname)?.slug;
   const [open, setOpen] = useState(false);
+  // Opening another page folds the list again (the layout, and this state, outlive the navigation):
+  // reset while rendering when the pathname changes, as NavMenu does.
+  const [shownFor, setShownFor] = useState(pathname);
+  if (pathname !== shownFor) {
+    setShownFor(pathname);
+    setOpen(false);
+  }
   const listId = useId();
   const other = otherLang(lang);
   const current = (s?: string) => (s === slug ? ("page" as const) : undefined);
@@ -36,7 +43,7 @@ export function DocsNav({ lang }: { lang: DocLang }) {
         </Link>
       </div>
       <div id={listId} className={`${open ? "block" : "hidden"} mt-3 sm:block`}>
-        <Link href={docHref(lang)} aria-current={current(undefined)} className="font-semibold aria-[current=page]:text-[#a3161b]">
+        <Link href={docHref(lang)} aria-current={current(undefined)} className="font-semibold aria-[current=page]:text-[#a3161b] dark:aria-[current=page]:text-red-400">
           {DOC_INDEX[lang].title}
         </Link>
         {DOC_PARTS.map(({ part, title }) => (
@@ -45,7 +52,7 @@ export function DocsNav({ lang }: { lang: DocLang }) {
             <ul className="mt-1 space-y-1">
               {DOC_PAGES.filter((p) => p.part === part).map((p) => (
                 <li key={p.slug}>
-                  <Link href={docHref(lang, p.slug)} aria-current={current(p.slug)} className="hover:underline aria-[current=page]:font-semibold aria-[current=page]:text-[#a3161b]">
+                  <Link href={docHref(lang, p.slug)} aria-current={current(p.slug)} className="hover:underline aria-[current=page]:font-semibold aria-[current=page]:text-[#a3161b] dark:aria-[current=page]:text-red-400">
                     {p.text[lang].title}
                   </Link>
                 </li>

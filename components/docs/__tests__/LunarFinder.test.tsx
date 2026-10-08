@@ -58,4 +58,19 @@ describe("LunarFinder", () => {
     resolveFirst(day2005);
     await waitFor(() => expect(screen.queryByText("XIX")).not.toBeInTheDocument());
   });
+
+  it("asks for nothing while a year is still being typed, nor before the table begins in 1583", () => {
+    render(<LunarFinder lang="en" />);
+    for (const v of ["0002-01-01", "0020-01-01", "0201-01-01", "1582-12-31"]) pick(v);
+    expect(getDay).not.toHaveBeenCalled();
+    expect(screen.getByText(/from 1583/)).toBeInTheDocument();
+    expect(screen.queryByText("Loading…")).not.toBeInTheDocument();
+  });
+
+  it("says so when the API announces no moon for the date", async () => {
+    getDay.mockResolvedValue({ luna: { annuntiatio: null } });
+    render(<LunarFinder lang="en" />);
+    pick("2005-01-01");
+    expect(await screen.findByText(/no moon/i)).toBeInTheDocument();
+  });
 });

@@ -37,4 +37,19 @@ describe("DocsNav", () => {
     fireEvent.click(button);
     expect(button).toHaveAttribute("aria-expanded", "true");
   });
+
+  it("closes the contents on phones when another page opens", () => {
+    pathname.current = "/docs/en/history";
+    const { rerender } = render(<DocsNav lang="en" />);
+    fireEvent.click(screen.getByRole("button", { name: "Contents" }));
+    pathname.current = "/docs/en/using";
+    rerender(<DocsNav lang="en" />);
+    expect(screen.getByRole("button", { name: "Contents" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("keeps the current page legible in dark mode", () => {
+    pathname.current = "/docs/en/history";
+    render(<DocsNav lang="en" />);
+    expect(screen.getByRole("link", { name: "History of the Roman Martyrology" }).className).toMatch(/dark:aria-\[current=page\]:text-/);
+  });
 });

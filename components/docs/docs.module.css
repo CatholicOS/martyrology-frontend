@@ -20,3 +20,9 @@
 /* A rubric, as the editions print it: red, a size below the text, upright. */
 .rubric { color: #a3161b; font-size: 0.85em; font-style: normal; }
 .banner { border-left: 3px solid #a3161b; padding: 0.5rem 0.75rem; background: rgba(163, 22, 27, 0.06); }
+/* On the dark page the print's red falls below AA contrast; a lighter red keeps rubrics and the banner legible. */
+@media (prefers-color-scheme: dark) {
+  .rubric { color: #f87171; }
+  .banner { border-left-color: #f87171; background: rgba(248, 113, 113, 0.08); }
+  .article blockquote { border-left-color: rgba(248, 113, 113, 0.4); }
+}

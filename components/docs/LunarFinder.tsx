@@ -7,12 +7,18 @@ import type { DocLang } from "@/lib/docs";
 import type { LunaAnnouncement } from "@/lib/types";
 
 const EDITION = "martyrologium_romanum_2004";
+/** The first year of the Gregorian calendar, whose computus the lunar table follows; the API announces no moon before it. */
+const FIRST_YEAR = 1583;
 
-const T: Record<DocLang, Record<"date" | "golden" | "epact" | "letter" | "moon" | "reader" | "failed" | "loading", string>> = {
+const T: Record<DocLang, Record<"date" | "golden" | "epact" | "letter" | "moon" | "reader" | "failed" | "loading" | "early" | "none", string>> = {
   en: { date: "Date", golden: "Golden number", epact: "Epact", letter: "Letter of the Martyrology", moon: "Moon to announce",
-        reader: "Open this day in the reader", failed: "The moon couldn't be loaded.", loading: "Loading…" },
+        reader: "Open this day in the reader", failed: "The moon couldn't be loaded.", loading: "Loading…",
+        early: "The lunar table applies from 1583, the first year of the Gregorian calendar.",
+        none: "The book announces no moon for this date." },
   it: { date: "Data", golden: "Numero aureo", epact: "Epatta", letter: "Lettera del Martirologio", moon: "Luna da enunciare",
-        reader: "Apri questo giorno nel lettore", failed: "Non è stato possibile caricare la luna.", loading: "Caricamento…" },
+        reader: "Apri questo giorno nel lettore", failed: "Non è stato possibile caricare la luna.", loading: "Caricamento…",
+        early: "La tavola lunare vale dal 1583, primo anno del calendario gregoriano.",
+        none: "Per questa data il libro non annuncia la luna." },
 };
 
 /** "2005-01-01" → { year: 2005, mm: "01", dd: "01" }; null for an empty or partial value or year 0. */
@@ -31,7 +37,11 @@ export function LunarFinder({ lang }: { lang: DocLang }) {
   const inputId = useId();
   const [value, setValue] = useState("");
   const [state, setState] = useState<{ for: string; luna?: LunaAnnouncement | null; failed?: boolean } | null>(null);
-  const date = parseDate(value);
+  const parsed = parseDate(value);
+  // A year below 1583 is either still being typed (the field reports "0002", "0020", "0201" on the way to
+  // "2015") or before the table: neither is asked for.
+  const early = parsed !== null && parsed.year < FIRST_YEAR;
+  const date = early ? null : parsed;
 
   useEffect(() => {
     if (!date) return;
@@ -49,9 +59,11 @@ export function LunarFinder({ lang }: { lang: DocLang }) {
   return (
     <div className="my-6 rounded border border-slate-200 p-4 dark:border-slate-800">
       <label htmlFor={inputId} className="mr-2">{t.date}</label>
-      <input id={inputId} type="date" value={value} onChange={(e) => setValue(e.target.value)}
+      <input id={inputId} type="date" min="1583-01-01" value={value} onChange={(e) => setValue(e.target.value)}
              className="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900" />
+      {early && <p className="mt-3 text-sm">{t.early}</p>}
       {date && !shown && <p className="mt-3 text-sm">{t.loading}</p>}
+      {shown && !shown.failed && !shown.luna && <p className="mt-3 text-sm">{t.none}</p>}
       {shown?.failed && <p className="mt-3 text-sm">{t.failed}</p>}
       {shown?.luna && (
         <>
