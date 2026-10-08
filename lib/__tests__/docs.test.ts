@@ -74,4 +74,12 @@ describe("the docs registry", () => {
     expect(headingId("Il numero d’oro e l’epatta")).toBe("il-numero-doro-e-lepatta");
     expect(headingId("  Città — 1630  ")).toBe("citta-1630");
   });
+
+  it("spells out the letters that don't decompose instead of dropping them", () => {
+    expect(headingId("Cœlum")).toBe("coelum");
+    expect(headingId("Œcumenical")).toBe("oecumenical");
+    expect(headingId("Cæsarea")).toBe("caesarea");
+    expect(headingId("ÆTERNUS")).toBe("aeternus");
+    expect(headingId("Straße")).toBe("strasse");
+  });
 });

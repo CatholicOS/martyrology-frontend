@@ -15,7 +15,10 @@ const luna = (year: number, column: number, age: number, pronuntiatio: string): 
   annuntiatio: { year, golden_number: 13, epact: "xj", letter: "l", column, age, pronuntiatio },
 });
 
-beforeEach(() => getDay.mockReset());
+// Braces: a function returned from beforeEach is run as its teardown, and mockReset returns the mock.
+beforeEach(() => {
+  getDay.mockReset();
+});
 
 // The 2004 editions: no titulus (the heading is the date), rows of 19 and 12, two F (one red), no margin.
 const luna2004 = (): Luna => ({

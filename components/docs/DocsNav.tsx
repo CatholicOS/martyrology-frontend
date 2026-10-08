@@ -41,7 +41,7 @@ export function DocsNav() {
         </Link>
         {DOC_PARTS.map((part) => (
           <div key={part} className="mt-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{t(`parts.${part}`)}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{t(`parts.${part}`)}</p>
             <ul className="mt-1 space-y-1">
               {DOC_PAGES.filter((p) => p.part === part).map((p) => (
                 <li key={p.slug}>
