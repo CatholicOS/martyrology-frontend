@@ -10,4 +10,14 @@ describe("SignInReturnPath", () => {
     expect(input.type).toBe("hidden");
     expect(input.value).toBe("/it/docs?x=1");
   });
+
+  it("reads the location at submit time, not just on mount", () => {
+    window.history.pushState({}, "", "/en");
+    const { container } = render(<form><SignInReturnPath fallback="/en" /></form>);
+    window.history.pushState({}, "", "/en/read/mr:0101-x?a=b");
+    const form = container.querySelector("form") as HTMLFormElement;
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    const input = container.querySelector("input[name=redirectTo]") as HTMLInputElement;
+    expect(input.value).toBe("/en/read/mr:0101-x?a=b");
+  });
 });

@@ -23,20 +23,19 @@ describe("AuthStatus", () => {
     expect(String(warn.mock.calls[0])).toContain("decryption failed");
   });
 
-  it("sign-in form carries a redirectTo field that starts at the locale home", async () => {
+  it("sign-in form carries a redirectTo field with the current path", async () => {
+    window.history.pushState({}, "", "/en/docs?q=1");
     authMock.mockResolvedValue(null);
     const { container } = render(await AuthStatus());
     const input = container.querySelector("input[name=redirectTo]") as HTMLInputElement;
     expect(input).not.toBeNull();
-    expect(input.value.startsWith("/")).toBe(true);
+    expect(input.value).toBe("/en/docs?q=1");
   });
 
   it("the sign-in action signs in to the validated redirectTo, else the locale home", async () => {
     authMock.mockResolvedValue(null);
     const el = await AuthStatus();
-    const { container } = render(el);
-    const form = container.querySelector("form") as HTMLFormElement;
-    void form;
+    render(el);
     // Find the server action on the element tree.
     const find = (n: unknown): ((fd: FormData) => Promise<void>) | undefined => {
       if (!n || typeof n !== "object") return undefined;

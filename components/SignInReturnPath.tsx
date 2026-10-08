@@ -10,7 +10,18 @@ import { useEffect, useRef } from "react";
 export function SignInReturnPath({ fallback }: { fallback: string }) {
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (ref.current) ref.current.value = window.location.pathname + window.location.search;
+    const input = ref.current;
+    const form = input?.form;
+    if (!input || !form) return;
+    // The layout (and so this field) survives soft navigations, so read the location
+    // when the form is submitted, not just on mount. A native listener on the form
+    // runs before React's delegated form-action handler builds the FormData.
+    const fill = () => {
+      input.value = window.location.pathname + window.location.search;
+    };
+    fill();
+    form.addEventListener("submit", fill);
+    return () => form.removeEventListener("submit", fill);
   }, []);
   return <input ref={ref} type="hidden" name="redirectTo" defaultValue={fallback} />;
 }
