@@ -1,5 +1,5 @@
 import type { MDXComponents } from "mdx/types";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { isValidElement, type ReactNode } from "react";
 import { headingId } from "@/lib/docs";
 

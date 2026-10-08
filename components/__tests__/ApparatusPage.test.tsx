@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 import ApparatusPage from "@/components/ApparatusPage";
 import * as api from "@/lib/api";
 import type { MonthOut } from "@/lib/types";

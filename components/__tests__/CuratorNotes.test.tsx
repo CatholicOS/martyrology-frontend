@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 import CuratorNotes from "@/components/CuratorNotes";
 
 describe("CuratorNotes", () => {
@@ -12,7 +12,7 @@ describe("CuratorNotes", () => {
       />,
     );
     expect(screen.getByRole("link", { name: "mr:0218-sadoth-et-socii" })).toHaveAttribute(
-      "href", "/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii",
+      "href", "/en/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii",
     );
   });
 });

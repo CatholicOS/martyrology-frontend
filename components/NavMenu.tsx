@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 
 /**
  * The header's navigation. From the `sm` breakpoint up its items sit in a row; below it a

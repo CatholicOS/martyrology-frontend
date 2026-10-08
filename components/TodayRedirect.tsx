@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { dayPath, todayLocal } from "@/lib/calendar";
 
 /** "Today" depends on the reader's timezone, so it is decided in the browser. */

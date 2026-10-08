@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useEffect, useId, useState } from "react";
 import { getDay } from "@/lib/api";
 import type { DocLang } from "@/lib/docs";

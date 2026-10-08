@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { docHref, neighbours, type DocLang } from "@/lib/docs";
 
 const LABELS: Record<DocLang, { prev: string; next: string }> = {

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
 import DayPage, { Conclusio, DayTitle, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";

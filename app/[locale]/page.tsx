@@ -1,7 +1,10 @@
+import { setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
 import Bookshelf from "@/components/Bookshelf";
 import { getViewer } from "@/lib/viewer";
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale as Locale);
   const viewer = await getViewer();
   return (
     <main className="mx-auto max-w-5xl p-6">

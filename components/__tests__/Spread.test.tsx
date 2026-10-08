@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, within, waitFor, act } from "@testing-library/react";
+import { render, screen, fireEvent, within, waitFor, act } from "@/test/intl";
 
 const { signInMock } = vi.hoisted(() => ({ signInMock: vi.fn() }));
 vi.mock("next-auth/react", () => ({ signIn: signInMock }));
@@ -72,7 +72,7 @@ describe("Spread", () => {
     resolve({ id: "mr:w", subject: {}, anchor_day: "10-05", deprecated: false,
       editions: { [B]: { day_printed: "10-05", entry: 3, asterisk: false, unnumbered: false, text: null } } });
     const link = await screen.findByRole("link", { name: /5 October, n\. 3/ });
-    expect(link).toHaveAttribute("href", `/read/${A}/10/05?with=${B}`);
+    expect(link).toHaveAttribute("href", `/en/read/${A}/10/05?with=${B}`);
     expect(link.closest("[data-row]")!.getAttribute("data-row")).toBe(cellOf("Sancti W.").getAttribute("data-row"));
   });
 

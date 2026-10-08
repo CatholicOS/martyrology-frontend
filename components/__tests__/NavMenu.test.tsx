@@ -2,17 +2,18 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 const { pathnameMock } = vi.hoisted(() => ({ pathnameMock: vi.fn(() => "/") }));
-vi.mock("next/navigation", () => ({ usePathname: pathnameMock }));
+vi.mock("@/i18n/navigation", () => ({ usePathname: pathnameMock, Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 
 import { NavMenu } from "@/components/NavMenu";
+import { Link } from "@/i18n/navigation";
 
 function menu() {
   return render(
     <div>
       <NavMenu>
-        <a href="/map" onClick={(e) => e.preventDefault()}>
+        <Link href="/map" onClick={(e) => e.preventDefault()}>
           Map
-        </a>
+        </Link>
         <button type="button">Sign in</button>
       </NavMenu>
       <p>outside</p>
@@ -75,9 +76,9 @@ describe("NavMenu", () => {
     const tree = () => (
       <div>
         <NavMenu>
-          <a href="/map" onClick={(e) => e.preventDefault()}>
+          <Link href="/map" onClick={(e) => e.preventDefault()}>
             Map
-          </a>
+          </Link>
           <button type="button">Sign in</button>
         </NavMenu>
         <p>outside</p>

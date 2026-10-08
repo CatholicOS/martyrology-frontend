@@ -1,4 +1,5 @@
 import styles from "@/components/page.module.css";
+import { Link } from "@/i18n/navigation";
 import { noteParts } from "@/lib/note-links";
 import type { PageNote } from "@/lib/notes";
 
@@ -25,9 +26,9 @@ export default function CuratorNotes({ notes, edition }: { notes: PageNote[]; ed
             <span>
               {noteParts(n.note, edition).map((p, i) =>
                 p.href ? (
-                  <a key={i} href={p.href} className="underline">
+                  <Link key={i} href={p.href} className="underline">
                     {p.text}
-                  </a>
+                  </Link>
                 ) : (
                   <span key={i}>{p.text}</span>
                 ),

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
+vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ push }), Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 vi.mock("next-auth/react", () => ({ signIn: signInMock }));
 vi.mock("@/lib/api", () => ({
   getEditions: vi.fn(),

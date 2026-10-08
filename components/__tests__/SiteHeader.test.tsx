@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 const { viewerMock } = vi.hoisted(() => ({ viewerMock: vi.fn() }));
 vi.mock("@/lib/viewer", () => ({ getViewer: viewerMock }));
 vi.mock("@/components/AuthStatus", () => ({ AuthStatus: () => <span>auth</span> }));
-vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
+vi.mock("@/i18n/navigation", () => ({ usePathname: () => "/", Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 
 import { SiteHeader } from "@/components/SiteHeader";
 

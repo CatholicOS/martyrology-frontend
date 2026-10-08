@@ -1,11 +1,14 @@
-import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import { notFound } from "next/navigation";
+import { redirect } from "@/i18n/navigation";
 import Reader from "@/components/Reader";
 import { dayPath, monthName, parseDay } from "@/lib/calendar";
 import type { Metadata } from "next";
 import { editionExists, editionMeta } from "@/lib/server-editions";
 import { getViewer } from "@/lib/viewer";
 
-type Params = Promise<{ edition: string; mm: string; dd: string }>;
+type Params = Promise<{ locale: string; edition: string; mm: string; dd: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 /** The raw `?with=`: undefined when absent; a repeated or empty one is not a single edition id. */
@@ -32,13 +35,14 @@ export async function generateMetadata({ params, searchParams }: { params: Param
 }
 
 export default async function DayRoute({ params, searchParams }: { params: Params; searchParams?: SearchParams }) {
-  const { edition, mm, dd } = await params;
+  const { locale, edition, mm, dd } = await params;
+  setRequestLocale(locale as Locale);
   const day = parseDay(mm, dd);
   if (!day || !(await editionExists(edition))) notFound();
   const w = await withParam(searchParams);
   // A `with` that is present but not a single known edition other than this one is dropped from the URL.
   const present = (await rawWith(searchParams)) !== undefined;
-  if (present && (w === null || w === edition || !(await editionExists(w)))) redirect(dayPath(edition, day));
+  if (present && (w === null || w === edition || !(await editionExists(w)))) redirect({ href: dayPath(edition, day), locale: locale as Locale });
   const viewer = await getViewer();
   return (
     // Phones: no side margin, the page runs edge to edge (the reader bar keeps its own inset).

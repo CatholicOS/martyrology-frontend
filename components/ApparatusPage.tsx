@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useEffect, useMemo, useState } from "react";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
@@ -158,9 +158,9 @@ export default function ApparatusPage({ edition }: { edition: string }) {
                         <span className={styles.noteMark}>†</span>{" "}
                         {noteParts(n, edition).map((p, k) =>
                           p.href ? (
-                            <a key={k} href={p.href} className="underline">
+                            <Link key={k} href={p.href} className="underline">
                               {p.text}
-                            </a>
+                            </Link>
                           ) : (
                             <span key={k}>{p.text}</span>
                           ),

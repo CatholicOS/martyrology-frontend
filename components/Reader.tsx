@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import DayPage from "@/components/DayPage";
 import DayStatus from "@/components/DayStatus";
 import ReaderBar from "@/components/ReaderBar";

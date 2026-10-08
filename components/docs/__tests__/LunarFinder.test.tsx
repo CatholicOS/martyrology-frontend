@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@/test/intl";
 
 const { getDay } = vi.hoisted(() => ({ getDay: vi.fn() }));
 vi.mock("@/lib/api", () => ({ getDay }));
@@ -26,7 +26,7 @@ describe("LunarFinder", () => {
     expect(screen.getByText("XIX")).toBeInTheDocument();
     expect(screen.getByText("u")).toBeInTheDocument();
     expect(screen.getByText("Luna vigesima")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /reader/i })).toHaveAttribute("href", "/read/martyrologium_romanum_2004/01/01");
+    expect(screen.getByRole("link", { name: /reader/i })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/01/01");
   });
 
   it("asks for nothing while the date is empty or incomplete", () => {
