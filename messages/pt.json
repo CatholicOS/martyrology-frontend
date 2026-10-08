@@ -394,6 +394,26 @@
         "note": "nota",
         "eulogy": "elogio"
       }
+    },
+    "person": {
+      "inText": "no texto",
+      "inFootnote": "na nota {n}",
+      "companions": "Nomeado com: {names}",
+      "notAutomatic": "Não automático: {reasons}",
+      "showEulogy": "Mostrar o elogio",
+      "hideEulogy": "Ocultar o elogio",
+      "suggested": "Sugerido: {wikidata}",
+      "confidence": "confiança: {value}",
+      "candidates": "Candidatos",
+      "noDescription": "(sem descrição)",
+      "suggestedTag": "sugerido",
+      "otherQid": "Outro QID",
+      "accept": "Aceitar",
+      "acceptEdited": "Aceitar (editado)",
+      "noItem": "Nenhum item",
+      "reason": "Motivo",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
     }
   },
   "Docs": {
