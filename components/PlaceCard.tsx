@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
 import PlaceMap from "@/components/PlaceMap";
-import { decisionClass } from "@/components/decisionClass";
+import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import type { DecisionRecord, ResolvePlaceOp, TextSays } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
@@ -34,6 +34,7 @@ const ITALIAN_2004 = "martyrologium_romanum_2004_it_IT";
 
 export default function PlaceCard({ op, decision, onDecide, locale, baseEdition }: Props) {
   const t = useTranslations("Map.place");
+  const tr = useTranslations("Review");
   const suggested = op.suggested ?? null;
   const byQid = new Map(op.candidates.map((c) => [c.wikidata, c]));
 
@@ -83,7 +84,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         </span>
         {decision && (
           <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
-            {decision.decision}
+            {decisionLabel(tr, decision)}
           </span>
         )}
       </div>

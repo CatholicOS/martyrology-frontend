@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
-import { decisionClass } from "@/components/decisionClass";
+import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type AttachNoteOp, type DecisionRecord } from "@/lib/changeset";
 import type { PageFootnote } from "@/lib/footnotes";
 import {
@@ -64,6 +64,8 @@ function Placed({ op, place, uid }: { op: AttachNoteOp; place: NotePlace; uid: s
  */
 export default function AttachNoteCard({ op, decision, onDecide }: Props) {
   const t = useTranslations("Notes");
+  const r = useTranslations("Review");
+  const a = useTranslations("Review.attach");
   const uid = opId(op);
   const markOnly = op.class === "mark-without-note";
   const saved = attachPlace(op, decision);
@@ -89,12 +91,12 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
     <div className={`mb-3 rounded border p-3 text-sm ${decisionClass(decision)}`} data-testid={`op-card-${uid}`}>
       <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
         <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-          {op.op} · {op.day} · {markOnly ? "mark" : "note"} {op.mark}
+          {op.op} · {op.day} · {markOnly ? a("mark") : a("note")} {op.mark}
         </span>
         <span className="flex gap-1 text-xs">
           {op.class && <span className="rounded bg-slate-100 px-2 py-0.5 dark:bg-slate-800">{op.class}</span>}
           {decision && (
-            <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decision.decision}</span>
+            <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decisionLabel(r, decision)}</span>
           )}
         </span>
       </div>
@@ -108,28 +110,28 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
       )}
 
       <Placed op={op} place={shown} uid={uid} />
-      {problem && <p className="mb-2 text-xs text-red-700 dark:text-red-300">Anchor “{anchor}”: {problem}.</p>}
+      {problem && <p className="mb-2 text-xs text-red-700 dark:text-red-300">{a("anchorProblem", { anchor, problem })}</p>}
 
       <p className="mb-2 flex flex-wrap gap-3 text-xs">
         <a className="text-sky-700 underline dark:text-sky-300" href={scanPageUrl(op.scan_page)} target="_blank" rel="noreferrer">
-          Scan page {op.scan_page}
+          {a("scanPage", { page: op.scan_page })}
         </a>
         <button type="button" className="text-sky-700 underline dark:text-sky-300" onClick={() => setShowPage(!showPage)}>
-          {showPage ? "Hide" : "Show"} the page
+          {showPage ? a("hidePage") : a("showPage")}
         </button>
       </p>
       {showPage && (
         // eslint-disable-next-line @next/next/no-img-element -- a remote scan, shown as is
-        <img className="mb-2 w-full max-w-xl border" src={scanImageUrl(op.scan_page)} alt={`Scan page ${op.scan_page}`} loading="lazy" />
+        <img className="mb-2 w-full max-w-xl border" src={scanImageUrl(op.scan_page)} alt={a("scanPage", { page: op.scan_page })} loading="lazy" />
       )}
 
       {markOnly ? (
         <div className="flex flex-wrap items-center gap-2">
           <button type="button" className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => decide({ decision: "accept" })}>
-            Missing from the book
+            {a("missing")}
           </button>
           <label className="flex items-center gap-1 text-xs">
-            or the day’s note
+            {a("orDayNote")}
             <select className={input} value={noteRef} onChange={(e) => setNoteRef(e.target.value)}>
               {op.notes.map((n) => (
                 <option key={n.ref} value={n.ref}>
@@ -144,28 +146,28 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
             className={`${button} bg-amber-600 hover:bg-amber-700`}
             onClick={() => decide({ decision: "edit", edited: { note: noteRef } })}
           >
-            Give it this note
+            {a("giveNote")}
           </button>
           <button type="button" className={`${button} bg-red-600 hover:bg-red-700`} onClick={() => decide({ decision: "reject" })}>
-            Not a reference letter
+            {a("notReference")}
           </button>
         </div>
       ) : !editing ? (
         <div className="flex flex-wrap gap-2">
           <button type="button" className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => decide({ decision: "accept" })}>
-            Accept
+            {r("actions.accept")}
           </button>
           <button type="button" className={`${button} bg-slate-600 hover:bg-slate-700`} onClick={startEdit}>
-            Edit
+            {r("actions.edit")}
           </button>
           <button type="button" className={`${button} bg-red-600 hover:bg-red-700`} onClick={() => decide({ decision: "reject" })}>
-            Not a note of this day
+            {a("notOfDay")}
           </button>
         </div>
       ) : (
         <div className="flex flex-col gap-2">
           <label className="flex items-center gap-2 text-xs">
-            eulogy
+            {a("eulogy")}
             <select
               className={`${input} flex-1`}
               value={place.id}
@@ -182,16 +184,16 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
             </select>
           </label>
           <label className="flex items-center gap-2 text-xs">
-            after
+            {a("after")}
             <input
               className={`${input} flex-1`}
               value={anchor}
-              placeholder="the words the letter follows (empty: at the end)"
+              placeholder={a("afterPlaceholder")}
               onChange={(e) => setAnchor(e.target.value)}
             />
           </label>
           <label className="flex items-center gap-2 text-xs">
-            letter
+            {a("letter")}
             <input
               className={`${input} w-12 font-mono`}
               value={place.mark}
@@ -209,10 +211,10 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
                 setEditing(false);
               }}
             >
-              Save edit
+              {r("actions.saveEdit")}
             </button>
             <button type="button" className={`${button} bg-slate-400 hover:bg-slate-500`} onClick={() => setEditing(false)}>
-              Cancel
+              {r("actions.cancel")}
             </button>
           </div>
         </div>

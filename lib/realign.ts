@@ -1,4 +1,7 @@
+import type { useTranslations } from "next-intl";
 import type { RealignOp, SplitPart } from "@/lib/changeset";
+
+export type ReviewT = ReturnType<typeof useTranslations<"Review">>;
 
 export interface Segment {
   id: string;
@@ -35,23 +38,23 @@ export function splitText(
 }
 
 /** A one-line statement of what the op proposes. */
-export function describeRealign(op: RealignOp): string {
-  const ed = `${op.edition}`;
+export function opLabel(t: ReviewT, op: RealignOp): string {
+  const edition = `${op.edition}`;
   switch (op.action) {
     case "rename":
-      return `Rename ${op.id} → ${op.new_id} (every edition)`;
+      return t("ops.rename", { id: op.id, newId: op.new_id ?? "" });
     case "rekey":
-      return `${ed}: key this text as ${op.new_id}${op.target === "new" ? " (new deprecated ID)" : ""}`;
+      return t("ops.rekey", { edition, newId: op.new_id ?? "", target: op.target === "new" ? "new" : "other" });
     case "split":
-      return `${ed}: split into ${1 + (op.parts?.length ?? 0)} eulogies`;
+      return t("ops.split", { edition, count: 1 + (op.parts?.length ?? 0) });
     case "merge":
-      return `Merge ${op.id} into ${op.new_id} (same day, same eulogy)`;
+      return t("ops.merge", { id: op.id, newId: op.new_id ?? "" });
     case "link":
-      return `Link ${op.id} ⇄ ${op.same_eulogy_with} (same_eulogy)`;
+      return t("ops.link", { id: op.id, other: op.same_eulogy_with ?? "" });
     case "rubric":
-      return `${ed}: ${op.id} is a rubric, not a eulogy`;
+      return t("ops.rubric", { edition, id: op.id });
     default:
-      return `Note on ${op.id}`;
+      return t("ops.note", { id: op.id });
   }
 }
 

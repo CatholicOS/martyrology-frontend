@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import AttachNoteCard from "@/components/AttachNoteCard";
 import EulogyView from "@/components/EulogyView";
 import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
-import { decisionClass as cardClass } from "@/components/decisionClass";
+import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
 import {
   isAdjudicable,
   opId,
@@ -59,6 +60,8 @@ export default function OperationCard(props: Props) {
 }
 
 function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props) {
+  const t = useTranslations("Review");
+  const id = (chunks: ReactNode) => <span className="font-mono text-xs">{chunks}</span>;
   const [editing, setEditing] = useState(false);
   const ed = decision?.edited;
   // rename/delete edit inputs, seeded from a saved edit (resume) then the proposal
@@ -103,7 +106,7 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
         </span>
         {decision && (
           <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
-            {decision.decision}
+            {decisionLabel(t, decision)}
           </span>
         )}
       </div>
@@ -123,7 +126,7 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
                     checked={isWinner}
                     onChange={() => setSelectedWinner(mid)}
                   />
-                  {isWinner ? "Winner — kept" : "Make winner"}
+                  {isWinner ? t("operation.winnerKept") : t("operation.makeWinner")}
                 </label>
                 <EulogyView
                   id={mid}
@@ -156,25 +159,28 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
         )}
         {op.op === "delete" && (
           <p>
-            Delete <span className="font-mono text-xs">{(op as DeleteOp).id}</span>
+            {t.rich("operation.delete", { target: (op as DeleteOp).id, id })}
             {(op as DeleteOp).reason ? ` — ${(op as DeleteOp).reason}` : ""}
           </p>
         )}
         {op.op === "merge" && (
           <p>
-            Merge <span className="font-mono text-xs">{mergeLosers.join(", ")}</span> → winner{" "}
-            <span className="font-mono text-xs">{selectedWinner}</span>
+            {t.rich("operation.merge", {
+              losers: mergeLosers.join(", "),
+              winner: selectedWinner,
+              id,
+            })}
           </p>
         )}
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          {op.class ? `class: ${op.class} · ` : ""}
-          {op.confidence ? `confidence: ${op.confidence} · ` : ""}
-          {op.reasoning ? `reasoning: ${op.reasoning}` : ""}
+          {op.class ? t("operation.classLine", { value: op.class }) : ""}
+          {op.confidence ? t("operation.confidenceLine", { value: op.confidence }) : ""}
+          {op.reasoning ? t("operation.reasoningLine", { value: op.reasoning }) : ""}
         </p>
       </div>
 
       {!adjudicable && (
-        <p className="text-xs italic text-slate-500 dark:text-slate-400">Not adjudicable (op: {op.op})</p>
+        <p className="text-xs italic text-slate-500 dark:text-slate-400">{t("operation.notAdjudicable", { op: op.op })}</p>
       )}
 
       {adjudicable && !editing && (
@@ -184,14 +190,14 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
             onClick={() => (op.op === "merge" ? acceptMerge() : decide({ decision: "accept" }))}
           >
-            Accept
+            {t("actions.accept")}
           </button>
           <button
             type="button"
             className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700"
             onClick={() => decide({ decision: "reject" })}
           >
-            Reject
+            {t("actions.reject")}
           </button>
           {op.op !== "merge" && (
             <button
@@ -199,7 +205,7 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
               className="rounded bg-slate-600 px-2 py-1 text-xs font-medium text-white hover:bg-slate-700"
               onClick={() => setEditing(true)}
             >
-              Edit
+              {t("actions.edit")}
             </button>
           )}
         </div>
@@ -250,14 +256,14 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
                 setEditing(false);
               }}
             >
-              Save edit
+              {t("actions.saveEdit")}
             </button>
             <button
               type="button"
               className="rounded bg-slate-400 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500"
               onClick={() => setEditing(false)}
             >
-              Cancel
+              {t("actions.cancel")}
             </button>
           </div>
         </div>
