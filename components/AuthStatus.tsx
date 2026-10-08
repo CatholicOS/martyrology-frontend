@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { unstable_rethrow } from "next/navigation";
 import { auth, signIn } from "@/auth";
 import { AuthStatusView } from "@/components/AuthStatusView";
@@ -8,6 +9,7 @@ const buttonClass =
   "rounded border border-slate-300 px-3 py-1 text-sm dark:border-slate-700";
 
 export async function AuthStatus() {
+  const t = await getTranslations("Auth");
   // Never let an auth backend problem blank the header on every page.
   let session = null;
   try {
@@ -29,7 +31,7 @@ export async function AuthStatus() {
       }}
     >
       <button type="submit" className={buttonClass}>
-        Sign in
+        {t("signIn")}
       </button>
     </form>
   );

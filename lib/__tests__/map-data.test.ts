@@ -1,3 +1,5 @@
+import { createTranslator } from "use-intl";
+import en from "@/messages/en.json";
 import { describe, it, expect } from "vitest";
 import { facetCounts, filterEntries, mapEntries, matchesQuery, typologyLabel, type MapFilters } from "@/lib/map-data";
 import type { PlacesSnapshot } from "@/lib/places";
@@ -41,6 +43,11 @@ describe("mapEntries", () => {
       id: "mr:0101-almachius", subject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
       qid: "Q220", la: "Romæ", label: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",
     });
+  });
+
+  it("shows the subject the caller picks for the interface", () => {
+    const { entries } = mapEntries(catalog, snap, (id, own) => `${id} / ${own}`);
+    expect(entries[0].subject).toBe(`${entries[0].id} / Sanctus Almachius`);
   });
 
   it("a catalog entry without subject falls back to its ID", () => {
@@ -105,7 +112,9 @@ describe("filterEntries and facetCounts", () => {
 
 describe("typologyLabel", () => {
   it("reads the value as words", () => {
-    expect(typologyLabel("dies_natalis")).toBe("Dies natalis");
-    expect(typologyLabel(null)).toBe("Not classified");
+    const t = createTranslator({ locale: "en", messages: en, namespace: "Map" });
+    expect(typologyLabel(t, "dies_natalis")).toBe("Dies natalis");
+    expect(typologyLabel(t, null)).toBe("Not classified");
+    expect(typologyLabel(t, "some_new_kind")).toBe("Some new kind");
   });
 });

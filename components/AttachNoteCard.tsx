@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
@@ -7,8 +8,8 @@ import { decisionClass } from "@/components/decisionClass";
 import { opId, type AttachNoteOp, type DecisionRecord } from "@/lib/changeset";
 import type { PageFootnote } from "@/lib/footnotes";
 import {
-  CLASS_WORDS,
   anchorProblem,
+  classWords,
   attachDecision,
   attachPlace,
   scanImageUrl,
@@ -62,6 +63,7 @@ function Placed({ op, place, uid }: { op: AttachNoteOp; place: NotePlace; uid: s
  * (edit {note}).
  */
 export default function AttachNoteCard({ op, decision, onDecide }: Props) {
+  const t = useTranslations("Notes");
   const uid = opId(op);
   const markOnly = op.class === "mark-without-note";
   const saved = attachPlace(op, decision);
@@ -75,7 +77,7 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
 
   const decide = (d: DecisionRecord) => onDecide(uid, d);
   const shown: NotePlace = editing ? { ...place, after: anchor || null } : saved;
-  const problem = editing ? anchorProblem(op.texts[place.id] ?? "", anchor) : null;
+  const problem = editing ? anchorProblem(t, op.texts[place.id] ?? "", anchor) : null;
   const letterOk = /^[a-z]$/.test(place.mark);
   const startEdit = () => {
     setPlace(saved);
@@ -97,7 +99,7 @@ export default function AttachNoteCard({ op, decision, onDecide }: Props) {
         </span>
       </div>
 
-      <p className="mb-2 font-medium">{CLASS_WORDS[op.class ?? ""] ?? op.class}</p>
+      <p className="mb-2 font-medium">{classWords(t, op.class)}</p>
 
       {!markOnly && (
         <p className="mb-2 font-serif" lang="la">

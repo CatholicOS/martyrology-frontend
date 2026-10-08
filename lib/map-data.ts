@@ -1,3 +1,4 @@
+import type { useTranslations } from "next-intl";
 import type { Day } from "@/lib/calendar";
 import type { PlacesSnapshot } from "@/lib/places";
 import type { CatalogEntryOut } from "@/lib/types";
@@ -15,6 +16,8 @@ export interface MapEntry {
   coords: [number, number];
   typology: string | null;
 }
+
+type MapT = ReturnType<typeof useTranslations<"Map">>;
 
 export interface MapFilters {
   query: string;
@@ -36,7 +39,12 @@ const TYPOLOGY_ORDER = [
  * place on the map, in printed order; `unmapped` counts the printed ones that have none (no
  * resolved place, or a deprecated ID, which the gazetteer does not cover).
  */
-export function mapEntries(catalog: CatalogEntryOut[], snap: PlacesSnapshot): { entries: MapEntry[]; unmapped: number } {
+export function mapEntries(
+  catalog: CatalogEntryOut[],
+  snap: PlacesSnapshot,
+  /** The subject to show for an eulogy (the interface language's); the catalog's own, else the ID, by default. */
+  subjectOf: (id: string, catalogSubject: string) => string = (_id, s) => s,
+): { entries: MapEntry[]; unmapped: number } {
   const entries: MapEntry[] = [];
   let unmapped = 0;
   for (const c of catalog) {
@@ -50,7 +58,7 @@ export function mapEntries(catalog: CatalogEntryOut[], snap: PlacesSnapshot): { 
     }
     entries.push({
       id: c.id,
-      subject: c.subject ?? c.id,
+      subject: subjectOf(c.id, c.subject ?? c.id),
       day: { mm: Number(m[1]), dd: Number(m[2]) },
       entry: c.entry ?? null,
       qid: ep.place,
@@ -123,9 +131,10 @@ export function facetCounts(
   return { typologies, countries };
 }
 
-/** "dies_natalis" → "Dies natalis". */
-export function typologyLabel(t: string | null): string {
-  if (t === null || t === NO_TYPOLOGY) return "Not classified";
-  const s = t.replace(/_/g, " ");
+/** "dies_natalis" → "Dies natalis"; a typology without a message is spelled out from its id. */
+export function typologyLabel(t: MapT, typology: string | null): string {
+  if (typology === null || typology === NO_TYPOLOGY) return t("typology.none");
+  if (t.has(`typology.${typology}` as "typology.none")) return t(`typology.${typology}` as "typology.none");
+  const s = typology.replace(/_/g, " ");
   return s.charAt(0).toUpperCase() + s.slice(1);
 }

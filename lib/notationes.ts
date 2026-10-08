@@ -1,3 +1,4 @@
+import type { useTranslations } from "next-intl";
 import type { AttachNoteOp, DecisionRecord, MarginCandidate, PlaceMarginOp } from "@/lib/changeset";
 import { occurrences } from "@/lib/footnotes";
 
@@ -14,15 +15,22 @@ export function scanImageUrl(page: number, width = 1000): string {
   return `https://archive.org/download/${SCAN}/page/n${page - 1}_w${width}.jpg`;
 }
 
-/** Why an op is listed, in plain words. */
-export const CLASS_WORDS: Record<string, string> = {
-  "no-mark": "The note's letter isn't printed in the eulogy: it was placed by the words of its lemma.",
-  "letter-differs": "The note's letter differs from the mark it was paired with: the eulogy's letter is kept.",
-  unanchored: "No phrase of the eulogy could anchor the note: its mark goes at the end.",
-  "mark-without-note": "A letter printed in the eulogy, with no note found for it.",
-  doubt: "The page-image reviewer was unsure where this margin note stands.",
-  "no-image": "Placed without the page image, by where it stands on the page.",
-};
+/** The translator of the `Notes` namespace, from `useTranslations` or `getTranslations`. */
+export type NotesT = ReturnType<typeof useTranslations<"Notes">>;
+
+const CLASS_KEYS = {
+  "no-mark": "noMark",
+  "letter-differs": "letterDiffers",
+  unanchored: "unanchored",
+  "mark-without-note": "markWithoutNote",
+  doubt: "doubt",
+  "no-image": "noImage",
+} as const;
+
+/** Why an op is listed, in plain words; a class without words is shown as it is. */
+export function classWords(t: NotesT, cls: string | null | undefined): string | null | undefined {
+  return cls && cls in CLASS_KEYS ? t(`notationes.${CLASS_KEYS[cls as keyof typeof CLASS_KEYS]}`) : cls;
+}
 
 /** Where a note's mark goes: after its anchor phrase, or at the end. */
 export interface NotePlace {
@@ -36,11 +44,11 @@ export interface NotePlace {
  * Why an anchor phrase can't be used in `text`, or null if it can: it must occur exactly once
  * as whole words (as the reader finds it). An empty phrase is no anchor: the mark goes at the end.
  */
-export function anchorProblem(text: string, after: string): string | null {
+export function anchorProblem(t: NotesT, text: string, after: string): string | null {
   if (!after) return null;
   const n = occurrences(text, after).length;
   if (n === 1) return null;
-  return n === 0 ? "not found as whole words in this eulogy" : `found ${n} times: add a word or two`;
+  return n === 0 ? t("notationes.anchorNotFound") : t("notationes.anchorRepeated", { count: n });
 }
 
 /** The decision for placing a note: the proposal unchanged is an accept, anything else an edit. */

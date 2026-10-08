@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { natureLabel, sortForShelf, yearAndLanguage } from "@/lib/editions";
 import { typologyLabel, type MapEntry, type MapFilters } from "@/lib/map-data";
 import type { EditionOut } from "@/lib/types";
@@ -28,15 +29,6 @@ interface Props {
 // The results list is a way into the map, not the whole catalog: past this, narrow the search.
 const MAX_ROWS = 300;
 
-const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
-function countryName(code: string): string {
-  try {
-    return regionNames.of(code) ?? code;
-  } catch {
-    return code || "Unknown";
-  }
-}
-
 const INPUT = "w-full rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
 
 function toggle(set: Set<string>, key: string): Set<string> {
@@ -48,14 +40,23 @@ function toggle(set: Set<string>, key: string): Set<string> {
 
 /** The map's controls and results: edition, search, typology and country filters, and the eulogies shown. */
 export default function MapSidebar(p: Props) {
+  const t = useTranslations("Map");
+  const tShelf = useTranslations("Bookshelf");
+  const locale = useLocale();
   const [countryQuery, setCountryQuery] = useState("");
-  const countries = useMemo(
-    () =>
-      p.facets.countries
-        .map(([code, n]) => ({ code, n, name: countryName(code) }))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-    [p.facets.countries],
-  );
+  const countries = useMemo(() => {
+    const regionNames = new Intl.DisplayNames([locale], { type: "region" });
+    const countryName = (code: string) => {
+      try {
+        return regionNames.of(code) ?? code;
+      } catch {
+        return code || t("unknownCountry");
+      }
+    };
+    return p.facets.countries
+      .map(([code, n]) => ({ code, n, name: countryName(code) }))
+      .sort((a, b) => a.name.localeCompare(b.name, locale));
+  }, [p.facets.countries, locale, t]);
   const cq = countryQuery.trim().toLowerCase();
   const shownCountries = countries.filter(
     (c) => !cq || c.name.toLowerCase().includes(cq) || p.filters.countries.has(c.code),
@@ -64,49 +65,49 @@ export default function MapSidebar(p: Props) {
   return (
     <aside className="flex flex-col gap-4 p-4 text-sm">
       <label className="flex flex-col gap-1">
-        <span className="font-medium">Edition</span>
+        <span className="font-medium">{t("edition")}</span>
         <select className={INPUT} value={p.edition} onChange={(e) => p.onEdition(e.target.value)}>
           {sortForShelf(p.editions).map((e) => (
             <option key={e.edition_id} value={e.edition_id}>
-              {yearAndLanguage(e)} — {natureLabel(e.nature)}
+              {yearAndLanguage(tShelf, e)} — {natureLabel(tShelf, e.nature)}
             </option>
           ))}
         </select>
       </label>
 
       <label className="flex flex-col gap-1">
-        <span className="font-medium">Search subject or ID</span>
+        <span className="font-medium">{t("searchLabel")}</span>
         <input
           type="search"
           className={INPUT}
           value={p.filters.query}
-          placeholder="Sanctus…, mr:0101-…, Rome"
+          placeholder={t("searchPlaceholder")}
           onChange={(e) => p.onFilters({ ...p.filters, query: e.target.value })}
         />
       </label>
 
       <fieldset className="flex flex-col gap-1">
-        <legend className="mb-1 font-medium">Typology</legend>
-        {p.facets.typologies.map(([t, n]) => (
-          <label key={t} className="flex items-center gap-2">
+        <legend className="mb-1 font-medium">{t("typologyLegend")}</legend>
+        {p.facets.typologies.map(([ty, n]) => (
+          <label key={ty} className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={!p.filters.hiddenTypologies.has(t)}
-              onChange={() => p.onFilters({ ...p.filters, hiddenTypologies: toggle(p.filters.hiddenTypologies, t) })}
+              checked={!p.filters.hiddenTypologies.has(ty)}
+              onChange={() => p.onFilters({ ...p.filters, hiddenTypologies: toggle(p.filters.hiddenTypologies, ty) })}
             />
-            {typologyLabel(t)} ({n})
+            {typologyLabel(t, ty)} ({n})
           </label>
         ))}
       </fieldset>
 
       <fieldset className="flex flex-col gap-1">
-        <legend className="mb-1 font-medium">Country</legend>
+        <legend className="mb-1 font-medium">{t("countryLegend")}</legend>
         <input
           type="search"
-          aria-label="Filter countries"
+          aria-label={t("filterCountries")}
           className={INPUT}
           value={countryQuery}
-          placeholder="Filter countries"
+          placeholder={t("filterCountries")}
           onChange={(e) => setCountryQuery(e.target.value)}
         />
         <div className="max-h-48 overflow-y-auto">
@@ -127,7 +128,7 @@ export default function MapSidebar(p: Props) {
             className="self-start text-xs text-blue-700 underline dark:text-blue-400"
             onClick={() => p.onFilters({ ...p.filters, countries: new Set() })}
           >
-            All countries
+            {t("allCountries")}
           </button>
         )}
       </fieldset>
@@ -136,32 +137,32 @@ export default function MapSidebar(p: Props) {
         <p className="text-red-700 dark:text-red-400">
           {p.status.error}{" "}
           <button type="button" className="underline" onClick={p.onRetry}>
-            Retry
+            {t("retry")}
           </button>
         </p>
       ) : p.status.loading ? (
-        <p className="italic text-slate-500 dark:text-slate-400">Loading…</p>
+        <p className="italic text-slate-500 dark:text-slate-400">{t("loading")}</p>
       ) : (
         <>
           <p className="text-slate-600 dark:text-slate-400">
-            {p.results.length} shown · {p.mapped} mapped · {p.unmapped} not mapped in this edition
+            {t("summary", { shown: p.results.length, mapped: p.mapped, unmapped: p.unmapped })}
           </p>
           {p.place && (
             <div className="flex items-baseline justify-between gap-2">
               <h2 className="font-semibold">
-                {p.place.label} — {p.place.count} eulogies
+                {t("placeHeading", { label: p.place.label, count: p.place.count })}
               </h2>
               <button
                 type="button"
                 className="text-xs text-blue-700 underline dark:text-blue-400"
                 onClick={p.onShowAll}
               >
-                Show all
+                {t("showAll")}
               </button>
             </div>
           )}
           {p.results.length === 0 ? (
-            <p className="italic text-slate-500 dark:text-slate-400">No eulogy matches these filters.</p>
+            <p className="italic text-slate-500 dark:text-slate-400">{t("noMatches")}</p>
           ) : (
             <ul className="flex flex-col">
               {p.results.slice(0, MAX_ROWS).map((e) => (
@@ -183,7 +184,7 @@ export default function MapSidebar(p: Props) {
               ))}
               {p.results.length > MAX_ROWS && (
                 <li className="px-2 py-1 italic text-slate-500 dark:text-slate-400">
-                  and {p.results.length - MAX_ROWS} more — narrow the search to list them.
+                  {t("moreRows", { count: p.results.length - MAX_ROWS })}
                 </li>
               )}
             </ul>

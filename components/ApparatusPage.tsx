@@ -1,12 +1,13 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useFormatter, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
 import { getEditions, getMonth } from "@/lib/api";
 import { apparatus, count, only, type ApparatusEntry, type ApparatusKind } from "@/lib/apparatus";
-import { dayPath, monthName, pad2 } from "@/lib/calendar";
+import { dayPath, interfaceMonth, pad2 } from "@/lib/calendar";
 import { erratumPlace } from "@/lib/errata";
 import { editionLang, editionTitle } from "@/lib/editions";
 import { noteParts } from "@/lib/note-links";
@@ -18,11 +19,7 @@ type State =
   | { kind: "error" }
   | { kind: "ready"; entries: ApparatusEntry[]; meta: EditionOut | null; restricted: boolean; accessInfo: string | null };
 
-const KINDS: { key: ApparatusKind; label: string }[] = [
-  { key: "notes", label: "Curators' notes" },
-  { key: "misprints", label: "Misprints" },
-  { key: "errata", label: "Errata printed in the edition" },
-];
+const KINDS: ApparatusKind[] = ["notes", "misprints", "errata"];
 
 /** A eulogy's printed number and asterisk as this edition prints them ("3*."), as a rubric. */
 function Number({ e }: { e: ApparatusEntry }) {
@@ -40,8 +37,11 @@ function Number({ e }: { e: ApparatusEntry }) {
  * the eulogy's text as printed (misprints and errata marked in place) and a link to its day.
  */
 export default function ApparatusPage({ edition }: { edition: string }) {
+  const t = useTranslations("Notes");
+  const tReader = useTranslations("Reader");
+  const format = useFormatter();
   const [state, setState] = useState<State>({ kind: "loading" });
-  const [shown, setShown] = useState<Set<ApparatusKind>>(new Set(KINDS.map((k) => k.key)));
+  const [shown, setShown] = useState<Set<ApparatusKind>>(new Set(KINDS));
 
   useEffect(() => {
     let cancelled = false;
@@ -66,8 +66,8 @@ export default function ApparatusPage({ edition }: { edition: string }) {
   }, [edition]);
 
   const visible = useMemo(() => (state.kind === "ready" ? only(state.entries, shown) : []), [state, shown]);
-  if (state.kind === "loading") return <p className="p-6 text-center text-slate-600">Loading the edition…</p>;
-  if (state.kind === "error") return <p className="p-6 text-center text-red-700">The edition could not be loaded.</p>;
+  if (state.kind === "loading") return <p className="p-6 text-center text-slate-600">{t("loading")}</p>;
+  if (state.kind === "error") return <p className="p-6 text-center text-red-700">{t("loadError")}</p>;
 
   const lang = state.meta ? editionLang(state.meta) : "la";
   const title = state.meta ? `${editionTitle(state.meta)} ${state.meta.year}` : edition;
@@ -78,15 +78,15 @@ export default function ApparatusPage({ edition }: { edition: string }) {
   return (
     <article className={styles.page} aria-labelledby="apparatus-title">
       <h1 id="apparatus-title" className={styles.heading}>
-        {title}: notes, misprints and errata
+        {t("title", { title })}
       </h1>
       <p className="mb-3 text-center text-sm text-slate-600">
         <Link href={`/read/${encodeURIComponent(edition)}`} className="underline">
-          ⟵ Read the edition
+          {t("readEdition")}
         </Link>
       </p>
-      <fieldset className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm" aria-label="Show">
-        {KINDS.map(({ key, label }) => {
+      <fieldset className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm" aria-label={t("show")}>
+        {KINDS.map((key) => {
           const n = count(state.entries, key);
           return (
             <label key={key} className={n ? "" : "opacity-50"}>
@@ -102,34 +102,34 @@ export default function ApparatusPage({ edition }: { edition: string }) {
                   setShown(next);
                 }}
               />
-              {label} ({n})
+              {t(`kind.${key}`)} ({n})
             </label>
           );
         })}
       </fieldset>
       {state.restricted && (
         <p className="mb-4 text-center text-sm text-slate-600">
-          The texts of this edition are shown to readers with access; the notes and misprints are listed without them.
+          {t("restricted")}
           {state.accessInfo && (
             <>
               {" "}
               <a href={state.accessInfo} className="underline">
-                How to get access
+                {t("howToAccess")}
               </a>
             </>
           )}
         </p>
       )}
-      {visible.length === 0 && <p className="text-center text-slate-600">Nothing to show for this edition.</p>}
+      {visible.length === 0 && <p className="text-center text-slate-600">{t("nothing")}</p>}
       {[...byMonth.entries()].map(([mm, entries]) => (
-        <section key={mm} aria-label={monthName(mm, "en")}>
-          <h2 className={`${styles.heading} mt-6`}>{monthName(mm, lang)}</h2>
+        <section key={mm} aria-label={interfaceMonth(format, mm)}>
+          <h2 className={`${styles.heading} mt-6`}>{interfaceMonth(format, mm)}</h2>
           <ul>
             {entries.map((e) => (
               <li key={e.id} id={e.id} className="mb-5">
                 <p className="text-sm">
                   <Link href={`${dayPath(edition, { mm: e.mm, dd: e.dd })}#${e.id}`} className="underline">
-                    {e.dd} {monthName(e.mm, lang)}
+                    {e.dd} {interfaceMonth(format, e.mm)}
                   </Link>
                   {/* Without the text (no access), the printed number still shows here. */}
                   {!e.text && e.entry !== null && (
@@ -170,14 +170,23 @@ export default function ApparatusPage({ edition }: { edition: string }) {
                   {shown.has("misprints") &&
                     e.misprints.map((m, i) => (
                       <li key={`m${i}`} className={styles.sic}>
-                        Misprint: <span lang={lang}>{m.printed}</span>, <i>sic!</i> expected: <span lang={lang}>{m.intended}</span>
+                        {t.rich("misprint", {
+                          printed: m.printed,
+                          intended: m.intended,
+                          text: (c) => <span lang={lang}>{c}</span>,
+                          i: (c) => <i>{c}</i>,
+                        })}
                       </li>
                     ))}
                   {shown.has("errata") &&
                     e.errata.map((x, i) => (
                       <li key={`e${i}`} className={styles.errata}>
-                        <span style={{ fontVariant: "small-caps" }}>Errata</span> ({erratumPlace(x.ref)}):{" "}
-                        <span lang={lang}>{x.entry}</span>
+                        {t.rich("erratum", {
+                          place: erratumPlace(tReader, x.ref),
+                          entry: x.entry,
+                          text: (c) => <span lang={lang}>{c}</span>,
+                          sc: (c) => <span style={{ fontVariant: "small-caps" }}>{c}</span>,
+                        })}
                       </li>
                     ))}
                 </ul>

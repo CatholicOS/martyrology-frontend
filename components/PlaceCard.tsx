@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
 import PlaceMap from "@/components/PlaceMap";
 import { decisionClass } from "@/components/decisionClass";
@@ -32,6 +33,7 @@ const claimKey = (c: TextSays) => `${c.country}|${c.it}`;
 const ITALIAN_2004 = "martyrologium_romanum_2004_it_IT";
 
 export default function PlaceCard({ op, decision, onDecide, locale, baseEdition }: Props) {
+  const t = useTranslations("Map.place");
   const suggested = op.suggested ?? null;
   const byQid = new Map(op.candidates.map((c) => [c.wikidata, c]));
 
@@ -77,7 +79,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
     <div className={`mb-3 rounded border p-3 text-sm ${decisionClass(decision)}`} data-testid={`op-card-${op.id}`}>
       <div className="mb-1 flex items-center justify-between">
         <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-          {op.op} · {op.occurrences.length} occurrence{op.occurrences.length === 1 ? "" : "s"}
+          {op.op} · {t("occurrences", { count: op.occurrences.length })}
         </span>
         {decision && (
           <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
@@ -93,7 +95,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         ))}
       </ul>
       {op.failed.length > 0 && (
-        <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">Not automatic: {op.failed.join("; ")}</p>
+        <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("notAutomatic", { reasons: op.failed.join("; ") })}</p>
       )}
 
       <div className="mb-2 flex flex-wrap gap-1">
@@ -116,19 +118,24 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
 
       {suggested && (
         <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
-          Suggested <span className="font-mono">{suggested.wikidata}</span> ({suggested.country})
-          {op.confidence ? ` · confidence: ${op.confidence}` : ""}
+          {t.rich("suggested", {
+            wikidata: suggested.wikidata,
+            country: suggested.country,
+            qid: (chunks) => <span className="font-mono">{chunks}</span>,
+          })}
+          {op.confidence ? ` · ${t("confidence", { value: op.confidence })}` : ""}
           {op.reasoning ? ` · ${op.reasoning}` : ""}
         </p>
       )}
       {!suggested && op.reasoning && (
         <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
-          No item suggested{op.confidence ? ` · confidence: ${op.confidence}` : ""} · {op.reasoning}
+          {t("noneSuggested")}
+          {op.confidence ? ` · ${t("confidence", { value: op.confidence })}` : ""} · {op.reasoning}
         </p>
       )}
 
       <fieldset className="mb-2 flex flex-col gap-1">
-        <legend className="text-xs font-medium">Candidates</legend>
+        <legend className="text-xs font-medium">{t("candidates")}</legend>
         {op.candidates.map((c) => (
           <div key={c.wikidata} className="flex flex-wrap items-baseline gap-2">
             <label className="flex items-baseline gap-1">
@@ -139,8 +146,8 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
                 onChange={() => choose(c.wikidata)}
               />
               <span>
-                {c.label} — {c.description || "(no description)"} · {c.country ?? (c.countries.join("/") || "?")}
-                {c.wikidata === suggested?.wikidata ? " · suggested" : ""}
+                {c.label} — {c.description || t("noDescription")} · {c.country ?? (c.countries.join("/") || "?")}
+                {c.wikidata === suggested?.wikidata ? ` · ${t("suggestedTag")}` : ""}
               </span>
             </label>
             <a className="font-mono text-xs text-blue-700 underline dark:text-blue-400" href={`https://www.wikidata.org/wiki/${c.wikidata}`} target="_blank" rel="noreferrer">
@@ -153,11 +160,11 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
           </div>
         ))}
         <label className="mt-1 flex items-center gap-2 text-xs">
-          Other QID
+          {t("otherQid")}
           <input
             className="w-32 rounded border border-slate-300 px-2 py-1 font-mono dark:border-slate-700 dark:bg-slate-900"
             value={otherQid}
-            placeholder="Q…"
+            placeholder={t("qidPlaceholder")}
             onChange={(e) => setOtherQid(e.target.value.trim())}
           />
         </label>
@@ -169,7 +176,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
           className="rounded bg-slate-200 px-2 py-0.5 text-xs dark:bg-slate-800"
           onClick={() => setShowMap(!showMap)}
         >
-          {showMap ? "Hide map" : "Show map"}
+          {showMap ? t("hideMap") : t("showMap")}
         </button>
         {showMap && (
           <div className="mt-1" data-testid="place-map-panel">
@@ -180,7 +187,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
 
       <div className="mb-2 flex flex-col gap-1">
         <label className="flex items-center gap-2 text-xs">
-          Country
+          {t("country")}
           <input
             className="w-16 rounded border border-slate-300 px-2 py-1 font-mono dark:border-slate-700 dark:bg-slate-900"
             value={country}
@@ -192,7 +199,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
           <ul className="text-xs text-amber-700 dark:text-amber-400" data-testid="text-says">
             {textSays.map((c) => (
               <li key={claimKey(c)}>
-                The Italian says {c.country} (“{c.it}”), not {country}: recorded as text_says.
+                {t("italianSays", { claimed: c.country, phrase: c.it, country })}
               </li>
             ))}
           </ul>
@@ -207,24 +214,24 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-40"
             onClick={accept}
           >
-            Accept{unchanged ? "" : " (edited)"}
+            {unchanged ? t("accept") : t("acceptEdited")}
           </button>
           <button
             type="button"
             className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700"
             onClick={() => setRejecting(true)}
           >
-            Reject
+            {t("reject")}
           </button>
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
           <label className="flex flex-1 items-center gap-2 text-xs">
-            Reason
+            {t("reason")}
             <input
               className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
               value={reason}
-              placeholder="why no Wikidata item fits"
+              placeholder={t("reasonPlaceholder")}
               onChange={(e) => setReason(e.target.value)}
             />
           </label>
@@ -237,14 +244,14 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
               setRejecting(false);
             }}
           >
-            Confirm reject
+            {t("confirmReject")}
           </button>
           <button
             type="button"
             className="rounded bg-slate-400 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500"
             onClick={() => setRejecting(false)}
           >
-            Cancel
+            {t("cancel")}
           </button>
         </div>
       )}

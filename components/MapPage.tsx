@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import EulogyMap from "@/components/EulogyMap";
 import MapSidebar from "@/components/MapSidebar";
@@ -9,10 +10,14 @@ import { describeError } from "@/lib/describe-error";
 import { editionLang, isOriginal, sortForShelf } from "@/lib/editions";
 import { facetCounts, filterEntries, mapEntries, type MapEntry, type MapFilters } from "@/lib/map-data";
 import { getPlaces } from "@/lib/places";
-import type { EditionOut } from "@/lib/types";
+import { getSnapshot } from "@/lib/snapshot";
+import { subjectFor } from "@/lib/subjects";
+import type { CatalogEntryOut, EditionOut } from "@/lib/types";
 
 const NO_FILTERS: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
-const NOTHING_MAPPED: { entries: MapEntry[]; unmapped: number } = { entries: [], unmapped: 0 };
+const NO_CATALOG: CatalogEntryOut[] = [];
+
+type MapError = "noEditions" | "editionsFailed" | "catalogFailed";
 
 /** The newest Latin editio typica, else the newest edition. */
 export function defaultEdition(editions: EditionOut[]): string | null {
@@ -23,16 +28,18 @@ export function defaultEdition(editions: EditionOut[]): string | null {
 /** The map of an edition's eulogies: the sidebar's choices narrow the map and the list together. */
 export default function MapPage({ initialEdition }: { initialEdition: string | null }) {
   const router = useRouter();
+  const t = useTranslations("Map");
+  const locale = useLocale();
   const [editions, setEditions] = useState<EditionOut[]>([]);
   const [edition, setEdition] = useState<string | null>(null);
-  const [mapped, setMapped] = useState(NOTHING_MAPPED);
+  const [catalog, setCatalog] = useState(NO_CATALOG);
   const [filters, setFilters] = useState<MapFilters>(NO_FILTERS);
   // The eulogies of a cluster the map could not split, listed in the sidebar.
   const [place, setPlace] = useState<string[] | null>(null);
   // `n` counts the picks, so picking the same eulogy again reveals it again.
   const [selected, setSelected] = useState<{ id: string; n: number } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MapError | null>(null);
   // Retry refetches whichever failed: the editions (nothing loaded yet) or the catalog.
   const [editionsTry, setEditionsTry] = useState(0);
   const [catalogTry, setCatalogTry] = useState(0);
@@ -46,7 +53,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
         const eds = all.filter((e) => e.availability.status !== "unavailable");
         setEditions(eds);
         if (eds.length === 0) {
-          setError("No edition has texts to map yet.");
+          setError("noEditions");
           setLoading(false);
           return;
         }
@@ -55,7 +62,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
       .catch((err) => {
         console.error(`map: editions: ${describeError(err)}`);
         if (!cancelled) {
-          setError("Could not load the editions.");
+          setError("editionsFailed");
           setLoading(false);
         }
       });
@@ -76,13 +83,13 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
       setLoading(true);
       setError(null);
       try {
-        const catalog = await getCatalog(edition, editionLang(e));
-        if (!cancelled) setMapped(mapEntries(catalog, getPlaces()));
+        const loaded = await getCatalog(edition, editionLang(e));
+        if (!cancelled) setCatalog(loaded);
       } catch (err) {
         console.error(`map: catalog ${edition}: ${describeError(err)}`);
         if (!cancelled) {
-          setMapped(NOTHING_MAPPED);
-          setError("Could not load this edition's eulogies.");
+          setCatalog(NO_CATALOG);
+          setError("catalogFailed");
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -96,7 +103,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   const chooseEdition = (id: string) => {
     setEdition(id);
     // The old edition's markers would link into the new one while its catalog loads.
-    setMapped(NOTHING_MAPPED);
+    setCatalog(NO_CATALOG);
     setFilters(NO_FILTERS);
     setPlace(null);
     setSelected(null);
@@ -108,6 +115,11 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
     setPlace(null);
   };
 
+  // Subjects in the interface language (the reader's, else English, else Latin); the catalog's own if the registry lacks the ID.
+  const mapped = useMemo(() => {
+    const registry = getSnapshot();
+    return mapEntries(catalog, getPlaces(), (id, own) => subjectFor(registry[id]?.subject, locale, own));
+  }, [catalog, locale]);
   // The map redraws thousands of markers: it follows the typing at its own pace.
   const deferred = useDeferredValue(filters);
   const filtered = useMemo(() => filterEntries(mapped.entries, deferred), [mapped, deferred]);
@@ -127,7 +139,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
         open
         className="shrink-0 border-b border-slate-200 md:w-80 md:overflow-y-auto md:border-r md:border-b-0 dark:border-slate-800"
       >
-        <summary className="cursor-pointer px-4 py-2 text-sm font-medium md:hidden">Filters</summary>
+        <summary className="cursor-pointer px-4 py-2 text-sm font-medium md:hidden">{t("filters")}</summary>
         <div className="max-h-[50dvh] overflow-y-auto md:max-h-none">
           <MapSidebar
             editions={editions}
@@ -147,7 +159,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
             onShowAll={() => setPlace(null)}
             selected={selected?.id ?? null}
             onSelect={onSelect}
-            status={{ loading, error }}
+            status={{ loading, error: error ? t(`error.${error}`) : null }}
             onRetry={() => (editions.length ? setCatalogTry((n) => n + 1) : setEditionsTry((n) => n + 1))}
           />
         </div>

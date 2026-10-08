@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@/test/intl";
 import MapPage, { defaultEdition } from "@/components/MapPage";
 import type { CatalogEntryOut, EditionOut } from "@/lib/types";
 

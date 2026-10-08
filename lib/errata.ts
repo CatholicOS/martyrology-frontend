@@ -1,11 +1,15 @@
+import type { useTranslations } from "next-intl";
 import { wholeWordRegExp, type TextSegment } from "@/lib/misprints";
 import type { Erratum } from "@/lib/types";
 
+/** The translator of the `Reader` namespace, from `useTranslations` or `getTranslations`. */
+export type ReaderT = ReturnType<typeof useTranslations<"Reader">>;
+
 /** "81.20" → "p. 81, l. 20"; "vbique" → "everywhere". */
-export function erratumPlace(ref: string): string {
-  if (ref === "vbique") return "everywhere";
+export function erratumPlace(t: ReaderT, ref: string): string {
+  if (ref === "vbique") return t("placeEverywhere");
   const [page, line] = ref.split(".");
-  return line ? `p. ${page}, l. ${line}` : `p. ${page}`;
+  return line ? t("placePageLine", { page, line }) : t("placePage", { page });
 }
 
 /**

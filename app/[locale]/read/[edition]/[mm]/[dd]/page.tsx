@@ -1,9 +1,9 @@
-import { setRequestLocale } from "next-intl/server";
+import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { redirect } from "@/i18n/navigation";
 import Reader from "@/components/Reader";
-import { dayPath, monthName, parseDay } from "@/lib/calendar";
+import { dayPath, parseDay } from "@/lib/calendar";
 import type { Metadata } from "next";
 import { editionExists, editionMeta } from "@/lib/server-editions";
 import { getViewer } from "@/lib/viewer";
@@ -25,13 +25,15 @@ async function withParam(searchParams?: SearchParams): Promise<string | null> {
 const named = (meta: { title: string; year: number } | null, id: string) => (meta ? `${meta.title} ${meta.year}` : id);
 
 export async function generateMetadata({ params, searchParams }: { params: Params; searchParams?: SearchParams }): Promise<Metadata> {
-  const { edition, mm, dd } = await params;
+  const { locale, edition, mm, dd } = await params;
   const day = parseDay(mm, dd);
   if (!day) return { title: "Martyrologium" };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Metadata" });
+  const format = await getFormatter({ locale: locale as Locale });
   const w = await withParam(searchParams);
   const books = [named(await editionMeta(edition), edition)];
   if (w && w !== edition) books.push(named(await editionMeta(w), w));
-  return { title: `${day.dd} ${monthName(day.mm, "en")} — ${books.join(" | ")}` };
+  return { title: t("dayTitle", { day: day.dd, month: format.dateTime(new Date(Date.UTC(2000, day.mm - 1, day.dd)), { month: "long", timeZone: "UTC" }), books: books.join(" | ") }) };
 }
 
 export default async function DayRoute({ params, searchParams }: { params: Params; searchParams?: SearchParams }) {

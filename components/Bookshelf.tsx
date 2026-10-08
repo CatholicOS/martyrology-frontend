@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { signIn } from "next-auth/react";
 import BookCover from "@/components/BookCover";
@@ -13,6 +14,7 @@ const OPEN_MS = 450;
 
 export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
   const router = useRouter();
+  const t = useTranslations("Bookshelf");
   const [editions, setEditions] = useState<EditionOut[] | null>(null);
   const [access, setAccess] = useState<AccessMap | null>(null);
   const [failed, setFailed] = useState(false);
@@ -65,16 +67,16 @@ export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
   if (failed) {
     return (
       <p className="mt-10 text-center">
-        The editions could not be loaded.{" "}
+        {t("loadFailed")}{" "}
         <button type="button" className="underline" onClick={retry}>
-          Retry
+          {t("retry")}
         </button>
       </p>
     );
   }
 
   return (
-    <section aria-label="Editions of the Roman Martyrology">
+    <section aria-label={t("shelfLabel")}>
       <div className="flex flex-wrap items-end justify-center gap-6 border-b-[10px] border-[#6b4a2e] px-4 pb-4 pt-8">
         {editions === null
           ? Array.from({ length: 6 }, (_, i) => (
@@ -95,7 +97,7 @@ export default function Bookshelf({ signedIn }: { signedIn: boolean }) {
       </div>
       {locked && (
         <LockedNotice
-          title={`${titleCase(editionTitle(locked))} ${locked.year}`}
+          title={t("editionName", { title: titleCase(editionTitle(locked)), year: String(locked.year) })}
           signedIn={signedIn}
           accessInfo={locked.availability.note}
           onSignIn={() => void signIn("zitadel")}

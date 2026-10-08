@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useId, useState } from "react";
 import styles from "@/components/page.module.css";
 import { getDay } from "@/lib/api";
@@ -7,14 +8,17 @@ import { pad2 } from "@/lib/calendar";
 import { ageWords, printedRows, splitLuna, validYear } from "@/lib/luna";
 import type { Luna, LunaAnnouncement } from "@/lib/types";
 
+type DayHeadingT = ReturnType<typeof useTranslations<"DayHeading">>;
+
 /** The year's letter, epact and golden number, as the age's tooltip. */
-function derivation(a: LunaAnnouncement): string {
-  return `${a.year}: golden number ${a.golden_number}, epact ${a.epact}, letter ${a.letter}`;
+function derivation(t: DayHeadingT, a: LunaAnnouncement): string {
+  return t("derivation", { year: a.year, golden: a.golden_number, epact: a.epact, letter: a.letter });
 }
 
 /** The printed lunar table in its printed rows, with the year's column marked. A misprinted cell shows the number as
  * printed, with the age by the computus in a small row under it. */
 function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
+  const t = useTranslations("DayHeading");
   const misprinted = luna.tabula.some((c) => c.printed !== null);
   const mark = (k: number, red?: boolean) =>
     [k === column ? styles.lunaYear : "", red ? styles.lunaRed : ""].join(" ").trim() || undefined;
@@ -22,12 +26,12 @@ function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
     <>
       <div className={styles.lunaScroll}>
         <table className={styles.lunaTable}>
-          <caption className={styles.srOnly}>The moon&apos;s age under each letter of the Martyrology</caption>
+          <caption className={styles.srOnly}>{t("caption")}</caption>
           <tbody>
             {printedRows(luna.tabula, luna.rows).flatMap((row, r) => [
               <tr key={`l${r}`} className={styles.lunaLetters}>
                 {row.map(({ column: k, cell }) => (
-                  <th key={k} scope="col" className={mark(k, cell.red)} title={`epact ${cell.epact}`}>
+                  <th key={k} scope="col" className={mark(k, cell.red)} title={t("epactTitle", { epact: cell.epact })}>
                     {cell.letter}
                   </th>
                 ))}
@@ -38,7 +42,7 @@ function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
                     key={k}
                     className={mark(k)}
                     aria-current={k === column ? "true" : undefined}
-                    title={cell.printed !== null ? `printed ${cell.printed}; by the computus ${cell.age}` : undefined}
+                    title={cell.printed !== null ? t("printedTitle", { printed: cell.printed, age: cell.age }) : undefined}
                   >
                     {cell.printed ?? cell.age}
                     {cell.printed !== null && <span className={styles.lunaSic}>*</span>}
@@ -60,7 +64,7 @@ function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
           </tbody>
         </table>
       </div>
-      {misprinted && <p className={styles.lunaNote}>* As printed; below it, the age by the computus.</p>}
+      {misprinted && <p className={styles.lunaNote}>{t("asPrinted")}</p>}
     </>
   );
 }
@@ -73,6 +77,7 @@ function LunarTable({ luna, column }: { luna: Luna; column: number | null }) {
 export default function DayHeading({
   titulus, edition, mm, dd, luna: initial,
 }: { titulus: string; edition?: string; mm?: number; dd?: number; luna?: Luna | null }) {
+  const t = useTranslations("DayHeading");
   const [luna, setLuna] = useState<Luna | null>(initial ?? null);
   const [yearInput, setYearInput] = useState(String(initial?.annuntiatio?.year ?? ""));
   const [failed, setFailed] = useState(false);
@@ -100,7 +105,7 @@ export default function DayHeading({
   const a = luna.annuntiatio;
   const split = splitLuna(titulus);
   const age = a && (
-    <span className={styles.lunaAge} title={derivation(a)}>
+    <span className={styles.lunaAge} title={derivation(t, a)}>
       {ageWords(a.pronuntiatio)}
     </span>
   );
@@ -122,10 +127,10 @@ export default function DayHeading({
         </p>
       )}
       <details className={styles.luna}>
-        <summary>Lunar table</summary>
+        <summary>{t("lunarTable")}</summary>
         <LunarTable luna={luna} column={a?.column ?? null} />
         <p className={styles.lunaNote}>
-          <label htmlFor={yearId}>Year</label>{" "}
+          <label htmlFor={yearId}>{t("year")}</label>{" "}
           <input
             id={yearId}
             className={styles.lunaYearInput}
@@ -133,19 +138,20 @@ export default function DayHeading({
             value={yearInput}
             onChange={(e) => setYearInput(e.target.value.trim())}
           />{" "}
-          {a ? (
-            <>
-              golden number {a.golden_number}, epact {a.epact}, letter <b>{a.letter}</b>: <i>{a.pronuntiatio}</i>.
-            </>
-          ) : (
-            <>no announcement before the Gregorian reform (1583).</>
-          )}
-          {failed && <> The year couldn&apos;t be loaded.</>}
+          {a
+            ? t.rich("announcement", {
+                golden: a.golden_number, epact: a.epact, letter: a.letter, pronuntiatio: a.pronuntiatio,
+                b: (c) => <b>{c}</b>, i: (c) => <i>{c}</i>,
+              })
+            : t("noAnnouncement")}
+          {failed && <> {t("yearFailed")}</>}
         </p>
         {luna.dominical_letter && (
           <p className={styles.lunaNote}>
-            In the margin: dominical letter {luna.dominical_letter}
-            {luna.epactae && luna.epactae.length > 0 && <>; new moon of epact {luna.epactae.join(", ")}</>}.
+            {t("margin", {
+              letter: luna.dominical_letter,
+              epactae: luna.epactae && luna.epactae.length > 0 ? t("marginEpactae", { list: luna.epactae.join(", ") }) : "",
+            })}
           </p>
         )}
       </details>
