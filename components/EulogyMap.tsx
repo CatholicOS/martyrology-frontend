@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { CircleMarker, Map as LeafletMap, Marker, MarkerClusterGroup } from "leaflet";
 import { dayPath } from "@/lib/calendar";
 import { describeError } from "@/lib/describe-error";
+import { getPathname } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { typologyLabel, type MapEntry } from "@/lib/map-data";
 
 interface Props {
@@ -32,7 +34,7 @@ const REVEAL_ZOOM = 10;
  * The popup: subject, ID, typology, place as printed and on Wikidata, and a link into the reader.
  * Built as DOM, not HTML, so no text is parsed as markup.
  */
-function popupFor(e: MapEntry, edition: string, t: MapT): HTMLElement {
+function popupFor(e: MapEntry, edition: string, t: MapT, locale: Locale): HTMLElement {
   const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, cls?: string) => {
     const n = document.createElement(tag);
     if (text) n.textContent = text;
@@ -51,7 +53,7 @@ function popupFor(e: MapEntry, edition: string, t: MapT): HTMLElement {
   place.append(wd);
   root.append(place);
   const read = el("a", t("read"));
-  read.href = `${dayPath(edition, e.day)}#${e.id}`;
+  read.href = `${getPathname({ href: dayPath(edition, e.day), locale })}#${e.id}`;
   read.dataset.read = "";
   root.append(read);
   return root;
@@ -66,7 +68,9 @@ function popupFor(e: MapEntry, edition: string, t: MapT): HTMLElement {
  */
 export default function EulogyMap({ entries, edition, selected, onSelect, onPlace }: Props) {
   const t = useTranslations("Map");
+  const locale = useLocale() as Locale;
   const tRef = useRef(t);
+  const localeRef = useRef(locale);
   const el = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState<{ L: Leaflet; map: LeafletMap; group: MarkerClusterGroup } | null>(null);
   const [failed, setFailed] = useState(false);
@@ -78,7 +82,8 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     onSelectRef.current = onSelect;
     onPlaceRef.current = onPlace;
     tRef.current = t;
-  }, [onSelect, onPlace, t]);
+    localeRef.current = locale;
+  }, [onSelect, onPlace, t, locale]);
 
   // The map and its cluster group, once.
   useEffect(() => {
@@ -141,7 +146,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     const layers = entries.map((e) => {
       // The popup is built when opened: thousands of markers are rebuilt as the filters change.
       const m: PlacedMarker = L.circleMarker(e.coords, MARKER)
-        .bindPopup(() => popupFor(e, edition, tRef.current))
+        .bindPopup(() => popupFor(e, edition, tRef.current, localeRef.current))
         .on("click", () => onSelectRef.current(e.id));
       m.eulogyId = e.id;
       markers.current.set(e.id, { marker: m, entry: e });
@@ -165,7 +170,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       return;
     }
     map.setView(hit.entry.coords, Math.max(map.getZoom(), REVEAL_ZOOM));
-    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current, tRef.current)).openOn(map);
+    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current, tRef.current, localeRef.current)).openOn(map);
   }, [ready, selected]);
 
   if (failed) {

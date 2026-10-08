@@ -22,4 +22,10 @@ describe("internal links keep the locale", () => {
     const bad = [...files("components"), "mdx-components.tsx"].filter((f) => /<a\s[^>]*href=\{?[`"]\/(read|map|docs|compare|review|scalar)/.test(readFileSync(f, "utf8")));
     expect(bad).toEqual([]);
   });
+  it("no internal path is assigned imperatively to an href (use getPathname)", () => {
+    const bad = [...files("components"), ...files("lib")]
+      .filter((f) => !f.startsWith("lib/i18n") && !f.startsWith("i18n"))
+      .filter((f) => /\.href\s*=\s*[`"]\/|\bhref\s*=\s*`\$\{dayPath\(/.test(readFileSync(f, "utf8")));
+    expect(bad).toEqual([]);
+  });
 });
