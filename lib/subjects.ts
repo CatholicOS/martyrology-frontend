@@ -1,4 +1,4 @@
-import { monthName, type Day } from "@/lib/calendar";
+import { interfaceMonth, type Day } from "@/lib/calendar";
 import type { CatalogEntryOut } from "@/lib/types";
 
 /** One eulogy in the reader's subject search: the datalist value and where it is printed. */
@@ -11,14 +11,14 @@ export interface SubjectOption {
 /**
  * The subject search's options for one edition's catalog: only the eulogies it prints, each
  * labelled with the day it prints them on ("Sanctus Ioannes — 27 December"), since many subjects
- * recur. Two of one subject on one day are told apart by their number, or by their id if unnumbered.
+ * recur, the month in the interface language. Two of one subject on one day are told apart by their number, or by their id if unnumbered.
  */
-export function subjectOptions(catalog: CatalogEntryOut[]): SubjectOption[] {
+export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<typeof interfaceMonth>[0]): SubjectOption[] {
   const rows = catalog.flatMap((e) => {
     const m = e.present !== false && e.subject ? /^(\d{2})-(\d{2})$/.exec(e.day_printed ?? "") : null;
     if (!m) return [];
     const day = { mm: Number(m[1]), dd: Number(m[2]) };
-    return [{ e, day, base: `${e.subject} — ${day.dd} ${monthName(day.mm, "en")}` }];
+    return [{ e, day, base: `${e.subject} — ${day.dd} ${interfaceMonth(format, day.mm)}` }];
   });
   const seen = new Map<string, number>();
   for (const r of rows) seen.set(r.base, (seen.get(r.base) ?? 0) + 1);
@@ -48,4 +48,13 @@ export function findSubject(options: SubjectOption[], text: string): SubjectOpti
   if (!q) return null;
   const hits = options.filter((o) => o.value.toLocaleLowerCase().includes(q));
   return hits.length === 1 ? hits[0] : null;
+}
+
+/** The subject languages crmedr publishes; add a code here when crmedr adds its file. */
+export const SUBJECT_LANGS = ["la", "it", "en"] as const;
+
+/** A subject for the interface: the reader's language if crmedr has it, else English, else Latin, else the ID. */
+export function subjectFor(subject: Partial<Record<string, string | null>> | undefined, locale: string, id = ""): string {
+  const pick = (l: string) => ((SUBJECT_LANGS as readonly string[]).includes(l) ? subject?.[l]?.trim() : "") || "";
+  return pick(locale) || pick("en") || pick("la") || id;
 }

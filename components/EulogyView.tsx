@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
+import { subjectFor } from "@/lib/subjects";
 import type { EulogyOut, Locale } from "@/lib/types";
 
 /**
@@ -55,7 +57,8 @@ export default function EulogyView({
   alongside,
 }: Props) {
   const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("Map.eulogy");
+  const [error, setError] = useState<{ title: string | null } | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -69,7 +72,7 @@ export default function EulogyView({
         if (!cancelled) setEulogy(data);
       } catch (err) {
         if (!cancelled)
-          setError(err instanceof ApiError ? `text unavailable (${err.title})` : "text unavailable");
+          setError({ title: err instanceof ApiError ? err.title : null });
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -102,23 +105,27 @@ export default function EulogyView({
         </p>
       )}
       <p className="font-mono text-xs text-slate-500 dark:text-slate-400">{id}</p>
-      {loading && <p className="text-slate-500 dark:text-slate-400">Loading eulogy…</p>}
-      {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
+      {loading && <p className="text-slate-500 dark:text-slate-400">{t("loading")}</p>}
+      {error && (
+        <p className="text-red-600 dark:text-red-400">
+          {error.title === null ? t("unavailable") : t("unavailableTitled", { title: error.title })}
+        </p>
+      )}
       {eulogy && sel && (
         <>
-          <p className="font-semibold">{eulogy.subject[locale] ?? eulogy.subject.la ?? eulogy.id}</p>
+          <p className="font-semibold">{subjectFor(eulogy.subject, locale, eulogy.id)}</p>
           <div className={showAlongside ? "grid gap-3 sm:grid-cols-2" : undefined}>
             <div>
               {sel.isFallback && sel.editionId && (
                 <p className="text-xs text-amber-600 dark:text-amber-400">
-                  no {wanted} placement — showing {sel.editionId}
+                  {t("noPlacement", { wanted, shown: sel.editionId })}
                 </p>
               )}
               {!sel.isFallback && sel.editionId && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">{sel.editionId}</p>
               )}
               <p className="mt-1">
-                {sel.text && sel.editionId ? <EulogyText text={sel.text} id={eulogy.id} edition={sel.editionId} /> : "(no text)"}
+                {sel.text && sel.editionId ? <EulogyText text={sel.text} id={eulogy.id} edition={sel.editionId} /> : t("noText")}
               </p>
             </div>
             {showAlongside && second && (
@@ -128,7 +135,7 @@ export default function EulogyView({
                   {eulogy.editions[second]?.text ? (
                     <EulogyText text={eulogy.editions[second].text} id={eulogy.id} edition={second} />
                   ) : (
-                    `(no text in ${second})`
+                    t("noTextIn", { edition: second })
                   )}
                 </p>
               </div>

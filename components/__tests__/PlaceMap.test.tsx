@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@/test/intl";
 import PlaceMap from "@/components/PlaceMap";
 
 type Handler = () => void;

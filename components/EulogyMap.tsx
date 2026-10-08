@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import { useTranslations } from "next-intl";
 import type { CircleMarker, Map as LeafletMap, Marker, MarkerClusterGroup } from "leaflet";
 import { dayPath } from "@/lib/calendar";
 import { describeError } from "@/lib/describe-error";
@@ -19,6 +20,7 @@ interface Props {
   onPlace: (ids: string[]) => void;
 }
 
+type MapT = ReturnType<typeof useTranslations<"Map">>;
 type Leaflet = typeof import("leaflet");
 type PlacedMarker = CircleMarker & { eulogyId?: string };
 
@@ -30,7 +32,7 @@ const REVEAL_ZOOM = 10;
  * The popup: subject, ID, typology, place as printed and on Wikidata, and a link into the reader.
  * Built as DOM, not HTML, so no text is parsed as markup.
  */
-function popupFor(e: MapEntry, edition: string): HTMLElement {
+function popupFor(e: MapEntry, edition: string, t: MapT): HTMLElement {
   const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, cls?: string) => {
     const n = document.createElement(tag);
     if (text) n.textContent = text;
@@ -40,7 +42,7 @@ function popupFor(e: MapEntry, edition: string): HTMLElement {
   const root = el("div", undefined, "text-sm");
   root.append(el("p", e.subject, "font-semibold"));
   root.append(el("p", e.id, "font-mono text-xs"));
-  root.append(el("p", typologyLabel(e.typology)));
+  root.append(el("p", typologyLabel(t, e.typology)));
   const place = el("p", `${e.la} · `);
   const wd = el("a", e.label);
   wd.href = `https://www.wikidata.org/wiki/${e.qid}`;
@@ -48,7 +50,7 @@ function popupFor(e: MapEntry, edition: string): HTMLElement {
   wd.rel = "noreferrer";
   place.append(wd);
   root.append(place);
-  const read = el("a", "Read");
+  const read = el("a", t("read"));
   read.href = `${dayPath(edition, e.day)}#${e.id}`;
   read.dataset.read = "";
   root.append(read);
@@ -63,6 +65,8 @@ function popupFor(e: MapEntry, edition: string): HTMLElement {
  * so it loads in the browser; markercluster extends the global `L`, so that is set first.
  */
 export default function EulogyMap({ entries, edition, selected, onSelect, onPlace }: Props) {
+  const t = useTranslations("Map");
+  const tRef = useRef(t);
   const el = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState<{ L: Leaflet; map: LeafletMap; group: MarkerClusterGroup } | null>(null);
   const [failed, setFailed] = useState(false);
@@ -73,7 +77,8 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
   useEffect(() => {
     onSelectRef.current = onSelect;
     onPlaceRef.current = onPlace;
-  }, [onSelect, onPlace]);
+    tRef.current = t;
+  }, [onSelect, onPlace, t]);
 
   // The map and its cluster group, once.
   useEffect(() => {
@@ -136,7 +141,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     const layers = entries.map((e) => {
       // The popup is built when opened: thousands of markers are rebuilt as the filters change.
       const m: PlacedMarker = L.circleMarker(e.coords, MARKER)
-        .bindPopup(() => popupFor(e, edition))
+        .bindPopup(() => popupFor(e, edition, tRef.current))
         .on("click", () => onSelectRef.current(e.id));
       m.eulogyId = e.id;
       markers.current.set(e.id, { marker: m, entry: e });
@@ -160,19 +165,19 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       return;
     }
     map.setView(hit.entry.coords, Math.max(map.getZoom(), REVEAL_ZOOM));
-    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current)).openOn(map);
+    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current, tRef.current)).openOn(map);
   }, [ready, selected]);
 
   if (failed) {
     return (
       <div className="flex h-full min-h-[24rem] flex-col items-center justify-center gap-2 text-sm">
-        <p>The map could not load.</p>
+        <p>{t("mapLoadFailed")}</p>
         <button
           type="button"
           className="rounded border border-slate-300 px-2 py-1 dark:border-slate-700"
           onClick={() => window.location.reload()}
         >
-          Reload
+          {t("reload")}
         </button>
       </div>
     );

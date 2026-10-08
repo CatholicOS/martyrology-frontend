@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import "leaflet/dist/leaflet.css";
 import type { CircleMarker, Map as LeafletMap } from "leaflet";
 
@@ -25,6 +26,7 @@ const OTHER = { color: "#475569", fillColor: "#94a3b8", radius: 6 };
  * marker selects its candidate. Leaflet needs `window`, so it loads in the browser.
  */
 export default function PlaceMap({ points, selected, onSelect }: Props) {
+  const t = useTranslations("Map");
   const el = useRef<HTMLDivElement>(null);
   const markers = useRef(new Map<string, CircleMarker>());
   const onSelectRef = useRef(onSelect);
@@ -82,7 +84,7 @@ export default function PlaceMap({ points, selected, onSelect }: Props) {
   }, [selected]);
 
   if (located.length === 0) {
-    return <p className="text-xs italic text-slate-500 dark:text-slate-400">No candidate has coordinates.</p>;
+    return <p className="text-xs italic text-slate-500 dark:text-slate-400">{t("noCoordinates")}</p>;
   }
   return <div ref={el} className="h-64 w-full rounded border border-slate-300 dark:border-slate-700" />;
 }
