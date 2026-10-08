@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
 import DayPage, { Conclusio, DayTitle, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";
@@ -9,7 +9,7 @@ import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
 import PrintedFootnotes from "@/components/PrintedFootnotes";
-import { dateHeading, dayPath, monthName, type Day, type Lang } from "@/lib/calendar";
+import { dateHeading, dayPath, interfaceMonth, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, type BookshelfT, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
 import { pageFootnotes } from "@/lib/footnotes";
 import { pageNotes } from "@/lib/notes";
@@ -46,25 +46,28 @@ function sideInfo(t: BookshelfT, id: string, otherId: string, editions: EditionO
 
 /** The editorial note on the empty side of a one-sided row, set like the misprint notes. */
 function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day) => string }) {
+  const t = useTranslations("Reader");
+  const format = useFormatter();
+  const i = (c: ReactNode) => <i>{c}</i>;
   const star = note.kind === "moved" || note.kind === "elsewhere" ? (note.asterisk ? "*" : "") : "";
-  const n = (entry: number | null) => (entry === null ? "" : `, n. ${entry}${star}`);
+  const n = (entry: number | null) => (entry === null ? "" : `, ${t("gapEntry", { entry: `${entry}${star}` })}`);
   let body: ReactNode;
   switch (note.kind) {
     case "absent":
-      body = <><i>not in</i> {name}</>;
+      body = t.rich("gapAbsent", { name, i });
       break;
     case "pending":
-      body = <><i>not on this day in</i> {name}</>;
+      body = t.rich("gapPending", { name, i });
       break;
     case "moved":
-      body = <><i>{name}:</i> {note.entry === null ? "" : `n. ${note.entry}${star}, `}{note.direction}</>;
+      body = <><i>{name}:</i> {note.entry === null ? "" : `${t("gapEntry", { entry: `${note.entry}${star}` })}, `}{t(note.direction === "above" ? "gapAbove" : "gapBelow")}</>;
       break;
     case "elsewhere":
       body = (
         <>
           <i>{name}:</i>{" "}
           <Link href={href(note.day)}>
-            {note.day.dd} {monthName(note.day.mm, "en")}{n(note.entry)} →
+            {note.day.dd} {interfaceMonth(format, note.day.mm)}{n(note.entry)} →
           </Link>
         </>
       );
@@ -88,6 +91,7 @@ export default function Spread({
   turn: "next" | "prev" | null;
 }) {
   const tShelf = useTranslations("Bookshelf");
+  const t = useTranslations("Reader");
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
   const A = sideInfo(tShelf, a, b, editions);
   const B = sideInfo(tShelf, b, a, editions);
@@ -125,7 +129,7 @@ export default function Spread({
   const unaligned = [A, B].filter((s) => s.meta?.aligned === false);
   const notice = unaligned.map((s) => (
     <p key={s.id} className="mb-3 text-center text-sm text-slate-600 dark:text-slate-400">
-      The {yearAndLanguage(tShelf, s.meta!)} edition is not yet aligned, so its eulogies are not matched.
+      {t("unaligned", { edition: yearAndLanguage(tShelf, s.meta!) })}
     </p>
   ));
 
