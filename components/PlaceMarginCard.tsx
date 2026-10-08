@@ -85,7 +85,7 @@ export default function PlaceMarginCard({ op, decision, onDecide }: Props) {
                 checked={selected === c.ref}
                 onChange={() => setSelected(c.ref)}
               />
-              <span className="text-[10px] uppercase text-slate-500">{c.kind}</span>
+              <span className="text-[10px] uppercase text-slate-500">{m(`kind.${c.kind}`)}</span>
               <Candidate c={c} />
             </label>
           ))}

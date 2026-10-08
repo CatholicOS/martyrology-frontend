@@ -78,7 +78,7 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
                     </span>
                   )}
                 </td>
-                <td className="py-1 pr-2">{row.status}</td>
+                <td className="py-1 pr-2">{t(`status.${row.status}`)}</td>
                 <td className="py-1 pr-2">{row.country ?? ""}</td>
               </tr>
               {expandedId === row.id && (
