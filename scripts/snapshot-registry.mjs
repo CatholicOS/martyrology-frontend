@@ -140,7 +140,8 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
       label: hit.g.label ?? hit.qid,
       country: hit.g.country ?? "",
       coords: coords[hit.qid] ?? null,
-      ...(labels[hit.qid] ? { labels: labels[hit.qid] } : {}),
+      // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
+      ...(labels[hit.qid] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => (l in labels[hit.qid] ? [[l, labels[hit.qid][l]]] : []))) } : {}),
     };
     eulogies[id] = { place: hit.qid, la: hit.la, ...(hit.it ? { it: hit.it } : {}), typology: typologyDoc.typology[id] ?? null };
   }

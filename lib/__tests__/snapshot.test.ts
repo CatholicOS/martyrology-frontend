@@ -89,6 +89,12 @@ describe("buildPlaces", () => {
     });
   });
 
+  it("writes each place's labels in the interface languages' order, whatever order Wikidata gives them in", () => {
+    const labels = { Q220: { pt: "Roma", en: "Rome", de: "Rom", it: "Roma" } };
+    const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels);
+    expect(Object.keys(snap.places.Q220.labels ?? {})).toEqual(["en", "it", "de", "pt"]);
+  });
+
   it("keeps a place without coordinates, for the index, with null coordinates", () => {
     const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, {});
     expect(snap.places.Q220.coords).toBeNull();
