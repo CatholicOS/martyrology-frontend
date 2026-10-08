@@ -116,6 +116,6 @@ describe("NavMenu", () => {
     fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
     expect(screen.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
     rerender(tree("de"));
-    expect(screen.getByRole("button", { name: /menu/i })).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("button", { name: "Menü öffnen" })).toHaveAttribute("aria-expanded", "false");
   });
 });
