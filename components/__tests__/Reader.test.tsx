@@ -63,6 +63,12 @@ const render1749 = (mm = 10, dd = 2, signedIn = false) =>
   render(<Reader edition="martyrologium_romanum_1749" mm={mm} dd={dd} signedIn={signedIn} />);
 
 describe("Reader", () => {
+  it("links to the edition's notes and its index of places", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", "/read/martyrologium_romanum_1749/places");
+  });
+
   it("restores focus to the control that navigated, after the remount", async () => {
     const first = render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");

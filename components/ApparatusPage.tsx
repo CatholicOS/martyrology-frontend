@@ -84,6 +84,10 @@ export default function ApparatusPage({ edition }: { edition: string }) {
         <Link href={`/read/${encodeURIComponent(edition)}`} className="underline">
           {t("readEdition")}
         </Link>
+        {" · "}
+        <Link href={`/read/${encodeURIComponent(edition)}/places`} className="underline">
+          {tReader("placesLink")}
+        </Link>
       </p>
       <fieldset className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm" aria-label={t("show")}>
         {KINDS.map((key) => {
