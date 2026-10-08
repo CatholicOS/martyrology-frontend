@@ -7,7 +7,8 @@
     "apiReferenceTitle": "Referência da API · {book}",
     "apiReferenceDescription": "A API do Martirológio romano: seus endpoints, parâmetros e respostas, com solicitações para testar.",
     "dayTitle": "{day} de {month} — {books}",
-    "notesTitle": "{edition}: notas, erros de impressão e errata"
+    "notesTitle": "{edition}: notas, erros de impressão e errata",
+    "placesTitle": "{edition}: índice de lugares"
   },
   "Header": {
     "brand": "Martirológio",
@@ -103,6 +104,7 @@
     "showIdsTitle": "Mostrar o identificador canônico de cada elogio",
     "ids": "IDs",
     "notesLink": "Notas e errata",
+    "placesLink": "Índice de lugares",
     "shelf": "⟵ Estante",
     "loading": "Carregando…",
     "noText": "Esta edição não tem texto para {day} de {month}.",
@@ -169,6 +171,16 @@
       "anchorNotFound": "não encontrado como palavras inteiras neste elogio",
       "anchorRepeated": "encontrado {count} vezes: acrescente uma ou duas palavras"
     }
+  },
+  "Places": {
+    "title": "{title}: índice de lugares",
+    "readEdition": "⟵ Ler a edição",
+    "notesLink": "Notas e errata",
+    "letters": "Letras",
+    "coverage": "{placed, number} dos {printed, number} elogios desta edição já têm um lugar.",
+    "empty": "Nenhum elogio desta edição tem ainda um lugar.",
+    "loadError": "Não foi possível carregar o índice.",
+    "retry": "Tentar novamente"
   },
   "Map": {
     "filters": "Filtros",

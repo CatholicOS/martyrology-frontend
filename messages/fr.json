@@ -7,7 +7,8 @@
     "apiReferenceTitle": "Référence de l’API · {book}",
     "apiReferenceDescription": "L’API du Martyrologe romain : ses points de terminaison, paramètres et réponses, avec des requêtes à essayer.",
     "dayTitle": "{day} {month} — {books}",
-    "notesTitle": "{edition} : notes, coquilles et errata"
+    "notesTitle": "{edition} : notes, coquilles et errata",
+    "placesTitle": "{edition} : index des lieux"
   },
   "Header": {
     "brand": "Martyrologe",
@@ -103,6 +104,7 @@
     "showIdsTitle": "Afficher l’identifiant canonique de chaque éloge",
     "ids": "ID",
     "notesLink": "Notes et errata",
+    "placesLink": "Index des lieux",
     "shelf": "⟵ Étagère",
     "loading": "Chargement…",
     "noText": "Cette édition n’a pas de texte pour le {day} {month}.",
@@ -169,6 +171,16 @@
       "anchorNotFound": "introuvable en mots entiers dans cet éloge",
       "anchorRepeated": "trouvé {count} fois : ajoutez un mot ou deux"
     }
+  },
+  "Places": {
+    "title": "{title} : index des lieux",
+    "readEdition": "⟵ Lire l’édition",
+    "notesLink": "Notes et errata",
+    "letters": "Lettres",
+    "coverage": "{placed, number} des {printed, number} éloges de cette édition ont pour l’instant un lieu.",
+    "empty": "Aucun éloge de cette édition n’a encore de lieu.",
+    "loadError": "L’index n’a pas pu être chargé.",
+    "retry": "Réessayer"
   },
   "Map": {
     "filters": "Filtres",

@@ -7,7 +7,8 @@
     "apiReferenceTitle": "API-Referenz · {book}",
     "apiReferenceDescription": "Die API des Römischen Martyrologiums: Endpunkte, Parameter und Antworten, mit Anfragen zum Ausprobieren.",
     "dayTitle": "{day}. {month} — {books}",
-    "notesTitle": "{edition}: Anmerkungen, Druckfehler und Errata"
+    "notesTitle": "{edition}: Anmerkungen, Druckfehler und Errata",
+    "placesTitle": "{edition}: Ortsregister"
   },
   "Header": {
     "brand": "Martyrologium",
@@ -103,6 +104,7 @@
     "showIdsTitle": "Die kanonische ID jedes Elogiums anzeigen",
     "ids": "IDs",
     "notesLink": "Anmerkungen & Errata",
+    "placesLink": "Ortsregister",
     "shelf": "⟵ Regal",
     "loading": "Wird geladen…",
     "noText": "Diese Ausgabe hat keinen Text für den {day}. {month}.",
@@ -169,6 +171,16 @@
       "anchorNotFound": "nicht als ganze Wörter in diesem Elogium gefunden",
       "anchorRepeated": "{count}-mal gefunden: ein oder zwei Wörter hinzufügen"
     }
+  },
+  "Places": {
+    "title": "{title}: Ortsregister",
+    "readEdition": "⟵ Ausgabe lesen",
+    "notesLink": "Anmerkungen & Errata",
+    "letters": "Buchstaben",
+    "coverage": "{placed, number} der {printed, number} Elogien dieser Ausgabe ist bisher ein Ort zugeordnet.",
+    "empty": "Den Elogien dieser Ausgabe ist noch kein Ort zugeordnet.",
+    "loadError": "Das Register konnte nicht geladen werden.",
+    "retry": "Erneut versuchen"
   },
   "Map": {
     "filters": "Filter",
