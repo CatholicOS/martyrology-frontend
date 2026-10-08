@@ -54,16 +54,23 @@ export function __resetReaderState() {
 
 const FOUND_MS = 2400;
 
-/** The eulogy a link names in the address (`#mr:…`), if any. */
+/** The eulogy (`#mr:…`) or curator's note (`#note-…`) a link names in the address, if any. */
 function hashId(): string | null {
   if (typeof window === "undefined") return null;
   const id = decodeURIComponent(window.location.hash.slice(1));
-  return id.startsWith("mr:") ? id : null;
+  return id.startsWith("mr:") || isNoteId(id) ? id : null;
 }
 
-/** Scroll to the eulogy and mark it briefly; false while it is not drawn yet. */
+/** A curator's note's element id: the notes are drawn only while the IDs are shown. */
+function isNoteId(id: string): boolean {
+  return id.startsWith("note-");
+}
+
+/** Scroll to the eulogy or note and mark it briefly; false while it is not drawn yet. */
 function reveal(root: HTMLElement, id: string): boolean {
-  const el = [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
+  const el = isNoteId(id)
+    ? [...root.querySelectorAll<HTMLElement>("[id]")].find((n) => n.id === id)
+    : [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
   if (!el) return false;
   const still = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   el.scrollIntoView?.({ block: "center", behavior: still ? "auto" : "smooth" });
@@ -117,6 +124,11 @@ export default function Reader({
     return id ? { id } : null;
   });
   const [showIds, setShowIds] = useShowIds();
+
+  // A link to a curator's note shows the IDs, which draws the notes, so the note can be found.
+  useEffect(() => {
+    if (target && isNoteId(target.id)) setShowIds(true);
+  }, [target, setShowIds]);
 
   const navigated = useRef(false);
 
