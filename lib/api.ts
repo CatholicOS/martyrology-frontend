@@ -6,8 +6,8 @@ export class ApiError extends Error {
   }
 }
 
-async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`/api/mr/${path}`, { headers: { accept: "application/json" } });
+async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
+  const res = await fetch(`/api/mr/${path}`, { headers: { accept: "application/json" }, signal });
   if (!res.ok) {
     let title = res.statusText;
     try {
@@ -34,9 +34,11 @@ export async function getElogium(id: string): Promise<EulogyOut> {
 }
 
 /** A day of an edition; `year` is the year its moon is announced for (an edition with lunar tables). */
-export async function getDay(edition: string, mm: string, dd: string, year?: number): Promise<DayOut> {
+export async function getDay(
+  edition: string, mm: string, dd: string, year?: number, { signal }: { signal?: AbortSignal } = {},
+): Promise<DayOut> {
   const q = year === undefined ? "" : `?year=${year}`;
-  return get<DayOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}${q}`);
+  return get<DayOut>(`elogia/edition/${encodeURIComponent(edition)}/${mm}/${dd}${q}`, signal);
 }
 
 export async function getMonth(edition: string, mm: string): Promise<MonthOut> {

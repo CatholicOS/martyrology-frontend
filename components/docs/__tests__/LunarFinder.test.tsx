@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@/test/intl";
+import { act, fireEvent, render, screen, waitFor, within } from "@/test/intl";
 
 const { getDay } = vi.hoisted(() => ({ getDay: vi.fn() }));
 vi.mock("@/lib/api", () => ({ getDay }));
@@ -15,13 +15,16 @@ function pick(value: string) {
 }
 
 describe("LunarFinder", () => {
-  beforeEach(() => getDay.mockReset());
+  // Braces: a function returned from beforeEach is run as its teardown, and mockReset returns the mock.
+  beforeEach(() => {
+    getDay.mockReset();
+  });
 
   it("shows the year's golden number, epact and letter, and the day's moon", async () => {
     getDay.mockResolvedValue(day2005);
     render(<LunarFinder />);
     pick("2005-01-01");
-    expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_2004", "01", "01", 2005);
+    expect(getDay).toHaveBeenCalledWith("martyrologium_romanum_2004", "01", "01", 2005, { signal: expect.any(AbortSignal) });
     expect(await screen.findByText("11")).toBeInTheDocument();
     expect(screen.getByText("XIX")).toBeInTheDocument();
     expect(screen.getByText("u")).toBeInTheDocument();
@@ -80,6 +83,34 @@ describe("LunarFinder", () => {
     pick("2005-01-01");
     expect(await screen.findByText(/couldn.t be loaded/)).toBeInTheDocument();
     expect(screen.queryByText(/no moon/i)).not.toBeInTheDocument();
+  });
+
+  it("announces the answer to screen readers in a polite live region", async () => {
+    getDay.mockResolvedValue(day2005);
+    render(<LunarFinder />);
+    const status = screen.getByRole("status");
+    pick("2005-01-01");
+    expect(await within(status).findByText("Luna vigesima")).toBeInTheDocument();
+  });
+
+  it("gives up on a request that never answers, and says the moon couldn't be loaded", async () => {
+    vi.useFakeTimers();
+    try {
+      let signal: AbortSignal | undefined;
+      getDay.mockImplementation((...args: unknown[]) => {
+        signal = (args[4] as { signal?: AbortSignal } | undefined)?.signal;
+        return new Promise(() => {});
+      });
+      render(<LunarFinder />);
+      pick("2005-01-01");
+      expect(screen.getByText("Loading…")).toBeInTheDocument();
+      await act(() => vi.advanceTimersByTimeAsync(15_000));
+      expect(screen.getByText(/couldn.t be loaded/)).toBeInTheDocument();
+      expect(screen.queryByText("Loading…")).not.toBeInTheDocument();
+      expect(signal?.aborted).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("labels the finder in the interface language", () => {

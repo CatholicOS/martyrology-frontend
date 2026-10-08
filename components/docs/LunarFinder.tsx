@@ -9,6 +9,8 @@ import type { LunaAnnouncement } from "@/lib/types";
 const EDITION = "martyrologium_romanum_2004";
 /** The first year of the Gregorian calendar, whose computus the lunar table follows; the API announces no moon before it. */
 const FIRST_YEAR = 1583;
+/** How long the finder waits for the API before saying the moon couldn't be loaded. */
+const TIMEOUT_MS = 15_000;
 
 /** "2005-01-01" → { year: 2005, mm: "01", dd: "01" }; null for an empty or partial value or year 0. */
 function parseDate(v: string): { year: number; mm: string; dd: string } | null {
@@ -35,13 +37,26 @@ export function LunarFinder() {
   useEffect(() => {
     if (!date) return;
     let live = true;
-    getDay(EDITION, date.mm, date.dd, date.year).then(
+    const controller = new AbortController();
+    // A request that never settles would leave "Loading…" up for good: abort it and say it failed.
+    const timer = setTimeout(() => {
+      controller.abort();
+      if (live) setState({ for: value, failed: true });
+      live = false;
+    }, TIMEOUT_MS);
+    const settle = (next: NonNullable<typeof state>) => {
+      clearTimeout(timer);
+      if (live) setState(next);
+    };
+    getDay(EDITION, date.mm, date.dd, date.year, { signal: controller.signal }).then(
       // No `luna` at all (an API before v0.15.0) is a failure to load; `annuntiatio: null` is the book announcing no moon.
-      (day) => live && setState(day.luna ? { for: value, luna: day.luna.annuntiatio } : { for: value, failed: true }),
-      () => live && setState({ for: value, failed: true }),
+      (day) => settle(day.luna ? { for: value, luna: day.luna.annuntiatio } : { for: value, failed: true }),
+      () => settle({ for: value, failed: true }),
     );
     return () => {
       live = false;
+      clearTimeout(timer);
+      controller.abort();
     };
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps -- `date` derives from `value`
 
@@ -51,23 +66,26 @@ export function LunarFinder() {
       <label htmlFor={inputId} className="mr-2">{t("date")}</label>
       <input id={inputId} type="date" min="1583-01-01" value={value} onChange={(e) => setValue(e.target.value)}
              className="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900" />
-      {early && <p className="mt-3 text-sm">{t("early")}</p>}
-      {date && !shown && <p className="mt-3 text-sm">{t("loading")}</p>}
-      {shown && !shown.failed && !shown.luna && <p className="mt-3 text-sm">{t("none")}</p>}
-      {shown?.failed && <p className="mt-3 text-sm">{t("failed")}</p>}
-      {shown?.luna && (
-        <>
-          <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-            <dt>{t("golden")}</dt><dd>{shown.luna.golden_number}</dd>
-            <dt>{t("epact")}</dt><dd>{shown.luna.epact}</dd>
-            <dt>{t("letter")}</dt><dd>{shown.luna.letter}</dd>
-            <dt>{t("moon")}</dt><dd lang="la" className="italic">{shown.luna.pronuntiatio}</dd>
-          </dl>
-          <p className="mt-3 text-sm">
-            <Link href={`/read/${EDITION}/${date!.mm}/${date!.dd}`} className="underline">{t("reader")}</Link>
-          </p>
-        </>
-      )}
+      {/* Always rendered, so a screen reader announces whatever appears in it once a date is picked. */}
+      <div role="status">
+        {early && <p className="mt-3 text-sm">{t("early")}</p>}
+        {date && !shown && <p className="mt-3 text-sm">{t("loading")}</p>}
+        {shown && !shown.failed && !shown.luna && <p className="mt-3 text-sm">{t("none")}</p>}
+        {shown?.failed && <p className="mt-3 text-sm">{t("failed")}</p>}
+        {shown?.luna && (
+          <>
+            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+              <dt>{t("golden")}</dt><dd>{shown.luna.golden_number}</dd>
+              <dt>{t("epact")}</dt><dd>{shown.luna.epact}</dd>
+              <dt>{t("letter")}</dt><dd>{shown.luna.letter}</dd>
+              <dt>{t("moon")}</dt><dd lang="la" className="italic">{shown.luna.pronuntiatio}</dd>
+            </dl>
+            <p className="mt-3 text-sm">
+              <Link href={`/read/${EDITION}/${date!.mm}/${date!.dd}`} className="underline">{t("reader")}</Link>
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 }

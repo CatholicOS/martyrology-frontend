@@ -57,13 +57,17 @@ export function slugFromPath(pathname: string): { slug?: string } | null {
   return m ? { slug: m[1] } : null;
 }
 
-/** A heading's anchor: accents folded, apostrophes dropped, other runs of non-alphanumerics → "-". */
+/** The letters NFKD leaves whole, spelled out so they aren't dropped: "Cœlum" → "coelum", not "c-lum". */
+const LIGATURES: Record<string, string> = { æ: "ae", œ: "oe", ß: "ss" };
+
+/** A heading's anchor: accents folded, ligatures and ß spelled out, apostrophes dropped, other runs of non-alphanumerics → "-". */
 export function headingId(text: string): string {
   return text
     .normalize("NFKD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/['’]/g, "")
     .toLowerCase()
+    .replace(/[æœß]/g, (c) => LIGATURES[c])
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
