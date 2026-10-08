@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@/test/intl";
+import { render, screen, fireEvent, waitFor } from "@/test/intl";
+import { getElogium, ApiError } from "@/lib/api";
+import itMsgs from "@/messages/it.json";
 import CompareDay from "@/components/CompareDay";
 import type { CompareDayGroup } from "@/lib/compare";
 
@@ -73,5 +75,13 @@ describe("CompareDay", () => {
     expect(cells).toContain("both");
     expect(cells).toContain("A-only");
     expect(cells).toContain("B-only");
+  });
+
+  it("shows the translated unreachable message when the API cannot be reached", async () => {
+    vi.mocked(getElogium).mockRejectedValue(new ApiError(502, "API unreachable"));
+    render(<CompareDay group={group} />, { locale: "it" });
+    fireEvent.click(screen.getByText("mr:0101-x"));
+    await waitFor(() => expect(screen.getByText(itMsgs.Errors.unreachable)).toBeInTheDocument());
+    expect(screen.queryByText("API unreachable")).toBeNull();
   });
 });

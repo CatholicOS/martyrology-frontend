@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
+import { apiErrorTitle } from "@/lib/api-error-title";
 import { subjectFor } from "@/lib/subjects";
 import type { EulogyOut, Locale } from "@/lib/types";
 
@@ -58,6 +59,7 @@ export default function EulogyView({
 }: Props) {
   const [eulogy, setEulogy] = useState<EulogyOut | null>(null);
   const t = useTranslations("Map.eulogy");
+  const tErrors = useTranslations("Errors");
   const [error, setError] = useState<{ title: string | null } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +74,7 @@ export default function EulogyView({
         if (!cancelled) setEulogy(data);
       } catch (err) {
         if (!cancelled)
-          setError({ title: err instanceof ApiError ? err.title : null });
+          setError({ title: err instanceof ApiError ? apiErrorTitle(err, tErrors("unreachable")) : null });
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -80,7 +82,7 @@ export default function EulogyView({
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, tErrors]);
 
   if (!id) return null;
 

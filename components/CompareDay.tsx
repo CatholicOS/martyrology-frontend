@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { CompareDayGroup, CompareRow } from "@/lib/compare";
 import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
+import { apiErrorTitle } from "@/lib/api-error-title";
 import type { EulogyOut } from "@/lib/types";
 
 function rowClass(row: CompareRow): string {
@@ -21,6 +22,7 @@ interface ExpandedState {
 
 export default function CompareDay({ group }: { group: CompareDayGroup }) {
   const t = useTranslations("Compare");
+  const tErrors = useTranslations("Errors");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, ExpandedState>>({});
 
@@ -36,7 +38,7 @@ export default function CompareDay({ group }: { group: CompareDayGroup }) {
       const data = await getElogium(id);
       setExpanded((prev) => ({ ...prev, [id]: { loading: false, error: null, data } }));
     } catch (err) {
-      const message = err instanceof ApiError ? err.title : t("loadEulogyFailed");
+      const message = err instanceof ApiError ? apiErrorTitle(err, tErrors("unreachable")) : t("loadEulogyFailed");
       setExpanded((prev) => ({ ...prev, [id]: { loading: false, error: message, data: null } }));
     }
   };

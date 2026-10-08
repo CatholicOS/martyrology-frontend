@@ -452,5 +452,8 @@
       "early": "Die Mondtafel gilt ab 1583, dem ersten vollen Jahr des gregorianischen Kalenders.",
       "none": "Das Buch kündigt für dieses Datum keinen Mond an."
     }
+  },
+  "Errors": {
+    "unreachable": "API nicht erreichbar"
   }
 }

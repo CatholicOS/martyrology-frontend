@@ -452,5 +452,8 @@
       "early": "La table lunaire s’applique à partir de 1583, première année complète du calendrier grégorien.",
       "none": "Le livre n’annonce aucune lune pour cette date."
     }
+  },
+  "Errors": {
+    "unreachable": "API injoignable"
   }
 }

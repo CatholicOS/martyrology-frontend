@@ -452,5 +452,8 @@
       "early": "A tábua lunar vale a partir de 1583, o primeiro ano completo do calendário gregoriano.",
       "none": "O livro não anuncia nenhuma lua para esta data."
     }
+  },
+  "Errors": {
+    "unreachable": "API inacessível"
   }
 }

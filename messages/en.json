@@ -452,5 +452,8 @@
       "early": "The lunar table applies from 1583, the first full year of the Gregorian calendar.",
       "none": "The book announces no moon for this date."
     }
+  },
+  "Errors": {
+    "unreachable": "API unreachable"
   }
 }

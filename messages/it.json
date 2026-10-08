@@ -452,5 +452,8 @@
       "early": "La tavola lunare vale dal 1583, primo anno completo del calendario gregoriano.",
       "none": "Per questa data il libro non annuncia la luna."
     }
+  },
+  "Errors": {
+    "unreachable": "API non raggiungibile"
   }
 }
