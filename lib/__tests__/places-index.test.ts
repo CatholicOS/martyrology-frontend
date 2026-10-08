@@ -93,6 +93,32 @@ describe("placesIndex", () => {
     expect(avila.printed).toBeNull();
   });
 
+  it("files a heading with a stroke letter under the letter the sort puts it with", () => {
+    const strokes: PlacesSnapshot = {
+      places: {
+        Q10: { label: "Dinan", country: "FR", coords: null },
+        Q11: { label: "Đồng Hới", country: "VN", coords: null },
+        Q12: { label: "Łódź", country: "PL", coords: null },
+        Q13: { label: "Ærø", country: "DK", coords: null },
+        Q14: { label: "Dire Dawa", country: "ET", coords: null },
+      },
+      eulogies: {
+        "mr:0101-a": { place: "Q10", la: "A", typology: null },
+        "mr:0101-b": { place: "Q11", la: "B", typology: null },
+        "mr:0101-c": { place: "Q12", la: "C", typology: null },
+        "mr:0101-d": { place: "Q13", la: "D", typology: null },
+        "mr:0101-e": { place: "Q14", la: "E", typology: null },
+      },
+    };
+    const cats = ["a", "b", "c", "d", "e"].map((x) => cat(`mr:0101-${x}`, x, "01-01"));
+    const { letters } = placesIndex(cats, strokes, OLD, "en");
+    expect(letters.map((l) => [l.letter, l.places.map((p) => p.label)])).toEqual([
+      ["A", ["Ærø"]],
+      ["D", ["Dinan", "Dire Dawa", "Đồng Hới"]], // Đ sorts as D: "Dong" after "Dire"
+      ["L", ["Łódź"]],
+    ]);
+  });
+
   it("is empty for an edition that prints nothing", () => {
     expect(placesIndex([cat("mr:0109-absent", "Sanctus Absens", "01-09", 1, false)], snap, OLD, "en")).toEqual({
       letters: [], placed: 0, printed: 0,

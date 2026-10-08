@@ -64,19 +64,23 @@ export default function PlacesIndex({ edition, title, index }: { edition: string
                       {c && <span className="font-normal text-slate-600"> ({c})</span>}
                     </h3>
                     <ul className="ml-4 text-sm">
-                      {p.lines.map((line) => (
-                        <li key={line.id}>
-                          <Link href={`${dayPath(edition, line.day)}#${line.id}`} className="underline">
-                            {line.day.dd} {interfaceMonth(format, line.day.mm)}
-                          </Link>
-                          {" · "}
-                          {line.subject}
-                          {line.printed && <>{" · "}<i>{line.printed}</i></>}
-                          {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
-                            <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
-                          )}
-                        </li>
-                      ))}
+                      {p.lines.map((line) => {
+                        const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
+                        return (
+                          <li key={line.id}>
+                            {/* Named with its eulogy too: the page has thousands of day links. */}
+                            <Link href={`${dayPath(edition, line.day)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
+                              {day}
+                            </Link>
+                            {" · "}
+                            {line.subject}
+                            {line.printed && <>{" · "}<i>{line.printed}</i></>}
+                            {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
+                              <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 );

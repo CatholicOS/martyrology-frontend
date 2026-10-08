@@ -42,23 +42,31 @@ describe("PlacesIndex", () => {
     renderIndex();
     const rome = screen.getByRole("heading", { level: 3, name: /Rome/ });
     expect(rome).toHaveTextContent("Rome (Italy)");
-    const day = screen.getByRole("link", { name: "1 January" });
+    const day = screen.getByRole("link", { name: "1 January · Sanctus Almachius" });
     expect(day).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/01/01#mr:0101-almachius");
     expect(day.closest("li")).toHaveTextContent("Sanctus Almachius");
+  });
+
+  it("names each day link with its eulogy, so a list of links tells them apart", () => {
+    renderIndex();
+    const days = screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.includes("#mr:"));
+    expect(days.map((a) => a.getAttribute("aria-label"))).toEqual([
+      "3 January · Sanctus Thomas", "1 January · Sanctus Almachius", "2 January · Sancta Cæcilia", "4 January · Sanctus Novus",
+    ]);
   });
 
   it("shows the printed form where there is one, and the typology unless dies natalis", () => {
     renderIndex();
     expect(screen.getByText("Londínii").tagName).toBe("I");
-    const thomas = screen.getByRole("link", { name: "3 January" }).closest("li")!;
+    const thomas = screen.getByRole("link", { name: "3 January · Sanctus Thomas" }).closest("li")!;
     expect(thomas).not.toHaveTextContent("Dies natalis");
-    const caecilia = screen.getByRole("link", { name: "2 January" }).closest("li")!;
+    const caecilia = screen.getByRole("link", { name: "2 January · Sancta Cæcilia" }).closest("li")!;
     expect(caecilia).toHaveTextContent("Depositio");
   });
 
   it("shows no label for a typology the messages don't know", () => {
     renderIndex();
-    const novus = screen.getByRole("link", { name: "4 January" }).closest("li")!;
+    const novus = screen.getByRole("link", { name: "4 January · Sanctus Novus" }).closest("li")!;
     expect(novus).toHaveTextContent("Sanctus Novus");
     expect(novus).not.toHaveTextContent("nova_typologia");
   });

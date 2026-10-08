@@ -53,6 +53,18 @@ export function headingLetter(label: string): string {
   return first && FILING.test(first) ? first.toUpperCase() : "#";
 }
 
+const AZ = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+
+/**
+ * The letter a heading is filed under, by the same collator that sorts the headings: a Latin letter
+ * the fold leaves whole (Đ, Ł, Æ) goes under the A–Z letter it sorts with (D, L, A).
+ */
+function filingLetter(label: string, collator: Intl.Collator): string {
+  const letter = headingLetter(label);
+  if (letter === "#" || AZ.includes(letter) || !/\p{Script=Latin}/u.test(letter)) return letter;
+  return [...AZ].reverse().find((l) => collator.compare(letter, l) >= 0) ?? letter;
+}
+
 /**
  * An edition's index of places: the eulogies it prints (its catalog's `present` entries with a
  * printed day) that have a place, grouped by place, the places sorted in the interface language and
@@ -92,7 +104,7 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
   const byLetter = new Map<string, IndexLetter>();
   for (const p of places) {
     p.lines.sort((a, b) => a.day.mm - b.day.mm || a.day.dd - b.day.dd || (a.entry ?? -Infinity) - (b.entry ?? -Infinity));
-    const letter = headingLetter(p.label);
+    const letter = filingLetter(p.label, collator);
     let l = byLetter.get(letter);
     if (!l) {
       l = { letter, places: [] };
