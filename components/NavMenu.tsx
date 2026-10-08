@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 
 /**
@@ -12,15 +13,17 @@ import { usePathname } from "@/i18n/navigation";
  */
 export function NavMenu({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   // A navigation to another page closes the panel, including a return to the page it was
   // opened on: reset while rendering, when the pathname changes (React's pattern for state
   // that follows a value; no effect needed). Query-only navigations are covered elsewhere:
   // from the page they need a click outside the panel, which closes it; Back/Forward fire
   // popstate (below).
-  const [shownFor, setShownFor] = useState(pathname);
-  if (pathname !== shownFor) {
-    setShownFor(pathname);
+  // The pathname carries no locale, so a language switch on the same page closes the panel too.
+  const [shownFor, setShownFor] = useState({ pathname, locale });
+  if (pathname !== shownFor.pathname || locale !== shownFor.locale) {
+    setShownFor({ pathname, locale });
     setOpen(false);
   }
   const panelId = useId();

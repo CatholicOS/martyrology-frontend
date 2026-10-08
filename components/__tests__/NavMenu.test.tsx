@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { fireEvent, render, screen, MESSAGES } from "@/test/intl";
+import { render as rawRender } from "@testing-library/react";
+import type { Locale } from "@/i18n/routing";
 
 const { pathnameMock } = vi.hoisted(() => ({ pathnameMock: vi.fn(() => "/") }));
 vi.mock("@/i18n/navigation", () => ({ usePathname: pathnameMock, Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
@@ -99,5 +102,20 @@ describe("NavMenu", () => {
     fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
     fireEvent(window, new PopStateEvent("popstate"));
     expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("closes when the language changes, though the locale-less pathname does not", () => {
+    const tree = (locale: Locale) => (
+      <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone="UTC">
+        <NavMenu>
+          <button type="button">Sign in</button>
+        </NavMenu>
+      </NextIntlClientProvider>
+    );
+    const { rerender } = rawRender(tree("en"));
+    fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+    expect(screen.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
+    rerender(tree("de"));
+    expect(screen.getByRole("button", { name: /menu/i })).toHaveAttribute("aria-expanded", "false");
   });
 });
