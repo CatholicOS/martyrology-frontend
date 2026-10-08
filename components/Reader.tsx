@@ -11,7 +11,8 @@ import styles from "@/components/page.module.css";
 import { getAccess, getCatalog, getEditions } from "@/lib/api";
 import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, shelfState, sortForShelf, titleCase } from "@/lib/editions";
-import { subjectOptions, type SubjectOption } from "@/lib/subjects";
+import { getSnapshot } from "@/lib/snapshot";
+import { subjectFor, subjectOptions, type SubjectOption } from "@/lib/subjects";
 import type { AccessMap, EditionOut } from "@/lib/types";
 import { useDay } from "@/lib/use-day";
 import { useShowIds } from "@/lib/use-show-ids";
@@ -212,7 +213,7 @@ export default function Reader({
     let cancelled = false;
     getCatalog(edition, lang).then(
       (catalog) => {
-        const options = subjectOptions(catalog, format);
+        const options = subjectOptions(catalog, format, (id, own) => subjectFor(getSnapshot()[id]?.subject, locale, own));
         subjectsCache.set(subjectsKey, options);
         if (!cancelled) setSubjects({ key: subjectsKey, options });
       },
@@ -221,7 +222,7 @@ export default function Reader({
     return () => {
       cancelled = true;
     };
-  }, [subjectsKey, edition, lang, format]);
+  }, [subjectsKey, edition, lang, format, locale]);
 
   const title = current ? `${titleCase(editionTitle(current))} ${current.year}` : edition;
   const books = useMemo(() => {

@@ -4,6 +4,8 @@ import { render, screen, fireEvent, cleanup, waitFor } from "@/test/intl";
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
 vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ push }), Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
 vi.mock("next-auth/react", () => ({ signIn: signInMock }));
+// The subject search labels follow the interface language from the registry; these tests use the catalog's own subjects.
+vi.mock("@/lib/snapshot", () => ({ getSnapshot: () => ({}) }));
 vi.mock("@/lib/api", () => {
   class ApiError extends Error {
     constructor(public status: number, public title: string) { super(title); }
