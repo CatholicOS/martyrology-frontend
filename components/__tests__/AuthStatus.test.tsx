@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen } from "@/test/intl";
 
-const { authMock } = vi.hoisted(() => ({ authMock: vi.fn() }));
-vi.mock("@/auth", () => ({ auth: authMock, signIn: vi.fn(), signOut: vi.fn() }));
+const { authMock, signInMock } = vi.hoisted(() => ({ authMock: vi.fn(), signInMock: vi.fn() }));
+vi.mock("@/auth", () => ({ auth: authMock, signIn: signInMock, signOut: vi.fn() }));
 
 import { AuthStatus } from "@/components/AuthStatus";
 
@@ -21,5 +21,38 @@ describe("AuthStatus", () => {
     expect(screen.getByText("Sign in")).toBeInTheDocument();
     expect(warn).toHaveBeenCalledTimes(1);
     expect(String(warn.mock.calls[0])).toContain("decryption failed");
+  });
+
+  it("sign-in form carries a redirectTo field that starts at the locale home", async () => {
+    authMock.mockResolvedValue(null);
+    const { container } = render(await AuthStatus());
+    const input = container.querySelector("input[name=redirectTo]") as HTMLInputElement;
+    expect(input).not.toBeNull();
+    expect(input.value.startsWith("/")).toBe(true);
+  });
+
+  it("the sign-in action signs in to the validated redirectTo, else the locale home", async () => {
+    authMock.mockResolvedValue(null);
+    const el = await AuthStatus();
+    const { container } = render(el);
+    const form = container.querySelector("form") as HTMLFormElement;
+    void form;
+    // Find the server action on the element tree.
+    const find = (n: unknown): ((fd: FormData) => Promise<void>) | undefined => {
+      if (!n || typeof n !== "object") return undefined;
+      const props = (n as { props?: Record<string, unknown> }).props ?? {};
+      if (n && (props as { action?: unknown }).action && typeof props.action === "function") return props.action as never;
+      for (const c of [props.onSignIn, props.children].flat()) { const r = find(c); if (r) return r; }
+      return undefined;
+    };
+    const action = find(el)!;
+    const fd = new FormData();
+    fd.set("redirectTo", "/it/docs?x=1");
+    await action(fd);
+    expect(signInMock).toHaveBeenLastCalledWith("zitadel", { redirectTo: "/it/docs?x=1" });
+    const bad = new FormData();
+    bad.set("redirectTo", "https://evil.example/");
+    await action(bad);
+    expect(signInMock).toHaveBeenLastCalledWith("zitadel", { redirectTo: "/en" });
   });
 });
