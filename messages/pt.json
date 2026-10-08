@@ -12,7 +12,7 @@
   "Header": {
     "brand": "Martirológio",
     "language": "Idioma",
-    "docs": "Guia",
+    "docs": "Documentação",
     "map": "Mapa",
     "api": "API",
     "compare": "Comparar",
@@ -74,7 +74,7 @@
     "signOut": "Sair",
     "signOutFailed": "Não foi possível sair; tente novamente.",
     "sessionExpired": "Sessão expirada — entre novamente",
-    "signedInAs": "Sessão iniciada como {email}",
+    "signedInAs": "Conectado como {email}",
     "lockedTitle": "{title} é uma edição protegida por direitos autorais.",
     "lockedNoAccess": "Sua conta não tem acesso a esta edição.",
     "lockedSignInPrompt": "Entre para abrir esta edição.",
@@ -251,7 +251,7 @@
     "columns": {
       "id": "ID",
       "subject": "Nome",
-      "status": "Estado",
+      "status": "Status",
       "country": "País"
     },
     "crossDay": "outro dia: {day}",
