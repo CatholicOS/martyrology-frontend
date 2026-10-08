@@ -8,8 +8,8 @@ describe("DraftNotice", () => {
   it("says the page is a draft translation and links to the contributing page in the reader's language", () => {
     render(<DraftNotice />, { locale: "fr" });
     const note = screen.getByRole("note");
-    expect(note).toHaveTextContent(/draft translation awaiting review by native speakers/);
-    expect(screen.getByRole("link", { name: "Help review it" })).toHaveAttribute("href", "/fr/docs/contributing");
+    expect(note).toHaveTextContent(/traduction provisoire en attente de relecture par des locuteurs natifs/);
+    expect(screen.getByRole("link", { name: "Aidez à la relire" })).toHaveAttribute("href", "/fr/docs/contributing");
   });
 
   it("is due on the fr/de/es/pt docs and not on the reviewed en/it ones", () => {

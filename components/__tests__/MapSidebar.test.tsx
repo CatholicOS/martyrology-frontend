@@ -60,7 +60,7 @@ describe("MapSidebar", () => {
 
   it("names the countries in the reader's language", () => {
     setup({}, "it");
-    const group = screen.getByRole("group", { name: "Country" });
+    const group = screen.getByRole("group", { name: "Paese" });
     expect(within(group).getAllByRole("checkbox").map((b) => b.closest("label")!.textContent)).toEqual(["Germania (1)", "Italia (2)"]);
   });
 
