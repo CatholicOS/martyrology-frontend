@@ -33,4 +33,12 @@ describe("SiteHeader", () => {
     render(await SiteHeader());
     expect(screen.getByRole("link", { name: "Map" })).toHaveAttribute("href", "/map");
   });
+
+  it("links the docs for everyone, before the map", async () => {
+    viewerMock.mockResolvedValue({ signedIn: false, curator: false });
+    render(await SiteHeader());
+    const links = screen.getAllByRole("link").map((a) => a.textContent);
+    expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs/en");
+    expect(links.indexOf("Docs")).toBe(links.indexOf("Map") - 1);
+  });
 });

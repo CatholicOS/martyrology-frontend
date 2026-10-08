@@ -12,6 +12,7 @@ export async function SiteHeader() {
           Martyrology
         </Link>
         <NavMenu>
+          <Link href="/docs/en">Docs</Link>
           <Link href="/map">Map</Link>
           <Link href="/scalar">API</Link>
           {viewer.curator && <Link href="/compare">Compare</Link>}

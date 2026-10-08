@@ -1,0 +1,22 @@
+/* A documentation page: readable measure, serif headings, the editions' text face for quotations. */
+.article { max-width: 42rem; line-height: 1.65; }
+.article h1 { font-family: var(--font-text), Georgia, serif; font-size: 1.9rem; line-height: 1.25; margin-bottom: 1rem; }
+.article h2 { font-family: var(--font-text), Georgia, serif; font-size: 1.4rem; margin: 2rem 0 0.75rem; scroll-margin-top: 1rem; }
+.article h3 { font-weight: 600; margin: 1.5rem 0 0.5rem; scroll-margin-top: 1rem; }
+.article h2 > a, .article h3 > a { color: inherit; text-decoration: none; }
+.article h2 > a:hover, .article h3 > a:hover { text-decoration: underline; }
+.article p, .article ul, .article ol, .article table { margin: 0.75rem 0; }
+.article ul { list-style: disc; padding-left: 1.5rem; }
+.article ol { list-style: decimal; padding-left: 1.5rem; }
+.article li + li { margin-top: 0.3rem; }
+.article a:not(h2 > a, h3 > a) { text-decoration: underline; }
+.article blockquote {
+  margin: 1rem 0; padding-left: 1rem; border-left: 3px solid rgba(163, 22, 27, 0.35);
+  font-family: var(--font-text), Georgia, serif; font-size: 1.05rem;
+}
+.article table { border-collapse: collapse; font-size: 0.9rem; }
+.article th, .article td { border: 1px solid rgb(203 213 225); padding: 0.25rem 0.5rem; text-align: left; }
+.article code { font-size: 0.85em; }
+/* A rubric, as the editions print it: red, a size below the text, upright. */
+.rubric { color: #a3161b; font-size: 0.85em; font-style: normal; }
+.banner { border-left: 3px solid #a3161b; padding: 0.5rem 0.75rem; background: rgba(163, 22, 27, 0.06); }

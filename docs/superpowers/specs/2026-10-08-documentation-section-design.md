@@ -117,7 +117,8 @@ description.
 ### Content
 
 - `content/docs/{en,it}/<slug>.mdx`, one file per page per language, plus `index.mdx`.
-- Each file exports `metadata` (`title`, `description`), used by `generateMetadata`.
+- Titles and descriptions live in the registry (`lib/docs.ts`), which `generateMetadata`, the sidebar and the index read;
+  the MDX files hold only the text.
 - MDX via `@next/mdx` (`@mdx-js/loader`, `@mdx-js/react`, `@types/mdx`); `next.config.ts` wraps the
   config with `createMDX()` and keeps `output: "standalone"` and the tracing includes. MDX is
   compiled at build time, so nothing extra is traced into the bundle.
@@ -142,9 +143,9 @@ read it.
 ### Routes
 
 - `app/docs/page.tsx` — redirects to `/docs/en`.
-- `app/docs/[lang]/[[...page]]/page.tsx` — imports `@/content/docs/${lang}/${slug ?? "index"}.mdx`;
-  `generateStaticParams` from the registry; `dynamicParams = false`, so an unknown language or page
-  is a 404.
+- `app/docs/[lang]/page.tsx` — the index: `@/content/docs/${lang}/index.mdx` and the parts from the registry.
+- `app/docs/[lang]/[page]/page.tsx` — imports `@/content/docs/${lang}/${page}.mdx`; `generateStaticParams` from
+  the registry; `dynamicParams = false`, so an unknown language or page is a 404.
 - `app/docs/[lang]/layout.tsx` — `DocsLayout`.
 
 ### Components

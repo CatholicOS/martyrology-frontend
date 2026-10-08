@@ -17,7 +17,11 @@
     "import-changeset": "node scripts/import-changeset.mjs"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "~16.3.6",
     "@scalar/api-reference-react": "^0.9.78",
+    "@types/mdx": "^2.0.14",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "next": "^16.3.6",
