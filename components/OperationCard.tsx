@@ -235,7 +235,7 @@ function IdOperationCard({ op, decision, onDecide, locale, baseEdition }: Props)
           )}
           {op.op === "delete" && (
             <label className="flex items-center gap-2 text-xs">
-              reason
+              {t("operation.reason")}
               <input
                 className="flex-1 rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
                 value={reasonInput}

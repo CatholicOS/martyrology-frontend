@@ -65,4 +65,13 @@ describe("CompareDay", () => {
     render(<CompareDay group={group} />);
     expect(screen.getByText(/cross-day: 12-29/)).toBeInTheDocument();
   });
+
+  it("shows each row's status as words (both, A-only, B-only)", () => {
+    const g = { ...group, rows: [...group.rows, { ...group.rows[0], id: "mr:0101-b", status: "b-only" as const }] };
+    render(<CompareDay group={g} />);
+    const cells = screen.getAllByRole("cell").map((c) => c.textContent);
+    expect(cells).toContain("both");
+    expect(cells).toContain("A-only");
+    expect(cells).toContain("B-only");
+  });
 });
