@@ -452,5 +452,8 @@
       "early": "La tabla lunar rige desde 1583, el primer año completo del calendario gregoriano.",
       "none": "El libro no anuncia ninguna luna para esta fecha."
     }
+  },
+  "Errors": {
+    "unreachable": "API inaccesible"
   }
 }
