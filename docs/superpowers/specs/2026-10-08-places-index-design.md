@@ -72,15 +72,15 @@ the coverage note states.
   dropped). The map skips them.
 - The script reports how many places have no label in any language, so they can be fixed in crmedr.
 
-### Server (`lib/places-index.ts`)
+### Server
 
-- `fetchCatalog(edition, lang)`: the API's catalog on the server, from `API_BASE` like
-  `fetchEditions` in `lib/server-editions.ts`, revalidated hourly. A failed fetch throws and is
-  not cached.
-- `placesIndex(catalog, snapshot, edition, locale)`: pure. Keeps the eulogies the edition prints
-  (`present`) that have a place; groups them by QID; picks the heading label for `locale`; sorts
-  headings and lines; groups headings by letter. Returns `{ letters: { letter, places: { qid,
-  label, country, lines }[] }[], placed, printed }`.
+- `lib/server-editions.ts`, beside `fetchEditions`: `editionInfo(id)`, the edition as the API
+  describes it; and `fetchCatalog(edition, lang)`, the API's catalog on the server, from `API_BASE`,
+  revalidated hourly. A failed fetch throws.
+- `lib/places-index.ts`, pure: `placesIndex(catalog, snapshot, edition, locale)` keeps the eulogies
+  the edition prints (`present`) that have a place; groups them by QID; picks the heading label for
+  `locale` (`placeLabel`); sorts headings and lines; files headings by letter (`headingLetter`).
+  Returns `{ letters: { letter, places: { qid, label, country, lines }[] }[], placed, printed }`.
 - **Printed form shown:** `la` for `martyrologium_romanum_2004`, `it` for
   `martyrologium_romanum_2004_it_IT`, none for any other edition: their text may differ from 2004,
   and the 2004 form would mislead there.
