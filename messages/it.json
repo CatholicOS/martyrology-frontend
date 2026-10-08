@@ -86,9 +86,9 @@
     "month": "Mese",
     "day": "Giorno",
     "today": "Oggi",
-    "findLabel": "Trova un elogio per nome",
-    "findPlaceholder": "Cerca un nome…",
-    "findLoading": "Caricamento dei nomi…",
+    "findLabel": "Trova un elogio per soggetto",
+    "findPlaceholder": "Cerca un soggetto…",
+    "findLoading": "Caricamento dei soggetti…",
     "switchBook": "Cambia libro",
     "compareWith": "Confronta con",
     "compareWithPlaceholder": "Confronta con…",
@@ -172,7 +172,7 @@
       "catalogFailed": "Impossibile caricare gli elogi di questa edizione."
     },
     "edition": "Edizione",
-    "searchLabel": "Cerca nome o ID",
+    "searchLabel": "Cerca soggetto o ID",
     "searchPlaceholder": "Sanctus…, mr:0101-…, Roma",
     "typologyLegend": "Tipologia",
     "countryLegend": "Paese",
@@ -250,7 +250,7 @@
     "counts": "{both} in entrambe · {aOnly} solo A · {bOnly} solo B · <red>{red} rossi</red> · <green>{green} verdi</green>",
     "columns": {
       "id": "ID",
-      "subject": "Nome",
+      "subject": "Soggetto",
       "status": "Stato",
       "country": "Paese"
     },
