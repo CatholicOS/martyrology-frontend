@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@/test/intl";
 import MapSidebar from "@/components/MapSidebar";
 import type { MapEntry, MapFilters } from "@/lib/map-data";
 import type { EditionOut } from "@/lib/types";

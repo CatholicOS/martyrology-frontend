@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
 import DayPage, { Conclusio, DayTitle, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";
@@ -9,7 +10,7 @@ import Eulogy from "@/components/Eulogy";
 import styles from "@/components/page.module.css";
 import PrintedFootnotes from "@/components/PrintedFootnotes";
 import { dateHeading, dayPath, monthName, type Day, type Lang } from "@/lib/calendar";
-import { editionLang, editionTitle, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
+import { editionLang, editionTitle, type BookshelfT, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
 import { pageFootnotes } from "@/lib/footnotes";
 import { pageNotes } from "@/lib/notes";
 import { buildRows, gapNote, type GapNote, type Row } from "@/lib/parallel";
@@ -29,7 +30,7 @@ interface SideInfo {
   name: string;
 }
 
-function sideInfo(id: string, otherId: string, editions: EditionOut[]): SideInfo {
+function sideInfo(t: BookshelfT, id: string, otherId: string, editions: EditionOut[]): SideInfo {
   const meta = editions.find((e) => e.edition_id === id);
   const other = editions.find((e) => e.edition_id === otherId);
   const title = meta ? `${titleCase(editionTitle(meta))} ${meta.year}` : id;
@@ -38,8 +39,8 @@ function sideInfo(id: string, otherId: string, editions: EditionOut[]): SideInfo
     meta,
     lang: meta ? editionLang(meta) : "la",
     title,
-    caption: meta ? `${title} · ${languageLabel(meta)}` : id,
-    name: meta && other ? shortName(meta, other) : id,
+    caption: meta ? `${title} · ${languageLabel(t, meta)}` : id,
+    name: meta && other ? shortName(t, meta, other) : id,
   };
 }
 
@@ -86,9 +87,10 @@ export default function Spread({
   /** The page-turn animation to play once both days have settled. */
   turn: "next" | "prev" | null;
 }) {
+  const tShelf = useTranslations("Bookshelf");
   const day = useMemo<Day>(() => ({ mm, dd }), [mm, dd]);
-  const A = sideInfo(a, b, editions);
-  const B = sideInfo(b, a, editions);
+  const A = sideInfo(tShelf, a, b, editions);
+  const B = sideInfo(tShelf, b, a, editions);
   const dayA = useDay(a, mm, dd);
   const dayB = useDay(b, mm, dd);
   const sa = dayA.state;
@@ -123,7 +125,7 @@ export default function Spread({
   const unaligned = [A, B].filter((s) => s.meta?.aligned === false);
   const notice = unaligned.map((s) => (
     <p key={s.id} className="mb-3 text-center text-sm text-slate-600 dark:text-slate-400">
-      The {yearAndLanguage(s.meta!)} edition is not yet aligned, so its eulogies are not matched.
+      The {yearAndLanguage(tShelf, s.meta!)} edition is not yet aligned, so its eulogies are not matched.
     </p>
   ));
 

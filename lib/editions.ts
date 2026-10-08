@@ -1,5 +1,9 @@
 import type { AccessMap, EditionOut } from "@/lib/types";
+import type { useTranslations } from "next-intl";
 import type { Lang } from "@/lib/calendar";
+
+/** The translator of the `Bookshelf` namespace, from `useTranslations` or `getTranslations`. */
+export type BookshelfT = ReturnType<typeof useTranslations<"Bookshelf">>;
 
 export type ShelfState = "open" | "locked" | "unavailable";
 
@@ -8,8 +12,6 @@ const TITLES: Record<Lang, string> = {
   it: "MARTIROLOGIO ROMANO",
   en: "ROMAN MARTYROLOGY",
 };
-
-const LABELS: Record<Lang, string> = { la: "Latin", it: "Italiano (CEI)", en: "English" };
 
 export function editionLang(e: EditionOut): Lang {
   if (e.locale.startsWith("it")) return "it";
@@ -21,8 +23,8 @@ export function editionTitle(e: EditionOut): string {
   return TITLES[editionLang(e)];
 }
 
-export function languageLabel(e: EditionOut): string {
-  return LABELS[editionLang(e)];
+export function languageLabel(t: BookshelfT, e: EditionOut): string {
+  return t(`language.${editionLang(e)}`);
 }
 
 function natureRank(e: EditionOut): number {
@@ -30,8 +32,9 @@ function natureRank(e: EditionOut): number {
   return e.nature === "editio_vernacula" ? 1 : 2;
 }
 
-/** "editio_typica_recognita" → "Editio typica recognita". */
-export function natureLabel(nature: string): string {
+/** "editio_typica_recognita" → "Editio typica recognita"; a nature without a message is spelled out from its id. */
+export function natureLabel(t: BookshelfT, nature: string): string {
+  if (t.has(`nature.${nature}` as "nature.translation")) return t(`nature.${nature}` as "nature.translation");
   const s = nature.replace(/_/g, " ");
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -63,14 +66,12 @@ export function titleCase(s: string): string {
   return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-const LANGUAGE_NAMES: Record<Lang, string> = { la: "Latin", it: "Italian", en: "English" };
-
 /** "1914 English", for notices. */
-export function yearAndLanguage(e: EditionOut): string {
-  return `${e.year} ${LANGUAGE_NAMES[editionLang(e)]}`;
+export function yearAndLanguage(t: BookshelfT, e: EditionOut): string {
+  return t("yearAndLanguage", { year: String(e.year), language: t(`languageName.${editionLang(e)}`) });
 }
 
 /** How a note names `e` beside `other`: by its year, or by year and language when the two share a year. */
-export function shortName(e: EditionOut, other: EditionOut): string {
-  return e.year === other.year ? yearAndLanguage(e) : String(e.year);
+export function shortName(t: BookshelfT, e: EditionOut, other: EditionOut): string {
+  return e.year === other.year ? yearAndLanguage(t, e) : String(e.year);
 }

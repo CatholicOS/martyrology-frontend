@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 
 /**
@@ -14,6 +14,7 @@ import { usePathname } from "@/i18n/navigation";
 export function NavMenu({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const locale = useLocale();
+  const t = useTranslations("Header");
   const [open, setOpen] = useState(false);
   // A navigation to another page closes the panel, including a return to the page it was
   // opened on: reset while rendering, when the pathname changes (React's pattern for state
@@ -60,7 +61,7 @@ export function NavMenu({ children }: { children: React.ReactNode }) {
         className="rounded p-2 text-slate-700 hover:bg-slate-100 sm:hidden dark:text-slate-300 dark:hover:bg-slate-800"
         aria-expanded={open}
         aria-controls={panelId}
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? t("closeMenu") : t("openMenu")}
         onClick={() => setOpen((o) => !o)}
       >
         <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -69,7 +70,7 @@ export function NavMenu({ children }: { children: React.ReactNode }) {
       </button>
       <nav
         id={panelId}
-        aria-label="Main"
+        aria-label={t("mainNav")}
         // Following a link closes the panel at once, before the navigation completes.
         onClick={(e) => {
           if ((e.target as HTMLElement).closest("a")) setOpen(false);

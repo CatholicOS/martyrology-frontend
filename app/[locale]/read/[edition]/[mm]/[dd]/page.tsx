@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { redirect } from "@/i18n/navigation";
@@ -25,13 +25,14 @@ async function withParam(searchParams?: SearchParams): Promise<string | null> {
 const named = (meta: { title: string; year: number } | null, id: string) => (meta ? `${meta.title} ${meta.year}` : id);
 
 export async function generateMetadata({ params, searchParams }: { params: Params; searchParams?: SearchParams }): Promise<Metadata> {
-  const { edition, mm, dd } = await params;
+  const { locale, edition, mm, dd } = await params;
   const day = parseDay(mm, dd);
   if (!day) return { title: "Martyrologium" };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Metadata" });
   const w = await withParam(searchParams);
   const books = [named(await editionMeta(edition), edition)];
   if (w && w !== edition) books.push(named(await editionMeta(w), w));
-  return { title: `${day.dd} ${monthName(day.mm, "en")} — ${books.join(" | ")}` };
+  return { title: t("dayTitle", { day: `${day.dd} ${monthName(day.mm, "en")}`, books: books.join(" | ") }) };
 }
 
 export default async function DayRoute({ params, searchParams }: { params: Params; searchParams?: SearchParams }) {

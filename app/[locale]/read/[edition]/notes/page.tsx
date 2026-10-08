@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -8,9 +8,10 @@ import { editionExists, editionMeta } from "@/lib/server-editions";
 type Params = Promise<{ locale: string; edition: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { edition } = await params;
+  const { locale, edition } = await params;
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Metadata" });
   const meta = await editionMeta(edition);
-  return { title: `${meta ? `${meta.title} ${meta.year}` : edition}: notes, misprints and errata` };
+  return { title: t("notesTitle", { edition: meta ? `${meta.title} ${meta.year}` : edition }) };
 }
 
 /** One edition's curators' notes, verified misprints and printed errata, with their eulogies. */

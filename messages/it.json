@@ -1,7 +1,83 @@
 {
   "Metadata": {
     "bookTitle": "Roman Martyrology",
-    "siteDescription": "The editions of the Roman Martyrology, read day by day."
+    "siteDescription": "The editions of the Roman Martyrology, read day by day.",
+    "titleWithBook": "{title} — {book}",
+    "map": "Map",
+    "apiReferenceTitle": "API reference · {book}",
+    "apiReferenceDescription": "The Roman Martyrology API: its endpoints, parameters and responses, with requests to try.",
+    "dayTitle": "{day} — {books}",
+    "notesTitle": "{edition}: notes, misprints and errata"
   },
-  "Header": { "brand": "Martyrology", "language": "Language" }
+  "Header": {
+    "brand": "Martyrology",
+    "language": "Language",
+    "docs": "Docs",
+    "map": "Map",
+    "api": "API",
+    "compare": "Compare",
+    "review": "Review",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main"
+  },
+  "Footer": {
+    "copyright": "© {year} <link>Catholic Digital Commons Foundation</link>. All rights reserved.",
+    "rights": "The texts of each edition belong to their rights holders, named on the back of each book.",
+    "apiVersion": "API v{version}",
+    "crmedrCommit": "CRMEDR {commit}"
+  },
+  "Home": {
+    "lead": "The editions of the Roman Martyrology, newest to oldest. Open a book to read today's page.",
+    "openingToday": "Opening today's page…"
+  },
+  "Bookshelf": {
+    "shelfLabel": "Editions of the Roman Martyrology",
+    "loadFailed": "The editions could not be loaded.",
+    "retry": "Retry",
+    "editionName": "{title} {year}",
+    "bookName": "{title} {year}, {label}",
+    "bookNameUnavailable": "{name} (not yet available)",
+    "bookNameLocked": "{name} (locked)",
+    "aboutBook": "About {name}",
+    "aboutEditionNamed": "About this edition: {name}",
+    "aboutEdition": "About this edition",
+    "notYetAvailable": "not yet available",
+    "natureYear": "{nature}, {year}",
+    "colophonSource": "Source",
+    "colophonImprint": "Imprint",
+    "colophonRights": "Rights",
+    "colophonIsbn": "ISBN",
+    "colophonNote": "Note",
+    "noSource": "No texts of this edition are attached yet.",
+    "yearAndLanguage": "{year} {language}",
+    "language": {
+      "la": "Latin",
+      "it": "Italiano (CEI)",
+      "en": "English"
+    },
+    "languageName": {
+      "la": "Latin",
+      "it": "Italian",
+      "en": "English"
+    },
+    "nature": {
+      "editio_typica": "Editio typica",
+      "editio_typica_altera": "Editio typica altera",
+      "editio_typica_recognita": "Editio typica recognita",
+      "editio_vernacula": "Editio vernacula",
+      "translation": "Translation"
+    }
+  },
+  "Auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signOutFailed": "Sign-out failed; try again.",
+    "sessionExpired": "Session expired — sign in again",
+    "signedInAs": "Signed in as {email}",
+    "lockedTitle": "{title} is a copyrighted edition.",
+    "lockedNoAccess": "Your account doesn't have access to this edition.",
+    "lockedSignInPrompt": "Sign in to open this edition.",
+    "close": "Close"
+  }
 }
