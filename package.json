@@ -25,7 +25,7 @@
     "@types/mdx": "^2.0.14",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
-    "next": "^16.3.6",
+    "next": "^16.4.0",
     "next-auth": "5.0.0-beta.32",
     "next-intl": "^4.14.9",
     "react": "^19.3.0",
