@@ -732,6 +732,13 @@
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Eugenii Papae Tertii' is Eugenius III."
     }
   },
+  "mr:0709-melania-et-maria-anna-margarita-ab-angelis": {
+    "editions": {
+      "martyrologium_romanum_2004": "Error: \"Melániæ et Maríæ Annæ Magdalénæ de Guilhermier\" makes two martyrs of one: Melania is the religious name of Maria Anna Magdalena de Guilhermier. The eulogy commemorates two Ursulines, she and Maria Anna Margarita ab Angelis de Rocher.",
+      "martyrologium_romanum_2004_it_IT": "Translation error: \"Melania Marianna, Maddalena de Guilhermier\" divides one name in two: Melania is the religious name of Marianna Maddalena de Guilhermier.",
+      "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Mélanie and Mary Anne Magdalen de Guilhermier\" makes two martyrs of one: Mélanie is the religious name of Mary Anne Magdalen de Guilhermier."
+    }
+  },
   "mr:0709-maria-a-iesu-crucifixo": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003."
