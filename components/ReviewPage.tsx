@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp } from "@/lib/changeset";
 import {
   decisionsFromChangeset,
@@ -28,6 +29,7 @@ function stripExt(name: string): string {
 }
 
 export default function ReviewPage() {
+  const t = useTranslations("Review");
   const [bundled, setBundled] = useState<string[]>([]);
   const [selectedBundled, setSelectedBundled] = useState("");
   const [cs, setCs] = useState<Changeset | null>(null);
@@ -70,7 +72,7 @@ export default function ReviewPage() {
     setError(null);
     try {
       const res = await fetch(`/api/changesets/${encodeURIComponent(filename)}`);
-      if (!res.ok) throw new Error(`Failed to fetch ${filename}`);
+      if (!res.ok) throw new Error(t("fetchFailed", { filename }));
       const text = await res.text();
       const parsed = parseChangeset(text);
       setCs(parsed);
@@ -79,7 +81,7 @@ export default function ReviewPage() {
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisions(decisionsKey(parsed)) });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load change-set");
+      setError(err instanceof Error ? err.message : t("loadFailed"));
       setCs(null);
     } finally {
       setLoading(false);
@@ -104,7 +106,7 @@ export default function ReviewPage() {
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisions(decisionsKey(parsed)) });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to parse change-set");
+      setError(err instanceof Error ? err.message : t("parseFailed"));
       setCs(null);
     } finally {
       setLoading(false);
@@ -156,21 +158,20 @@ export default function ReviewPage() {
 
   return (
     <main className="mx-auto max-w-5xl p-8">
-      <h1 className="text-2xl font-semibold">Review change-set</h1>
+      <h1 className="text-2xl font-semibold">{t("title")}</h1>
       <p className="mt-2 text-slate-600 dark:text-slate-400">
-        Adjudicate proposed operations against the live eulogy text. Decisions persist locally and export as a
-        decided change-set.
+        {t("intro")}
       </p>
 
       <div className="mt-6 flex flex-wrap items-end gap-4">
         <label className="flex items-center gap-2 text-sm">
-          Bundled change-set
+          {t("bundled")}
           <select
             className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
             value={selectedBundled}
             onChange={(e) => onSelectBundled(e.target.value)}
           >
-            <option value="">— select —</option>
+            <option value="">{t("select")}</option>
             {bundled.map((f) => (
               <option key={f} value={f}>
                 {f}
@@ -179,7 +180,7 @@ export default function ReviewPage() {
           </select>
         </label>
         <label className="flex items-center gap-2 text-sm">
-          Or upload a file
+          {t("upload")}
           <input
             type="file"
             accept="application/json"
@@ -191,7 +192,7 @@ export default function ReviewPage() {
           />
         </label>
         <label className="flex items-center gap-2 text-sm">
-          Locale
+          {t("locale")}
           <select
             className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
             value={locale}
@@ -210,19 +211,19 @@ export default function ReviewPage() {
         </div>
       )}
 
-      {loading && <p className="mt-4 text-slate-500 dark:text-slate-400">Loading…</p>}
+      {loading && <p className="mt-4 text-slate-500 dark:text-slate-400">{t("loading")}</p>}
 
       {cs && !loading && (
         <>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <label className="flex items-center gap-2 text-sm">
-              Class
+              {t("filters.class")}
               <select
                 className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
                 value={classFilter}
                 onChange={(e) => setClassFilter(e.target.value)}
               >
-                <option value="">All</option>
+                <option value="">{t("filters.all")}</option>
                 {classOptions.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -231,13 +232,13 @@ export default function ReviewPage() {
               </select>
             </label>
             <label className="flex items-center gap-2 text-sm">
-              Confidence
+              {t("filters.confidence")}
               <select
                 className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
                 value={confidenceFilter}
                 onChange={(e) => setConfidenceFilter(e.target.value)}
               >
-                <option value="">All</option>
+                <option value="">{t("filters.all")}</option>
                 {confidenceOptions.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -246,13 +247,13 @@ export default function ReviewPage() {
               </select>
             </label>
             <label className="flex items-center gap-2 text-sm">
-              Op
+              {t("filters.op")}
               <select
                 className="rounded border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
                 value={opFilter}
                 onChange={(e) => setOpFilter(e.target.value)}
               >
-                <option value="">All</option>
+                <option value="">{t("filters.all")}</option>
                 {opOptions.map((o) => (
                   <option key={o} value={o}>
                     {o}
@@ -261,7 +262,7 @@ export default function ReviewPage() {
               </select>
             </label>
             <label className="flex items-center gap-2 text-sm">
-              ID contains
+              {t("filters.idContains")}
               <input
                 className="w-40 rounded border border-slate-300 bg-white px-2 py-1 font-mono text-xs dark:border-slate-700 dark:bg-slate-900"
                 value={idFilter}
@@ -275,7 +276,7 @@ export default function ReviewPage() {
                 checked={undecidedOnly}
                 onChange={(e) => setUndecidedOnly(e.target.checked)}
               />
-              Undecided only
+              {t("filters.undecidedOnly")}
             </label>
           </div>
 
@@ -285,7 +286,7 @@ export default function ReviewPage() {
 
           <div className="mt-4">
             {filteredOps.length === 0 && (
-              <p className="text-slate-500 dark:text-slate-400">No operations match the current filters.</p>
+              <p className="text-slate-500 dark:text-slate-400">{t("noMatch")}</p>
             )}
             {filteredOps.slice(0, shown).map((op) => (
               <OperationCard
@@ -303,7 +304,7 @@ export default function ReviewPage() {
                 className="mt-2 rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
                 onClick={() => setPaging({ key: pageKey, shown: shown + PAGE_SIZE })}
               >
-                Show more ({filteredOps.length - shown} remaining)
+                {t("showMore", { count: filteredOps.length - shown })}
               </button>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@/test/intl";
 import CompareDay from "@/components/CompareDay";
 import type { CompareDayGroup } from "@/lib/compare";
 

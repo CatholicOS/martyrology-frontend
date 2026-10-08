@@ -232,5 +232,140 @@
       "confirmReject": "Confirm reject",
       "cancel": "Cancel"
     }
+  },
+  "Compare": {
+    "title": "Compare editions",
+    "intro": "Eulogies organized by physical day, aligned by canonical ID between two editions.",
+    "editionA": "Edition A",
+    "editionB": "Edition B",
+    "month": "Month",
+    "select": "— select —",
+    "allMonths": "All months",
+    "apiUnreachable": "API unreachable — is martyrology-api running on API_BASE?",
+    "loadEditionsFailed": "Failed to load editions",
+    "loadCatalogsFailed": "Failed to load catalogs",
+    "loadEulogyFailed": "Failed to load eulogy",
+    "loading": "Loading…",
+    "empty": "No entries for this selection.",
+    "counts": "{both} both · {aOnly} A-only · {bOnly} B-only · <red>{red} red</red> · <green>{green} green</green>",
+    "columns": {
+      "id": "ID",
+      "subject": "Subject",
+      "status": "Status",
+      "country": "Country"
+    },
+    "crossDay": "cross-day: {day}"
+  },
+  "Review": {
+    "title": "Review change-set",
+    "intro": "Adjudicate proposed operations against the live eulogy text. Decisions persist locally and export as a decided change-set.",
+    "bundled": "Bundled change-set",
+    "upload": "Or upload a file",
+    "locale": "Locale",
+    "select": "— select —",
+    "loading": "Loading…",
+    "fetchFailed": "Failed to fetch {filename}",
+    "loadFailed": "Failed to load change-set",
+    "parseFailed": "Failed to parse change-set",
+    "filters": {
+      "class": "Class",
+      "confidence": "Confidence",
+      "op": "Op",
+      "idContains": "ID contains",
+      "undecidedOnly": "Undecided only",
+      "all": "All"
+    },
+    "noMatch": "No operations match the current filters.",
+    "showMore": "Show more ({count} remaining)",
+    "summary": {
+      "total": "<b>{count}</b> total",
+      "accepted": "{count} accepted",
+      "rejected": "{count} rejected",
+      "edited": "{count} edited",
+      "undecided": "{count} undecided",
+      "export": "Export decisions"
+    },
+    "decision": {
+      "accept": "accept",
+      "reject": "reject",
+      "edit": "edit"
+    },
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject",
+      "edit": "Edit",
+      "saveEdit": "Save edit",
+      "cancel": "Cancel"
+    },
+    "idStatus": {
+      "new": "new",
+      "deprecated": "deprecated",
+      "current": "current"
+    },
+    "ops": {
+      "rename": "Rename {id} → {newId} (every edition)",
+      "rekey": "{edition}: key this text as {newId}{target, select, new { (new deprecated ID)} other {}}",
+      "split": "{edition}: split into {count, plural, one {# eulogy} other {# eulogies}}",
+      "merge": "Merge {id} into {newId} (same day, same eulogy)",
+      "link": "Link {id} ⇄ {other} (same_eulogy)",
+      "rubric": "{edition}: {id} is a rubric, not a eulogy",
+      "note": "Note on {id}"
+    },
+    "operation": {
+      "winnerKept": "Winner — kept",
+      "makeWinner": "Make winner",
+      "delete": "Delete <id>{target}</id>",
+      "merge": "Merge <id>{losers}</id> → winner <id>{winner}</id>",
+      "classLine": "class: {value} · ",
+      "confidenceLine": "confidence: {value} · ",
+      "reasoningLine": "reasoning: {value}",
+      "notAdjudicable": "Not adjudicable (op: {op})"
+    },
+    "realign": {
+      "splitMissing": "split_at not found in the text: “{splitAt}” ({id})",
+      "noText": "No {edition} text under this key.",
+      "sameKey": "{edition} text under the same key",
+      "curatorNote": "Curator note: {note}",
+      "show2004": "Show the 2004 text of {ids}",
+      "hide2004": "Hide the 2004 text of {ids}",
+      "action": "action",
+      "firstPart": "first part",
+      "part": "part {n}",
+      "ariaSplitAt": "split_at {n}",
+      "ariaId": "id {n}",
+      "remove": "remove",
+      "addPart": "add a part",
+      "note": "note",
+      "notePlaceholder": "curator note"
+    },
+    "attach": {
+      "mark": "mark",
+      "note": "note",
+      "anchorProblem": "Anchor “{anchor}”: {problem}.",
+      "scanPage": "Scan page {page}",
+      "showPage": "Show the page",
+      "hidePage": "Hide the page",
+      "missing": "Missing from the book",
+      "orDayNote": "or the day’s note",
+      "giveNote": "Give it this note",
+      "notReference": "Not a reference letter",
+      "notOfDay": "Not a note of this day",
+      "eulogy": "eulogy",
+      "after": "after",
+      "afterPlaceholder": "the words the letter follows (empty: at the end)",
+      "letter": "letter"
+    },
+    "margin": {
+      "reviewer": "Reviewer: {text}",
+      "proposed": "Proposed: ",
+      "nothing": "nothing",
+      "beside": "Beside",
+      "accept": "Accept",
+      "acceptEdited": "Accept (edited)",
+      "notMargin": "Not a margin note",
+      "scanPage": "Scan page {page}",
+      "scanOnArchive": "Scan page {page} on Internet Archive",
+      "scanSummary": "scan page {page}"
+    }
   }
 }
