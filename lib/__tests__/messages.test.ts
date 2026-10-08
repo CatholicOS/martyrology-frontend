@@ -37,7 +37,7 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   // "2 gennaio", "2 janvier": the day before the month, as in English.
   "Metadata.dayTitle": ["it", "fr"],
   // Abbreviations and code-like values: API, ISBN, ID, a QID placeholder, field names in aria labels.
-  "Header.api": ALL, "Bookshelf.colophonIsbn": ALL, "Compare.columns.id": ALL, "Map.place.qidPlaceholder": ALL,
+  "Header.api": ALL, "Footer.repos.api": ALL, "Bookshelf.colophonIsbn": ALL, "Compare.columns.id": ALL, "Map.place.qidPlaceholder": ALL,
   "Review.realign.ariaSplitAt": ALL, "Review.realign.ariaId": ALL, "Reader.ids": ["de", "pt"],
   // Latin names of the kinds of edition, kept in Latin in every language.
   "Bookshelf.nature.editio_typica": ALL, "Bookshelf.nature.editio_typica_altera": ALL,
@@ -57,6 +57,7 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Map.place.occurrences": ["fr"], "Review.realign.note": ["fr"], "Review.attach.note": ["fr"],
   "Review.margin.kind.note": ["fr"], "Docs.index.title": ["fr"], "Docs.finder.date": ["fr"],
   "Compare.columns.status": ["de", "pt"], // Brazilian Portuguese says "Status"
+  "Footer.repos.website": ["de"], // German says "Website"
 };
 
 describe("messages are translated", () => {

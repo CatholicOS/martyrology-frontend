@@ -24,6 +24,12 @@
   "Footer": {
     "copyright": "© {year} <link>Catholic Digital Commons Foundation</link>. Tous droits réservés.",
     "rights": "Les textes de chaque édition appartiennent à leurs ayants droit, nommés au dos de chaque livre.",
+    "sourceCode": "Code source :",
+    "repos": {
+      "api": "API",
+      "website": "Site web",
+      "data": "Données (CRMEDR)"
+    },
     "apiVersion": "API v{version}",
     "crmedrCommit": "CRMEDR {commit}"
   },
