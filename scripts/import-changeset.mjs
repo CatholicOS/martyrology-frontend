@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -52,17 +52,48 @@ export function toBundledChangeset(json, base) {
   return convertManifest(json, base);
 }
 
+/**
+ * A large change-set as one per month, for the Review page to open a month at a time: each part
+ * keeps the change-set's header and the operations of one month, from the operation's `day`
+ * ("MM-DD") or else its ID ("mr:MMDD-…"); a month without operations has no part.
+ * @param {import("../lib/changeset.ts").Changeset} cs
+ * @param {string} name
+ * @returns {{name: string, changeset: import("../lib/changeset.ts").Changeset}[]}
+ */
+export function splitByMonth(cs, name) {
+  /** @type {Map<string, any[]>} */
+  const byMonth = new Map();
+  for (const op of cs.operations) {
+    const mm = (typeof op.day === "string" && op.day.slice(0, 2)) || /^mr:(\d{2})/.exec(String(op.eulogy ?? op.id))?.[1];
+    if (!mm) throw new Error(`no month for operation ${op.id}`);
+    byMonth.set(mm, [...(byMonth.get(mm) ?? []), op]);
+  }
+  return [...byMonth.keys()].sort().map((mm) => ({ name: `${name}-${mm}`, changeset: { ...cs, operations: byMonth.get(mm) } }));
+}
+
 function main() {
   const here = dirname(fileURLToPath(import.meta.url));
-  const src = process.argv[2] ?? join(here, "..", "..", "crmedr", "data", "deprecated_id_corrections.json");
-  const name = process.argv[3] ?? "deprecated-id-normalization";
-  const edition = process.argv[4] ?? "martyrologium_romanum_1749";
+  const byMonth = process.argv.includes("--by-month");
+  const args = process.argv.slice(2).filter((a) => a !== "--by-month");
+  const src = args[0] ?? join(here, "..", "..", "crmedr", "data", "deprecated_id_corrections.json");
+  const name = args[1] ?? "deprecated-id-normalization";
+  const edition = args[2] ?? "martyrologium_romanum_1749";
   const cs = toBundledChangeset(JSON.parse(readFileSync(src, "utf8")), { edition, registry: "crmedr@local" });
   const destDir = join(here, "..", "changesets");
-  const dest = join(destDir, `${name}.json`);
   mkdirSync(destDir, { recursive: true });
-  writeFileSync(dest, JSON.stringify(cs, null, 1) + "\n");
-  console.log(`wrote ${dest}: ${cs.operations.length} operations (${basename(src)})`);
+  if (byMonth) {
+    // A month now without operations must not keep its earlier part.
+    for (const f of readdirSync(destDir)) if (new RegExp(`^${name}-\\d{2}\\.json$`).test(f)) unlinkSync(join(destDir, f));
+    for (const part of splitByMonth(cs, name)) {
+      const dest = join(destDir, `${part.name}.json`);
+      writeFileSync(dest, JSON.stringify(part.changeset) + "\n"); // compact: these are large
+      console.log(`wrote ${dest}: ${part.changeset.operations.length} operations`);
+    }
+  } else {
+    const dest = join(destDir, `${name}.json`);
+    writeFileSync(dest, JSON.stringify(cs, null, 1) + "\n");
+    console.log(`wrote ${dest}: ${cs.operations.length} operations (${basename(src)})`);
+  }
   writeIndex(destDir);
 }
 
