@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { parseChangeset, exportChangeset, opId, isAdjudicable } from "@/lib/changeset";
-import { convertManifest, toBundledChangeset } from "@/scripts/import-changeset.mjs";
+import { convertManifest, splitByMonth, toBundledChangeset } from "@/scripts/import-changeset.mjs";
 
 const manifest = [
   { old_id: "mr:0104-titi", new_id: "mr:0104-titus", action: "rename", new_subject_la: "Sanctus Titus", class: "A-genitive", confidence: "high", incipit: "In Creta natalis sancti Titi", reasoning: "person" },
@@ -48,5 +48,26 @@ describe("changeset", () => {
     const cs = { schema: "crmedr-changeset/v1", generated_by: "scripts/build_gazetteer.py", base: { edition: "2004", registry: "data/places.json" }, operations: [] };
     expect(toBundledChangeset(cs, { edition: "e", registry: "r" })).toBe(cs);
     expect(toBundledChangeset(manifest, { edition: "e", registry: "r" }).operations[0]).toMatchObject({ op: "rename" });
+  });
+});
+
+describe("splitByMonth", () => {
+  const op = (id: string, eulogy: string, day: string) => ({ op: "resolve_person", id, eulogy, day, decision: null, edited: null });
+  const cs = {
+    schema: "crmedr-changeset/v1" as const, generated_by: "scripts/build_person_items.py", generated_at: "2026-10-09",
+    base: { edition: "martyrologium_romanum_2004", registry: "data/persons.json" },
+    operations: [op("mr:0206-a|A", "mr:0206-a", "02-06"), op("mr:1224-b|B", "mr:1224-b", "12-24"), op("mr:0201-c|C", "mr:0201-c", "02-01")],
+  };
+
+  it("makes one change-set per month that has operations, named by the month, each complete", () => {
+    const parts = splitByMonth(cs, "persons-review");
+    expect(parts.map((p) => p.name)).toEqual(["persons-review-02", "persons-review-12"]);
+    expect(parts[0].changeset.operations.map(opId)).toEqual(["mr:0206-a|A", "mr:0201-c|C"]);
+    expect(parts[0].changeset).toMatchObject({ schema: "crmedr-changeset/v1", base: cs.base, generated_at: "2026-10-09" });
+  });
+
+  it("takes the month from the eulogy ID when an operation has no day", () => {
+    const parts = splitByMonth({ ...cs, operations: [{ op: "x", id: "mr:0315-d", decision: null, edited: null }] }, "q");
+    expect(parts.map((p) => p.name)).toEqual(["q-03"]);
   });
 });

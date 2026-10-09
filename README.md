@@ -80,6 +80,14 @@ npm run import-changeset
 # Bundle crmedr's gazetteer review queue (already a crmedr-changeset/v1 file,
 # copied as it is).
 npm run import-changeset -- ../crmedr/data/gazetteer_review.json gazetteer-review
+
+# Bundle crmedr's persons review queue (5,000+ resolve_person operations) as one
+# compact change-set per month, persons-review-01 … persons-review-12, so a
+# curator opens a month at a time. Rerun after crmedr's
+# `build_person_items.py propose`: earlier month files are replaced, and a month
+# with nothing left to review disappears. It quotes no text: names and
+# Wikidata candidates only.
+npm run import-changeset -- ../crmedr/data/person_items_review.json persons-review --by-month
 ```
 
 Both accept optional positional args — see the top of each script under
