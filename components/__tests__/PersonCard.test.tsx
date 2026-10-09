@@ -64,3 +64,25 @@ describe("PersonCard", () => {
     expect(out.operations[0]).toMatchObject({ decision: "edit", edited: { wikidata: "Q2" } });
   });
 });
+
+describe("PersonCard, from the review of #113", () => {
+  it("does not accept a listed candidate that crmedr's apply would refuse", () => {
+    renderCard(op({ suggested: null, candidates: [c("Q1", "Thomas Kozaki", { evidence: ["human", "name"], statuses: [] }), c("Q2", "Thomas Xico")] }));
+    expect(screen.getByRole("button", { name: "Accept" })).toBeDisabled();
+    fireEvent.click(screen.getByLabelText(/Thomas Xico/));
+    expect(screen.getByRole("button", { name: "Accept (edited)" })).toBeEnabled();
+    fireEvent.click(screen.getByLabelText(/Thomas Kozaki/));
+    fireEvent.change(screen.getByLabelText("Other QID"), { target: { value: "Q99" } });
+    expect(screen.getByRole("button", { name: "Accept (edited)" })).toBeEnabled(); // crmedr checks a typed QID
+  });
+
+  it("decides under the op's export key", () => {
+    const d = renderCard(op({ uid: "u-1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    expect(d).toHaveBeenCalledWith("u-1", { decision: "accept" });
+    fireEvent.click(screen.getByRole("button", { name: "No item" }));
+    fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "None" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+    expect(d).toHaveBeenLastCalledWith("u-1", { decision: "reject", edited: { reason: "None" } });
+  });
+});

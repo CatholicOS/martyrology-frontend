@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
-import type { DecisionRecord, ResolvePersonOp } from "@/lib/changeset";
+import { opId, type DecisionRecord, type ResolvePersonOp } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
 interface Props {
@@ -39,7 +39,12 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
   const [showEulogy, setShowEulogy] = useState(false);
 
   const qid = otherQid.trim() || selected;
-  const canAccept = /^Q[1-9]\d*$/.test(qid);
+  // A listed candidate must pass what crmedr's apply checks (its own evidence: human, a saint or
+  // blessed status), or apply refuses the whole export; a typed QID is left for apply to check.
+  const listed = otherQid.trim() ? null : op.candidates.find((c) => c.wikidata === qid);
+  const eligible = !listed || (listed.evidence.includes("human") && listed.evidence.includes("status"));
+  const canAccept = /^Q[1-9]\d*$/.test(qid) && eligible;
+  const id = opId(op);
   const unchanged = qid === defaultQid;
   const where = op.where === "text" ? t("inText") : t("inFootnote", { n: op.where.footnote });
 
@@ -125,7 +130,7 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
             type="button"
             disabled={!canAccept}
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-40"
-            onClick={() => onDecide(op.id, unchanged ? { decision: "accept" } : { decision: "edit", edited: { wikidata: qid } })}
+            onClick={() => onDecide(id, unchanged ? { decision: "accept" } : { decision: "edit", edited: { wikidata: qid } })}
           >
             {unchanged ? t("accept") : t("acceptEdited")}
           </button>
@@ -148,7 +153,7 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
             disabled={!reason.trim()}
             className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-40"
             onClick={() => {
-              onDecide(op.id, { decision: "reject", edited: { reason: reason.trim() } });
+              onDecide(id, { decision: "reject", edited: { reason: reason.trim() } });
               setRejecting(false);
             }}
           >
