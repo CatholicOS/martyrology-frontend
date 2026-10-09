@@ -9,3 +9,11 @@ describe("the links to the index of names", () => {
     }
   });
 });
+
+describe("the editions list", () => {
+  it("names exactly the editions the persons snapshot has", async () => {
+    const editions = (await import("@/data/persons-editions.json")).default;
+    const snap = (await import("@/data/persons-snapshot.json")).default as { editions: Record<string, unknown> };
+    expect([...editions].sort()).toEqual(Object.keys(snap.editions).sort());
+  });
+});

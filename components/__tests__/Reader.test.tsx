@@ -477,6 +477,18 @@ describe("Reader, a link to a eulogy", () => {
     window.history.replaceState(null, "", "/");
   });
 
+  it("finds the footnote when only the address's footnote changes, on the same day", async () => {
+    vi.mocked(getDay).mockResolvedValue(DAY_FN);
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render1749();
+    const note = await screen.findByText("A printed footnote on Modestus.");
+    expect(note.closest("li")).not.toHaveAttribute("data-found");
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-1");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
   it("shows the day when the footnote in the address is not there", async () => {
     window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-9");
     render1749();
