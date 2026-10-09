@@ -12,6 +12,19 @@ const month = (mm: number, elogia: MonthOut["days"][string]["elogia"] = [], acce
 describe("ApparatusPage", () => {
   beforeEach(() => vi.restoreAllMocks());
 
+  it("links to the index of names only for an edition with persons", async () => {
+    vi.spyOn(api, "getEditions").mockResolvedValue([]);
+    vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) => month(Number(mm)));
+    const { unmount } = render(<ApparatusPage edition="martyrologium_romanum_2004" />);
+    expect(await screen.findByRole("link", { name: "Index of names" })).toHaveAttribute(
+      "href", "/en/read/martyrologium_romanum_2004/names",
+    );
+    unmount();
+    render(<ApparatusPage edition="martyrologium_romanum_1749" />);
+    await screen.findByRole("link", { name: "Index of places" });
+    expect(screen.queryByRole("link", { name: "Index of names" })).toBeNull();
+  });
+
   it("links to the edition's index of places", async () => {
     vi.spyOn(api, "getEditions").mockResolvedValue([]);
     vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) => month(Number(mm)));

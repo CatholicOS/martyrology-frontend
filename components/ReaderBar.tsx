@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { daysInMonth, interfaceMonth, todayLocal, type Day } from "@/lib/calendar";
+import { hasPersons } from "@/lib/persons-editions";
 import { findSubject, type SubjectOption } from "@/lib/subjects";
 
 const control = "rounded border border-slate-300 bg-white px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
@@ -146,6 +147,11 @@ export default function ReaderBar({
       <Link href={`/read/${encodeURIComponent(edition)}/places`} className="text-sm underline">
         {t("placesLink")}
       </Link>
+      {hasPersons(edition) && (
+        <Link href={`/read/${encodeURIComponent(edition)}/names`} className="text-sm underline">
+          {t("namesLink")}
+        </Link>
+      )}
       <Link href="/" className="text-sm underline">{t("shelf")}</Link>
     </div>
   );

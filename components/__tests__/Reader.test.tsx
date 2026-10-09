@@ -63,6 +63,12 @@ const render1749 = (mm = 10, dd = 2, signedIn = false) =>
   render(<Reader edition="martyrologium_romanum_1749" mm={mm} dd={dd} signedIn={signedIn} />);
 
 describe("Reader", () => {
+  it("does not link to an index of names for an edition without persons", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.queryByRole("link", { name: "Index of names" })).toBeNull();
+  });
+
   it("links to the edition's notes and its index of places", async () => {
     render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");
