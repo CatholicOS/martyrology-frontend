@@ -40,7 +40,7 @@
 
 - Modify `scripts/snapshot-registry.mjs` (+ `buildPersons`, `fetchPersonLabels`, `main`), `lib/__tests__/snapshot.test.ts`.
 - Generate `data/persons-snapshot.json`, `data/persons-editions.json`.
-- Create `lib/persons.ts` (types, `getPersons`, `hasPersons`).
+- Create `lib/persons.ts` (types, `getPersons`: server only) and `lib/persons-editions.ts` (`PERSONS_EDITIONS`, `hasPersons`: for client components too).
 - Modify `lib/places-index.ts` (export `filingLetter`; `compareLines` takes any `{day, entry}`).
 - Create `lib/names-index.ts`, `lib/__tests__/names-index.test.ts`.
 - Create `components/NamesIndex.tsx`, `components/__tests__/NamesIndex.test.tsx`; modify `messages/*.json`.
@@ -193,11 +193,11 @@ Note: the first run has no previous `persons-snapshot.json`; if Wikidata fails t
 
 ### Task 2: `namesIndex()`
 
-**Files:** create `lib/persons.ts`, `lib/names-index.ts`, `lib/__tests__/names-index.test.ts`; modify `lib/places-index.ts`.
+**Files:** create `lib/persons.ts`, `lib/persons-editions.ts`, `lib/names-index.ts`, `lib/__tests__/names-index.test.ts`; modify `lib/places-index.ts`.
 
 **Interfaces:**
 - Consumes: `CatalogEntryOut`, `Day`, `Locale`; from `lib/places-index.ts`: `compareLines`, `filingLetter` (exported by this task).
-- Produces (`lib/persons.ts`): `PersonMention { name: string; where: "text" | { footnote: number }; wikidata?: string }`; `PersonsSnapshot { editions: Record<string, Record<string, PersonMention[]>>; labels: Record<string, Partial<Record<Locale, string>>> }`; `getPersons(): PersonsSnapshot`; `PERSONS_EDITIONS: readonly string[]` (from `data/persons-editions.json`); `hasPersons(edition: string): boolean`.
+- Produces (`lib/persons.ts`): `PersonMention { name: string; where: "text" | { footnote: number }; wikidata?: string }`; `PersonsSnapshot { editions: Record<string, Record<string, PersonMention[]>>; labels: Record<string, Partial<Record<Locale, string>>> }`; `getPersons(): PersonsSnapshot`. (`lib/persons-editions.ts`): `PERSONS_EDITIONS: readonly string[]` (from `data/persons-editions.json`); `hasPersons(edition: string): boolean` — kept apart so client components never import the large snapshot.
 - Produces (`lib/names-index.ts`): `NameLine { id; day; entry; subject; footnote: number | null }`; `IndexPerson { key; name; qid: string | null; label: string | null; lines: NameLine[] }`; `NamesLetter { letter; persons: IndexPerson[] }`; `NamesIndexData { letters; naming; printed }`; `namesIndex(catalog, snap, edition, locale): NamesIndexData | null`; `fnAnchor(edition, id, n): string` (`fn-${edition}-${id}-${n}`).
 
 - [ ] **Step 1: Make `compareLines` generic and export `filingLetter`** in `lib/places-index.ts` (refactor under the existing places tests, which must stay green):
@@ -208,11 +208,11 @@ export function compareLines(a: { day: Day; entry: number | null }, b: { day: Da
 ```
 and `function filingLetter(` → `export function filingLetter(`. Run `npx vitest run lib/__tests__/places-index.test.ts` → PASS.
 
-- [ ] **Step 2: Create `lib/persons.ts`:**
+- [ ] **Step 2: Create `lib/persons.ts` and `lib/persons-editions.ts`:**
 
 ```ts
+// lib/persons.ts
 import snapshot from "@/data/persons-snapshot.json";
-import editions from "@/data/persons-editions.json";
 import type { Locale } from "@/i18n/routing";
 
 /** A saint or blessed a eulogy names: the Latin name, where it is printed, and the Wikidata item crmedr decided. */
@@ -227,20 +227,23 @@ export interface PersonsSnapshot {
   labels: Record<string, Partial<Record<Locale, string>>>;
 }
 
-/** The persons snapshot: large, so only for server code (the index of names). */
+/** The persons snapshot: large, so for server code only (the index of names). */
 export function getPersons(): PersonsSnapshot {
   return snapshot as unknown as PersonsSnapshot;
 }
+```
 
-/** The editions whose persons crmedr has listed: small, for client components' links. */
+```ts
+// lib/persons-editions.ts
+import editions from "@/data/persons-editions.json";
+
+/** The editions whose persons crmedr has listed: small, so client components can link to the index of names. */
 export const PERSONS_EDITIONS: readonly string[] = editions;
 
 export function hasPersons(edition: string): boolean {
   return PERSONS_EDITIONS.includes(edition);
 }
 ```
-
-If importing both JSON files from one module pulls the large one into client bundles (Task 6 checks it), split `PERSONS_EDITIONS`/`hasPersons` into `lib/persons-editions.ts` and import that from client components instead.
 
 - [ ] **Step 3: Failing tests** `lib/__tests__/names-index.test.ts`:
 
@@ -438,7 +441,7 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
 (The tie "then the first in calendar order" of the spec is implied: `forms` keeps insertion order and `sort` is stable, but insertion is catalog order, not calendar order. If the ties test needs calendar order, sort `forms` entries by the index of their first line after `p.lines.sort` instead; the test above only exercises the shorter-name tie.)
 
 - [ ] **Step 6: Run, expect PASS**; also `npx vitest run lib/__tests__/places-index.test.ts`.
-- [ ] **Step 7: Commit** `lib/persons.ts lib/names-index.ts lib/places-index.ts lib/__tests__/names-index.test.ts`: `feat: namesIndex, an edition's saints and blessed A to Z`.
+- [ ] **Step 7: Commit** `lib/persons.ts lib/persons-editions.ts lib/names-index.ts lib/places-index.ts lib/__tests__/names-index.test.ts`: `feat: namesIndex, an edition's saints and blessed A to Z`.
 
 ---
 
@@ -646,8 +649,8 @@ export default function NamesIndex({ edition, title, index, error = false }: {
 vi.mock("@/lib/persons", () => ({
   getPersons: () => ({ editions: { martyrologium_romanum_2004: {
     "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q1" }] } }, labels: {} }),
-  hasPersons: (e: string) => e === "martyrologium_romanum_2004",
 }));
+vi.mock("@/lib/persons-editions", () => ({ hasPersons: (e: string) => e === "martyrologium_romanum_2004" }));
 ```
 
 Tests: 404 for an unknown edition; for the 2004 Latin, `fetchCatalog` is called with `("martyrologium_romanum_2004", "la")` and the props carry `index.naming === 1`; for 1749 (`hasPersons` false) the catalog is not fetched and `index` is null without `error`; when `fetchCatalog` rejects, `index` is null, `error` is true and `console.error` is called with a message naming the edition; `generateMetadata` titles "Martyrologium Romanum 2004: index of names" (mock `editionMeta` to `{ title: "Martyrologium Romanum", year: 2004 }`).
@@ -663,7 +666,8 @@ import type { Metadata } from "next";
 import NamesIndex from "@/components/NamesIndex";
 import { editionLang, editionTitle } from "@/lib/editions";
 import { namesIndex, type NamesIndexData } from "@/lib/names-index";
-import { getPersons, hasPersons } from "@/lib/persons";
+import { getPersons } from "@/lib/persons";
+import { hasPersons } from "@/lib/persons-editions";
 import { editionExists, editionInfo, editionMeta, fetchCatalog } from "@/lib/server-editions";
 
 type Params = Promise<{ locale: string; edition: string }>;
@@ -772,24 +776,18 @@ and in `reveal`, find by element id for both: `const el = isNoteId(id) || isFoot
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 
-describe("the client components' links to the index of names", () => {
+describe("the links to the index of names", () => {
   it("read the small editions list, never the persons snapshot", () => {
-    for (const f of ["components/ReaderBar.tsx", "components/ApparatusPage.tsx"]) {
+    for (const f of ["components/ReaderBar.tsx", "components/ApparatusPage.tsx", "lib/persons-editions.ts"]) {
       const src = readFileSync(f, "utf8");
-      expect(src).not.toMatch(/persons-snapshot|getPersons/);
-    }
-    const lib = readFileSync("lib/persons.ts", "utf8");
-    // If lib/persons.ts imports the snapshot, the client components must import the editions list from elsewhere.
-    for (const f of ["components/ReaderBar.tsx", "components/ApparatusPage.tsx"]) {
-      const src = readFileSync(f, "utf8");
-      if (/persons-snapshot/.test(lib)) expect(src).not.toMatch(/from "@\/lib\/persons"/);
+      expect(src, f).not.toMatch(/persons-snapshot|@\/lib\/persons"/);
     }
   });
 });
 ```
 
 - [ ] **Step 2: Run, expect FAIL.**
-- [ ] **Step 3: Implement.** Move `PERSONS_EDITIONS` and `hasPersons` from `lib/persons.ts` into `lib/persons-editions.ts` (it imports only `@/data/persons-editions.json`); `lib/persons.ts` re-exports nothing of it; the route (Task 4) imports `hasPersons` from `@/lib/persons-editions` (update it and its test's mock path). In `ReaderBar.tsx`, after the places link: `{hasPersons(edition) && (<Link href={`/read/${encodeURIComponent(edition)}/names`} className="text-sm underline">{t("namesLink")}</Link>)}`; in `ApparatusPage.tsx`, after the places link: `{hasPersons(edition) && (<>{" · "}<Link href={`/read/${encodeURIComponent(edition)}/names`} className="underline">{tReader("namesLink")}</Link></>)}`.
+- [ ] **Step 3: Implement.** Import `hasPersons` from `@/lib/persons-editions` in both. In `ReaderBar.tsx`, after the places link: `{hasPersons(edition) && (<Link href={`/read/${encodeURIComponent(edition)}/names`} className="text-sm underline">{t("namesLink")}</Link>)}`; in `ApparatusPage.tsx`, after the places link: `{hasPersons(edition) && (<>{" · "}<Link href={`/read/${encodeURIComponent(edition)}/names`} className="underline">{tReader("namesLink")}</Link></>)}`.
 - [ ] **Step 4: Run** the four test files → PASS; `npx tsc --noEmit`. **Step 5: Commit**: `feat: link the index of names where an edition has persons`.
 
 ---
