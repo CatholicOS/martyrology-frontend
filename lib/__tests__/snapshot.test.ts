@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { buildMisprints, buildNotes, buildPlaces, buildSnapshot, fetchPlaceData, labelsQuery, parseWktPoint, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildPersons, buildPlaces, buildSnapshot, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -173,5 +173,48 @@ describe("fetchPlaceData", () => {
     const data = await fetchPlaceData(["Q220", "Q490"], () => previous, { ...fresh, coords: down });
     expect(data.coords).toEqual({ Q220: [41, 12] });
     expect(data.labels).toEqual({ Q220: { en: "Rome" }, Q490: { en: "Milan" } });
+  });
+});
+
+describe("buildPersons", () => {
+  const personsDoc = { editions: { martyrologium_romanum_2004: {
+    "mr:0206-paulus-miki-et-socii": [
+      { name: "Paulus Miki", where: "text" },
+      { name: "Ioannes de Goto Soan", where: { footnote: 1 } },
+      { name: "Thomas Kozaki", where: { footnote: 1 } },
+    ],
+    "mr:0101-basilius": [{ name: "Basilius", where: "text" }],
+  } } };
+  const itemsDoc = { persons: {
+    "mr:0206-paulus-miki-et-socii": {
+      "Paulus Miki": { wikidata: "Q380649", status: "auto" },
+      "Thomas Kozaki": { wikidata: null, status: "unresolved", note: "none" },
+    },
+    "mr:0101-basilius": { Basilius: { wikidata: "Q1", status: "reviewed" } },
+  } };
+
+  it("gives each person its QID when crmedr decided one, and labels in the interface languages' order", () => {
+    const snap = buildPersons(personsDoc, itemsDoc, { Q380649: { pt: "Paulo Miki", en: "Paul Miki" }, Q9: { en: "unused" } });
+    expect(snap.editions.martyrologium_romanum_2004["mr:0206-paulus-miki-et-socii"]).toEqual([
+      { name: "Paulus Miki", where: "text", wikidata: "Q380649" },
+      { name: "Ioannes de Goto Soan", where: { footnote: 1 } },
+      { name: "Thomas Kozaki", where: { footnote: 1 } },
+    ]);
+    expect(snap.editions.martyrologium_romanum_2004["mr:0101-basilius"][0].wikidata).toBe("Q1");
+    expect(Object.keys(snap.labels)).toEqual(["Q380649"]);
+    expect(Object.keys(snap.labels.Q380649)).toEqual(["en", "pt"]);
+  });
+
+  it("lists the decided QIDs once each, sorted", () => {
+    expect(personQids(personsDoc, itemsDoc)).toEqual(["Q1", "Q380649"]);
+  });
+});
+
+describe("fetchPersonLabels", () => {
+  it("falls back to the previous snapshot's labels when Wikidata fails", async () => {
+    const prev = { labels: { Q1: { en: "Basil (old)" } } };
+    const down = async () => { throw new Error("Wikidata SPARQL 429"); };
+    expect(await fetchPersonLabels(["Q1"], () => prev, down)).toEqual({ Q1: { en: "Basil (old)" } });
+    expect(await fetchPersonLabels(["Q1"], () => prev, async () => ({ Q1: { en: "Basil" } }))).toEqual({ Q1: { en: "Basil" } });
   });
 });

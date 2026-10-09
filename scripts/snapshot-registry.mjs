@@ -268,6 +268,64 @@ export async function fetchPlaceData(qids, readPrevious, fetchers = { coords: fe
   return { coords, labels };
 }
 
+/**
+ * The QIDs crmedr decided for the persons (auto and reviewed), sorted.
+ * @param {{editions: Record<string, Record<string, {name: string}[]>>}} personsDoc crmedr data/persons.json
+ * @param {{persons: Record<string, Record<string, {wikidata: string|null, status: string}>>}} itemsDoc crmedr data/person_items.json
+ */
+export function personQids(personsDoc, itemsDoc) {
+  const qids = new Set();
+  for (const persons of Object.values(itemsDoc.persons))
+    for (const e of Object.values(persons)) if (e.wikidata && e.status !== "unresolved") qids.add(e.wikidata);
+  return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+}
+
+/**
+ * The index of names' data: each edition's persons by eulogy, with the QID crmedr decided (auto or
+ * reviewed), and each QID's labels in the interface languages, in LABEL_LANGS order.
+ * @param {{editions: Record<string, Record<string, {name: string, where: unknown}[]>>}} personsDoc
+ * @param {{persons: Record<string, Record<string, {wikidata: string|null, status: string}>>}} itemsDoc
+ * @param {Record<string, Record<string, string>>} [labels]
+ */
+export function buildPersons(personsDoc, itemsDoc, labels = {}) {
+  /** @type {Record<string, Record<string, {name: string, where: unknown, wikidata?: string}[]>>} */
+  const editions = {};
+  const used = new Set();
+  for (const [edition, byId] of Object.entries(personsDoc.editions)) {
+    editions[edition] = {};
+    for (const [id, persons] of Object.entries(byId)) {
+      editions[edition][id] = persons.map((p) => {
+        const e = itemsDoc.persons[id]?.[p.name];
+        const qid = e && e.status !== "unresolved" ? e.wikidata : null;
+        if (qid) used.add(qid);
+        return { name: p.name, where: p.where, ...(qid ? { wikidata: qid } : {}) };
+      });
+    }
+  }
+  /** @type {Record<string, Record<string, string>>} */
+  const ordered = {};
+  for (const qid of [...used].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))) {
+    const l = labels[qid];
+    if (l) ordered[qid] = Object.fromEntries(LABEL_LANGS.flatMap((lang) => (lang in l ? [[lang, l[lang]]] : [])));
+  }
+  return { editions, labels: ordered };
+}
+
+/**
+ * The persons' labels from Wikidata, or, when it cannot be asked, the previous snapshot's.
+ * @param {string[]} qids
+ * @param {() => {labels: Record<string, Record<string, string>>}} readPrevious
+ * @param {typeof fetchLabels} [fetch]
+ */
+export async function fetchPersonLabels(qids, readPrevious, fetch = fetchLabels) {
+  try {
+    return await fetch(qids);
+  } catch (err) {
+    console.warn(`Wikidata labels unavailable (${err instanceof Error ? err.message : err}); reusing the previous persons snapshot's`);
+    return readPrevious().labels;
+  }
+}
+
 async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -301,5 +359,15 @@ async function main() {
   if (unlabelled.length) console.log(`no label for ${unlabelled.length} places (the index heads them with the QID): ${unlabelled.join(" ")}`);
   writeFileSync(placesDest, JSON.stringify(places) + "\n");
   console.log(`wrote ${placesDest}: ${Object.keys(places.eulogies).length} eulogies at ${Object.keys(places.places).length} places`);
+  const personsDoc = JSON.parse(readFileSync(join(crmedr, "data", "persons.json"), "utf8"));
+  const itemsDoc = JSON.parse(readFileSync(join(crmedr, "data", "person_items.json"), "utf8"));
+  const personsDest = join(here, "..", "data", "persons-snapshot.json");
+  const personLabels = await fetchPersonLabels(personQids(personsDoc, itemsDoc), () => JSON.parse(readFileSync(personsDest, "utf8")));
+  const persons = buildPersons(personsDoc, itemsDoc, personLabels);
+  writeFileSync(personsDest, JSON.stringify(persons) + "\n");
+  // The editions with persons, apart: client components link to the index of names from it.
+  writeFileSync(join(here, "..", "data", "persons-editions.json"), JSON.stringify(Object.keys(persons.editions)) + "\n");
+  const count = Object.values(persons.editions).reduce((n, byId) => n + Object.values(byId).reduce((m, ps) => m + ps.length, 0), 0);
+  console.log(`wrote ${personsDest}: ${count} persons, ${Object.keys(persons.labels).length} labelled items`);
 }
 if (import.meta.url === `file://${process.argv[1]}`) await main();
