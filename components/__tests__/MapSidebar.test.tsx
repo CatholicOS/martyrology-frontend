@@ -11,7 +11,7 @@ const edition = (id: string, year: number, locale: string, nature = "editio_typi
 const editions = [edition("mr_2004", 2004, "la"), edition("mr_1914_en", 1914, "en", "translation")];
 
 const entry = (id: string, subject: string, label: string): MapEntry => ({
-  id, subject, editionSubject: subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, country: "IT", coords: [0, 0], typology: "dies_natalis",
+  id, subject, editionSubject: subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, labelLang: label === "Roma" ? "it" : "en", labelEn: "Rome", country: "IT", coords: [0, 0], typology: "dies_natalis",
 });
 const results = [entry("mr:0101-almachius", "Sanctus Almachius", "Rome"), entry("mr:0102-x", "Sanctus X", "Rome")];
 const filters: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
@@ -79,10 +79,20 @@ describe("MapSidebar", () => {
   });
 
   it("lists a place's eulogies with a way back", () => {
-    const p = setup({ place: { label: "Rome", count: 2 } });
+    const p = setup({ place: { labels: [{ label: "Rome", lang: "en" }], count: 2 } });
     expect(screen.getByRole("heading", { name: "Rome — 2 eulogies" })).toBeInTheDocument();
+    // English on an English page: no lang of its own.
+    expect(within(screen.getByRole("heading", { name: "Rome — 2 eulogies" })).getByText("Rome").closest("[lang]")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Show all" }));
     expect(p.onShowAll).toHaveBeenCalled();
+  });
+
+  it("marks a place's name that fell back to English as English, each of a point's names in its own language", () => {
+    setup({ place: { labels: [{ label: "Kayseri", lang: "it" }, { label: "Caesarea", lang: "en" }], count: 3 } }, "it");
+    const h = screen.getByRole("heading", { name: /^Kayseri \/ Caesarea — 3/ });
+    expect(within(h).getByText("Kayseri").closest("[lang]")).toBeNull();
+    expect(within(h).getByText("Caesarea")).toHaveAttribute("lang", "en");
+    expect(screen.getAllByText("Rome")[0]).toHaveAttribute("lang", "en");
   });
 
   it("says when nothing matches", () => {

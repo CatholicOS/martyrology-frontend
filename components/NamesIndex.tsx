@@ -1,5 +1,6 @@
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
@@ -55,7 +56,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
                     <>
                       {" "}
                       <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer"
-                        lang={p.labelLang && p.labelLang !== locale ? p.labelLang : undefined}>
+                        lang={langOn(p.labelLang, locale)}>
                         {`${p.label ?? t("wikidata")} ↗`}
                       </a>
                     </>

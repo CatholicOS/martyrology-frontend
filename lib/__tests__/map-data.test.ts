@@ -7,7 +7,7 @@ import type { CatalogEntryOut } from "@/lib/types";
 
 const snap: PlacesSnapshot = {
   places: {
-    Q220: { label: "Rome", country: "IT", coords: [41.9, 12.5] },
+    Q220: { label: "Rome", country: "IT", coords: [41.9, 12.5], labels: { en: "Rome", it: "Roma" } },
     Q84: { label: "London", country: "GB", coords: [51.5, -0.1] },
     Q1: { label: "Caesarea", country: "TR", coords: [38.7, 35.5] },
     Q2: { label: "Nowhere", country: "", coords: null },
@@ -39,28 +39,40 @@ const all: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new
 
 describe("mapEntries", () => {
   it("keeps the eulogies the edition prints that have a place, in printed order, and counts the rest", () => {
-    const { entries, unmapped } = mapEntries(catalog, snap);
+    const { entries, unmapped } = mapEntries(catalog, snap, "en");
     expect(entries.map((e) => e.id)).toEqual(["mr:0101-almachius", "mr:0102-caecilia", "mr:0103-thomas", "mr:0104-basilius"]);
     expect(unmapped).toBe(2); // mr:0106-martina has no place, mr:0107-nemo no coordinates; mr:0105-absent is not printed at all
     expect(entries[0]).toEqual({
       id: "mr:0101-almachius", subject: "Sanctus Almachius", editionSubject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
-      qid: "Q220", la: "Romæ", label: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",
+      qid: "Q220", la: "Romæ", label: "Rome", labelLang: "en", labelEn: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",
     });
   });
 
+  it("names a place in the interface language, else in English, and says which", () => {
+    const it_ = mapEntries(catalog, snap, "it").entries;
+    expect(it_.find((e) => e.qid === "Q220")).toMatchObject({ label: "Roma", labelLang: "it", labelEn: "Rome" });
+    expect(it_.find((e) => e.qid === "Q84")).toMatchObject({ label: "London", labelLang: "en" });
+  });
+
+  it("finds a place by its English name on a page in another language", () => {
+    const roma = mapEntries(catalog, snap, "it").entries.find((e) => e.qid === "Q220")!;
+    expect(matchesQuery(roma, "roma")).toBe(true);
+    expect(matchesQuery(roma, "rome")).toBe(true);
+  });
+
   it("shows the subject the caller picks for the interface", () => {
-    const { entries } = mapEntries(catalog, snap, (id, own) => `${id} / ${own}`);
+    const { entries } = mapEntries(catalog, snap, "en", (id, own) => `${id} / ${own}`);
     expect(entries[0].subject).toBe(`${entries[0].id} / Sanctus Almachius`);
   });
 
   it("a catalog entry without subject falls back to its ID", () => {
-    const { entries } = mapEntries([{ ...catalog[0], subject: null }], snap);
+    const { entries } = mapEntries([{ ...catalog[0], subject: null }], snap, "en");
     expect(entries[0].subject).toBe("mr:0103-thomas");
   });
 });
 
 describe("matchesQuery", () => {
-  const { entries } = mapEntries(catalog, snap);
+  const { entries } = mapEntries(catalog, snap, "en");
   const byId = (id: string) => entries.find((e) => e.id === id)!;
 
   it("matches both the interface subject and the catalog's own (Latin) one", () => {
@@ -94,7 +106,7 @@ describe("matchesQuery", () => {
 });
 
 describe("filterEntries and facetCounts", () => {
-  const { entries } = mapEntries(catalog, snap);
+  const { entries } = mapEntries(catalog, snap, "en");
 
   it("hides unchecked typologies (null typology is 'none') and keeps only the chosen countries", () => {
     expect(filterEntries(entries, { ...all, hiddenTypologies: new Set(["dies_natalis"]) }).map((e) => e.id))

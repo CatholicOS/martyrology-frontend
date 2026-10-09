@@ -17,6 +17,11 @@ export const LOCALE_NAMES: Record<Locale, string> = {
 // language has; next-intl's Link header would name every language for every page, even where one has no such page.
 export const routing = defineRouting({ locales: LOCALES, defaultLocale: "en", localePrefix: "always", localeCookie: false, alternateLinks: false });
 
+/** The `lang` to give text in `lang` on a page in `locale`: none when it is the page's own, or unknown. */
+export function langOn(lang: string | null | undefined, locale: string): string | undefined {
+  return lang && lang !== locale ? lang : undefined;
+}
+
 export function isLocale(v: string): v is Locale {
   return (LOCALES as readonly string[]).includes(v);
 }

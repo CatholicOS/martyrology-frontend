@@ -58,7 +58,7 @@ vi.mock("leaflet", () => {
 vi.mock("leaflet.markercluster", () => ({}));
 
 const e = (id: string, qid: string, coords: [number, number]): MapEntry => ({
-  id, subject: `Subject ${id}`, editionSubject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", country: "IT", coords, typology: "dies_natalis",
+  id, subject: `Subject ${id}`, editionSubject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", labelLang: "en", labelEn: "Rome", country: "IT", coords, typology: "dies_natalis",
 });
 const entries = [e("mr:0102-a", "Q220", [41.9, 12.5]), e("mr:0102-b", "Q220", [41.9, 12.5]), e("mr:0102-c", "Q84", [51.5, -0.1])];
 
@@ -98,6 +98,14 @@ describe("EulogyMap", () => {
     render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />, { locale: "it" });
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
     expect(popupOf(groups[0].layers[0]).querySelector("a[data-read]")!.getAttribute("href")).toBe("/it/read/mr_2004/01/02#mr:0102-a");
+  });
+
+  it("the popup marks the printed place as Latin, and a place name that fell back to English as English", async () => {
+    render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />, { locale: "it" });
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
+    const popup = popupOf(groups[0].layers[0]);
+    expect(popup.querySelector('[lang="la"]')!.textContent).toBe("Romæ");
+    expect(popup.querySelector('a[href^="https://www.wikidata.org/"]')!.getAttribute("lang")).toBe("en");
   });
 
   it("clicking a marker selects its eulogy", async () => {

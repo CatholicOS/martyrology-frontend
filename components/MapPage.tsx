@@ -3,6 +3,7 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import EulogyMap from "@/components/EulogyMap";
 import MapSidebar from "@/components/MapSidebar";
 import { getCatalog, getEditions } from "@/lib/api";
@@ -118,7 +119,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   // Subjects in the interface language (the reader's, else English, else Latin); the catalog's own if the registry lacks the ID.
   const mapped = useMemo(() => {
     const registry = getSnapshot();
-    return mapEntries(catalog, getPlaces(), (id, own) => subjectFor(registry[id]?.subject, locale, own));
+    return mapEntries(catalog, getPlaces(), locale as Locale, (id, own) => subjectFor(registry[id]?.subject, locale, own));
   }, [catalog, locale]);
   // The map redraws thousands of markers: it follows the typing at its own pace.
   const deferred = useDeferredValue(filters);
@@ -153,7 +154,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
             unmapped={mapped.unmapped}
             place={
               atPlace && atPlace.length > 0
-                ? { label: [...new Set(atPlace.map((e) => e.label))].join(" / "), count: atPlace.length }
+                ? { labels: [...new Map(atPlace.map((e) => [e.label, e.labelLang])).entries()].map(([label, lang]) => ({ label, lang })), count: atPlace.length }
                 : null
             }
             onShowAll={() => setPlace(null)}

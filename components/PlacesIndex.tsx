@@ -1,5 +1,6 @@
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
@@ -61,7 +62,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
               return (
                 <div key={p.qid} className="mb-4">
                   <h3 className="font-semibold">
-                    <span lang={p.labelLang && p.labelLang !== locale ? p.labelLang : undefined}>{p.label}</span>
+                    <span lang={langOn(p.labelLang, locale)}>{p.label}</span>
                     {c && <span className="font-normal text-slate-600"> ({c})</span>}
                   </h3>
                   <ul className="ml-4 text-sm">
