@@ -8,7 +8,8 @@
     "apiReferenceDescription": "L’API del Martirologio Romano: endpoint, parametri e risposte, con richieste da provare.",
     "dayTitle": "{day} {month} — {books}",
     "notesTitle": "{edition}: note, refusi ed errata",
-    "placesTitle": "{edition}: indice dei luoghi"
+    "placesTitle": "{edition}: indice dei luoghi",
+    "namesTitle": "{edition}: indice dei nomi"
   },
   "Header": {
     "brand": "Martirologio",
@@ -105,6 +106,7 @@
     "ids": "ID",
     "notesLink": "Note ed errata",
     "placesLink": "Indice dei luoghi",
+    "namesLink": "Indice dei nomi",
     "shelf": "⟵ Scaffale",
     "loading": "Caricamento…",
     "noText": "Questa edizione non ha testo per il {day} {month}.",
@@ -181,6 +183,23 @@
     "empty": "Nessun elogio di questa edizione ha ancora un luogo.",
     "loadError": "Non è stato possibile caricare l’indice.",
     "retry": "Riprova"
+  },
+  "Names": {
+    "title": "{title}: indice dei nomi",
+    "readEdition": "⟵ Leggi l’edizione",
+    "notesLink": "Note ed errata",
+    "placesLink": "Indice dei luoghi",
+    "letters": "Lettere",
+    "coverage": "{naming, number} dei {printed, number} elogi di questa edizione nominano qualcuno.",
+    "notIndexed": "Le persone di questa edizione non sono ancora indicizzate.",
+    "loadError": "Non è stato possibile caricare l’indice.",
+    "retry": "Riprova",
+    "inFootnote": "nella nota {n}",
+    "wikidata": "Wikidata"
+  },
+  "Letters": {
+    "previous": "Lettera precedente: {letter}",
+    "next": "Lettera successiva: {letter}"
   },
   "Map": {
     "filters": "Filtri",

@@ -44,6 +44,18 @@ exists. This spec covers the index of places only.
 - Headings are sorted with `Intl.Collator(locale, { sensitivity: "base" })`; the letter of a heading
   is its first letter with accents folded and in upper case.
 
+
+### One page per letter (decided 2026-10-09)
+
+The index is shown one letter at a time: `/<locale>/read/<edition>/places` shows the first letter,
+`/<locale>/read/<edition>/places/<letter>` any other (the letter in lowercase; `other` for "#"; 404 for
+a letter the index does not have). The letter bar links every letter's page and marks the current one
+(`aria-current="page"`); "← previous · next →" links close each page; a letter's `<title>` ends in
+" — <letter>". The whole list was too heavy for one page (6.0 MB of HTML for the names, 4.1 MB for the
+places, most of it the App Router's payload of the rendered list); a letter's page is at most 0.88 MB
+(names, I) and 0.46 MB (places). The day links of the index of names are plain links, for the same
+reason.
+
 ## Data
 
 ### Sources

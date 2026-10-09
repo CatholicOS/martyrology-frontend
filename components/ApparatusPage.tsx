@@ -11,6 +11,7 @@ import { dayPath, interfaceMonth, pad2 } from "@/lib/calendar";
 import { erratumPlace } from "@/lib/errata";
 import { editionLang, editionTitle } from "@/lib/editions";
 import { noteParts } from "@/lib/note-links";
+import { hasPersons } from "@/lib/persons-editions";
 import { getSnapshot } from "@/lib/snapshot";
 import type { EditionOut } from "@/lib/types";
 
@@ -88,6 +89,14 @@ export default function ApparatusPage({ edition }: { edition: string }) {
         <Link href={`/read/${encodeURIComponent(edition)}/places`} className="underline">
           {tReader("placesLink")}
         </Link>
+        {hasPersons(edition) && (
+          <>
+            {" · "}
+            <Link href={`/read/${encodeURIComponent(edition)}/names`} className="underline">
+              {tReader("namesLink")}
+            </Link>
+          </>
+        )}
       </p>
       <fieldset className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm" aria-label={t("show")}>
         {KINDS.map((key) => {

@@ -37,7 +37,7 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   // "2 gennaio", "2 janvier": the day before the month, as in English.
   "Metadata.dayTitle": ["it", "fr"],
   // Abbreviations and code-like values: API, ISBN, ID, a QID placeholder, field names in aria labels.
-  "Header.api": ALL, "Footer.repos.api": ALL, "Bookshelf.colophonIsbn": ALL, "Compare.columns.id": ALL, "Map.place.qidPlaceholder": ALL,
+  "Header.api": ALL, "Footer.repos.api": ALL, "Bookshelf.colophonIsbn": ALL, "Compare.columns.id": ALL, "Map.place.qidPlaceholder": ALL, "Names.wikidata": ALL,
   "Review.realign.ariaSplitAt": ALL, "Review.realign.ariaId": ALL, "Reader.ids": ["de", "pt"],
   // Latin names of the kinds of edition, kept in Latin in every language.
   "Bookshelf.nature.editio_typica": ALL, "Bookshelf.nature.editio_typica_altera": ALL,

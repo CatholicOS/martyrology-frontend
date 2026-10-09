@@ -1,3 +1,4 @@
+import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup, waitFor } from "@/test/intl";
 
@@ -63,6 +64,12 @@ const render1749 = (mm = 10, dd = 2, signedIn = false) =>
   render(<Reader edition="martyrologium_romanum_1749" mm={mm} dd={dd} signedIn={signedIn} />);
 
 describe("Reader", () => {
+  it("does not link to an index of names for an edition without persons", async () => {
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.queryByRole("link", { name: "Index of names" })).toBeNull();
+  });
+
   it("links to the edition's notes and its index of places", async () => {
     render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");
@@ -438,6 +445,57 @@ describe("Reader, id switch", () => {
 });
 
 describe("Reader, a link to a eulogy", () => {
+  // A client-side navigation (a link from the index of places or of names) puts the new address in
+  // place after the page renders and before its effects run: a parent's layout effect does the same.
+  function ArriveBy({ hash, children }: { hash: string; children: React.ReactNode }) {
+    React.useLayoutEffect(() => {
+      window.history.replaceState(null, "", `/read/martyrologium_romanum_1749/10/02#${hash}`);
+    }, [hash]);
+    return <>{children}</>;
+  }
+
+  it("finds the eulogy when a client-side navigation brings the address after rendering", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render(<ArriveBy hash="mr:1002-modestus-sardus"><Reader edition="martyrologium_romanum_1749" mm={10} dd={2} signedIn={false} /></ArriveBy>);
+    const found = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
+  const DAY_FN = {
+    ...DAY,
+    elogia: [{ ...DAY.elogia[0], footnotes: [{ mark: "1", after: "Sardi.", text: "A printed footnote on Modestus." }], marginalia: [] }],
+  };
+
+  it("finds the footnote named in the address when the page opens, without showing the IDs", async () => {
+    vi.mocked(getDay).mockResolvedValue(DAY_FN);
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-1");
+    render1749();
+    const note = await screen.findByText("A printed footnote on Modestus.");
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
+    expect(screen.getByRole("switch", { name: "IDs" })).not.toBeChecked();
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("finds the footnote when only the address's footnote changes, on the same day", async () => {
+    vi.mocked(getDay).mockResolvedValue(DAY_FN);
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render1749();
+    const note = await screen.findByText("A printed footnote on Modestus.");
+    expect(note.closest("li")).not.toHaveAttribute("data-found");
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-1");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("shows the day when the footnote in the address is not there", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-9");
+    render1749();
+    expect(await screen.findByText("Romae passio sancti Modesti Sardi.")).toBeInTheDocument();
+    window.history.replaceState(null, "", "/");
+  });
+
   it("finds the eulogy named in the address when the page opens", async () => {
     window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#mr:1002-modestus-sardus");
     render1749();

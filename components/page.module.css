@@ -39,6 +39,7 @@
 /* The note a link went to, once drawn: the same wash as a found eulogy. */
 .notes li[data-found] { animation: found 2.4s ease-out; }
 .notes li[tabindex="-1"]:focus { outline: none; }
+.notes li[tabindex="-1"]:focus:not([data-found]) { outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; border-radius: 3px; }
 /* The edition's own footnotes: marks as printed, in the text's colour; listed above the curators' notes. */
 .fnMark {
   color: inherit; font-size: 0.7em; line-height: 0; vertical-align: super; margin-left: 0.05em;
@@ -50,6 +51,10 @@
 .footnotes li { display: grid; grid-template-columns: 2.2em 1fr; margin: 0.35rem 0; scroll-margin-top: 6rem; border-radius: 3px; }
 .footnotes li .fnMark { font-size: 1em; vertical-align: baseline; line-height: inherit; margin: 0; text-align: right; padding-right: 0.5em; }
 .footnotes li:target { background: rgba(214, 170, 60, 0.25); }
+/* The footnote a link went to (the index of names), once drawn: the wash of a found eulogy. */
+.footnotes li[data-found] { animation: found 2.4s ease-out; }
+.footnotes li[tabindex="-1"]:focus { outline: none; }
+.footnotes li[tabindex="-1"]:focus:not([data-found]) { outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; border-radius: 3px; }
 .footnotes + .notes { margin-top: 0.75rem; }
 /*
  * Notes the edition prints in the margin (Baronius's references to his Annales): small italic
@@ -72,7 +77,7 @@
 @keyframes turnPrev { from { opacity: 0.2; transform: perspective(1200px) rotateY(-18deg); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   .turnNext, .turnPrev { animation: fade 0.2s ease; transform: none; }
-  .entry[data-found], .entry[data-found]:focus, .notes li[data-found] { animation: none; outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; }
+  .entry[data-found], .entry[data-found]:focus, .notes li[data-found], .footnotes li[data-found] { animation: none; outline: 2px solid rgba(214, 170, 60, 0.7); outline-offset: 2px; }
   @keyframes fade { from { opacity: 0.4; } to { opacity: 1; } }
 }
 

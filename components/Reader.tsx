@@ -54,11 +54,16 @@ export function __resetReaderState() {
 
 const FOUND_MS = 2400;
 
-/** The eulogy (`#mr:…`) or curator's note (`#note-…`) a link names in the address, if any. */
+/** The eulogy (`#mr:…`), curator's note (`#note-…`) or printed footnote (`#fn-…`) a link names in the address, if any. */
 function hashId(): string | null {
   if (typeof window === "undefined") return null;
   const id = decodeURIComponent(window.location.hash.slice(1));
-  return id.startsWith("mr:") || isNoteId(id) ? id : null;
+  return id.startsWith("mr:") || isNoteId(id) || isFootnoteId(id) ? id : null;
+}
+
+/** A printed footnote's element id: always drawn, so nothing needs switching on. */
+function isFootnoteId(id: string): boolean {
+  return id.startsWith("fn-");
 }
 
 /** A curator's note's element id: the notes are drawn only while the IDs are shown. */
@@ -66,9 +71,9 @@ function isNoteId(id: string): boolean {
   return id.startsWith("note-");
 }
 
-/** Scroll to the eulogy or note and mark it briefly; false while it is not drawn yet. */
+/** Scroll to the eulogy, note or footnote and mark it briefly; false while it is not drawn yet. */
 function reveal(root: HTMLElement, id: string): boolean {
-  const el = isNoteId(id)
+  const el = isNoteId(id) || isFootnoteId(id)
     ? [...root.querySelectorAll<HTMLElement>("[id]")].find((n) => n.id === id)
     : [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
   if (!el) return false;
@@ -118,11 +123,7 @@ export default function Reader({
   const touch = useRef<{ x: number; y: number } | null>(null);
   const pages = useRef<HTMLDivElement>(null);
   // A fresh object per search, so finding the same eulogy twice scrolls to it again.
-  const [target, setTarget] = useState<{ id: string } | null>(() => {
-    if (pendingTarget) return { id: pendingTarget };
-    const id = hashId();
-    return id ? { id } : null;
-  });
+  const [target, setTarget] = useState<{ id: string } | null>(() => (pendingTarget ? { id: pendingTarget } : null));
   const [showIds, setShowIds] = useShowIds();
 
   // A link to a curator's note shows the IDs, which draws the notes, so the note can be found.
@@ -132,14 +133,22 @@ export default function Reader({
 
   const navigated = useRef(false);
 
+  // The address's eulogy, note or footnote is read once the page is mounted, not while it renders:
+  // a client-side navigation (a link from an index) puts the new address in place only after the
+  // render. A search's pending target, set before the navigation, comes first.
   // A link to a eulogy on the open day (a curator's note naming another ID) only changes the hash.
   useEffect(() => {
+    let live = true;
     const onHash = () => {
       const id = hashId();
-      if (id) setTarget({ id });
+      if (live && id) setTarget({ id });
     };
+    if (!pendingTarget) queueMicrotask(onHash);
     window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    return () => {
+      live = false;
+      window.removeEventListener("hashchange", onHash);
+    };
   }, []);
 
   useEffect(() => {
