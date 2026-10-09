@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { parseChangeset, exportChangeset, opId, isAdjudicable, isMentionOp, type MentionOp } from "@/lib/changeset";
-import { convertManifest, splitByMonth, toBundledChangeset } from "@/scripts/import-changeset.mjs";
+import { convertManifest, main, quotesText, splitByMonth, toBundledChangeset, writeBundle } from "@/scripts/import-changeset.mjs";
 
 const manifest = [
   { old_id: "mr:0104-titi", new_id: "mr:0104-titus", action: "rename", new_subject_la: "Sanctus Titus", class: "A-genitive", confidence: "high", incipit: "In Creta natalis sancti Titi", reasoning: "person" },
@@ -101,5 +104,51 @@ describe("mention operations", () => {
     const out = exportChangeset(cs, { [add.id]: { decision: "edit", edited }, [remove.id]: { decision: "reject" } });
     expect(out.operations[0]).toMatchObject({ op: "add_mention", decision: "edit", edited });
     expect(out.operations[1]).toMatchObject({ op: "remove_mention", decision: "reject", edited: null });
+  });
+});
+
+describe("bundling the mentions review", () => {
+  const op = (id: string, eulogy: string, extra = {}) => ({ op: "add_mention", id, eulogy, edition: "martyrologium_romanum_2004", where: "text",
+    kind: "person", start: 0, end: 7, form: "Fictíni", context: "Fictíni et Ficti", context_start: 0, decision: null, edited: null, ...extra });
+  const cs = {
+    schema: "crmedr-changeset/v1" as const, generated_by: "scripts/extract_mentions.py",
+    base: { edition: "martyrologium_romanum_2004", registry: "data/mentions.json" },
+    operations: [op("e|mr:0101-a|text|0", "mr:0101-a"), op("e|mr:0315-b|text|0", "mr:0315-b")],
+  };
+
+  it("knows a change-set that quotes the text", () => {
+    expect(quotesText(cs)).toBe(true);
+    expect(quotesText({ ...cs, operations: [{ op: "resolve_place", id: "x", decision: null }] })).toBe(false);
+  });
+
+  it("refuses to write a change-set that quotes the text into the public repo, before writing anything", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cs-"));
+    expect(() => writeBundle(cs, "mentions-review", { byMonth: true, dir, isPublic: true })).toThrow(/--private/);
+    expect(readdirSync(dir)).toEqual([]);
+  });
+
+  it("writes a private bundle by month, without an index, replacing the earlier months", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cs-"));
+    writeFileSync(join(dir, "mentions-review-07.json"), "{}"); // a month now without operations
+    const written = writeBundle(cs, "mentions-review", { byMonth: true, dir, isPublic: false });
+    expect(written.map((f) => f.split(/[\\/]/).pop())).toEqual(["mentions-review-01.json", "mentions-review-03.json"]);
+    expect(readdirSync(dir).sort()).toEqual(["mentions-review-01.json", "mentions-review-03.json"]);
+    expect(existsSync(join(dir, "index.json"))).toBe(false);
+    expect(JSON.parse(readFileSync(join(dir, "mentions-review-03.json"), "utf8")).operations).toHaveLength(1);
+  });
+
+  it("still writes a public change-set with its index", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cs-"));
+    const places = { ...cs, operations: [{ op: "resolve_place", id: "Fictópoli", decision: null, edited: null }] };
+    writeBundle(places, "gazetteer-review", { byMonth: false, dir, isPublic: true });
+    expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["gazetteer-review.json"] });
+  });
+
+  it("refuses --private without CHANGESETS_DIR, and writes nothing", () => {
+    const work = mkdtempSync(join(tmpdir(), "cs-"));
+    const src = join(work, "src.json");
+    writeFileSync(src, JSON.stringify(cs));
+    expect(() => main([src, "mentions-review", "martyrologium_romanum_2004", "--by-month", "--private"], {})).toThrow(/CHANGESETS_DIR/);
+    expect(readdirSync(work)).toEqual(["src.json"]);
   });
 });
