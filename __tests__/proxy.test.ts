@@ -31,6 +31,11 @@ describe("proxy", () => {
     expect(getRedirectUrl(await proxy(req("/map", { cookie: "NEXT_LOCALE=xx", "accept-language": "es" })))).toBe("https://romanmartyrology.com/es/map");
   });
 
+  it("sends no hreflang Link header: the sitemap's alternates are the only ones, so the two cannot disagree", async () => {
+    const r = await proxy(req("/fr/read/martyrologium_romanum_1749/places/y"));
+    expect(r.headers.get("link") ?? "").not.toMatch(/hreflang/);
+  });
+
   it("serves a prefixed path as asked, and never sets the cookie", async () => {
     for (const [path, h] of [["/es/map", { cookie: "NEXT_LOCALE=de" }], ["/fr/docs", { "accept-language": "it" }]] as const) {
       const r = await proxy(req(path, h));
