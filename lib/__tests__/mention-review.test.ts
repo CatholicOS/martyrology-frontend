@@ -63,6 +63,11 @@ describe("contextWords, wordsIn and editedSpan", () => {
     expect(contextWords("Ancora a Londra, sant’Oliviero").map((w) => w.text)).toEqual(["Ancora", "a", "Londra", "sant", "Oliviero"]);
   });
 
+  it("does not take a lone hyphen for a word, and keeps a hyphenated name whole", () => {
+    expect(contextWords("Fictus - Nemo").map((w) => w.text)).toEqual(["Fictus", "Nemo"]);
+    expect(contextWords("sancti Nemónis-Fictíni, epíscopi").map((w) => w.text)).toEqual(["sancti", "Nemónis-Fictíni", "epíscopi"]);
+  });
+
   it("finds the words a range covers", () => {
     expect(wordsIn(words, { start: 36, end: 52 })).toEqual([5, 7]);
     expect(wordsIn(words, null)).toBeNull();

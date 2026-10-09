@@ -44,9 +44,8 @@ export function mentionRanges(op: MentionOp, decision?: DecisionRecord): Mention
   const current = own.current;
   const proposed = edited ?? own.proposed;
   if ([current, proposed].some((r) => r !== null && !fits(op, r))) return { current: null, proposed: null, problem: "outside" };
-  // An edit's words are read from the context, so only the op's own words are checked against their form.
-  const forms = edited ? own.forms.filter(([r]) => r === own.current) : own.forms;
-  const changed = forms.some(([r, form]) => op.context.slice(r.start, r.end) !== form);
+  // A saved edit's words are read from the context, so there is no form to check them against.
+  const changed = !edited && own.forms.some(([r, form]) => op.context.slice(r.start, r.end) !== form);
   return { current, proposed, problem: changed ? "changed" : null };
 }
 
@@ -79,8 +78,9 @@ export interface Word {
   end: number;
 }
 
-// Letters, combining accents, digits and hyphens; an apostrophe ends a word, so "sant’Oliviero" is two.
-const WORD = /[\p{L}\p{M}\p{N}-]+/gu;
+// A word starts with a letter, accent or digit and may hold hyphens ("Nemónis-Fictíni" is one); a lone
+// hyphen is not a word. An apostrophe ends a word, so "sant’Oliviero" is two.
+const WORD = /[\p{L}\p{M}\p{N}]+(?:[-‐][\p{L}\p{M}\p{N}]+)*/gu;
 
 /** The context's words, with their offsets: what a curator picks a span from. */
 export function contextWords(context: string): Word[] {
