@@ -125,7 +125,7 @@ export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
   const written = [];
   if (byMonth) {
     // A month now without operations must not keep its earlier part.
-    for (const f of readdirSync(dir)) if (new RegExp(`^${name}-\\d{2}\\.json$`).test(f)) unlinkSync(join(dir, f));
+    for (const f of readdirSync(dir)) if (f.startsWith(`${name}-`) && /^\d{2}\.json$/.test(f.slice(name.length + 1))) unlinkSync(join(dir, f));
     for (const part of splitByMonth(cs, name)) {
       const dest = join(dir, `${part.name}.json`);
       writeFileSync(dest, JSON.stringify(part.changeset) + "\n"); // compact: these are large

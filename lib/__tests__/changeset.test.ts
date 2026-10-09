@@ -137,6 +137,16 @@ describe("bundling the mentions review", () => {
     expect(JSON.parse(readFileSync(join(dir, "mentions-review-03.json"), "utf8")).operations).toHaveLength(1);
   });
 
+  it("treats the bundle name literally when clearing stale month files", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cs-"));
+    for (const f of ["a.b-07.json", "aXb-07.json", "a.b-x7.json"]) writeFileSync(join(dir, f), "{}");
+    writeBundle(cs, "a.b", { byMonth: true, dir, isPublic: false });
+    const left = readdirSync(dir);
+    expect(left).not.toContain("a.b-07.json");
+    expect(left).toContain("aXb-07.json");
+    expect(left).toContain("a.b-x7.json");
+  });
+
   it("still writes a public change-set with its index", () => {
     const dir = mkdtempSync(join(tmpdir(), "cs-"));
     const places = { ...cs, operations: [{ op: "resolve_place", id: "Fictópoli", decision: null, edited: null }] };
