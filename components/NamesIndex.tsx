@@ -1,4 +1,4 @@
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth } from "@/lib/calendar";
@@ -15,6 +15,7 @@ export default function NamesIndex({ edition, title, index, error = false }: {
 }) {
   const t = useTranslations("Names");
   const format = useFormatter();
+  const locale = useLocale();
   const ed = encodeURIComponent(edition);
 
   return (
@@ -66,9 +67,11 @@ export default function NamesIndex({ edition, title, index, error = false }: {
                       const hash = line.footnote ? fnAnchor(edition, line.id, line.footnote) : line.id;
                       return (
                         <li key={`${line.id}-${line.footnote ?? 0}`}>
-                          <Link href={`${dayPath(edition, line.day)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
+                          {/* A plain link, with the locale: the page has thousands, and a client Link each
+                              would weigh the page down (it opens the day with a page load). */}
+                          <a href={`/${locale}${dayPath(edition, line.day)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
                             {day}
-                          </Link>
+                          </a>
                           {" · "}
                           {line.subject}
                           {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
