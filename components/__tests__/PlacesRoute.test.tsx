@@ -19,6 +19,7 @@ vi.mock("@/lib/places", () => ({
 }));
 
 import PlacesRoute, { generateMetadata } from "@/app/[locale]/read/[edition]/places/page";
+import PlacesLetterRoute, { generateMetadata as letterMetadata } from "@/app/[locale]/read/[edition]/places/[letter]/page";
 
 const params = (edition: string) => ({ params: Promise.resolve({ locale: "en", edition }) });
 const E = { edition_id: "martyrologium_romanum_2004_it_IT", year: 2004, locale: "it-IT" };
@@ -68,5 +69,26 @@ describe("/read/<edition>/places", () => {
 
   it("titles the page with the edition", async () => {
     expect((await generateMetadata(params(E.edition_id))).title).toBe("Martirologio Romano 2004: index of places");
+  });
+
+  it("shows the first letter on the index's own page, and a letter's on its page, whatever the case", async () => {
+    render(await PlacesRoute(params("martyrologium_romanum_2004_it_IT")));
+    const first = indexProps.mock.calls[0][0];
+    expect(first.letter).toBeUndefined();
+    indexProps.mockReset();
+    const letterParams = (letter: string) => ({ params: Promise.resolve({ locale: "en", edition: "martyrologium_romanum_2004_it_IT", letter }) });
+    const someLetter = first.index.letters[0].letter as string;
+    render(await PlacesLetterRoute(letterParams(someLetter.toUpperCase())));
+    expect(indexProps.mock.calls[0][0].letter).toBe(someLetter);
+  });
+
+  it("404s on a letter the index does not have", async () => {
+    const letterParams = { params: Promise.resolve({ locale: "en", edition: "martyrologium_romanum_2004_it_IT", letter: "q" }) };
+    await expect(PlacesLetterRoute(letterParams)).rejects.toThrow("NEXT_NOT_FOUND");
+  });
+
+  it("titles a letter's page with the letter", async () => {
+    const letterParams = { params: Promise.resolve({ locale: "en", edition: "martyrologium_romanum_2004_it_IT", letter: "b" }) };
+    expect((await letterMetadata(letterParams)).title).toMatch(/ — B$/);
   });
 });

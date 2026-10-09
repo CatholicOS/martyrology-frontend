@@ -197,6 +197,10 @@
     "inFootnote": "nella nota {n}",
     "wikidata": "Wikidata"
   },
+  "Letters": {
+    "previous": "Lettera precedente: {letter}",
+    "next": "Lettera successiva: {letter}"
+  },
   "Map": {
     "filters": "Filtri",
     "error": {

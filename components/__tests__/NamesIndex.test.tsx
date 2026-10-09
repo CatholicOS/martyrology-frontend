@@ -20,10 +20,20 @@ const index: NamesIndexData = {
     ] },
   ],
 };
-const renderIndex = (i: NamesIndexData | null = index, error = false) =>
-  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} />);
+const renderIndex = (i: NamesIndexData | null = index, error = false, letter?: string) =>
+  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} />);
 
 describe("NamesIndex", () => {
+  it("shows one letter, the first by default, with a bar linking every letter's page and the next letter", () => {
+    renderIndex();
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("B");
+    expect(screen.queryByRole("heading", { level: 3, name: /Theodorus/ })).toBeNull();
+    const bar = screen.getByRole("navigation", { name: "Letters" });
+    expect(within(bar).getByText("B")).toHaveAttribute("aria-current", "page");
+    expect(within(bar).getByRole("link", { name: "T" })).toHaveAttribute("href", `/en/read/${ED}/names/t`);
+    expect(screen.getByRole("link", { name: "Next letter: T" })).toHaveAttribute("href", `/en/read/${ED}/names/t`);
+  });
+
   it("titles the page and links to the edition, its notes and its places", () => {
     renderIndex();
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("MARTYROLOGIUM ROMANUM 2004: index of names");
@@ -37,7 +47,7 @@ describe("NamesIndex", () => {
   });
 
   it("links a person without a label to Wikidata by name, and an unidentified one not at all", () => {
-    renderIndex();
+    renderIndex(index, false, "T");
     expect(within(screen.getByRole("heading", { level: 3, name: /Theodorus/ })).getByRole("link", { name: "Wikidata ↗" }))
       .toHaveAttribute("href", "https://www.wikidata.org/wiki/Q9");
     expect(within(screen.getByRole("heading", { level: 3, name: /^Thomas/ })).queryByRole("link")).toBeNull();
@@ -47,6 +57,10 @@ describe("NamesIndex", () => {
     renderIndex();
     expect(screen.getByRole("link", { name: "2 January · Sancti Basilius et Gregorius" }))
       .toHaveAttribute("href", `/en/read/${ED}/01/02#mr:0102-basilius`);
+  });
+
+  it("links a footnote mention to the footnote", () => {
+    renderIndex(index, false, "T");
     const fn = screen.getByRole("link", { name: "6 February · Sancti Paulus Miki et socii" });
     expect(fn).toHaveAttribute("href", `/en/read/${ED}/02/06#fn-${ED}-mr:0206-paulus-miki-et-socii-1`);
     expect(fn.closest("li")).toHaveTextContent("in footnote 1");

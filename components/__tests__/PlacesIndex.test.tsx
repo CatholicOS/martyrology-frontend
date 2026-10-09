@@ -18,8 +18,8 @@ const index: PlacesIndexData = {
   ],
 };
 
-const renderIndex = (i: PlacesIndexData | null = index) =>
-  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} />);
+const renderIndex = (i: PlacesIndexData | null = index, letter?: string) =>
+  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} />);
 
 describe("PlacesIndex", () => {
   it("titles the page and links back to the edition and its notes", () => {
@@ -29,17 +29,23 @@ describe("PlacesIndex", () => {
     expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/notes");
   });
 
-  it("links each letter to its section", () => {
+  it("shows one letter, the first by default, with a bar linking every letter's page", () => {
     renderIndex();
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("L");
+    expect(screen.queryByRole("heading", { level: 3, name: /Rome/ })).toBeNull();
     const bar = screen.getByRole("navigation", { name: "Letters" });
-    expect(within(bar).getAllByRole("link").map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
-      ["L", "#letter-L"], ["R", "#letter-R"],
-    ]);
-    expect(document.getElementById("letter-R")).toHaveTextContent("Rome");
+    expect(within(bar).getByText("L")).toHaveAttribute("aria-current", "page");
+    expect(within(bar).getByRole("link", { name: "R" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/places/r");
+  });
+
+  it("links the previous and next letters", () => {
+    renderIndex(index, "R");
+    expect(screen.getByRole("link", { name: "Previous letter: L" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/places/l");
+    expect(screen.queryByRole("link", { name: /Next letter/ })).toBeNull();
   });
 
   it("heads a place with its name and country, and lists its eulogies with day links to the eulogy", () => {
-    renderIndex();
+    renderIndex(index, "R");
     const rome = screen.getByRole("heading", { level: 3, name: /Rome/ });
     expect(rome).toHaveTextContent("Rome (Italy)");
     const day = screen.getByRole("link", { name: "1 January · Sanctus Almachius" });
@@ -48,10 +54,10 @@ describe("PlacesIndex", () => {
   });
 
   it("names each day link with its eulogy, so a list of links tells them apart", () => {
-    renderIndex();
+    renderIndex(index, "R");
     const days = screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.includes("#mr:"));
     expect(days.map((a) => a.getAttribute("aria-label"))).toEqual([
-      "3 January · Sanctus Thomas", "1 January · Sanctus Almachius", "2 January · Sancta Cæcilia", "4 January · Sanctus Novus",
+      "1 January · Sanctus Almachius", "2 January · Sancta Cæcilia", "4 January · Sanctus Novus",
     ]);
   });
 
@@ -60,12 +66,16 @@ describe("PlacesIndex", () => {
     expect(screen.getByText("Londínii").tagName).toBe("I");
     const thomas = screen.getByRole("link", { name: "3 January · Sanctus Thomas" }).closest("li")!;
     expect(thomas).not.toHaveTextContent("Dies natalis");
+  });
+
+  it("shows the typology unless dies natalis", () => {
+    renderIndex(index, "R");
     const caecilia = screen.getByRole("link", { name: "2 January · Sancta Cæcilia" }).closest("li")!;
     expect(caecilia).toHaveTextContent("Depositio");
   });
 
   it("shows no label for a typology the messages don't know", () => {
-    renderIndex();
+    renderIndex(index, "R");
     const novus = screen.getByRole("link", { name: "4 January · Sanctus Novus" }).closest("li")!;
     expect(novus).toHaveTextContent("Sanctus Novus");
     expect(novus).not.toHaveTextContent("nova_typologia");
@@ -92,7 +102,7 @@ describe("PlacesIndex", () => {
   });
 
   it("names places and countries in the interface language", () => {
-    render(<PlacesIndex edition="martyrologium_romanum_2004" title="X" index={index} />, { locale: "it" });
+    render(<PlacesIndex edition="martyrologium_romanum_2004" title="X" index={index} letter="R" />, { locale: "it" });
     expect(screen.getByRole("heading", { level: 3, name: /Rome/ })).toHaveTextContent("Rome (Italia)");
   });
 });
