@@ -54,11 +54,16 @@ export function __resetReaderState() {
 
 const FOUND_MS = 2400;
 
-/** The eulogy (`#mr:…`) or curator's note (`#note-…`) a link names in the address, if any. */
+/** The eulogy (`#mr:…`), curator's note (`#note-…`) or printed footnote (`#fn-…`) a link names in the address, if any. */
 function hashId(): string | null {
   if (typeof window === "undefined") return null;
   const id = decodeURIComponent(window.location.hash.slice(1));
-  return id.startsWith("mr:") || isNoteId(id) ? id : null;
+  return id.startsWith("mr:") || isNoteId(id) || isFootnoteId(id) ? id : null;
+}
+
+/** A printed footnote's element id: always drawn, so nothing needs switching on. */
+function isFootnoteId(id: string): boolean {
+  return id.startsWith("fn-");
 }
 
 /** A curator's note's element id: the notes are drawn only while the IDs are shown. */
@@ -66,9 +71,9 @@ function isNoteId(id: string): boolean {
   return id.startsWith("note-");
 }
 
-/** Scroll to the eulogy or note and mark it briefly; false while it is not drawn yet. */
+/** Scroll to the eulogy, note or footnote and mark it briefly; false while it is not drawn yet. */
 function reveal(root: HTMLElement, id: string): boolean {
-  const el = isNoteId(id)
+  const el = isNoteId(id) || isFootnoteId(id)
     ? [...root.querySelectorAll<HTMLElement>("[id]")].find((n) => n.id === id)
     : [...root.querySelectorAll<HTMLElement>("[data-eulogy-id]")].find((n) => n.dataset.eulogyId === id);
   if (!el) return false;

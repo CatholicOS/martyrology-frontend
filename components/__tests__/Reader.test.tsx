@@ -438,6 +438,28 @@ describe("Reader, id switch", () => {
 });
 
 describe("Reader, a link to a eulogy", () => {
+  const DAY_FN = {
+    ...DAY,
+    elogia: [{ ...DAY.elogia[0], footnotes: [{ mark: "1", after: "Sardi.", text: "A printed footnote on Modestus." }], marginalia: [] }],
+  };
+
+  it("finds the footnote named in the address when the page opens, without showing the IDs", async () => {
+    vi.mocked(getDay).mockResolvedValue(DAY_FN);
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-1");
+    render1749();
+    const note = await screen.findByText("A printed footnote on Modestus.");
+    await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
+    expect(screen.getByRole("switch", { name: "IDs" })).not.toBeChecked();
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("shows the day when the footnote in the address is not there", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#fn-martyrologium_romanum_1749-mr:1002-modestus-sardus-9");
+    render1749();
+    expect(await screen.findByText("Romae passio sancti Modesti Sardi.")).toBeInTheDocument();
+    window.history.replaceState(null, "", "/");
+  });
+
   it("finds the eulogy named in the address when the page opens", async () => {
     window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02#mr:1002-modestus-sardus");
     render1749();
