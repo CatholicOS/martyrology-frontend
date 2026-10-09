@@ -433,6 +433,28 @@
       "reason": "Motif",
       "confirm": "Confirmer",
       "cancel": "Annuler"
+    },
+    "mention": {
+      "kind": {
+        "person": "personne",
+        "place": "lieu"
+      },
+      "title": {
+        "add_mention": "Marquer ces mots comme {kind, select, person {une personne} other {un lieu}}",
+        "set_span": "Déplacer la marque de {kind, select, person {cette personne} other {ce lieu}}",
+        "remove_mention": "Retirer la marque de {kind, select, person {cette personne} other {ce lieu}}"
+      },
+      "current": "Marqué maintenant",
+      "proposed": "Proposé",
+      "noSpan": "Introuvable dans le texte : choisissez les mots à marquer.",
+      "outside": "Les mots proposés sortent du texte cité : cette opération ne peut pas être décidée ici.",
+      "changed": "Le texte cité n’a plus ces mots à cet endroit : cette opération ne peut pas être acceptée.",
+      "why": "Pourquoi : {text}",
+      "choose": "Choisir les mots",
+      "hint": "Cliquez sur le premier mot, puis sur le dernier.",
+      "words": "Mots du texte",
+      "selected": "Mots choisis : {form}",
+      "save": "Enregistrer les mots"
     }
   },
   "Docs": {

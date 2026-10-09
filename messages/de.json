@@ -433,6 +433,28 @@
       "reason": "Grund",
       "confirm": "Bestätigen",
       "cancel": "Abbrechen"
+    },
+    "mention": {
+      "kind": {
+        "person": "Person",
+        "place": "Ort"
+      },
+      "title": {
+        "add_mention": "Diese Wörter als {kind, select, person {eine Person} other {einen Ort}} markieren",
+        "set_span": "Markierung {kind, select, person {dieser Person} other {dieses Orts}} verschieben",
+        "remove_mention": "Markierung {kind, select, person {dieser Person} other {dieses Orts}} entfernen"
+      },
+      "current": "Jetzt markiert",
+      "proposed": "Vorgeschlagen",
+      "noSpan": "Nicht im Text gefunden: Wörter zum Markieren auswählen.",
+      "outside": "Die vorgeschlagenen Wörter liegen außerhalb des zitierten Textes: Diese Operation kann hier nicht entschieden werden.",
+      "changed": "Der zitierte Text hat diese Wörter an dieser Stelle nicht mehr: Diese Operation kann nicht angenommen werden.",
+      "why": "Warum: {text}",
+      "choose": "Wörter auswählen",
+      "hint": "Erst auf das erste Wort klicken, dann auf das letzte.",
+      "words": "Wörter des Textes",
+      "selected": "Ausgewählt: {form}",
+      "save": "Wörter speichern"
     }
   },
   "Docs": {

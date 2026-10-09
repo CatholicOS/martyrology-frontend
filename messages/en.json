@@ -433,6 +433,28 @@
       "reason": "Reason",
       "confirm": "Confirm",
       "cancel": "Cancel"
+    },
+    "mention": {
+      "kind": {
+        "person": "person",
+        "place": "place"
+      },
+      "title": {
+        "add_mention": "Mark these words as {kind, select, person {a person} other {a place}}",
+        "set_span": "Move the mark on {kind, select, person {this person} other {this place}}",
+        "remove_mention": "Remove the mark on {kind, select, person {this person} other {this place}}"
+      },
+      "current": "Marked now",
+      "proposed": "Proposed",
+      "noSpan": "Not found in the text: choose the words to mark.",
+      "outside": "The proposed words fall outside the quoted text: this operation can't be decided here.",
+      "changed": "The quoted text no longer has these words in this place: this operation can't be accepted.",
+      "why": "Why: {text}",
+      "choose": "Choose the words",
+      "hint": "Click the first word, then the last.",
+      "words": "Words of the text",
+      "selected": "Chosen: {form}",
+      "save": "Save the words"
     }
   },
   "Docs": {
