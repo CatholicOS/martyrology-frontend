@@ -42,7 +42,7 @@ export async function PlacesPage({ locale, edition, slug }: { locale: string; ed
   }
   return (
     <main className="mx-auto max-w-5xl py-4 sm:p-4">
-      <PlacesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} letter={letter} />
+      <PlacesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} letter={letter} lang={e ? editionLang(e) : undefined} />
     </main>
   );
 }

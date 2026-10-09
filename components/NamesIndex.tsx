@@ -1,8 +1,9 @@
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
-import { dayPath, interfaceMonth } from "@/lib/calendar";
+import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { fnAnchor, type NamesIndexData } from "@/lib/names-index";
 
 /**
@@ -10,9 +11,10 @@ import { fnAnchor, type NamesIndexData } from "@/lib/names-index";
  * eulogies name, A–Z by their Latin names, the identified ones with their name in the interface
  * language linked to Wikidata; each mention links to its eulogy, or to the footnote that names it.
  * `index` null: crmedr has no persons for the edition yet (or, with `error`, the catalog failed).
+ * `lang`: the edition's language, which its names and subjects are in, inside a page in the interface language.
  */
-export default function NamesIndex({ edition, title, index, error = false, letter }: {
-  edition: string; title: string; index: NamesIndexData | null; error?: boolean; letter?: string;
+export default function NamesIndex({ edition, title, index, error = false, letter, lang }: {
+  edition: string; title: string; index: NamesIndexData | null; error?: boolean; letter?: string; lang?: Lang;
 }) {
   const t = useTranslations("Names");
   const format = useFormatter();
@@ -49,11 +51,12 @@ export default function NamesIndex({ edition, title, index, error = false, lette
             {shown.persons.map((p) => (
               <div key={p.key} className="mb-4">
                 <h3 className="font-semibold">
-                  {p.name}
+                  <span lang={lang}>{p.name}</span>
                   {p.qid && (
                     <>
                       {" "}
-                      <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer">
+                      <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer"
+                        lang={langOn(p.labelLang, locale)}>
                         {`${p.label ?? t("wikidata")} ↗`}
                       </a>
                     </>
@@ -71,7 +74,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
                           {day}
                         </a>
                         {" · "}
-                        {line.subject}
+                        <span lang={lang}>{line.subject}</span>
                         {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
                       </li>
                     );

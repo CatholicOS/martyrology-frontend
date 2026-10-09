@@ -16,6 +16,8 @@ export interface PlaceLine {
 export interface IndexPlace {
   qid: string;
   label: string;
+  /** The label's language: the interface's, or English when it fell back; null when the heading is the QID. */
+  labelLang: Locale | null;
   country: string;
   lines: PlaceLine[];
 }
@@ -42,6 +44,12 @@ const PRINTED_FORM: Record<string, "la" | "it"> = {
 /** A place's heading: its label in the interface language, else in English, else the gazetteer's, else its QID. */
 export function placeLabel(place: PlaceInfo, qid: string, locale: Locale): string {
   return place.labels?.[locale] || place.labels?.en || place.label || qid;
+}
+
+/** The language of `placeLabel`'s heading: the gazetteer's own label is English; a QID has none. */
+export function placeLabelLang(place: PlaceInfo, locale: Locale): Locale | null {
+  if (place.labels?.[locale]) return locale;
+  return place.labels?.en || place.label ? "en" : null;
 }
 
 /** Letters a heading can be filed under; modifier letters (the ʼ of "ʼs-Hertogenbosch") are not. */
@@ -96,7 +104,7 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
     placed++;
     let p = byPlace.get(ep.place);
     if (!p) {
-      p = { qid: ep.place, label: placeLabel(place, ep.place, locale), country: place.country, lines: [] };
+      p = { qid: ep.place, label: placeLabel(place, ep.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
       byPlace.set(ep.place, p);
     }
     p.lines.push({

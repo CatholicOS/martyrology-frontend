@@ -1,6 +1,8 @@
 import type { useTranslations } from "next-intl";
+import type { Locale } from "@/i18n/routing";
 import type { Day } from "@/lib/calendar";
 import type { PlacesSnapshot } from "@/lib/places";
+import { placeLabel, placeLabelLang } from "@/lib/places-index";
 import type { CatalogEntryOut } from "@/lib/types";
 
 /** One eulogy an edition prints, at its place. */
@@ -14,7 +16,12 @@ export interface MapEntry {
   entry: number | null;
   qid: string;
   la: string;
+  /** The place's name in the interface language, else English (as the index of places heads it). */
   label: string;
+  /** The label's language: the interface's, or English when it fell back; null when the label is the QID. */
+  labelLang: Locale | null;
+  /** The gazetteer's (English) name, kept for searching. */
+  labelEn: string;
   country: string;
   coords: [number, number];
   typology: string | null;
@@ -45,6 +52,7 @@ const TYPOLOGY_ORDER = [
 export function mapEntries(
   catalog: CatalogEntryOut[],
   snap: PlacesSnapshot,
+  locale: Locale,
   /** The subject to show for an eulogy (the interface language's); the catalog's own, else the ID, by default. */
   subjectOf: (id: string, catalogSubject: string) => string = (_id, s) => s,
 ): { entries: MapEntry[]; unmapped: number } {
@@ -67,7 +75,9 @@ export function mapEntries(
       entry: c.entry ?? null,
       qid: ep.place,
       la: ep.la,
-      label: place.label,
+      label: placeLabel(place, ep.place, locale),
+      labelLang: placeLabelLang(place, locale),
+      labelEn: place.label,
       country: place.country,
       coords: place.coords,
       typology: ep.typology,
@@ -92,11 +102,11 @@ function fold(s: string): string {
     .replace(/œ/g, "oe");
 }
 
-/** Whether the search text is in the eulogy's subject, ID, printed place or the place's label. */
+/** Whether the search text is in the eulogy's subject, ID, printed place or the place's name (shown, or English). */
 export function matchesQuery(e: MapEntry, query: string): boolean {
   const q = fold(query.trim());
   if (!q) return true;
-  return [e.subject, e.editionSubject, e.id, e.la, e.label].some((s) => fold(s).includes(q));
+  return [e.subject, e.editionSubject, e.id, e.la, e.label, e.labelEn].some((s) => fold(s).includes(q));
 }
 
 const typologyKey = (e: MapEntry) => e.typology ?? NO_TYPOLOGY;

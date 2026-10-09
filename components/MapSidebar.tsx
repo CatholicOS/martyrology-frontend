@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { langOn } from "@/i18n/routing";
 import { natureLabel, sortForShelf, yearAndLanguage } from "@/lib/editions";
 import { typologyLabel, type MapEntry, type MapFilters } from "@/lib/map-data";
 import type { EditionOut } from "@/lib/types";
@@ -18,7 +19,8 @@ interface Props {
   mapped: number;
   unmapped: number;
   /** The place whose eulogies the list shows (a single-place cluster was clicked), or null. */
-  place: { label: string; count: number } | null;
+  /** The place picked on the map: its names (one point can hold two places), each in its language. */
+  place: { labels: { label: string; lang: string | null }[]; count: number } | null;
   onShowAll: () => void;
   selected: string | null;
   onSelect: (id: string) => void;
@@ -150,7 +152,14 @@ export default function MapSidebar(p: Props) {
           {p.place && (
             <div className="flex items-baseline justify-between gap-2">
               <h2 className="font-semibold">
-                {t("placeHeading", { label: p.place.label, count: p.place.count })}
+                {t.rich("placeHeading", {
+                  label: p.place.labels.map((l) => l.label).join(" / "),
+                  count: p.place.count,
+                  // Each name in its own language, rather than the joined text the message holds.
+                  place: () => p.place!.labels.map((l, i) => (
+                    <Fragment key={l.label}>{i > 0 && " / "}<span lang={langOn(l.lang, locale)}>{l.label}</span></Fragment>
+                  )),
+                })}
               </h2>
               <button
                 type="button"
@@ -177,7 +186,7 @@ export default function MapSidebar(p: Props) {
                   >
                     <span className="block">{e.subject}</span>
                     <span className="block font-mono text-xs text-slate-500 dark:text-slate-400">
-                      {e.id} · {e.label}
+                      {e.id} · <span lang={langOn(e.labelLang, locale)}>{e.label}</span>
                     </span>
                   </button>
                 </li>

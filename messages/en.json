@@ -219,7 +219,7 @@
     "retry": "Retry",
     "loading": "Loading…",
     "summary": "{shown} shown · {mapped} mapped · {unmapped} not mapped in this edition",
-    "placeHeading": "{label} — {count, plural, one {# eulogy} other {# eulogies}}",
+    "placeHeading": "<place>{label}</place> — {count, plural, one {# eulogy} other {# eulogies}}",
     "showAll": "Show all",
     "noMatches": "No eulogy matches these filters.",
     "moreRows": "and {count} more — narrow the search to list them.",

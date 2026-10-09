@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { compareLines, headingLetter, placeLabel, placesIndex, type PlaceLine } from "@/lib/places-index";
+import { compareLines, headingLetter, placeLabel, placeLabelLang, placesIndex, type PlaceLine } from "@/lib/places-index";
 import type { PlacesSnapshot } from "@/lib/places";
 import type { CatalogEntryOut } from "@/lib/types";
 
@@ -131,6 +131,14 @@ describe("placeLabel", () => {
     expect(placeLabel(snap.places.Q220, "Q220", "de")).toBe("Rom");
     expect(placeLabel(snap.places.Q84, "Q84", "de")).toBe("London");
     expect(placeLabel({ label: "", country: "", coords: null }, "Q9", "de")).toBe("Q9");
+  });
+
+  it("says which language the heading is in: the interface's, English (the gazetteer's too), or none for a QID", () => {
+    expect(placeLabelLang(snap.places.Q220, "de")).toBe("de");
+    expect(placeLabelLang(snap.places.Q84, "de")).toBe("en");
+    expect(placeLabelLang(snap.places.Q1, "it")).toBe("en");
+    expect(placeLabelLang({ label: "", country: "", coords: null }, "de")).toBeNull();
+    expect(placesIndex(catalog, snap, LA, "de").letters.flatMap((l) => l.places).find((p) => p.qid === "Q84")?.labelLang).toBe("en");
   });
 });
 

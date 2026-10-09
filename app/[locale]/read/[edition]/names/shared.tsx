@@ -47,7 +47,7 @@ export async function NamesPage({ locale, edition, slug }: { locale: string; edi
   }
   return (
     <main className="mx-auto max-w-5xl py-4 sm:p-4">
-      <NamesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} error={error} letter={letter} />
+      <NamesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} error={error} letter={letter} lang={e ? editionLang(e) : undefined} />
     </main>
   );
 }

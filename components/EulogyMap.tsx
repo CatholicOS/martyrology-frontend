@@ -9,7 +9,7 @@ import type { CircleMarker, Map as LeafletMap, Marker, MarkerClusterGroup } from
 import { dayPath } from "@/lib/calendar";
 import { describeError } from "@/lib/describe-error";
 import { getPathname } from "@/i18n/navigation";
-import type { Locale } from "@/i18n/routing";
+import { langOn, type Locale } from "@/i18n/routing";
 import { typologyLabel, type MapEntry } from "@/lib/map-data";
 
 interface Props {
@@ -45,8 +45,13 @@ function popupFor(e: MapEntry, edition: string, t: MapT, locale: Locale): HTMLEl
   root.append(el("p", e.subject, "font-semibold"));
   root.append(el("p", e.id, "font-mono text-xs"));
   root.append(el("p", typologyLabel(t, e.typology)));
-  const place = el("p", `${e.la} · `);
+  const place = el("p");
+  const printed = el("span", e.la);
+  printed.lang = "la";
+  place.append(printed, " · ");
   const wd = el("a", e.label);
+  const wdLang = langOn(e.labelLang, locale);
+  if (wdLang) wd.lang = wdLang;
   wd.href = `https://www.wikidata.org/wiki/${e.qid}`;
   wd.target = "_blank";
   wd.rel = "noreferrer";

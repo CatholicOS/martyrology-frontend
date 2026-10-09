@@ -7,21 +7,21 @@ const ED = "martyrologium_romanum_2004";
 const index: NamesIndexData = {
   printed: 5, naming: 4,
   letters: [
-    { letter: "B", persons: [{ key: "Q1", name: "Basilius", qid: "Q1", label: "Basil the Great", lines: [
+    { letter: "B", persons: [{ key: "Q1", name: "Basilius", qid: "Q1", label: "Basil the Great", labelLang: "en", lines: [
       { id: "mr:0102-basilius", day: { mm: 1, dd: 2 }, entry: 1, subject: "Sancti Basilius et Gregorius", footnote: null },
     ] }] },
     { letter: "T", persons: [
-      { key: "name:Thomas", name: "Thomas", qid: null, label: null, lines: [
+      { key: "name:Thomas", name: "Thomas", qid: null, label: null, labelLang: null, lines: [
         { id: "mr:0206-paulus-miki-et-socii", day: { mm: 2, dd: 6 }, entry: 1, subject: "Sancti Paulus Miki et socii", footnote: 1 },
       ] },
-      { key: "Q9", name: "Theodorus", qid: "Q9", label: null, lines: [
+      { key: "Q9", name: "Theodorus", qid: "Q9", label: null, labelLang: null, lines: [
         { id: "mr:1109-theodorus", day: { mm: 11, dd: 9 }, entry: 2, subject: "Sanctus Theodorus", footnote: null },
       ] },
     ] },
   ],
 };
-const renderIndex = (i: NamesIndexData | null = index, error = false, letter?: string) =>
-  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} />);
+const renderIndex = (i: NamesIndexData | null = index, error = false, letter?: string, locale: "en" | "de" = "en") =>
+  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} lang="la" />, { locale });
 
 describe("NamesIndex", () => {
   it("shows one letter, the first by default, with a bar linking every letter's page and the next letter", () => {
@@ -44,6 +44,18 @@ describe("NamesIndex", () => {
     renderIndex();
     const h = screen.getByRole("heading", { level: 3, name: /Basilius/ });
     expect(within(h).getByRole("link", { name: "Basil the Great ↗" })).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q1");
+  });
+
+  it("marks the names and subjects as the edition's language, and the interface name as the page's", () => {
+    renderIndex();
+    expect(screen.getByText("Basilius")).toHaveAttribute("lang", "la");
+    expect(screen.getByText("Sancti Basilius et Gregorius")).toHaveAttribute("lang", "la");
+    expect(screen.getByRole("link", { name: "Basil the Great ↗" }).closest("[lang]")).toBeNull();
+  });
+
+  it("marks a Wikidata label that fell back to English as English, on a page in another language", () => {
+    renderIndex(index, false, undefined, "de");
+    expect(screen.getByRole("link", { name: "Basil the Great ↗" })).toHaveAttribute("lang", "en");
   });
 
   it("links a person without a label to Wikidata by name, and an unidentified one not at all", () => {

@@ -219,7 +219,7 @@
     "retry": "Reintentar",
     "loading": "Cargando…",
     "summary": "{shown} mostrados · {mapped} ubicados · {unmapped} sin ubicar en esta edición",
-    "placeHeading": "{label} — {count, plural, one {# elogio} other {# elogios}}",
+    "placeHeading": "<place>{label}</place> — {count, plural, one {# elogio} other {# elogios}}",
     "showAll": "Mostrar todos",
     "noMatches": "Ningún elogio coincide con estos filtros.",
     "moreRows": "y {count} más — acote la búsqueda para verlos.",

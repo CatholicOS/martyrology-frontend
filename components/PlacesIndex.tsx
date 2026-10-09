@@ -1,17 +1,21 @@
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
-import { dayPath, interfaceMonth } from "@/lib/calendar";
+import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import type { PlacesIndexData } from "@/lib/places-index";
 
 /**
  * An edition's index of places, as at the back of a printed book: the places A–Z in the interface
  * language, under each the eulogies that name it with their day (linked to the eulogy in the reader),
  * subject, the place as the edition prints it, and their typology unless it is the dies natalis.
- * `index` null: the catalog could not be loaded.
+ * `index` null: the catalog could not be loaded. `lang`: the edition's language, which its subjects and
+ * printed places are in, inside a page in the interface language.
  */
-export default function PlacesIndex({ edition, title, index, letter }: { edition: string; title: string; index: PlacesIndexData | null; letter?: string }) {
+export default function PlacesIndex({ edition, title, index, letter, lang }: {
+  edition: string; title: string; index: PlacesIndexData | null; letter?: string; lang?: Lang;
+}) {
   const t = useTranslations("Places");
   const tMap = useTranslations("Map");
   const format = useFormatter();
@@ -58,7 +62,7 @@ export default function PlacesIndex({ edition, title, index, letter }: { edition
               return (
                 <div key={p.qid} className="mb-4">
                   <h3 className="font-semibold">
-                    {p.label}
+                    <span lang={langOn(p.labelLang, locale)}>{p.label}</span>
                     {c && <span className="font-normal text-slate-600"> ({c})</span>}
                   </h3>
                   <ul className="ml-4 text-sm">
@@ -71,8 +75,8 @@ export default function PlacesIndex({ edition, title, index, letter }: { edition
                             {day}
                           </Link>
                           {" · "}
-                          {line.subject}
-                          {line.printed && <>{" · "}<i>{line.printed}</i></>}
+                          <span lang={lang}>{line.subject}</span>
+                          {line.printed && <>{" · "}<i lang={lang}>{line.printed}</i></>}
                           {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
                             <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
                           )}

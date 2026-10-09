@@ -20,6 +20,11 @@ async function fetchEditions(fresh: boolean): Promise<EditionOut[] | null> {
   }
 }
 
+/** The API's edition list, from the data cache (revalidated hourly). Null when the API cannot be asked. */
+export async function listEditions(): Promise<EditionOut[] | null> {
+  return fetchEditions(false);
+}
+
 /**
  * The edition from the cached list; on a miss, from a fresh one, so an edition published by an
  * API release is found at once rather than when the hour-long cache expires. Undefined when the

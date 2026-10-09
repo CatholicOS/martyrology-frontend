@@ -219,7 +219,7 @@
     "retry": "Erneut versuchen",
     "loading": "Wird geladen…",
     "summary": "{shown} angezeigt · {mapped} verortet · {unmapped} nicht verortet in dieser Ausgabe",
-    "placeHeading": "{label} — {count, plural, one {# Elogium} other {# Elogien}}",
+    "placeHeading": "<place>{label}</place> — {count, plural, one {# Elogium} other {# Elogien}}",
     "showAll": "Alle anzeigen",
     "noMatches": "Kein Elogium entspricht diesen Filtern.",
     "moreRows": "und {count} weitere — grenzen Sie die Suche ein, um sie aufzulisten.",

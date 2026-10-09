@@ -13,7 +13,14 @@ export const LOCALE_NAMES: Record<Locale, string> = {
 };
 
 // localeCookie: false — next-intl neither reads nor writes a cookie; proxy.ts reads ours, the picker writes it.
-export const routing = defineRouting({ locales: LOCALES, defaultLocale: "en", localePrefix: "always", localeCookie: false });
+// alternateLinks: false — the hreflang alternates are the sitemap's (lib/sitemap.ts), which knows which pages each
+// language has; next-intl's Link header would name every language for every page, even where one has no such page.
+export const routing = defineRouting({ locales: LOCALES, defaultLocale: "en", localePrefix: "always", localeCookie: false, alternateLinks: false });
+
+/** The `lang` to give text in `lang` on a page in `locale`: none when it is the page's own, or unknown. */
+export function langOn(lang: string | null | undefined, locale: string): string | undefined {
+  return lang && lang !== locale ? lang : undefined;
+}
 
 export function isLocale(v: string): v is Locale {
   return (LOCALES as readonly string[]).includes(v);
