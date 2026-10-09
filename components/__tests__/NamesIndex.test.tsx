@@ -21,7 +21,7 @@ const index: NamesIndexData = {
   ],
 };
 const renderIndex = (i: NamesIndexData | null = index, error = false, letter?: string) =>
-  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} />);
+  render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} lang="la" />);
 
 describe("NamesIndex", () => {
   it("shows one letter, the first by default, with a bar linking every letter's page and the next letter", () => {
@@ -44,6 +44,13 @@ describe("NamesIndex", () => {
     renderIndex();
     const h = screen.getByRole("heading", { level: 3, name: /Basilius/ });
     expect(within(h).getByRole("link", { name: "Basil the Great ↗" })).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q1");
+  });
+
+  it("marks the names and subjects as the edition's language, and the interface name as the page's", () => {
+    renderIndex();
+    expect(screen.getByText("Basilius")).toHaveAttribute("lang", "la");
+    expect(screen.getByText("Sancti Basilius et Gregorius")).toHaveAttribute("lang", "la");
+    expect(screen.getByRole("link", { name: "Basil the Great ↗" }).closest("[lang]")).toBeNull();
   });
 
   it("links a person without a label to Wikidata by name, and an unidentified one not at all", () => {

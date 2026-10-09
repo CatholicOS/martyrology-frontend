@@ -19,7 +19,7 @@ const index: PlacesIndexData = {
 };
 
 const renderIndex = (i: PlacesIndexData | null = index, letter?: string) =>
-  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} />);
+  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} lang="la" />);
 
 describe("PlacesIndex", () => {
   it("titles the page and links back to the edition and its notes", () => {
@@ -66,6 +66,13 @@ describe("PlacesIndex", () => {
     expect(screen.getByText("Londínii").tagName).toBe("I");
     const thomas = screen.getByRole("link", { name: "3 January · Sanctus Thomas" }).closest("li")!;
     expect(thomas).not.toHaveTextContent("Dies natalis");
+  });
+
+  it("marks the subjects and printed places as the edition's language, and the place headings as the page's", () => {
+    renderIndex();
+    expect(screen.getByText("Sanctus Thomas")).toHaveAttribute("lang", "la");
+    expect(screen.getByText("Londínii")).toHaveAttribute("lang", "la");
+    expect(screen.getByRole("heading", { level: 3, name: /London/ }).closest("[lang]")).toBeNull();
   });
 
   it("shows the typology unless dies natalis", () => {

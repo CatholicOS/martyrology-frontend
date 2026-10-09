@@ -47,6 +47,7 @@ describe("/read/<edition>/names", () => {
     expect(props.title).toBe("MARTYROLOGIUM ROMANUM 2004");
     expect(props.index.naming).toBe(1);
     expect(props.error).toBe(false);
+    expect(props.lang).toBe("la");
   });
 
   it("does not ask for the catalog of an edition without persons, and says it is not indexed", async () => {

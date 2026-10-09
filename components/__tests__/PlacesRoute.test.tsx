@@ -48,6 +48,7 @@ describe("/read/<edition>/places", () => {
     expect(props.title).toBe("MARTIROLOGIO ROMANO 2004");
     expect(props.index.placed).toBe(1);
     expect(props.index.letters[0].places[0].lines[0].subject).toBe("Sant’Almachio");
+    expect(props.lang).toBe("it");
   });
 
   it("renders the error state, not a crash, when the catalog cannot be loaded, and logs why", async () => {
