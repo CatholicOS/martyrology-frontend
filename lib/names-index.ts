@@ -69,13 +69,17 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
         people.set(key, person);
       }
       person.forms.set(p.name, (person.forms.get(p.name) ?? 0) + 1);
+      // One line per eulogy and place: two spellings of one identified person in the same text
+      // (or footnote) are one mention, though both count towards the heading's form.
+      const footnote = p.where === "text" ? null : p.where.footnote;
+      if (person.lines.some((l) => l.id === c.id && l.footnote === footnote)) continue;
       person.lineForms.push(p.name);
       person.lines.push({
         id: c.id,
         day: { mm: Number(m[1]), dd: Number(m[2]) },
         entry: c.entry ?? null,
         subject: c.subject ?? c.id,
-        footnote: p.where === "text" ? null : p.where.footnote,
+        footnote,
       });
     }
   }

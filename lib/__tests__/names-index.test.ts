@@ -95,3 +95,19 @@ describe("namesIndex, the last tie", () => {
     expect(namesIndex(c, t, ED, "en")!.letters[0].persons[0].name).toBe("Ioannes");
   });
 });
+
+describe("namesIndex, from the final review", () => {
+  it("lists a person once per eulogy and place when two spellings of them are identified there", () => {
+    const s: PersonsSnapshot = { editions: { [ED]: {
+      "mr:0131-a": [
+        { name: "Augustinus Pak Chong Won", where: "text", wikidata: "Q7" },
+        { name: "Augustinus Pak Chŏng-wŏn", where: "text", wikidata: "Q7" },
+        { name: "Augustinus Pak Chong Won", where: { footnote: 1 }, wikidata: "Q7" },
+      ],
+    } }, labels: {} };
+    const p = namesIndex([cat("mr:0131-a", "Sancti A et socii", "01-31")], s, ED, "en")!.letters[0].persons;
+    expect(p).toHaveLength(1);
+    expect(p[0].lines.map((l) => l.footnote)).toEqual([null, 1]); // text once, footnote once
+    expect(p[0].name).toBe("Augustinus Pak Chong Won");           // still the most frequent form
+  });
+});
