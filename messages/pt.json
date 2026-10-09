@@ -8,7 +8,8 @@
     "apiReferenceDescription": "A API do Martirológio romano: seus endpoints, parâmetros e respostas, com solicitações para testar.",
     "dayTitle": "{day} de {month} — {books}",
     "notesTitle": "{edition}: notas, erros de impressão e errata",
-    "placesTitle": "{edition}: índice de lugares"
+    "placesTitle": "{edition}: índice de lugares",
+    "namesTitle": "{edition}: índice de nomes"
   },
   "Header": {
     "brand": "Martirológio",
@@ -105,6 +106,7 @@
     "ids": "IDs",
     "notesLink": "Notas e errata",
     "placesLink": "Índice de lugares",
+    "namesLink": "Índice de nomes",
     "shelf": "⟵ Estante",
     "loading": "Carregando…",
     "noText": "Esta edição não tem texto para {day} de {month}.",
@@ -181,6 +183,19 @@
     "empty": "Nenhum elogio desta edição tem ainda um lugar.",
     "loadError": "Não foi possível carregar o índice.",
     "retry": "Tentar novamente"
+  },
+  "Names": {
+    "title": "{title}: índice de nomes",
+    "readEdition": "⟵ Ler a edição",
+    "notesLink": "Notas e errata",
+    "placesLink": "Índice de lugares",
+    "letters": "Letras",
+    "coverage": "{naming, number} dos {printed, number} elogios desta edição nomeiam alguém.",
+    "notIndexed": "As pessoas desta edição ainda não estão indexadas.",
+    "loadError": "Não foi possível carregar o índice.",
+    "retry": "Tentar novamente",
+    "inFootnote": "na nota {n}",
+    "wikidata": "Wikidata"
   },
   "Map": {
     "filters": "Filtros",

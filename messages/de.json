@@ -8,7 +8,8 @@
     "apiReferenceDescription": "Die API des Römischen Martyrologiums: Endpunkte, Parameter und Antworten, mit Anfragen zum Ausprobieren.",
     "dayTitle": "{day}. {month} — {books}",
     "notesTitle": "{edition}: Anmerkungen, Druckfehler und Errata",
-    "placesTitle": "{edition}: Ortsregister"
+    "placesTitle": "{edition}: Ortsregister",
+    "namesTitle": "{edition}: Namensregister"
   },
   "Header": {
     "brand": "Martyrologium",
@@ -105,6 +106,7 @@
     "ids": "IDs",
     "notesLink": "Anmerkungen & Errata",
     "placesLink": "Ortsregister",
+    "namesLink": "Namensregister",
     "shelf": "⟵ Regal",
     "loading": "Wird geladen…",
     "noText": "Diese Ausgabe hat keinen Text für den {day}. {month}.",
@@ -181,6 +183,19 @@
     "empty": "Den Elogien dieser Ausgabe ist noch kein Ort zugeordnet.",
     "loadError": "Das Register konnte nicht geladen werden.",
     "retry": "Erneut versuchen"
+  },
+  "Names": {
+    "title": "{title}: Namensregister",
+    "readEdition": "⟵ Ausgabe lesen",
+    "notesLink": "Anmerkungen & Errata",
+    "placesLink": "Ortsregister",
+    "letters": "Buchstaben",
+    "coverage": "{naming, number} der {printed, number} Elogien dieser Ausgabe nennen jemanden.",
+    "notIndexed": "Die Personen dieser Ausgabe sind noch nicht erfasst.",
+    "loadError": "Das Register konnte nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "inFootnote": "in Fußnote {n}",
+    "wikidata": "Wikidata"
   },
   "Map": {
     "filters": "Filter",

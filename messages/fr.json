@@ -8,7 +8,8 @@
     "apiReferenceDescription": "L’API du Martyrologe romain : ses points de terminaison, paramètres et réponses, avec des requêtes à essayer.",
     "dayTitle": "{day} {month} — {books}",
     "notesTitle": "{edition} : notes, coquilles et errata",
-    "placesTitle": "{edition} : index des lieux"
+    "placesTitle": "{edition} : index des lieux",
+    "namesTitle": "{edition} : index des noms"
   },
   "Header": {
     "brand": "Martyrologe",
@@ -105,6 +106,7 @@
     "ids": "ID",
     "notesLink": "Notes et errata",
     "placesLink": "Index des lieux",
+    "namesLink": "Index des noms",
     "shelf": "⟵ Étagère",
     "loading": "Chargement…",
     "noText": "Cette édition n’a pas de texte pour le {day} {month}.",
@@ -181,6 +183,19 @@
     "empty": "Aucun éloge de cette édition n’a encore de lieu.",
     "loadError": "L’index n’a pas pu être chargé.",
     "retry": "Réessayer"
+  },
+  "Names": {
+    "title": "{title} : index des noms",
+    "readEdition": "⟵ Lire l’édition",
+    "notesLink": "Notes et errata",
+    "placesLink": "Index des lieux",
+    "letters": "Lettres",
+    "coverage": "{naming, number} des {printed, number} éloges de cette édition nomment quelqu’un.",
+    "notIndexed": "Les personnes de cette édition ne sont pas encore indexées.",
+    "loadError": "L’index n’a pas pu être chargé.",
+    "retry": "Réessayer",
+    "inFootnote": "dans la note {n}",
+    "wikidata": "Wikidata"
   },
   "Map": {
     "filters": "Filtres",

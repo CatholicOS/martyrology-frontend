@@ -8,7 +8,8 @@
     "apiReferenceDescription": "The Roman Martyrology API: its endpoints, parameters and responses, with requests to try.",
     "dayTitle": "{day} {month} — {books}",
     "notesTitle": "{edition}: notes, misprints and errata",
-    "placesTitle": "{edition}: index of places"
+    "placesTitle": "{edition}: index of places",
+    "namesTitle": "{edition}: index of names"
   },
   "Header": {
     "brand": "Martyrology",
@@ -105,6 +106,7 @@
     "ids": "IDs",
     "notesLink": "Notes & errata",
     "placesLink": "Index of places",
+    "namesLink": "Index of names",
     "shelf": "⟵ Shelf",
     "loading": "Loading…",
     "noText": "This edition has no text for {day} {month}.",
@@ -181,6 +183,19 @@
     "empty": "No eulogies of this edition are placed yet.",
     "loadError": "The index could not be loaded.",
     "retry": "Try again"
+  },
+  "Names": {
+    "title": "{title}: index of names",
+    "readEdition": "⟵ Read the edition",
+    "notesLink": "Notes & errata",
+    "placesLink": "Index of places",
+    "letters": "Letters",
+    "coverage": "{naming, number} of the {printed, number} eulogies of this edition name someone.",
+    "notIndexed": "The persons of this edition are not indexed yet.",
+    "loadError": "The index could not be loaded.",
+    "retry": "Try again",
+    "inFootnote": "in footnote {n}",
+    "wikidata": "Wikidata"
   },
   "Map": {
     "filters": "Filters",
