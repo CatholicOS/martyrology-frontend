@@ -268,6 +268,9 @@ export async function fetchPlaceData(qids, readPrevious, fetchers = { coords: fe
   return { coords, labels };
 }
 
+/** crmedr's decisions that identify a person: an `unresolved` one, or any other, carries no QID here. */
+const IDENTIFIED = new Set(["auto", "reviewed"]);
+
 /**
  * The QIDs crmedr decided for the persons (auto and reviewed), sorted.
  * @param {{editions: Record<string, Record<string, {name: string}[]>>}} personsDoc crmedr data/persons.json
@@ -276,7 +279,7 @@ export async function fetchPlaceData(qids, readPrevious, fetchers = { coords: fe
 export function personQids(personsDoc, itemsDoc) {
   const qids = new Set();
   for (const persons of Object.values(itemsDoc.persons))
-    for (const e of Object.values(persons)) if (e.wikidata && e.status !== "unresolved") qids.add(e.wikidata);
+    for (const e of Object.values(persons)) if (e.wikidata && IDENTIFIED.has(e.status)) qids.add(e.wikidata);
   return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
 }
 
@@ -296,7 +299,7 @@ export function buildPersons(personsDoc, itemsDoc, labels = {}) {
     for (const [id, persons] of Object.entries(byId)) {
       editions[edition][id] = persons.map((p) => {
         const e = itemsDoc.persons[id]?.[p.name];
-        const qid = e && e.status !== "unresolved" ? e.wikidata : null;
+        const qid = e && IDENTIFIED.has(e.status) ? e.wikidata : null;
         if (qid) used.add(qid);
         return { name: p.name, where: p.where, ...(qid ? { wikidata: qid } : {}) };
       });

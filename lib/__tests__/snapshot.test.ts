@@ -205,6 +205,12 @@ describe("buildPersons", () => {
     expect(Object.keys(snap.labels.Q380649)).toEqual(["en", "pt"]);
   });
 
+  it("takes a QID only from an auto or reviewed decision, whatever else crmedr may add", () => {
+    const items = { persons: { "mr:0101-basilius": { Basilius: { wikidata: "Q1", status: "proposed" } } } };
+    expect(buildPersons(personsDoc, items).editions.martyrologium_romanum_2004["mr:0101-basilius"][0].wikidata).toBeUndefined();
+    expect(personQids(personsDoc, items)).toEqual([]);
+  });
+
   it("lists the decided QIDs once each, sorted", () => {
     expect(personQids(personsDoc, itemsDoc)).toEqual(["Q1", "Q380649"]);
   });
