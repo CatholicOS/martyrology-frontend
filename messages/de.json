@@ -394,6 +394,26 @@
         "note": "Anmerkung",
         "eulogy": "Elogium"
       }
+    },
+    "person": {
+      "inText": "im Text",
+      "inFootnote": "in Fußnote {n}",
+      "companions": "Genannt mit: {names}",
+      "notAutomatic": "Nicht automatisch: {reasons}",
+      "showEulogy": "Elogium zeigen",
+      "hideEulogy": "Elogium ausblenden",
+      "suggested": "Vorgeschlagen: {wikidata}",
+      "confidence": "Konfidenz: {value}",
+      "candidates": "Kandidaten",
+      "noDescription": "(keine Beschreibung)",
+      "suggestedTag": "vorgeschlagen",
+      "otherQid": "Andere QID",
+      "accept": "Annehmen",
+      "acceptEdited": "Annehmen (bearbeitet)",
+      "noItem": "Kein Datenobjekt",
+      "reason": "Grund",
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen"
     }
   },
   "Docs": {

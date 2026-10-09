@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import AttachNoteCard from "@/components/AttachNoteCard";
 import EulogyView from "@/components/EulogyView";
 import PlaceMarginCard from "@/components/PlaceMarginCard";
+import PersonCard from "@/components/PersonCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
 import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
@@ -17,6 +18,7 @@ import {
   type MergeOp,
   type DecisionRecord,
   type ResolvePlaceOp,
+  type ResolvePersonOp,
   type RealignOp,
   type AttachNoteOp,
   type PlaceMarginOp,
@@ -44,6 +46,10 @@ export default function OperationCard(props: Props) {
   // A gazetteer place has its own card: no eulogy of its own, candidates instead.
   if (props.op.op === "resolve_place") {
     return <PlaceCard {...props} op={props.op as ResolvePlaceOp} />;
+  }
+  // A person named in a eulogy (crmedr persons): candidates, like a place.
+  if (props.op.op === "resolve_person") {
+    return <PersonCard {...props} op={props.op as ResolvePersonOp} />;
   }
   // A historical-edition finding (crmedr #51) carries its own texts and actions.
   if (props.op.op === "realign") {

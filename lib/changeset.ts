@@ -91,6 +91,37 @@ export interface ResolvePlaceOp extends Base {
   suggested?: { wikidata: string; country: string } | null;
 }
 
+/** A Wikidata candidate for a person, as written by crmedr's scripts/build_person_items.py. */
+export interface PersonCandidate {
+  wikidata: string;
+  label: string;
+  description: string;
+  names: string[];
+  human: boolean;
+  statuses: string[];
+  born: string | null;
+  died: string | null;
+  feast: string[];
+  evidence: string[];
+}
+
+/** Identify a saint or blessed named in a eulogy with a Wikidata item (crmedr persons). */
+export interface ResolvePersonOp extends Base {
+  op: "resolve_person";
+  /** `<eulogy>|<name>`. */
+  id: string;
+  eulogy: string;
+  day: string;
+  typology: string | null;
+  subject: string;
+  name: string;
+  where: "text" | { footnote: number };
+  companions: string[];
+  failed: string[];
+  candidates: PersonCandidate[];
+  suggested?: { wikidata: string } | null;
+}
+
 export type RealignAction = "rename" | "rekey" | "split" | "merge" | "link" | "note" | "rubric";
 
 /** One eulogy a run-in key's text is split into, from `split_at` up to the next part. */
@@ -196,6 +227,7 @@ export type Op =
   | DeleteOp
   | MergeOp
   | ResolvePlaceOp
+  | ResolvePersonOp
   | RealignOp
   | AttachNoteOp
   | PlaceMarginOp
@@ -226,6 +258,7 @@ export function isAdjudicable(op: Op): boolean {
     op.op === "delete" ||
     op.op === "merge" ||
     op.op === "resolve_place" ||
+    op.op === "resolve_person" ||
     op.op === "realign" ||
     op.op === "attach_note" ||
     op.op === "place_margin"
