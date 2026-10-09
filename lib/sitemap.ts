@@ -93,14 +93,16 @@ const xml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 /**
  * One language's sitemap: each of its pages, with the same page in every language that has it
- * (hreflang) and, as x-default, the locale-less URL, which goes to the reader's own language.
+ * (hreflang) and, as x-default, the locale-less URL, which goes to the reader's own language. Only
+ * a page every language has gets an x-default: the redirect could otherwise land on a 404.
  */
 export function localeSitemap(locale: Locale, all: Map<Locale, string[]>): string {
   const has = new Map(LOCALES.map((l) => [l, new Set(all.get(l))]));
   const urls = (all.get(locale) ?? []).map((path) => {
+    const langs = LOCALES.filter((l) => has.get(l)!.has(path));
     const links = [
-      ...LOCALES.filter((l) => has.get(l)!.has(path)).map((l) => [l, href(l, path)]),
-      ["x-default", href(null, path)],
+      ...langs.map((l) => [l, href(l, path)]),
+      ...(langs.length === LOCALES.length ? [["x-default", href(null, path)]] : []),
     ].map(([lang, url]) => `    <xhtml:link rel="alternate" hreflang="${lang}" href="${xml(url)}"/>`);
     return `  <url>\n    <loc>${xml(href(locale, path))}</loc>\n${links.join("\n")}\n  </url>`;
   });

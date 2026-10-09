@@ -98,16 +98,17 @@ describe("sitemap", () => {
     expect(new Set(urls).size).toBe(urls.length);
   });
 
-  it("gives each page its alternates in every language that has it, and the locale-less URL as x-default", async () => {
+  it("gives each page its alternates in every language that has it, and the locale-less URL as x-default when all have it", async () => {
     const data = await sitemapData();
     const all = localePaths(data);
     expect(alternates(localeSitemap("en", all), "https://example.org/en")).toEqual({
       en: "https://example.org/en", it: "https://example.org/it", fr: "https://example.org/fr",
       de: "https://example.org/de", es: "https://example.org/es", pt: "https://example.org/pt", "x-default": "https://example.org",
     });
-    // A page only one language has (a letter its labels alone file under) has only its own alternate.
-    const de = localeSitemap("de", new Map([...all, ["de", [...all.get("de")!, "/only-de"]]]));
-    expect(alternates(de, "https://example.org/de/only-de")).toEqual({ de: "https://example.org/de/only-de", "x-default": "https://example.org/only-de" });
+    // A page only some languages have (a letter only their labels file under) names just those, and no
+    // x-default: the locale-less URL would send a reader of another language to a 404.
+    const de = localeSitemap("de", new Map([...all, ["de", [...all.get("de")!, "/de-fr"]], ["fr", [...all.get("fr")!, "/de-fr"]]]));
+    expect(alternates(de, "https://example.org/de/de-fr")).toEqual({ de: "https://example.org/de/de-fr", fr: "https://example.org/fr/de-fr" });
   });
 
   it("leaves out the letters of an edition whose catalog the API cannot give, but not its other pages", async () => {
