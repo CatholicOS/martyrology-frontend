@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync } from "node:fs";
-import { dirname, join, basename } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync, realpathSync } from "node:fs";
+import { dirname, join, basename, resolve, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
@@ -81,9 +81,30 @@ export function quotesText(cs) {
 }
 
 /**
+ * A path made absolute with its symlinks resolved as far as it exists: the real path of its nearest
+ * existing ancestor, then the rest.
+ * @param {string} p
+ */
+function realish(p) {
+  let head = resolve(p);
+  const rest = [];
+  for (;;) {
+    try {
+      return join(realpathSync(head), ...rest.reverse());
+    } catch {
+      const up = dirname(head);
+      if (up === head) return resolve(p);
+      rest.push(basename(head));
+      head = up;
+    }
+  }
+}
+
+/**
  * Write a change-set into `dir`, whole or one file per month. The repo's changesets/ (`isPublic`) gets
  * its index regenerated; CHANGESETS_DIR needs none (every *.json there is listed). A change-set that
- * quotes the text is refused for the repo before anything is written. Returns the paths written.
+ * quotes the text is refused for the repo before anything is written, and so is a private `dir`
+ * that is the repository itself or inside it (a mistyped or relative CHANGESETS_DIR). Returns the paths written.
  * @param {import("../lib/changeset.ts").Changeset} cs
  * @param {string} name
  * @param {{byMonth: boolean, dir: string, isPublic: boolean}} options
@@ -92,6 +113,13 @@ export function quotesText(cs) {
 export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
   if (isPublic && quotesText(cs)) {
     throw new Error(`${name} quotes the text (its operations carry context): bundle it with --private into CHANGESETS_DIR, never into this public repo`);
+  }
+  if (!isPublic) {
+    const repo = realish(join(dirname(fileURLToPath(import.meta.url)), ".."));
+    const rel = relative(repo, realish(dir));
+    if (rel === "" || (!rel.startsWith("..") && !isAbsolute(rel))) {
+      throw new Error(`${dir} is inside this public repository: CHANGESETS_DIR must be a directory outside it`);
+    }
   }
   mkdirSync(dir, { recursive: true });
   const written = [];

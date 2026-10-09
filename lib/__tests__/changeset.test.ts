@@ -151,4 +151,13 @@ describe("bundling the mentions review", () => {
     expect(() => main([src, "mentions-review", "martyrologium_romanum_2004", "--by-month", "--private"], {})).toThrow(/CHANGESETS_DIR/);
     expect(readdirSync(work)).toEqual(["src.json"]);
   });
+
+  it("refuses a private directory inside the repository, absolute or relative, and writes nothing", () => {
+    for (const dir of [join(process.cwd(), "changesets", "zz-private-test"), "changesets/zz-private-test", "changesets", "."]) {
+      const before = readdirSync("changesets").sort();
+      expect(() => writeBundle(cs, "mentions-review", { byMonth: true, dir, isPublic: false })).toThrow(/inside this public repository/);
+      expect(readdirSync("changesets").sort()).toEqual(before);
+    }
+    expect(existsSync(join("changesets", "zz-private-test"))).toBe(false);
+  });
 });
