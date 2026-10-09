@@ -53,8 +53,8 @@ export function headingLetter(label: string): string {
   return first && FILING.test(first) ? first.toUpperCase() : "#";
 }
 
-/** Calendar order within a place: by day, then the unnumbered first on their day (as printed), then by number. */
-export function compareLines(a: PlaceLine, b: PlaceLine): number {
+/** Calendar order: by day, then the unnumbered first on their day (as printed), then by number. */
+export function compareLines(a: { day: Day; entry: number | null }, b: { day: Day; entry: number | null }): number {
   if (a.day.mm !== b.day.mm) return a.day.mm - b.day.mm;
   if (a.day.dd !== b.day.dd) return a.day.dd - b.day.dd;
   if (a.entry === b.entry) return 0;
@@ -69,7 +69,7 @@ const AZ = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
  * The letter a heading is filed under, by the same collator that sorts the headings: a Latin letter
  * the fold leaves whole (Đ, Ł, Æ) goes under the A–Z letter it sorts with (D, L, A).
  */
-function filingLetter(label: string, collator: Intl.Collator): string {
+export function filingLetter(label: string, collator: Intl.Collator): string {
   const letter = headingLetter(label);
   if (letter === "#" || AZ.includes(letter) || !/\p{Script=Latin}/u.test(letter)) return letter;
   return [...AZ].reverse().find((l) => collator.compare(letter, l) >= 0) ?? letter;
