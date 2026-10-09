@@ -25,6 +25,10 @@ export interface EditedFields {
   id?: string;
   after?: string | null;
   mark?: string;
+  // add_mention, set_span: the words the curator chose, as offsets in the eulogy's text (or the footnote's)
+  start?: number;
+  end?: number;
+  form?: string;
 }
 
 export interface DecisionRecord {
@@ -216,6 +220,55 @@ export interface PlaceMarginOp extends Base {
   image: string;
 }
 
+/** Where a mention is printed: the eulogy's text, or its nth footnote. */
+export type MentionWhere = "text" | { footnote: number };
+
+export type MentionKind = "person" | "place";
+
+/**
+ * A person or place a eulogy names, as crmedr's scripts/extract_mentions.py proposes it. Offsets are
+ * UTF-16 code units in the eulogy's text, or in the footnote's when `where` is a footnote. `context`
+ * quotes a few words either side, from `context_start`, so the card can show the span without the
+ * whole text. These change-sets quote the 2004 edition: they live in CHANGESETS_DIR, never in the repo.
+ */
+interface MentionBase extends Base {
+  /** `<edition>|<eulogy>|<where>|<start>`, `<where>` "text" or "footnote:<n>"; without a span, it ends in the name. */
+  id: string;
+  edition: string;
+  eulogy: string;
+  where: MentionWhere;
+  kind: MentionKind;
+  /** A person's nominative in crmedr's persons.json. */
+  name?: string;
+  context: string;
+  context_start: number;
+}
+
+/** Mark words not marked yet. No span (all null): crmedr could not find the person; the curator picks the words. */
+export interface AddMentionOp extends MentionBase {
+  op: "add_mention";
+  start: number | null;
+  end: number | null;
+  form: string | null;
+}
+
+/** Move a mark: the words it covers now (`from`) and the words it should cover (`to`). */
+export interface SetSpanOp extends MentionBase {
+  op: "set_span";
+  from: { start: number; end: number };
+  to: { start: number; end: number; form: string };
+}
+
+/** Remove a mark crmedr doubts: a person inside a place phrase, or a stem that matched in several places. */
+export interface RemoveMentionOp extends MentionBase {
+  op: "remove_mention";
+  start: number;
+  end: number;
+  form: string;
+}
+
+export type MentionOp = AddMentionOp | SetSpanOp | RemoveMentionOp;
+
 export interface UnknownOp extends Base {
   op: string;
   id?: string;
@@ -231,6 +284,9 @@ export type Op =
   | RealignOp
   | AttachNoteOp
   | PlaceMarginOp
+  | AddMentionOp
+  | SetSpanOp
+  | RemoveMentionOp
   | UnknownOp;
 
 export interface Changeset {
@@ -261,8 +317,15 @@ export function isAdjudicable(op: Op): boolean {
     op.op === "resolve_person" ||
     op.op === "realign" ||
     op.op === "attach_note" ||
-    op.op === "place_margin"
+    op.op === "place_margin" ||
+    op.op === "add_mention" ||
+    op.op === "set_span" ||
+    op.op === "remove_mention"
   );
+}
+
+export function isMentionOp(op: Op): op is MentionOp {
+  return op.op === "add_mention" || op.op === "set_span" || op.op === "remove_mention";
 }
 
 export function opId(op: Op): string {

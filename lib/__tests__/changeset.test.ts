@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseChangeset, exportChangeset, opId, isAdjudicable } from "@/lib/changeset";
+import { parseChangeset, exportChangeset, opId, isAdjudicable, isMentionOp, type MentionOp } from "@/lib/changeset";
 import { convertManifest, splitByMonth, toBundledChangeset } from "@/scripts/import-changeset.mjs";
 
 const manifest = [
@@ -69,5 +69,37 @@ describe("splitByMonth", () => {
   it("takes the month from the eulogy ID when an operation has no day", () => {
     const parts = splitByMonth({ ...cs, operations: [{ op: "x", id: "mr:0315-d", decision: null, edited: null }] }, "q");
     expect(parts.map((p) => p.name)).toEqual(["q-03"]);
+  });
+});
+
+describe("mention operations", () => {
+  const base = {
+    edition: "martyrologium_romanum_2004", eulogy: "mr:0101-fictinus", where: "text" as const,
+    context: "Fictópoli in Utópia, natális sancti Fictíni et Ficti, epíscopi.", context_start: 120,
+    reasoning: "", decision: null, edited: null,
+  };
+  const add: MentionOp = { ...base, op: "add_mention", id: "martyrologium_romanum_2004|mr:0101-fictinus|text|156",
+    kind: "person", name: "Fictinus", start: 156, end: 163, form: "Fictíni" };
+  const set: MentionOp = { ...base, op: "set_span", id: "martyrologium_romanum_2004|mr:0101-fictinus|text|156",
+    kind: "person", name: "Fictinus", from: { start: 156, end: 163 }, to: { start: 156, end: 172, form: "Fictíni et Ficti" } };
+  const remove: MentionOp = { ...base, op: "remove_mention", id: "martyrologium_romanum_2004|mr:0101-fictinus|text|120",
+    kind: "place", start: 120, end: 129, form: "Fictópoli" };
+
+  it("are adjudicable, recognised as mentions, and keyed by their id", () => {
+    for (const op of [add, set, remove]) {
+      expect(isAdjudicable(op)).toBe(true);
+      expect(isMentionOp(op)).toBe(true);
+      expect(opId(op)).toBe(op.id);
+    }
+    expect(isMentionOp({ op: "resolve_place", id: "x", decision: null })).toBe(false);
+  });
+
+  it("export a chosen span on the op", () => {
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "scripts/extract_mentions.py",
+      base: { edition: "martyrologium_romanum_2004", registry: "data/mentions.json" }, operations: [add, remove] }));
+    const edited = { start: 156, end: 172, form: "Fictíni et Ficti" };
+    const out = exportChangeset(cs, { [add.id]: { decision: "edit", edited }, [remove.id]: { decision: "reject" } });
+    expect(out.operations[0]).toMatchObject({ op: "add_mention", decision: "edit", edited });
+    expect(out.operations[1]).toMatchObject({ op: "remove_mention", decision: "reject", edited: null });
   });
 });
