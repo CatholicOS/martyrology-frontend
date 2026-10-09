@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { langOn } from "@/i18n/routing";
 import { natureLabel, sortForShelf, yearAndLanguage } from "@/lib/editions";
 import { typologyLabel, type MapEntry, type MapFilters } from "@/lib/map-data";
+import { regionName } from "@/lib/regions";
 import type { EditionOut } from "@/lib/types";
 
 interface Props {
@@ -47,14 +48,7 @@ export default function MapSidebar(p: Props) {
   const locale = useLocale();
   const [countryQuery, setCountryQuery] = useState("");
   const countries = useMemo(() => {
-    const regionNames = new Intl.DisplayNames([locale], { type: "region" });
-    const countryName = (code: string) => {
-      try {
-        return regionNames.of(code) ?? code;
-      } catch {
-        return code || t("unknownCountry");
-      }
-    };
+    const countryName = (code: string) => regionName(locale, code) ?? (code || t("unknownCountry"));
     return p.facets.countries
       .map(([code, n]) => ({ code, n, name: countryName(code) }))
       .sort((a, b) => a.name.localeCompare(b.name, locale));

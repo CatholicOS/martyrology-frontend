@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -329,6 +329,32 @@ export async function fetchPersonLabels(qids, readPrevious, fetch = fetchLabels)
   }
 }
 
+/**
+ * @typedef {{year: number, precision: "year"|"decade"|"century", circa: boolean}} WikidataDate
+ * @typedef {{description?: Record<string, string>, born?: WikidataDate|null, died?: WikidataDate|null, image?: object|null, wikipedia?: Record<string, string>}} DetailsEntry
+ *
+ * The popups' details of the persons the eulogies name (crmedr data/person_details.json: descriptions, dates,
+ * Commons image with its credit, Wikipedia titles), for the QIDs the persons snapshot links to; descriptions
+ * and titles in LABEL_LANGS order, other languages left out; the dates passed through as crmedr writes them;
+ * the file's "$" keys ("$comment") skipped.
+ * @param {Record<string, DetailsEntry | string>} detailsDoc the QIDs' entries, and the "$" keys' notes
+ * @param {string[]} qids
+ */
+export function buildPersonDetails(detailsDoc, qids) {
+  /** @param {Record<string, string> | undefined} o */
+  const pick = (o) => Object.fromEntries(LABEL_LANGS.flatMap((l) => (o?.[l] ? [[l, o[l]]] : [])));
+  /** @type {Record<string, {description: Record<string, string>, born: WikidataDate|null, died: WikidataDate|null, image: object|null, wikipedia: Record<string, string>}>} */
+  const out = {};
+  for (const q of qids) {
+    // crmedr's file carries a "$comment" (and may carry other "$" keys) beside the QIDs.
+    if (q.startsWith("$")) continue;
+    const d = detailsDoc[q];
+    if (!d || typeof d === "string") continue;
+    out[q] = { description: pick(d.description), born: d.born ?? null, died: d.died ?? null, image: d.image ?? null, wikipedia: pick(d.wikipedia) };
+  }
+  return out;
+}
+
 async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -372,5 +398,14 @@ async function main() {
   writeFileSync(join(here, "..", "data", "persons-editions.json"), JSON.stringify(Object.keys(persons.editions)) + "\n");
   const count = Object.values(persons.editions).reduce((n, byId) => n + Object.values(byId).reduce((m, ps) => m + ps.length, 0), 0);
   console.log(`wrote ${personsDest}: ${count} persons, ${Object.keys(persons.labels).length} labelled items`);
+
+  // The person popups' details: crmedr builds them from Wikidata (descriptions, years, portrait, Wikipedia).
+  const detailsPath = join(crmedr, "data", "person_details.json");
+  const detailsDoc = existsSync(detailsPath) ? JSON.parse(readFileSync(detailsPath, "utf8")) : {};
+  if (!existsSync(detailsPath)) console.log(`no ${detailsPath} yet: the person popups show names only`);
+  const details = buildPersonDetails(detailsDoc, personQids(personsDoc, itemsDoc));
+  const detailsDest = join(here, "..", "data", "person-details-snapshot.json");
+  writeFileSync(detailsDest, JSON.stringify(details) + "\n");
+  console.log(`wrote ${detailsDest}: ${Object.keys(details).length} persons with details`);
 }
 if (import.meta.url === `file://${process.argv[1]}`) await main();

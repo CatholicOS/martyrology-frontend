@@ -58,6 +58,8 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Review.margin.kind.note": ["fr"], "Docs.index.title": ["fr"], "Docs.finder.date": ["fr"],
   "Compare.columns.status": ["de", "pt"], // Brazilian Portuguese says "Status"
   "Footer.repos.website": ["de"], // German says "Website"
+  // Names of the two sites, and a format made only of arguments and a dash; "c." for circa in Spanish and Portuguese too.
+  "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.circa": ["es", "pt"],
 };
 
 describe("messages are translated", () => {

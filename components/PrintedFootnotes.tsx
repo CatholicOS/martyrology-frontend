@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { MentionText } from "@/components/markup/MentionPiece";
 import styles from "@/components/page.module.css";
 import type { PageFootnote } from "@/lib/footnotes";
 
@@ -29,8 +30,9 @@ export function FootnoteMark({ note }: { note: PageFootnote }) {
 /**
  * The edition's own footnotes at the foot of the page, each linked back to its mark, with the notes
  * the edition prints in the margin beside it (beside the note on wide screens, under it on phones).
+ * `edition` (a CLBDR edition id) names the edition the persons and places marked in the footnotes are printed in.
  */
-export default function PrintedFootnotes({ notes, lang }: { notes: PageFootnote[]; lang?: string }) {
+export default function PrintedFootnotes({ notes, lang, edition = "" }: { notes: PageFootnote[]; lang?: string; edition?: string }) {
   const t = useTranslations("Reader");
   if (notes.length === 0) return null;
   return (
@@ -41,7 +43,9 @@ export default function PrintedFootnotes({ notes, lang }: { notes: PageFootnote[
             <a href={`#${n.markAnchor}`} className={styles.fnMark} aria-label={t("backToFootnote", { mark: n.mark })}>
               {n.mark}
             </a>
-            <span>{n.text}</span>
+            <span>
+              <MentionText text={n.text} mentions={n.mentions} where={n.number ?? 0} eulogy={n.id} edition={edition} />
+            </span>
             {n.marginalia.length > 0 && <MarginNotes notes={n.marginalia} />}
           </li>
         ))}

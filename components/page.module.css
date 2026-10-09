@@ -153,3 +153,26 @@
 .lunaSic { font-size: 0.75em; vertical-align: super; color: #a3161b; }
 .lunaNote { margin: 0.3rem 0; text-align: center; }
 .lunaYearInput { width: 4.5em; padding: 0 0.25rem; border: 1px solid #c9b9a3; border-radius: 3px; background: #fffdf8; color: #2a1a10; text-align: center; }
+/* Persons and places the eulogy names, while "Names & places" is on: dotted for persons, dashed for places, in
+   the text's own colour; a soft tint (warm for persons, cool for places) on every piece while one is hovered,
+   focused or open. */
+.mention {
+  text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
+  cursor: help; border-radius: 2px; transition: background-color 150ms ease-out;
+}
+.person { text-decoration-style: dotted; }
+.place { text-decoration-style: dashed; }
+.person[data-active] { background-color: rgba(214, 170, 60, 0.25); }
+.place[data-active] { background-color: rgba(11, 110, 127, 0.15); }
+.mention:focus-visible { outline: 2px solid rgba(11, 110, 127, 0.5); outline-offset: 1px; }
+@media (prefers-color-scheme: dark) {
+  .person[data-active] { background-color: rgba(250, 204, 21, 0.2); }
+  .place[data-active] { background-color: rgba(103, 232, 249, 0.18); }
+}
+@media (forced-colors: active) {
+  .mention[data-active] { forced-color-adjust: none; background-color: Highlight; color: HighlightText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mention { transition: none; }
+}

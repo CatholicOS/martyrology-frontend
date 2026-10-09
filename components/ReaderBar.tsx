@@ -9,6 +9,27 @@ import { findSubject, type SubjectOption } from "@/lib/subjects";
 
 const control = "rounded border border-slate-300 bg-white px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
 
+/** A switch of the reader bar: a checkbox announced as a switch, drawn as a sliding knob. */
+function Switch({ id, label, title, checked, onChange }: {
+  id: string; label: string; title: string; checked: boolean; onChange: (on: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center gap-1.5 text-sm" title={title}>
+      <input id={id} type="checkbox" role="switch" className="peer sr-only" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+      <span
+        aria-hidden
+        className={
+          "relative h-5 w-9 shrink-0 rounded-full bg-slate-300 transition-colors dark:bg-slate-600 " +
+          "peer-checked:bg-[#0b6e7f] peer-focus-visible:ring-2 peer-focus-visible:ring-[#0b6e7f]/50 " +
+          "after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white " +
+          "after:shadow after:transition-transform peer-checked:after:translate-x-4"
+        }
+      />
+      {label}
+    </label>
+  );
+}
+
 export default function ReaderBar({
   edition,
   day,
@@ -23,6 +44,9 @@ export default function ReaderBar({
   onFind,
   showIds,
   onShowIds,
+  markupAvailable,
+  markup,
+  onMarkup,
 }: {
   edition: string;
   day: Day;
@@ -38,8 +62,13 @@ export default function ReaderBar({
   onFind: (o: SubjectOption) => void;
   showIds: boolean;
   onShowIds: (on: boolean) => void;
+  /** Whether the day on screen names anyone or anywhere: the "Names & places" switch is drawn only then. */
+  markupAvailable: boolean;
+  markup: boolean;
+  onMarkup: (on: boolean) => void;
 }) {
   const t = useTranslations("Reader");
+  const tm = useTranslations("Markup");
   const format = useFormatter();
   const [query, setQuery] = useState("");
   const pick = (o: SubjectOption | null) => {
@@ -121,26 +150,10 @@ export default function ReaderBar({
           <button type="button" id="reader-close" className={control} aria-label={t("closeSecond")} onClick={() => onCompare(null, "reader-with")}>×</button>
         </>
       )}
-      <label className="flex cursor-pointer items-center gap-1.5 text-sm" title={t("showIdsTitle")}>
-        <input
-          id="reader-ids"
-          type="checkbox"
-          role="switch"
-          className="peer sr-only"
-          checked={showIds}
-          onChange={(e) => onShowIds(e.target.checked)}
-        />
-        <span
-          aria-hidden
-          className={
-            "relative h-5 w-9 shrink-0 rounded-full bg-slate-300 transition-colors dark:bg-slate-600 " +
-            "peer-checked:bg-[#0b6e7f] peer-focus-visible:ring-2 peer-focus-visible:ring-[#0b6e7f]/50 " +
-            "after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white " +
-            "after:shadow after:transition-transform peer-checked:after:translate-x-4"
-          }
-        />
-        {t("ids")}
-      </label>
+      <Switch id="reader-ids" label={t("ids")} title={t("showIdsTitle")} checked={showIds} onChange={onShowIds} />
+      {markupAvailable && (
+        <Switch id="reader-markup" label={tm("switch")} title={tm("switchTitle")} checked={markup} onChange={onMarkup} />
+      )}
       <Link href={`/read/${encodeURIComponent(edition)}/notes`} className="text-sm underline">
         {t("notesLink")}
       </Link>

@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import CuratorNotes from "@/components/CuratorNotes";
 import DayHeading from "@/components/DayHeading";
 import Eulogy from "@/components/Eulogy";
+import { PrefetchEntities } from "@/components/markup/Markup";
 import styles from "@/components/page.module.css";
 import PrintedFootnotes from "@/components/PrintedFootnotes";
 import { pageFootnotes, type PageFootnote } from "@/lib/footnotes";
@@ -64,6 +65,7 @@ export default function DayPage({
   for (const f of footnotes) footAt.set(f.at, [...(footAt.get(f.at) ?? []), f]);
   return (
     <article className={styles.page} lang={lang}>
+      <PrefetchEntities elogia={day.elogia} />
       <DayTitle day={day} heading={heading} edition={edition} />
       <Rubricae day={day} after={null} />
       {day.elogia.map((e, i) => (
@@ -73,7 +75,7 @@ export default function DayPage({
         </Fragment>
       ))}
       {day.conclusio && <Conclusio text={day.conclusio} />}
-      <PrintedFootnotes notes={footnotes} lang={lang} />
+      <PrintedFootnotes notes={footnotes} lang={lang} edition={edition} />
       <CuratorNotes notes={notes} edition={edition ?? ""} />
     </article>
   );

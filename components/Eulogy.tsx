@@ -20,7 +20,7 @@ export default function Eulogy({
   const printed = e.text || footnotes?.length ? (
     <EulogyText
       text={e.text ?? ""} id={e.id} edition={edition ?? ""} noteClassName={styles.sic} footnotes={footnotes}
-      errata={e.errata} errataClassName={styles.errata}
+      errata={e.errata} errataClassName={styles.errata} mentions={e.mentions}
     />
   ) : (
     e.text

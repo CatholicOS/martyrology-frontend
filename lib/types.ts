@@ -71,6 +71,22 @@ export interface Erratum {
   position?: "after" | "before";
 }
 
+/**
+ * A person or place a eulogy names (crmedr's mentions, checked by the API against the text): where its words
+ * are, `start`/`end` in UTF-16 code units (JavaScript string indices) of the text or of footnote n (counted
+ * from 1 in the eulogy's footnotes), and the Wikidata item crmedr decided for it, null while undecided.
+ * `name` is a person's nominative, the key crmedr files them by; the API always sends it, null for a place.
+ */
+export interface Mention {
+  kind: "person" | "place";
+  where: "text" | { footnote: number };
+  start: number;
+  end: number;
+  form: string;
+  qid: string | null;
+  name: string | null;
+}
+
 export interface EditionPlacement {
   day_printed: string;
   entry: number | null;
@@ -104,6 +120,8 @@ export interface ElogiumOut {
   marginalia?: MarginNote[];
   /** Absent from APIs older than v0.14.0. */
   errata?: Erratum[];
+  /** The persons and places it names; absent from APIs before they were served. */
+  mentions?: Mention[];
 }
 
 /** A rubric the print sets among the eulogies: `after` is the eulogy it follows, null at the head of the day. */

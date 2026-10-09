@@ -1,5 +1,5 @@
 import { wholeWordRegExp } from "@/lib/misprints";
-import type { ElogiumOut, Footnote } from "@/lib/types";
+import type { ElogiumOut, Footnote, Mention } from "@/lib/types";
 
 /** A printed footnote placed on a page. */
 export interface PageFootnote extends Footnote {
@@ -12,6 +12,10 @@ export interface PageFootnote extends Footnote {
   markAnchor: string;
   /** The notes the edition prints in the margin beside this footnote. */
   marginalia: string[];
+  /** Its number among its eulogy's footnotes, from 1: the `where` of the mentions printed in it. */
+  number?: number;
+  /** The persons and places it names. */
+  mentions?: Mention[];
 }
 
 /**
@@ -19,7 +23,7 @@ export interface PageFootnote extends Footnote {
  * `edition` keeps the anchors apart when two sheets face each other.
  */
 export function pageFootnotes(
-  elogia: (Pick<ElogiumOut, "id" | "footnotes" | "marginalia"> | null)[],
+  elogia: (Pick<ElogiumOut, "id" | "footnotes" | "marginalia" | "mentions"> | null)[],
   edition: string,
 ): PageFootnote[] {
   const seen = new Set<string>();
@@ -31,7 +35,8 @@ export function pageFootnotes(
     e.footnotes.forEach((f, k) => {
       const anchor = `fn-${edition}-${id}-${k + 1}`;
       const marginalia = (e.marginalia ?? []).filter((m) => m.note === f.mark).map((m) => m.text);
-      out.push({ ...f, id, at, anchor, markAnchor: `${anchor}-mark`, marginalia });
+      const mentions = (e.mentions ?? []).filter((m) => m.where !== "text" && m.where.footnote === k + 1);
+      out.push({ ...f, id, at, anchor, markAnchor: `${anchor}-mark`, marginalia, number: k + 1, mentions });
     });
   });
   return out;
