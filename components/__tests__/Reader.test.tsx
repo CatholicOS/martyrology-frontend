@@ -1,3 +1,4 @@
+import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup, waitFor } from "@/test/intl";
 
@@ -444,6 +445,23 @@ describe("Reader, id switch", () => {
 });
 
 describe("Reader, a link to a eulogy", () => {
+  // A client-side navigation (a link from the index of places or of names) puts the new address in
+  // place after the page renders and before its effects run: a parent's layout effect does the same.
+  function ArriveBy({ hash, children }: { hash: string; children: React.ReactNode }) {
+    React.useLayoutEffect(() => {
+      window.history.replaceState(null, "", `/read/martyrologium_romanum_1749/10/02#${hash}`);
+    }, [hash]);
+    return <>{children}</>;
+  }
+
+  it("finds the eulogy when a client-side navigation brings the address after rendering", async () => {
+    window.history.replaceState(null, "", "/read/martyrologium_romanum_1749/10/02");
+    render(<ArriveBy hash="mr:1002-modestus-sardus"><Reader edition="martyrologium_romanum_1749" mm={10} dd={2} signedIn={false} /></ArriveBy>);
+    const found = await screen.findByText("Romae passio sancti Modesti Sardi.");
+    await waitFor(() => expect(found.closest("[data-eulogy-id]")).toHaveAttribute("data-found"));
+    window.history.replaceState(null, "", "/");
+  });
+
   const DAY_FN = {
     ...DAY,
     elogia: [{ ...DAY.elogia[0], footnotes: [{ mark: "1", after: "Sardi.", text: "A printed footnote on Modestus." }], marginalia: [] }],

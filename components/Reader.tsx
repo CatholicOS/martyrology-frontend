@@ -123,11 +123,7 @@ export default function Reader({
   const touch = useRef<{ x: number; y: number } | null>(null);
   const pages = useRef<HTMLDivElement>(null);
   // A fresh object per search, so finding the same eulogy twice scrolls to it again.
-  const [target, setTarget] = useState<{ id: string } | null>(() => {
-    if (pendingTarget) return { id: pendingTarget };
-    const id = hashId();
-    return id ? { id } : null;
-  });
+  const [target, setTarget] = useState<{ id: string } | null>(() => (pendingTarget ? { id: pendingTarget } : null));
   const [showIds, setShowIds] = useShowIds();
 
   // A link to a curator's note shows the IDs, which draws the notes, so the note can be found.
@@ -137,14 +133,22 @@ export default function Reader({
 
   const navigated = useRef(false);
 
+  // The address's eulogy, note or footnote is read once the page is mounted, not while it renders:
+  // a client-side navigation (a link from an index) puts the new address in place only after the
+  // render. A search's pending target, set before the navigation, comes first.
   // A link to a eulogy on the open day (a curator's note naming another ID) only changes the hash.
   useEffect(() => {
+    let live = true;
     const onHash = () => {
       const id = hashId();
-      if (id) setTarget({ id });
+      if (live && id) setTarget({ id });
     };
+    if (!pendingTarget) queueMicrotask(onHash);
     window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    return () => {
+      live = false;
+      window.removeEventListener("hashchange", onHash);
+    };
   }, []);
 
   useEffect(() => {
