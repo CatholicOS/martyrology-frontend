@@ -61,7 +61,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
               return (
                 <div key={p.qid} className="mb-4">
                   <h3 className="font-semibold">
-                    {p.label}
+                    <span lang={p.labelLang && p.labelLang !== locale ? p.labelLang : undefined}>{p.label}</span>
                     {c && <span className="font-normal text-slate-600"> ({c})</span>}
                   </h3>
                   <ul className="ml-4 text-sm">

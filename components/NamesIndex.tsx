@@ -54,7 +54,8 @@ export default function NamesIndex({ edition, title, index, error = false, lette
                   {p.qid && (
                     <>
                       {" "}
-                      <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer">
+                      <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer"
+                        lang={p.labelLang && p.labelLang !== locale ? p.labelLang : undefined}>
                         {`${p.label ?? t("wikidata")} ↗`}
                       </a>
                     </>

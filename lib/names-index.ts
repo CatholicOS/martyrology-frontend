@@ -21,6 +21,8 @@ export interface IndexPerson {
   qid: string | null;
   /** The Wikidata label in the interface language, else English; null when it has none. */
   label: string | null;
+  /** The label's language: the interface's, or English when it fell back; null with no label. */
+  labelLang: Locale | null;
   lines: NameLine[];
 }
 
@@ -65,7 +67,8 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
       let person = people.get(key);
       if (!person) {
         const l = p.wikidata ? snap.labels[p.wikidata] : undefined;
-        person = { key, name: p.name, qid: p.wikidata ?? null, label: l?.[locale] || l?.en || null, lines: [], forms: new Map(), lineForms: [] };
+        const labelLang = l?.[locale] ? locale : l?.en ? "en" : null;
+        person = { key, name: p.name, qid: p.wikidata ?? null, label: labelLang && l![labelLang]!, labelLang, lines: [], forms: new Map(), lineForms: [] };
         people.set(key, person);
       }
       person.forms.set(p.name, (person.forms.get(p.name) ?? 0) + 1);

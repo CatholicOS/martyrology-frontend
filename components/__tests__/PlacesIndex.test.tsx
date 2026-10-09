@@ -7,10 +7,10 @@ const index: PlacesIndexData = {
   placed: 3,
   printed: 5,
   letters: [
-    { letter: "L", places: [{ qid: "Q84", label: "London", country: "GB", lines: [
+    { letter: "L", places: [{ qid: "Q84", label: "London", labelLang: "en", country: "GB", lines: [
       { id: "mr:0103-thomas", day: { mm: 1, dd: 3 }, entry: 1, subject: "Sanctus Thomas", printed: "Londínii", typology: "dies_natalis" },
     ] }] },
-    { letter: "R", places: [{ qid: "Q220", label: "Rome", country: "IT", lines: [
+    { letter: "R", places: [{ qid: "Q220", label: "Rome", labelLang: "en", country: "IT", lines: [
       { id: "mr:0101-almachius", day: { mm: 1, dd: 1 }, entry: 2, subject: "Sanctus Almachius", printed: null, typology: "dies_natalis" },
       { id: "mr:0102-caecilia", day: { mm: 1, dd: 2 }, entry: 3, subject: "Sancta Cæcilia", printed: null, typology: "depositio" },
       { id: "mr:0104-novus", day: { mm: 1, dd: 4 }, entry: 1, subject: "Sanctus Novus", printed: null, typology: "nova_typologia" },
@@ -18,8 +18,8 @@ const index: PlacesIndexData = {
   ],
 };
 
-const renderIndex = (i: PlacesIndexData | null = index, letter?: string) =>
-  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} lang="la" />);
+const renderIndex = (i: PlacesIndexData | null = index, letter?: string, locale: "en" | "de" = "en") =>
+  render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} lang="la" />, { locale });
 
 describe("PlacesIndex", () => {
   it("titles the page and links back to the edition and its notes", () => {
@@ -73,6 +73,11 @@ describe("PlacesIndex", () => {
     expect(screen.getByText("Sanctus Thomas")).toHaveAttribute("lang", "la");
     expect(screen.getByText("Londínii")).toHaveAttribute("lang", "la");
     expect(screen.getByRole("heading", { level: 3, name: /London/ }).closest("[lang]")).toBeNull();
+  });
+
+  it("marks a heading that fell back to English as English, on a page in another language", () => {
+    renderIndex(index, undefined, "de");
+    expect(screen.getByText("London")).toHaveAttribute("lang", "en");
   });
 
   it("shows the typology unless dies natalis", () => {

@@ -67,6 +67,9 @@ describe("namesIndex", () => {
     expect(r.letters.map((l) => l.letter)).toEqual(["A", "D", "P", "T"]);
     expect(r.letters[0].persons[0].label).toBe("Agostino d'Ippona");
     expect(namesIndex(catalog, snap, ED, "fr")!.letters[0].persons[0].label).toBe("Augustine of Hippo");
+    expect(r.letters[0].persons[0].labelLang).toBe("it");
+    expect(namesIndex(catalog, snap, ED, "fr")!.letters[0].persons[0].labelLang).toBe("en");
+    expect(namesIndex(catalog, snap, ED, "de")!.letters.find((l) => l.letter === "P")!.persons[0].labelLang).toBeNull();
     expect(r.letters.find((l) => l.letter === "P")!.persons[0].label).toBe("Paolo Miki");
     expect(namesIndex(catalog, snap, ED, "de")!.letters.find((l) => l.letter === "P")!.persons[0].label).toBeNull();
   });
