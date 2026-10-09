@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { buildMisprints, buildNotes, buildPersons, buildPlaces, buildSnapshot, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildPersonDetails, buildPersons, buildPlaces, buildSnapshot, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -222,5 +222,44 @@ describe("fetchPersonLabels", () => {
     const down = async () => { throw new Error("Wikidata SPARQL 429"); };
     expect(await fetchPersonLabels(["Q1"], () => prev, down)).toEqual({ Q1: { en: "Basil (old)" } });
     expect(await fetchPersonLabels(["Q1"], () => prev, async () => ({ Q1: { en: "Basil" } }))).toEqual({ Q1: { en: "Basil" } });
+  });
+});
+
+describe("buildPersonDetails", () => {
+  const doc = {
+    $comment: "crmedr's note",
+    Q19546: {
+      description: { en: "Greek bishop", la: "episcopus", it: "vescovo greco" },
+      born: { year: 329, precision: "year", circa: true }, died: { year: 379, precision: "year", circa: false },
+      image: { file: "Basil of Caesarea.jpg", author: "Anon.", license: "Public domain", license_url: null },
+      wikipedia: { it: "Basilio di Cesarea", en: "Basil of Caesarea", ru: "Василий Великий" },
+    },
+    Q1: { description: {}, born: null, died: null, image: null, wikipedia: {} },
+  } as const;
+
+  it("keeps the QIDs the persons snapshot links to, each language-keyed field in the interface languages only", () => {
+    expect(buildPersonDetails(doc, ["Q19546", "Q404"])).toEqual({
+      Q19546: {
+        description: { en: "Greek bishop", it: "vescovo greco" },
+        born: { year: 329, precision: "year", circa: true }, died: { year: 379, precision: "year", circa: false },
+        image: { file: "Basil of Caesarea.jpg", author: "Anon.", license: "Public domain", license_url: null },
+        wikipedia: { en: "Basil of Caesarea", it: "Basilio di Cesarea" },
+      },
+    });
+  });
+
+  it("skips crmedr's \"$\" keys, even when asked for one", () => {
+    expect(Object.keys(buildPersonDetails(doc, ["$comment", "Q19546"]))).toEqual(["Q19546"]);
+  });
+
+  it("passes the dates through as crmedr writes them", () => {
+    const bce = { year: -150, precision: "century", circa: false } as const;
+    expect(buildPersonDetails({ Q3: { born: bce, died: null } }, ["Q3"]).Q3.born).toEqual(bce);
+  });
+
+  it("fills what crmedr leaves out with nulls and empty maps", () => {
+    expect(buildPersonDetails({ Q2: {} }, ["Q2"])).toEqual({
+      Q2: { description: {}, born: null, died: null, image: null, wikipedia: {} },
+    });
   });
 });

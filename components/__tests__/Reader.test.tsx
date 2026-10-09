@@ -18,6 +18,11 @@ vi.mock("@/lib/api", () => {
   return { getDay: vi.fn(), getEditions: vi.fn(), getAccess: vi.fn(), getElogium: vi.fn(), getCatalog: vi.fn(), ApiError };
 });
 
+// The reader asks for the popups' details while the markup is on.
+vi.mock("@/lib/entities-client", () => ({
+  useEntity: () => ({ status: "idle" }), requestEntities: vi.fn(), usePrefetchEntities: vi.fn(),
+}));
+
 import Reader, { __resetReaderState } from "@/components/Reader";
 import styles from "@/components/page.module.css";
 import { getDay, getEditions, getAccess, getElogium, getCatalog, ApiError } from "@/lib/api";
@@ -534,5 +539,56 @@ describe("Reader, a link to a eulogy", () => {
     const note = await screen.findByText("A curator's note on Modestus.");
     await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
     window.history.replaceState(null, "", "/");
+  });
+});
+
+describe("Reader, the Names & places switch", () => {
+  const MENTION = { kind: "place", where: "text", start: 0, end: 5, form: "Romae", name: null, qid: "Q220" } as const;
+  const named = (day: typeof DAY, edition: string) => ({
+    ...day, metadata: { ...day.metadata, edition }, elogia: [{ ...day.elogia[0], mentions: [MENTION] }],
+  });
+
+  it("shows when the day on screen names someone or somewhere", async () => {
+    vi.mocked(getDay).mockResolvedValue(named(DAY, "martyrologium_romanum_1749"));
+    render1749();
+    expect(await screen.findByRole("switch", { name: "Names & places" })).toBeInTheDocument();
+  });
+
+  it("is not rendered on a day without mentions, and the stored choice is left alone", async () => {
+    window.localStorage.setItem("reader.markup", "1");
+    render1749();
+    await screen.findByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.queryByRole("switch", { name: "Names & places" })).toBeNull();
+    expect(window.localStorage.getItem("reader.markup")).toBe("1");
+  });
+
+  it("marks the day's mentions while it is on, and leaves no popup open on the next day", async () => {
+    window.localStorage.setItem("reader.markup", "1");
+    vi.mocked(getDay).mockResolvedValue(named(DAY, "martyrologium_romanum_1749"));
+    const { rerender } = render1749();
+    fireEvent.click(await screen.findByRole("button", { name: "Romae" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    rerender(<Reader edition="martyrologium_romanum_1749" mm={10} dd={3} signedIn={false} />);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(await screen.findByRole("button", { name: "Romae" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("leaves no popup open on the next day of the compare view", async () => {
+    window.localStorage.setItem("reader.markup", "1");
+    vi.mocked(getDay).mockImplementation(async (edition: string) => named(DAY, edition));
+    const { rerender } = renderPair();
+    const [first] = await screen.findAllByRole("button", { name: "Romae" });
+    fireEvent.click(first);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    rerender(<Reader edition="martyrologium_romanum_1749" mm={10} dd={3} signedIn={false} withEdition={EN} />);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(await screen.findAllByRole("button", { name: "Romae" })).toHaveLength(2);
+  });
+
+  it("shows in the compare view when either column has a mention", async () => {
+    vi.mocked(getDay).mockImplementation(async (edition: string) =>
+      edition === EN ? named(DAY, EN) : DAY);
+    renderPair();
+    expect(await screen.findByRole("switch", { name: "Names & places" })).toBeInTheDocument();
   });
 });

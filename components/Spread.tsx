@@ -2,16 +2,18 @@
 
 import { Link } from "@/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { Fragment, useMemo, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, type CSSProperties, type ReactNode } from "react";
 import DayPage, { Conclusio, DayTitle, Rubricae } from "@/components/DayPage";
 import CuratorNotes from "@/components/CuratorNotes";
 import DayStatus from "@/components/DayStatus";
 import Eulogy from "@/components/Eulogy";
+import { MarkupProvider, PrefetchEntities } from "@/components/markup/Markup";
 import styles from "@/components/page.module.css";
 import PrintedFootnotes from "@/components/PrintedFootnotes";
 import { dateHeading, dayPath, interfaceMonth, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, type BookshelfT, languageLabel, shortName, titleCase, yearAndLanguage } from "@/lib/editions";
 import { pageFootnotes } from "@/lib/footnotes";
+import { hasMentions } from "@/lib/mentions";
 import { pageNotes } from "@/lib/notes";
 import { buildRows, gapNote, type GapNote, type Row } from "@/lib/parallel";
 import type { EditionOut } from "@/lib/types";
@@ -79,16 +81,21 @@ function Gap({ note, name, href }: { note: GapNote; name: string; href: (d: Day)
 /**
  * One day of two editions as two facing sheets. When both days are ready and both editions are
  * aligned to canonical ids, eulogies are set row by row, each level with its counterpart; otherwise
- * each sheet is a page of its own.
+ * each sheet is a page of its own. The markup's provider is mounted here, so a spread keyed per day starts
+ * each day with no popup open.
  */
 export default function Spread({
-  a, b, editions, mm, dd, signedIn, turn, showIds = false,
+  a, b, editions, mm, dd, signedIn, turn, showIds = false, onMentions, markup = false,
 }: {
   a: string; b: string; editions: EditionOut[]; mm: number; dd: number; signedIn: boolean;
   /** Set each eulogy's canonical id above it. */
   showIds?: boolean;
   /** The page-turn animation to play once both days have settled. */
   turn: "next" | "prev" | null;
+  /** Told whether either sheet names anyone or anywhere. */
+  onMentions?: (has: boolean) => void;
+  /** Mark the persons and places the sheets name ("Names & places"). */
+  markup?: boolean;
 }) {
   const tShelf = useTranslations("Bookshelf");
   const t = useTranslations("Reader");
@@ -99,6 +106,10 @@ export default function Spread({
   const dayB = useDay(b, mm, dd);
   const sa = dayA.state;
   const sb = dayB.state;
+  useEffect(() => {
+    const elogia = [...(sa.kind === "ready" ? sa.day.elogia : []), ...(sb.kind === "ready" ? sb.day.elogia : [])];
+    onMentions?.(hasMentions(elogia));
+  }, [sa, sb, onMentions]);
   // Rows only once both editions are known to be aligned; unknown metadata shows independent pages.
   const aligned = !!A.meta && !!B.meta && A.meta.aligned !== false && B.meta.aligned !== false;
   const turnClass = turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined;
@@ -125,6 +136,10 @@ export default function Spread({
     return { a: side("a", a), b: side("b", b) };
   }, [rows, showIds, a, b]);
   const href = (d: Day) => dayPath(a, d, b);
+  // Each sheet's language, for the printed words in a place popup.
+  const marked = (ui: ReactNode) => (
+    <MarkupProvider on={markup} langs={{ [a]: A.lang, [b]: B.lang }}>{ui}</MarkupProvider>
+  );
 
   const unaligned = [A, B].filter((s) => s.meta?.aligned === false);
   const notice = unaligned.map((s) => (
@@ -146,11 +161,11 @@ export default function Spread({
         dd={dd}
       />
     );
-    return (
+    return marked(
       <div className={styles.facing}>
         {waiting(A, dayA)}
         {waiting(B, dayB)}
-      </div>
+      </div>,
     );
   }
 
@@ -161,14 +176,14 @@ export default function Spread({
       ) : (
         <DayStatus state={d.state} retry={d.retry} title={s.title} signedIn={signedIn} mm={mm} dd={dd} />
       );
-    return (
+    return marked(
       <div className={turnClass}>
         {notice}
         <div className={styles.facing}>
           <div>{page(A, dayA)}</div>
           <div>{page(B, dayB)}</div>
         </div>
-      </div>
+      </div>,
     );
   }
 
@@ -192,7 +207,7 @@ export default function Spread({
       return (
         <>
           {d.conclusio && <Conclusio text={d.conclusio} />}
-          <PrintedFootnotes notes={n.printed} lang={s.lang} />
+          <PrintedFootnotes notes={n.printed} lang={s.lang} edition={s.id} />
           <CuratorNotes notes={n.curators} edition={s.id} />
         </>
       );
@@ -220,10 +235,11 @@ export default function Spread({
     );
   };
 
-  return (
+  return marked(
     <div className={turnClass}>
       {notice}
       <div className={styles.spread} style={{ "--rows": rows.length } as CSSProperties}>
+        <PrefetchEntities elogia={[...days.a.elogia, ...days.b.elogia]} />
         <div className={`${styles.sheet} ${styles.sheetA}`} aria-hidden />
         <div className={`${styles.sheet} ${styles.sheetB}`} aria-hidden />
         {rows.map((r, i) => {
@@ -243,6 +259,6 @@ export default function Spread({
           );
         })}
       </div>
-    </div>
+    </div>,
   );
 }

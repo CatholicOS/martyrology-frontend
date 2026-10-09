@@ -5,6 +5,7 @@ import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import type { PlacesIndexData } from "@/lib/places-index";
+import { regionName } from "@/lib/regions";
 
 /**
  * An edition's index of places, as at the back of a printed book: the places A–Z in the interface
@@ -23,14 +24,6 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
   const ed = encodeURIComponent(edition);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
-  const countries = new Intl.DisplayNames([locale], { type: "region" });
-  const country = (code: string) => {
-    try {
-      return code ? countries.of(code) : undefined;
-    } catch {
-      return undefined; // not a region code
-    }
-  };
 
   return (
     <article className={styles.page} aria-labelledby="places-title">
@@ -58,7 +51,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
           <section aria-labelledby="letter-h">
             <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
             {shown.places.map((p) => {
-              const c = country(p.country);
+              const c = regionName(locale, p.country);
               return (
                 <div key={p.qid} className="mb-4">
                   <h3 className="font-semibold">

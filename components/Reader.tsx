@@ -5,16 +5,19 @@ import { useRouter } from "@/i18n/navigation";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import DayPage from "@/components/DayPage";
 import DayStatus from "@/components/DayStatus";
+import { MarkupProvider } from "@/components/markup/Markup";
 import ReaderBar from "@/components/ReaderBar";
 import Spread from "@/components/Spread";
 import styles from "@/components/page.module.css";
 import { getAccess, getCatalog, getEditions } from "@/lib/api";
 import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/lib/calendar";
 import { editionLang, editionTitle, shelfState, sortForShelf, titleCase } from "@/lib/editions";
+import { hasMentions } from "@/lib/mentions";
 import { getSnapshot } from "@/lib/snapshot";
 import { subjectFor, subjectOptions, type SubjectOption } from "@/lib/subjects";
 import type { AccessMap, EditionOut } from "@/lib/types";
 import { useDay } from "@/lib/use-day";
+import { useMarkupSwitch } from "@/lib/use-reader-switch";
 import { useShowIds } from "@/lib/use-show-ids";
 
 const SWIPE_PX = 50;
@@ -88,19 +91,28 @@ function reveal(root: HTMLElement, id: string): boolean {
   return true;
 }
 
-/** One day's page; keyed by the parent on edition/day so each turn starts fresh in "loading". */
+/**
+ * One day's page; keyed by the parent on edition/day so each turn starts fresh in "loading", and with the
+ * markup's provider (`markup`: "Names & places" is on) mounted afresh, so no popup outlives its day.
+ */
 function DayView({
-  edition, mm, dd, lang, title, signedIn, turn, showIds,
+  edition, mm, dd, lang, title, signedIn, turn, showIds, onMentions, markup,
 }: {
   edition: string; mm: number; dd: number; lang: Lang; title: string; signedIn: boolean; turn: Turn; showIds: boolean;
+  onMentions: (has: boolean) => void; markup: boolean;
 }) {
   const { state, retry } = useDay(edition, mm, dd);
+  const ready = state.kind === "ready" ? state.day : null;
+  // A day still loading, locked or failed names no one: the switch hides until a page with mentions is drawn.
+  useEffect(() => onMentions(ready !== null && hasMentions(ready.elogia)), [ready, onMentions]);
   if (state.kind !== "ready") {
     return <DayStatus state={state} retry={retry} title={title} signedIn={signedIn} mm={mm} dd={dd} />;
   }
   return (
     <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-      <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} showIds={showIds} />
+      <MarkupProvider on={markup} langs={{ [edition]: lang }}>
+        <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} showIds={showIds} />
+      </MarkupProvider>
     </div>
   );
 }
@@ -125,6 +137,9 @@ export default function Reader({
   // A fresh object per search, so finding the same eulogy twice scrolls to it again.
   const [target, setTarget] = useState<{ id: string } | null>(() => (pendingTarget ? { id: pendingTarget } : null));
   const [showIds, setShowIds] = useShowIds();
+  const [markup, setMarkup] = useMarkupSwitch();
+  // Whether the day on screen names anyone or anywhere (either column of a spread): the switch shows only then.
+  const [named, setNamed] = useState(false);
 
   // A link to a curator's note shows the IDs, which draws the notes, so the note can be found.
   useEffect(() => {
@@ -293,6 +308,9 @@ export default function Reader({
         }}
         showIds={showIds}
         onShowIds={setShowIds}
+        markupAvailable={named}
+        markup={markup}
+        onMarkup={setMarkup}
       />
       <div
         className="flex items-stretch gap-2"
@@ -326,6 +344,8 @@ export default function Reader({
               signedIn={signedIn}
               turn={turn}
               showIds={showIds}
+              onMentions={setNamed}
+              markup={markup}
             />
           ) : (
             /* key resets DayView's loading state for each day/edition */
@@ -339,6 +359,8 @@ export default function Reader({
               signedIn={signedIn}
               turn={turn}
               showIds={showIds}
+              onMentions={setNamed}
+              markup={markup}
             />
           )}
         </div>

@@ -11,6 +11,7 @@ import { describeError } from "@/lib/describe-error";
 import { getPathname } from "@/i18n/navigation";
 import { langOn, type Locale } from "@/i18n/routing";
 import { typologyLabel, type MapEntry } from "@/lib/map-data";
+import { ESRI_ATTRIBUTION, ESRI_STREET_TILES } from "@/lib/esri-tiles";
 
 interface Props {
   entries: MapEntry[];
@@ -109,14 +110,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       map = L.map(el.current, { worldCopyJump: true });
       map.setView([30, 10], 2);
       // Esri World Street Map, as PlaceMap: English labels, keyless.
-      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
-        maxZoom: 18,
-        attribution:
-          "Tiles &copy; Esri &mdash; Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, " +
-          "METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, " +
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-          "and the GIS User Community",
-      }).addTo(map);
+      L.tileLayer(ESRI_STREET_TILES, { maxZoom: 18, attribution: ESRI_ATTRIBUTION }).addTo(map);
       // No chunkedLoading: markercluster 1.5.3's chunked addLayers keeps adding a superseded set
       // of markers after clearLayers.
       const group = L.markerClusterGroup({ zoomToBoundsOnClick: false, spiderfyOnMaxZoom: false });

@@ -23,6 +23,13 @@ describe("pageFootnotes", () => {
     expect(pageFootnotes([e, e], "ed").map((n) => n.at)).toEqual([0]);
   });
 
+  it("gives each footnote its number in the eulogy and the mentions printed in it", () => {
+    const m = { kind: "person" as const, where: { footnote: 2 }, start: 0, end: 5, form: "Petri", name: "Petrus", qid: null };
+    const t = { kind: "place" as const, where: "text" as const, start: 0, end: 4, form: "Romæ", name: null, qid: "Q220" };
+    const notes = pageFootnotes([{ id: "mr:a", footnotes: [fn("1", "x"), fn("2", "y")], mentions: [m, t] }], "ed");
+    expect(notes.map((n) => [n.number, n.mentions])).toEqual([[1, []], [2, [m]]]);
+  });
+
   it("tolerates eulogies without the field (an older API)", () => {
     expect(pageFootnotes([{ id: "mr:a" }], "ed")).toEqual([]);
   });
