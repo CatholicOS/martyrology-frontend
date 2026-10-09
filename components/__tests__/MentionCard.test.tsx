@@ -63,6 +63,7 @@ describe("MentionCard", () => {
     fireEvent.click(screen.getByRole("button", { name: "Ficti" }));
     fireEvent.click(screen.getByRole("button", { name: "Fictíni" }));
     expect(screen.getByText("Chosen: Fictíni et Ficti")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Chosen: Fictíni et Ficti");
     fireEvent.click(screen.getByRole("button", { name: "Save the words" }));
     expect(onDecide).toHaveBeenCalledWith(ID, { decision: "edit", edited: { start: 156, end: 172, form: "Fictíni et Ficti" } });
   });
@@ -115,6 +116,24 @@ describe("MentionCard, the inputs that reach curators", () => {
     fireEvent.click(screen.getByRole("button", { name: "Choose the words" }));
     expect(screen.getByText("Chosen: Fictíni et Ficti")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "et" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("describes a disabled Accept by the warning that explains it", () => {
+    const { view } = renderCard(add({ context_start: 500 }));
+    expect(screen.getByRole("button", { name: "Accept" })).toHaveAccessibleDescription(/fall outside the quoted text/);
+    view.unmount();
+    renderCard(add({ form: "Fictinus" }));
+    expect(screen.getByRole("button", { name: "Accept" })).toHaveAccessibleDescription(/no longer has these words/);
+  });
+
+  it("describes an Accept disabled for lack of a span by the not-found warning", () => {
+    renderCard(add({ start: null, end: null, form: null }));
+    expect(screen.getByRole("button", { name: "Accept" })).toHaveAccessibleDescription("Not found in the text: choose the words to mark.");
+  });
+
+  it("lets a valid op be edited again when its saved edit now falls outside the context", () => {
+    renderCard(add(), { decision: "edit", edited: { start: 900, end: 910, form: "Nemo" } });
+    expect(screen.getByRole("button", { name: "Choose the words" })).toBeEnabled();
   });
 
   it("says which footnote a mention is printed in", () => {

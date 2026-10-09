@@ -109,10 +109,15 @@ owned by the Plesk subscription user `romanmartyrology.com_q8xuoim5v3a`, group
 `psacln`, mode `640`:
 
 ```bash
-scp "$HOME"/private-changesets/mentions-review-*.json ubuntu@catholicdigitalcommons.org:/tmp/
-ssh ubuntu@catholicdigitalcommons.org 'sudo mv /tmp/mentions-review-*.json /var/www/vhosts/romanmartyrology.com/review-changesets/ \
+# upload into a private directory, not the world-readable /tmp
+ssh ubuntu@catholicdigitalcommons.org 'mkdir -p -m 700 ~/mentions-upload'
+scp "$HOME"/private-changesets/mentions-review-*.json ubuntu@catholicdigitalcommons.org:mentions-upload/
+# drop the old files first, so a month that vanished in a re-bundle does not linger
+ssh ubuntu@catholicdigitalcommons.org 'sudo rm -f /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
+  && sudo mv ~/mentions-upload/mentions-review-*.json /var/www/vhosts/romanmartyrology.com/review-changesets/ \
   && sudo chown romanmartyrology.com_q8xuoim5v3a:psacln /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
-  && sudo chmod 640 /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json'
+  && sudo chmod 640 /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
+  && rmdir ~/mentions-upload'
 ```
 
 Both accept optional positional args — see the top of each script under

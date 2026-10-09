@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useTranslations } from "next-intl";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type MentionOp } from "@/lib/changeset";
@@ -33,7 +33,11 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
   // Accept takes the op as proposed, whatever was saved: judge it as proposed.
   const asProposed = mentionRanges(op);
   const canAccept = asProposed.problem === null && !(op.op === "add_mention" && asProposed.proposed === null);
-  const canEdit = op.op !== "remove_mention" && shown.problem !== "outside";
+  const canEdit = op.op !== "remove_mention" && asProposed.problem !== "outside";
+  // The warning that says why Accept is disabled (at most one shows), for the button's description.
+  const problem = asProposed.problem ?? shown.problem;
+  const noSpan = op.op === "add_mention" && asProposed.proposed === null && asProposed.problem === null;
+  const warningId = useId();
   const [editing, setEditing] = useState(false);
   // The words picked while editing: the first click starts the span, the second ends it.
   const [pick, setPick] = useState<[number, number] | null>(null);
@@ -107,7 +111,7 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
             })}
             {op.context.slice(words.length ? words[words.length - 1].end : 0)}
           </p>
-          {picked && <p className="mb-2 text-xs">{t("selected", { form: picked.form })}</p>}
+          <p role="status" aria-live="polite" className="mb-2 text-xs">{picked ? t("selected", { form: picked.form }) : ""}</p>
         </>
       )}
 
@@ -118,16 +122,16 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
           {shown.proposed && <span className={`${markStyle} underline`}>{t("proposed")}</span>}
         </p>
       )}
-      {shown.problem === "outside" && <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("outside")}</p>}
-      {shown.problem === "changed" && <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("changed")}</p>}
-      {op.op === "add_mention" && asProposed.proposed === null && asProposed.problem === null && (
-        <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("noSpan")}</p>
+      {problem === "outside" && <p id={warningId} className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("outside")}</p>}
+      {problem === "changed" && <p id={warningId} className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("changed")}</p>}
+      {noSpan && (
+        <p id={warningId} className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("noSpan")}</p>
       )}
       {op.reasoning && <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">{t("why", { text: op.reasoning })}</p>}
 
       {!editing ? (
         <div className="flex flex-wrap gap-2">
-          <button type="button" disabled={!canAccept} className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, { decision: "accept" })}>
+          <button type="button" disabled={!canAccept} aria-describedby={!canAccept ? warningId : undefined} className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, { decision: "accept" })}>
             {r("actions.accept")}
           </button>
           <button type="button" className={`${button} bg-red-600 hover:bg-red-700`} onClick={() => onDecide(uid, { decision: "reject" })}>
