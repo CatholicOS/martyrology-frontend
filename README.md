@@ -88,6 +88,36 @@ npm run import-changeset -- ../crmedr/data/gazetteer_review.json gazetteer-revie
 # with nothing left to review disappears. It quotes no text: names and
 # Wikidata candidates only.
 npm run import-changeset -- ../crmedr/data/person_items_review.json persons-review --by-month
+
+# Bundle crmedr's mentions review (add_mention / set_span / remove_mention, the
+# eulogy markup's doubtful and unmatched marks) one month at a time into a
+# private directory: its operations quote a few words of the 2004 text either
+# side of each mark, so it never goes in this public repo, and the script
+# refuses to write it here without --private. MENTIONS_REVIEW is the file
+# crmedr's extract_mentions.py wrote (outside crmedr's repo, for the same
+# reason). On the server, CHANGESETS_DIR is
+# /var/www/vhosts/romanmartyrology.com/review-changesets: bundle into a local
+# private directory, then copy the files there (see below).
+CHANGESETS_DIR="$HOME/private-changesets" \
+  npm run import-changeset -- "$MENTIONS_REVIEW" mentions-review martyrologium_romanum_2004 --by-month --private
+```
+
+### Uploading private change-sets
+
+A private bundle is copied to the server's `CHANGESETS_DIR`. The files there are
+owned by the Plesk subscription user `romanmartyrology.com_q8xuoim5v3a`, group
+`psacln`, mode `640`:
+
+```bash
+# upload into a private directory, not the world-readable /tmp
+ssh ubuntu@catholicdigitalcommons.org 'mkdir -p -m 700 ~/mentions-upload'
+scp "$HOME"/private-changesets/mentions-review-*.json ubuntu@catholicdigitalcommons.org:mentions-upload/
+# drop the old files first, so a month that vanished in a re-bundle does not linger
+ssh ubuntu@catholicdigitalcommons.org 'sudo rm -f /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
+  && sudo mv ~/mentions-upload/mentions-review-*.json /var/www/vhosts/romanmartyrology.com/review-changesets/ \
+  && sudo chown romanmartyrology.com_q8xuoim5v3a:psacln /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
+  && sudo chmod 640 /var/www/vhosts/romanmartyrology.com/review-changesets/mentions-review-*.json \
+  && rmdir ~/mentions-upload'
 ```
 
 Both accept optional positional args — see the top of each script under

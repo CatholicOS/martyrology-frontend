@@ -456,6 +456,28 @@
       "reason": "Motivo",
       "confirm": "Confirmar",
       "cancel": "Cancelar"
+    },
+    "mention": {
+      "kind": {
+        "person": "pessoa",
+        "place": "lugar"
+      },
+      "title": {
+        "add_mention": "Marcar estas palavras como {kind, select, person {uma pessoa} other {um lugar}}",
+        "set_span": "Mover a marca de {kind, select, person {esta pessoa} other {este lugar}}",
+        "remove_mention": "Remover a marca de {kind, select, person {esta pessoa} other {este lugar}}"
+      },
+      "current": "Marcado agora",
+      "proposed": "Proposto",
+      "noSpan": "Não encontrado no texto: escolha as palavras a marcar.",
+      "outside": "As palavras propostas ficam fora do texto citado: esta operação não pode ser decidida aqui.",
+      "changed": "O texto citado não tem mais estas palavras neste lugar: esta operação não pode ser aceita.",
+      "why": "Motivo: {text}",
+      "choose": "Escolher as palavras",
+      "hint": "Clique na primeira palavra e depois na última.",
+      "words": "Palavras do texto",
+      "selected": "Palavras escolhidas: {form}",
+      "save": "Salvar as palavras"
     }
   },
   "Docs": {

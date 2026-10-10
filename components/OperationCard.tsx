@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import AttachNoteCard from "@/components/AttachNoteCard";
 import EulogyView from "@/components/EulogyView";
+import MentionCard from "@/components/MentionCard";
 import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PersonCard from "@/components/PersonCard";
 import PlaceCard from "@/components/PlaceCard";
@@ -11,6 +12,7 @@ import RealignCard from "@/components/RealignCard";
 import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
 import {
   isAdjudicable,
+  isMentionOp,
   opId,
   type Op,
   type RenameOp,
@@ -61,6 +63,10 @@ export default function OperationCard(props: Props) {
   }
   if (props.op.op === "place_margin") {
     return <PlaceMarginCard {...props} op={props.op as PlaceMarginOp} />;
+  }
+  // crmedr's mentions (eulogy markup): a quoted passage and a span, no eulogy fetched.
+  if (isMentionOp(props.op)) {
+    return <MentionCard op={props.op} decision={props.decision} onDecide={props.onDecide} />;
   }
   return <IdOperationCard {...props} />;
 }

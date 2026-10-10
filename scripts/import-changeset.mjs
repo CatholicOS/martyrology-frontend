@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync } from "node:fs";
-import { dirname, join, basename } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync, realpathSync } from "node:fs";
+import { dirname, join, basename, resolve, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
@@ -71,30 +71,92 @@ export function splitByMonth(cs, name) {
   return [...byMonth.keys()].sort().map((mm) => ({ name: `${name}-${mm}`, changeset: { ...cs, operations: byMonth.get(mm) } }));
 }
 
-function main() {
+/**
+ * Whether a change-set quotes an edition's text: its operations carry a `context` (crmedr's mentions
+ * review quotes the 2004 edition), so it must never be written into this public repo.
+ * @param {import("../lib/changeset.ts").Changeset} cs
+ */
+export function quotesText(cs) {
+  return cs.operations.some((op) => typeof op.context === "string");
+}
+
+/**
+ * A path made absolute with its symlinks resolved as far as it exists: the real path of its nearest
+ * existing ancestor, then the rest.
+ * @param {string} p
+ */
+function realish(p) {
+  let head = resolve(p);
+  const rest = [];
+  for (;;) {
+    try {
+      return join(realpathSync(head), ...rest.reverse());
+    } catch {
+      const up = dirname(head);
+      if (up === head) return resolve(p);
+      rest.push(basename(head));
+      head = up;
+    }
+  }
+}
+
+/**
+ * Write a change-set into `dir`, whole or one file per month. The repo's changesets/ (`isPublic`) gets
+ * its index regenerated; CHANGESETS_DIR needs none (every *.json there is listed). A change-set that
+ * quotes the text is refused for the repo before anything is written, and so is a private `dir`
+ * that is the repository itself or inside it (a mistyped or relative CHANGESETS_DIR). Returns the paths written.
+ * @param {import("../lib/changeset.ts").Changeset} cs
+ * @param {string} name
+ * @param {{byMonth: boolean, dir: string, isPublic: boolean}} options
+ * @returns {string[]}
+ */
+export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
+  if (isPublic && quotesText(cs)) {
+    throw new Error(`${name} quotes the text (its operations carry context): bundle it with --private into CHANGESETS_DIR, never into this public repo`);
+  }
+  if (!isPublic) {
+    const repo = realish(join(dirname(fileURLToPath(import.meta.url)), ".."));
+    const rel = relative(repo, realish(dir));
+    if (rel === "" || (!rel.startsWith("..") && !isAbsolute(rel))) {
+      throw new Error(`${dir} is inside this public repository: CHANGESETS_DIR must be a directory outside it`);
+    }
+  }
+  mkdirSync(dir, { recursive: true });
+  const written = [];
+  if (byMonth) {
+    // A month now without operations must not keep its earlier part.
+    for (const f of readdirSync(dir)) if (f.startsWith(`${name}-`) && /^\d{2}\.json$/.test(f.slice(name.length + 1))) unlinkSync(join(dir, f));
+    for (const part of splitByMonth(cs, name)) {
+      const dest = join(dir, `${part.name}.json`);
+      writeFileSync(dest, JSON.stringify(part.changeset) + "\n"); // compact: these are large
+      written.push(dest);
+    }
+  } else {
+    const dest = join(dir, `${name}.json`);
+    writeFileSync(dest, JSON.stringify(cs, null, 1) + "\n");
+    written.push(dest);
+  }
+  if (isPublic) written.push(writeIndex(dir));
+  return written;
+}
+
+/**
+ * @param {string[]} argv the arguments after the script's name
+ * @param {Record<string, string | undefined>} env
+ */
+export function main(argv = process.argv.slice(2), env = process.env) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const byMonth = process.argv.includes("--by-month");
-  const args = process.argv.slice(2).filter((a) => a !== "--by-month");
+  const flags = new Set(argv.filter((a) => a.startsWith("--")));
+  const args = argv.filter((a) => !a.startsWith("--"));
   const src = args[0] ?? join(here, "..", "..", "crmedr", "data", "deprecated_id_corrections.json");
   const name = args[1] ?? "deprecated-id-normalization";
   const edition = args[2] ?? "martyrologium_romanum_1749";
+  const isPublic = !flags.has("--private");
+  const dir = isPublic ? join(here, "..", "changesets") : env.CHANGESETS_DIR;
+  if (!dir) throw new Error("--private writes into CHANGESETS_DIR, which is not set");
   const cs = toBundledChangeset(JSON.parse(readFileSync(src, "utf8")), { edition, registry: "crmedr@local" });
-  const destDir = join(here, "..", "changesets");
-  mkdirSync(destDir, { recursive: true });
-  if (byMonth) {
-    // A month now without operations must not keep its earlier part.
-    for (const f of readdirSync(destDir)) if (new RegExp(`^${name}-\\d{2}\\.json$`).test(f)) unlinkSync(join(destDir, f));
-    for (const part of splitByMonth(cs, name)) {
-      const dest = join(destDir, `${part.name}.json`);
-      writeFileSync(dest, JSON.stringify(part.changeset) + "\n"); // compact: these are large
-      console.log(`wrote ${dest}: ${part.changeset.operations.length} operations`);
-    }
-  } else {
-    const dest = join(destDir, `${name}.json`);
-    writeFileSync(dest, JSON.stringify(cs, null, 1) + "\n");
-    console.log(`wrote ${dest}: ${cs.operations.length} operations (${basename(src)})`);
-  }
-  writeIndex(destDir);
+  for (const f of writeBundle(cs, name, { byMonth: flags.has("--by-month"), dir, isPublic })) console.log(`wrote ${f}`);
+  console.log(`${cs.operations.length} operations (${basename(src)})`);
 }
 
 /**
@@ -103,6 +165,7 @@ function main() {
  * bundled change-set picker. Lists every
  * `*.json` file in the changesets directory except the index itself.
  * @param {string} destDir
+ * @returns {string} the index's path
  */
 function writeIndex(destDir) {
   const files = readdirSync(destDir)
@@ -110,7 +173,7 @@ function writeIndex(destDir) {
     .sort();
   const indexPath = join(destDir, "index.json");
   writeFileSync(indexPath, JSON.stringify({ changesets: files }, null, 1) + "\n");
-  console.log(`wrote ${indexPath}: ${files.length} changeset(s)`);
+  return indexPath;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();

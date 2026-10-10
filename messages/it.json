@@ -456,6 +456,28 @@
       "reason": "Motivo",
       "confirm": "Conferma",
       "cancel": "Annulla"
+    },
+    "mention": {
+      "kind": {
+        "person": "persona",
+        "place": "luogo"
+      },
+      "title": {
+        "add_mention": "Segna queste parole come {kind, select, person {una persona} other {un luogo}}",
+        "set_span": "Sposta il segno su {kind, select, person {questa persona} other {questo luogo}}",
+        "remove_mention": "Togli il segno su {kind, select, person {questa persona} other {questo luogo}}"
+      },
+      "current": "Segnato ora",
+      "proposed": "Proposto",
+      "noSpan": "Non trovato nel testo: scegli le parole da segnare.",
+      "outside": "Le parole proposte cadono fuori dal testo citato: questa operazione non si può decidere qui.",
+      "changed": "Il testo citato non ha più queste parole in questo punto: questa operazione non si può accettare.",
+      "why": "Perché: {text}",
+      "choose": "Scegli le parole",
+      "hint": "Fai clic sulla prima parola, poi sull’ultima.",
+      "words": "Parole del testo",
+      "selected": "Parole scelte: {form}",
+      "save": "Salva le parole"
     }
   },
   "Docs": {
