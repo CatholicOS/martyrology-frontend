@@ -83,6 +83,11 @@ describe("MentionCard", () => {
     expect(onDecide).not.toHaveBeenCalled();
     expect(screen.getByRole("button", { name: "Choose the words" })).toBeInTheDocument();
   });
+
+  it("says which person of the name an add_mention marks, from the second", () => {
+    renderCard(add({ name: "Fictinus", n: 3 }));
+    expect(screen.getByText("the 3rd of this name in this eulogy")).toBeInTheDocument();
+  });
 });
 
 describe("MentionCard, the inputs that reach curators", () => {

@@ -60,7 +60,10 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
         )}
       </div>
 
-      <p className="text-base font-semibold">{op.name}</p>
+      <p className="text-base font-semibold">
+        {op.name}
+        {op.n && <span className="ml-2 text-sm font-normal text-slate-600 dark:text-slate-400">{t("ordinal", { n: op.n })}</span>}
+      </p>
       <p className="mb-1 text-slate-700 dark:text-slate-300">
         {op.subject} · {where}
       </p>

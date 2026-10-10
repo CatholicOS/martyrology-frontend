@@ -112,13 +112,15 @@ export interface PersonCandidate {
 /** Identify a saint or blessed named in a eulogy with a Wikidata item (crmedr persons). */
 export interface ResolvePersonOp extends Base {
   op: "resolve_person";
-  /** `<eulogy>|<name>`. */
+  /** `<eulogy>|<name>`, or `<eulogy>|<name>#<n>` for the nth person of a name. */
   id: string;
   eulogy: string;
   day: string;
   typology: string | null;
   subject: string;
   name: string;
+  /** Which person of the name in the eulogy, from 2; absent for the first. */
+  n?: number;
   where: "text" | { footnote: number };
   companions: string[];
   failed: string[];
@@ -247,6 +249,8 @@ interface MentionBase extends Base {
 /** Mark words not marked yet. No span (all null): crmedr could not find the person; the curator picks the words. */
 export interface AddMentionOp extends MentionBase {
   op: "add_mention";
+  /** Which person of the name in the eulogy, from 2; absent for the first. */
+  n?: number;
   start: number | null;
   end: number | null;
   form: string | null;
