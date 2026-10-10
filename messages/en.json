@@ -477,7 +477,11 @@
       "hint": "Click the first word, then the last.",
       "words": "Words of the text",
       "selected": "Chosen: {form}",
-      "save": "Save the words"
+      "save": "Save the words",
+      "remove": "Remove the mark",
+      "keep": "Keep the mark",
+      "removed": "removed",
+      "kept": "kept"
     }
   },
   "Docs": {
