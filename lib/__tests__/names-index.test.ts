@@ -113,4 +113,35 @@ describe("namesIndex, from the final review", () => {
     expect(p[0].lines.map((l) => l.footnote)).toEqual([null, 1]); // text once, footnote once
     expect(p[0].name).toBe("Augustinus Pak Chong Won");           // still the most frequent form
   });
+
+  describe("persons who share a name in one eulogy", () => {
+    const felixes = (name: string): PersonsSnapshot => ({
+      editions: { [ED]: {
+        "mr:0212-x": [{ name, where: { footnote: 1 } }, { name, n: 2, where: { footnote: 1 } }],
+        "mr:0310-z": [{ name, where: "text" }],
+      } },
+      labels: {},
+    });
+    const days = [cat("mr:0212-x", "Sancti X", "02-12"), cat("mr:0310-z", "Sancti Z", "03-10")];
+    const headings = (s: PersonsSnapshot, name: string) =>
+      namesIndex(days, s, ED, "en")!.letters.flatMap((l) => l.persons).filter((p) => p.name === name);
+
+    it("gives an unidentified second person a heading of their own", () => {
+      expect(headings(felixes("Felix"), "Felix").map((p) => p.lines.map((l) => l.id))).toEqual([
+        ["mr:0212-x", "mr:0310-z"],  // the first Felix still shares a heading with another eulogy's
+        ["mr:0212-x"],
+      ]);
+    });
+
+    it("keeps the first of the name first", () => {
+      expect(headings(felixes("Zitas"), "Zitas").map((p) => p.lines.length)).toEqual([2, 1]);
+    });
+
+    it("files an identified second person under their item", () => {
+      const s = felixes("Felix");
+      s.editions[ED]["mr:0212-x"][1].wikidata = "Q2";
+      const [first, second] = headings(s, "Felix");
+      expect([first.qid, second.qid]).toEqual([null, "Q2"]);
+    });
+  });
 });

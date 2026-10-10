@@ -14,7 +14,7 @@ export interface NameLine {
 }
 
 export interface IndexPerson {
-  /** The QID, else the Latin name. */
+  /** The QID; else `name:<name>`, or `name:<name>#<n>@<eulogy>` for the nth (from 2) person of a name in a eulogy. */
   key: string;
   /** The heading: the person's most frequent Latin form. */
   name: string;
@@ -46,7 +46,7 @@ export function fnAnchor(edition: string, id: string, n: number): string {
 
 /**
  * An edition's index of names: the saints and blessed its printed eulogies name, one heading per
- * person (by QID, else by the Latin name) under their most frequent Latin form, sorted and filed by
+ * person (by QID, else by the Latin name, apart for the 2nd, 3rd… of a name in one eulogy) under their most frequent Latin form, sorted and filed by
  * letter in Latin order, each mention in calendar order. Null when crmedr has no persons for the edition.
  */
 export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, edition: string, locale: Locale): NamesIndexData | null {
@@ -63,7 +63,9 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
     if (!mentions?.length) continue;
     naming++;
     for (const p of mentions) {
-      const key = p.wikidata ?? `name:${p.name}`;
+      // An unidentified namesake in another eulogy may be the same saint: one heading. The 2nd, 3rd… of a
+      // name in one eulogy are other persons: a heading each, its key after the first's (a longer string).
+      const key = p.wikidata ?? (p.n ? `name:${p.name}#${p.n}@${c.id}` : `name:${p.name}`);
       let person = people.get(key);
       if (!person) {
         const l = p.wikidata ? snap.labels[p.wikidata] : undefined;
