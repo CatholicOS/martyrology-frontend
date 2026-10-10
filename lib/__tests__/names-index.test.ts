@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fnAnchor, namesIndex } from "@/lib/names-index";
+import { fnAnchor, headingId, letterEntries, namesIndex } from "@/lib/names-index";
 import type { PersonsSnapshot } from "@/lib/persons";
 import type { CatalogEntryOut } from "@/lib/types";
 
@@ -79,6 +79,51 @@ describe("namesIndex", () => {
     expect(a[0]).toEqual({ id: "mr:0101-y", day: { mm: 1, dd: 1 }, entry: null, subject: "Sanctus Y", footnote: 2 });
     expect(a[1].footnote).toBeNull();
     expect(fnAnchor(ED, "mr:0101-y", 2)).toBe("fn-martyrologium_romanum_2004-mr:0101-y-2");
+  });
+
+  describe("other names", () => {
+    const vs: PersonsSnapshot = {
+      editions: { [ED]: {
+        "mr:0817-mamas": [{ name: "Mamas", also: ["Mames"], where: "text" }],
+        "mr:0818-mamas": [{ name: "Mamas", also: ["Mames"], where: "text" }],
+        "mr:0720-marina": [{ name: "Marina", also: ["Margarita", "Marina"], where: "text", wikidata: "Q1" }],
+        "mr:0610-margarita": [{ name: "Margarita", where: "text" }],
+        "mr:0724-kinga": [{ name: "Kinga", also: ["Cunegundis"], where: "text" }],
+      } },
+      labels: {},
+    };
+    const days = [cat("mr:0817-mamas", "Sanctus Mamas", "08-17"), cat("mr:0818-mamas", "Sanctus Mamas", "08-18"),
+      cat("mr:0720-marina", "Sancta Marina", "07-20"), cat("mr:0610-margarita", "Sancta Margarita", "06-10"),
+      cat("mr:0724-kinga", "Sancta Kinga", "07-24")];
+    const r = () => namesIndex(days, vs, ED, "en")!;
+    const see = (letter: string) => r().letters.find((l) => l.letter === letter)?.see ?? [];
+
+    it("gives each other name one see entry to the heading, under its own letter", () => {
+      expect(see("M").map((s) => [s.name, s.target])).toEqual([["Mames", "Mamas"], ["Margarita", "Marina"]]);
+      expect(see("M")[0].key).toBe("name:Mamas");
+      expect(see("M")[1]).toMatchObject({ key: "Q1", letter: "M" });
+    });
+
+    it("drops an other name that is the heading itself", () => {
+      expect(see("M").some((s) => s.name === "Marina")).toBe(false);
+    });
+
+    it("files a see-only letter in order", () => {
+      expect(r().letters.map((l) => l.letter)).toEqual(["C", "K", "M"]);
+      expect(r().letters[0]).toMatchObject({ letter: "C", persons: [] });
+      expect(see("C")).toEqual([{ name: "Cunegundis", key: "name:Kinga", target: "Kinga", letter: "K" }]);
+    });
+
+    it("lists a letter's headings and see entries in one order, a heading before an entry of its name", () => {
+      const m = r().letters.find((l) => l.letter === "M")!;
+      expect(letterEntries(m).map((e) => ("person" in e ? `H:${e.person.name}` : `S:${e.see.name}`)))
+        .toEqual(["H:Mamas", "S:Mames", "H:Margarita", "S:Margarita", "H:Marina"]);
+    });
+
+    it("makes a heading id from its key, with what an id can't hold replaced", () => {
+      expect(headingId("name:Felix#2@mr:0212-x")).toBe("p-name-Felix-2-mr-0212-x");
+      expect(headingId("Q42")).toBe("p-Q42");
+    });
   });
 });
 

@@ -29,6 +29,40 @@ export interface IndexPerson {
 export interface NamesLetter {
   letter: string;
   persons: IndexPerson[];
+  /** Cross-references from other names to their headings, by name. */
+  see?: SeeEntry[];
+}
+
+/** A cross-reference from a person's other name to their heading: "Mames → see Mamas". */
+export interface SeeEntry {
+  name: string;
+  /** The heading's key. */
+  key: string;
+  /** The heading's name. */
+  target: string;
+  /** The heading's letter, whose page holds it. */
+  letter: string;
+}
+
+export type NamesEntry = { person: IndexPerson } | { see: SeeEntry };
+
+/** A heading's element id, from its key: what an id can't hold becomes "-". */
+export function headingId(key: string): string {
+  return `p-${key.replace(/[^A-Za-z0-9_-]/g, "-")}`;
+}
+
+/** A letter's headings and see entries in one order: by name, a heading before a see entry of the same name. */
+export function letterEntries(l: NamesLetter): NamesEntry[] {
+  const collator = new Intl.Collator("la", { sensitivity: "base" });
+  const out: NamesEntry[] = [];
+  const see = l.see ?? [];
+  let j = 0;
+  for (const person of l.persons) {
+    while (j < see.length && collator.compare(see[j].name, person.name) < 0) out.push({ see: see[j++] });
+    out.push({ person });
+  }
+  while (j < see.length) out.push({ see: see[j++] });
+  return out;
 }
 
 export interface NamesIndexData {
@@ -55,6 +89,8 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
   const people = new Map<string, IndexPerson & { forms: Map<string, number>; lineForms: string[] }>();
   let printed = 0;
   let naming = 0;
+  /** Each mention's other names, with the heading they refer to. */
+  const wanted: { name: string; key: string }[] = [];
   for (const c of catalog) {
     const m = c.present !== false ? /^(\d{2})-(\d{2})$/.exec(c.day_printed ?? "") : null;
     if (!m) continue;
@@ -66,6 +102,7 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
       // An unidentified namesake in another eulogy may be the same saint: one heading. The 2nd, 3rd… of a
       // name in one eulogy are other persons: a heading each, its key after the first's (a longer string).
       const key = p.wikidata ?? (p.n ? `name:${p.name}#${p.n}@${c.id}` : `name:${p.name}`);
+      for (const v of p.also ?? []) wanted.push({ name: v, key });
       let person = people.get(key);
       if (!person) {
         const l = p.wikidata ? snap.labels[p.wikidata] : undefined;
@@ -110,5 +147,30 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
     }
     l.persons.push(p);
   }
+  const heading = new Map(persons.map((p) => [p.key, p]));
+  const seen = new Set<string>();
+  const see: SeeEntry[] = [];
+  for (const w of wanted) {
+    const h = heading.get(w.key);
+    const id = `${w.name}\u0000${w.key}`;
+    if (!h || seen.has(id) || collator.compare(w.name, h.name) === 0) continue;
+    seen.add(id);
+    see.push({ name: w.name, key: w.key, target: h.name, letter: filingLetter(h.name, collator) });
+  }
+  see.sort((a, b) => collator.compare(a.name, b.name) || collator.compare(a.target, b.target));
+  for (const s of see) {
+    const letter = filingLetter(s.name, collator);
+    let l = byLetter.get(letter);
+    if (!l) {
+      l = { letter, persons: [] };
+      byLetter.set(letter, l);
+      letters.push(l);
+    }
+    (l.see ??= []).push(s);
+  }
+  // A letter made by see entries alone goes in its place: letters sort by their first name.
+  const first = (l: NamesLetter) =>
+    [l.persons[0]?.name, l.see?.[0]?.name].filter((n): n is string => !!n).sort(collator.compare)[0];
+  letters.sort((a, b) => collator.compare(first(a), first(b)));
   return { letters, naming, printed };
 }
