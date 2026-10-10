@@ -6,6 +6,8 @@ import type { Locale } from "@/i18n/routing";
 export interface PersonMention {
   name: string;
   n?: number;
+  /** The person's other names, Latin nominatives (crmedr's also). */
+  also?: string[];
   where: "text" | { footnote: number };
   wikidata?: string;
 }

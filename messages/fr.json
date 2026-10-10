@@ -218,7 +218,8 @@
     "loadError": "L’index n’a pas pu être chargé.",
     "retry": "Réessayer",
     "inFootnote": "dans la note {n}",
-    "wikidata": "Wikidata"
+    "wikidata": "Wikidata",
+    "see": "voir"
   },
   "Letters": {
     "previous": "Lettre précédente : {letter}",
@@ -442,6 +443,7 @@
       "inFootnote": "dans la note {n}",
       "companions": "Nommé avec : {names}",
       "ordinal": "{n, selectordinal, one {la #re} other {la #e}} personne de ce nom dans cet éloge",
+      "also": "Aussi : <la>{names}</la>",
       "notAutomatic": "Non automatique : {reasons}",
       "showEulogy": "Afficher l’éloge",
       "hideEulogy": "Masquer l’éloge",

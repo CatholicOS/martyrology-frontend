@@ -89,4 +89,19 @@ describe("NamesIndex", () => {
     expect(screen.getByText("The index could not be loaded.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Try again" })).toHaveAttribute("href", `/en/read/${ED}/names`);
   });
+
+  it("gives each heading an id from its key, and links a see entry to its heading's letter page", () => {
+    const withSee: NamesIndexData = { ...index, letters: [
+      index.letters[0],
+      { letter: "C", persons: [], see: [{ name: "Cunegundis", key: "Q9", target: "Theodorus", letter: "T" }] },
+      index.letters[1],
+    ] };
+    renderIndex(withSee, false, "C");
+    const link = screen.getByRole("link", { name: "Theodorus" });
+    expect(link).toHaveAttribute("href", `/en/read/${ED}/names/t#p-Q9`);
+    expect(link.closest("p")).toHaveTextContent("Cunegundis → see Theodorus");
+    expect(screen.getByText("Cunegundis")).toHaveAttribute("lang", "la");
+    renderIndex(withSee, false, "T");
+    expect(document.getElementById("p-Q9")).not.toBeNull();
+  });
 });

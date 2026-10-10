@@ -73,6 +73,14 @@ describe("PersonCard", () => {
     renderCard(op());
     expect(screen.queryByText(/of this name in this eulogy/)).toBeNull();
   });
+
+  it("shows the person's other names", () => {
+    renderCard(op({ name: "Kinga", also: ["Cunegundis", "Mames"] }));
+    const names = screen.getByText("Cunegundis, Mames");
+    expect(names).toHaveAttribute("lang", "la");
+    expect(names.closest("p")).toHaveTextContent("Also: Cunegundis, Mames");
+    expect(names.closest("p")).not.toHaveAttribute("lang");
+  });
 });
 
 describe("PersonCard, from the review of #113", () => {

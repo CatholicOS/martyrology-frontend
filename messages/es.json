@@ -218,7 +218,8 @@
     "loadError": "No se pudo cargar el índice.",
     "retry": "Reintentar",
     "inFootnote": "en la nota {n}",
-    "wikidata": "Wikidata"
+    "wikidata": "Wikidata",
+    "see": "véase"
   },
   "Letters": {
     "previous": "Letra anterior: {letter}",
@@ -442,6 +443,7 @@
       "inFootnote": "en la nota {n}",
       "companions": "Nombrado con: {names}",
       "ordinal": "la {n}.ª persona con este nombre en este elogio",
+      "also": "También: <la>{names}</la>",
       "notAutomatic": "No automático: {reasons}",
       "showEulogy": "Mostrar el elogio",
       "hideEulogy": "Ocultar el elogio",

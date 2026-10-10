@@ -225,6 +225,15 @@ describe("buildPersons", () => {
       { name: "Felix", n: 2, where: { footnote: 1 }, wikidata: "Q2" },
     ]);
   });
+
+  it("copies a person's other names", () => {
+    const doc = { editions: { martyrologium_romanum_2004: { "mr:0817-mamas": [
+      { name: "Mamas", also: ["Mames"], where: "text" },
+    ] } } };
+    expect(buildPersons(doc, { persons: {} }).editions.martyrologium_romanum_2004["mr:0817-mamas"]).toEqual([
+      { name: "Mamas", also: ["Mames"], where: "text" },
+    ]);
+  });
 });
 
 describe("fetchPersonLabels", () => {
