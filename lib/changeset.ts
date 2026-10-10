@@ -121,6 +121,8 @@ export interface ResolvePersonOp extends Base {
   name: string;
   /** Which person of the name in the eulogy, from 2; absent for the first. */
   n?: number;
+  /** The person's other names. */
+  also?: string[];
   where: "text" | { footnote: number };
   companions: string[];
   failed: string[];

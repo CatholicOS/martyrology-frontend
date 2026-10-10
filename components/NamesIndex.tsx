@@ -4,7 +4,8 @@ import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
-import { fnAnchor, type NamesIndexData } from "@/lib/names-index";
+import { letterSlug } from "@/lib/letters";
+import { fnAnchor, headingId, letterEntries, type IndexPerson, type NamesIndexData } from "@/lib/names-index";
 
 /**
  * An edition's index of names, as a Latin martyrology's Index nominum: the saints and blessed its
@@ -22,6 +23,42 @@ export default function NamesIndex({ edition, title, index, error = false, lette
   const ed = encodeURIComponent(edition);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
+
+  /** One person's heading and lines, with an id the see entries link to. */
+  const personBlock = (p: IndexPerson) => (
+    <div key={p.key} id={headingId(p.key)} className="mb-4">
+      <h3 className="font-semibold">
+        <span lang={lang}>{p.name}</span>
+        {p.qid && (
+          <>
+            {" "}
+            <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer"
+              lang={langOn(p.labelLang, locale)}>
+              {`${p.label ?? t("wikidata")} ↗`}
+            </a>
+          </>
+        )}
+      </h3>
+      <ul className="ml-4 text-sm">
+        {p.lines.map((line) => {
+          const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
+          const hash = line.footnote ? fnAnchor(edition, line.id, line.footnote) : line.id;
+          return (
+            <li key={`${line.id}-${line.footnote ?? 0}`}>
+              {/* A plain link, with the locale: the page has thousands, and a client Link each
+                  would weigh the page down (it opens the day with a page load). */}
+              <a href={`/${locale}${dayPath(edition, line.day)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
+                {day}
+              </a>
+              {" · "}
+              <span lang={lang}>{line.subject}</span>
+              {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 
   return (
     <article className={styles.page} aria-labelledby="names-title">
@@ -48,40 +85,19 @@ export default function NamesIndex({ edition, title, index, error = false, lette
           <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/names`} label={t("letters")} />
           <section aria-labelledby="letter-h">
             <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
-            {shown.persons.map((p) => (
-              <div key={p.key} className="mb-4">
-                <h3 className="font-semibold">
-                  <span lang={lang}>{p.name}</span>
-                  {p.qid && (
-                    <>
-                      {" "}
-                      <a href={`https://www.wikidata.org/wiki/${p.qid}`} className="font-normal text-slate-600 underline" target="_blank" rel="noreferrer"
-                        lang={langOn(p.labelLang, locale)}>
-                        {`${p.label ?? t("wikidata")} ↗`}
-                      </a>
-                    </>
-                  )}
-                </h3>
-                <ul className="ml-4 text-sm">
-                  {p.lines.map((line) => {
-                    const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
-                    const hash = line.footnote ? fnAnchor(edition, line.id, line.footnote) : line.id;
-                    return (
-                      <li key={`${line.id}-${line.footnote ?? 0}`}>
-                        {/* A plain link, with the locale: the page has thousands, and a client Link each
-                            would weigh the page down (it opens the day with a page load). */}
-                        <a href={`/${locale}${dayPath(edition, line.day)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
-                          {day}
-                        </a>
-                        {" · "}
-                        <span lang={lang}>{line.subject}</span>
-                        {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
+            {letterEntries(shown).map((e) =>
+              "see" in e ? (
+                <p key={`see-${e.see.name}-${e.see.key}`} className="mb-4">
+                  <span lang={lang} className="italic">{e.see.name}</span>
+                  {` → ${t("see")} `}
+                  <Link href={`/read/${ed}/names/${letterSlug(e.see.letter)}#${headingId(e.see.key)}`} className="font-semibold underline">
+                    <span lang={lang}>{e.see.target}</span>
+                  </Link>
+                </p>
+              ) : (
+                personBlock(e.person)
+              ),
+            )}
           </section>
           <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/names`} />
         </>

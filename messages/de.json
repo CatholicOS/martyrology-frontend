@@ -218,7 +218,8 @@
     "loadError": "Das Register konnte nicht geladen werden.",
     "retry": "Erneut versuchen",
     "inFootnote": "in Fußnote {n}",
-    "wikidata": "Wikidata"
+    "wikidata": "Wikidata",
+    "see": "siehe"
   },
   "Letters": {
     "previous": "Vorheriger Buchstabe: {letter}",
@@ -442,6 +443,7 @@
       "inFootnote": "in Fußnote {n}",
       "companions": "Genannt mit: {names}",
       "ordinal": "die {n}. Person dieses Namens in diesem Elogium",
+      "also": "Auch: {names}",
       "notAutomatic": "Nicht automatisch: {reasons}",
       "showEulogy": "Elogium zeigen",
       "hideEulogy": "Elogium ausblenden",
