@@ -79,7 +79,12 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
       </div>
 
       <p className="font-medium">{t(`title.${op.op}`, { kind: op.kind })}</p>
-      {op.name && <p className="mb-1 text-slate-700 dark:text-slate-300" lang="la">{op.name}</p>}
+      {op.name && (
+        <p className="mb-1 text-slate-700 dark:text-slate-300">
+          <span lang="la">{op.name}</span>
+          {op.op === "add_mention" && op.n && <span className="ml-2 text-xs text-slate-600 dark:text-slate-400">{p("ordinal", { n: op.n })}</span>}
+        </p>
+      )}
 
       {!editing ? (
         <p className="mb-2 border-l-4 border-slate-300 pl-2 font-serif text-base dark:border-slate-700" lang={lang}>

@@ -214,6 +214,17 @@ describe("buildPersons", () => {
   it("lists the decided QIDs once each, sorted", () => {
     expect(personQids(personsDoc, itemsDoc)).toEqual(["Q1", "Q380649"]);
   });
+
+  it("reads a second person of a name under name#n, and keeps n", () => {
+    const doc = { editions: { martyrologium_romanum_2004: { "mr:0212-x": [
+      { name: "Felix", where: { footnote: 1 } }, { name: "Felix", n: 2, where: { footnote: 1 } },
+    ] } } };
+    const items = { persons: { "mr:0212-x": { "Felix#2": { wikidata: "Q2", status: "reviewed" } } } };
+    expect(buildPersons(doc, items).editions.martyrologium_romanum_2004["mr:0212-x"]).toEqual([
+      { name: "Felix", where: { footnote: 1 } },
+      { name: "Felix", n: 2, where: { footnote: 1 }, wikidata: "Q2" },
+    ]);
+  });
 });
 
 describe("fetchPersonLabels", () => {

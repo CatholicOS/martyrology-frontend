@@ -441,6 +441,7 @@
       "inText": "im Text",
       "inFootnote": "in Fußnote {n}",
       "companions": "Genannt mit: {names}",
+      "ordinal": "die {n}. Person dieses Namens in diesem Elogium",
       "notAutomatic": "Nicht automatisch: {reasons}",
       "showEulogy": "Elogium zeigen",
       "hideEulogy": "Elogium ausblenden",

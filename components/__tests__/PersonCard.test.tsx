@@ -63,6 +63,16 @@ describe("PersonCard", () => {
     const out = exportChangeset(cs, { [op().id]: { decision: "edit", edited: { wikidata: "Q2" } } });
     expect(out.operations[0]).toMatchObject({ decision: "edit", edited: { wikidata: "Q2" } });
   });
+
+  it("says which person of the name it is, from the second", () => {
+    renderCard(op({ id: "mr:0212-x|Felix#2", name: "Felix", n: 2 }));
+    expect(screen.getByText("the 2nd of this name in this eulogy")).toBeInTheDocument();
+  });
+
+  it("says nothing of the first", () => {
+    renderCard(op());
+    expect(screen.queryByText(/of this name in this eulogy/)).toBeNull();
+  });
 });
 
 describe("PersonCard, from the review of #113", () => {

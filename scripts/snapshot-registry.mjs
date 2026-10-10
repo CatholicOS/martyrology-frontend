@@ -286,22 +286,23 @@ export function personQids(personsDoc, itemsDoc) {
 /**
  * The index of names' data: each edition's persons by eulogy, with the QID crmedr decided (auto or
  * reviewed), and each QID's labels in the interface languages, in LABEL_LANGS order.
- * @param {{editions: Record<string, Record<string, {name: string, where: unknown}[]>>}} personsDoc
+ * @param {{editions: Record<string, Record<string, {name: string, n?: number, where: unknown}[]>>}} personsDoc
  * @param {{persons: Record<string, Record<string, {wikidata: string|null, status: string}>>}} itemsDoc
  * @param {Record<string, Record<string, string>>} [labels]
  */
 export function buildPersons(personsDoc, itemsDoc, labels = {}) {
-  /** @type {Record<string, Record<string, {name: string, where: unknown, wikidata?: string}[]>>} */
+  /** @type {Record<string, Record<string, {name: string, n?: number, where: unknown, wikidata?: string}[]>>} */
   const editions = {};
   const used = new Set();
   for (const [edition, byId] of Object.entries(personsDoc.editions)) {
     editions[edition] = {};
     for (const [id, persons] of Object.entries(byId)) {
       editions[edition][id] = persons.map((p) => {
-        const e = itemsDoc.persons[id]?.[p.name];
+        // crmedr keys the nth person of a name the eulogy repeats as "name#n".
+        const e = itemsDoc.persons[id]?.[p.n ? `${p.name}#${p.n}` : p.name];
         const qid = e && IDENTIFIED.has(e.status) ? e.wikidata : null;
         if (qid) used.add(qid);
-        return { name: p.name, where: p.where, ...(qid ? { wikidata: qid } : {}) };
+        return { name: p.name, ...(p.n ? { n: p.n } : {}), where: p.where, ...(qid ? { wikidata: qid } : {}) };
       });
     }
   }

@@ -1,9 +1,11 @@
 import snapshot from "@/data/persons-snapshot.json";
 import type { Locale } from "@/i18n/routing";
 
-/** A saint or blessed a eulogy names: the Latin name, where it is printed, and the Wikidata item crmedr decided. */
+/** A saint or blessed a eulogy names: the Latin name, which person of that name in the eulogy (`n`, from 2;
+ *  absent for the first), where it is printed, and the Wikidata item crmedr decided. */
 export interface PersonMention {
   name: string;
+  n?: number;
   where: "text" | { footnote: number };
   wikidata?: string;
 }

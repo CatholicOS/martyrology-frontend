@@ -441,6 +441,7 @@
       "inText": "nel testo",
       "inFootnote": "nella nota {n}",
       "companions": "Nominato con: {names}",
+      "ordinal": "la {n}ª persona con questo nome in questo elogio",
       "notAutomatic": "Non automatico: {reasons}",
       "showEulogy": "Mostra l’elogio",
       "hideEulogy": "Nascondi l’elogio",

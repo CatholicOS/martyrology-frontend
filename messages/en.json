@@ -441,6 +441,7 @@
       "inText": "in the text",
       "inFootnote": "in footnote {n}",
       "companions": "Named with: {names}",
+      "ordinal": "the {n, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} of this name in this eulogy",
       "notAutomatic": "Not automatic: {reasons}",
       "showEulogy": "Show the eulogy",
       "hideEulogy": "Hide the eulogy",
