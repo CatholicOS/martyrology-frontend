@@ -443,7 +443,7 @@
       "inFootnote": "en la nota {n}",
       "companions": "Nombrado con: {names}",
       "ordinal": "la {n}.ª persona con este nombre en este elogio",
-      "also": "También: {names}",
+      "also": "También: <la>{names}</la>",
       "notAutomatic": "No automático: {reasons}",
       "showEulogy": "Mostrar el elogio",
       "hideEulogy": "Ocultar el elogio",

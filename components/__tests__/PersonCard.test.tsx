@@ -75,8 +75,11 @@ describe("PersonCard", () => {
   });
 
   it("shows the person's other names", () => {
-    renderCard(op({ name: "Kinga", also: ["Cunegundis"] }));
-    expect(screen.getByText("Also: Cunegundis")).toBeInTheDocument();
+    renderCard(op({ name: "Kinga", also: ["Cunegundis", "Mames"] }));
+    const names = screen.getByText("Cunegundis, Mames");
+    expect(names).toHaveAttribute("lang", "la");
+    expect(names.closest("p")).toHaveTextContent("Also: Cunegundis, Mames");
+    expect(names.closest("p")).not.toHaveAttribute("lang");
   });
 });
 

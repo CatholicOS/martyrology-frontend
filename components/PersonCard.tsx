@@ -65,7 +65,9 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
         {op.n && <span className="ml-2 text-sm font-normal text-slate-600 dark:text-slate-400">{t("ordinal", { n: op.n })}</span>}
       </p>
       {op.also && op.also.length > 0 && (
-        <p className="mb-1 text-sm text-slate-700 dark:text-slate-300">{t("also", { names: op.also.join(", ") })}</p>
+        <p className="mb-1 text-sm text-slate-700 dark:text-slate-300">
+          {t.rich("also", { names: op.also.join(", "), la: (names) => <span lang="la">{names}</span> })}
+        </p>
       )}
       <p className="mb-1 text-slate-700 dark:text-slate-300">
         {op.subject} · {where}

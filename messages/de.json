@@ -443,7 +443,7 @@
       "inFootnote": "in Fußnote {n}",
       "companions": "Genannt mit: {names}",
       "ordinal": "die {n}. Person dieses Namens in diesem Elogium",
-      "also": "Auch: {names}",
+      "also": "Auch: <la>{names}</la>",
       "notAutomatic": "Nicht automatisch: {reasons}",
       "showEulogy": "Elogium zeigen",
       "hideEulogy": "Elogium ausblenden",
