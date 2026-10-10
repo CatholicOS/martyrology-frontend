@@ -46,8 +46,16 @@ describe("MentionCard", () => {
     expect(del).toHaveTextContent("Fictópoli");
     expect(del.className).toContain("bg-sky-100");
     expect(screen.queryByRole("button", { name: "Choose the words" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
-    expect(onDecide).toHaveBeenCalledWith(remove().id, { decision: "accept" });
+    fireEvent.click(screen.getByRole("button", { name: "Remove the mark" }));
+    fireEvent.click(screen.getByRole("button", { name: "Keep the mark" }));
+    expect(onDecide.mock.calls).toEqual([[remove().id, { decision: "accept" }], [remove().id, { decision: "reject" }]]);
+  });
+
+  it("names a remove_mention's decision by what it does to the mark", () => {
+    renderCard(remove(), { decision: "accept" });
+    expect(screen.getByText("removed")).toBeInTheDocument();
+    renderCard(remove(), { decision: "reject" });
+    expect(screen.getByText("kept")).toBeInTheDocument();
   });
 
   it("accepts and rejects under the op's id", () => {

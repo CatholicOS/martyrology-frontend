@@ -477,7 +477,11 @@
       "hint": "Erst auf das erste Wort klicken, dann auf das letzte.",
       "words": "Wörter des Textes",
       "selected": "Ausgewählt: {form}",
-      "save": "Wörter speichern"
+      "save": "Wörter speichern",
+      "remove": "Markierung entfernen",
+      "keep": "Markierung behalten",
+      "removed": "entfernt",
+      "kept": "behalten"
     }
   },
   "Docs": {

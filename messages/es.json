@@ -477,7 +477,11 @@
       "hint": "Haz clic en la primera palabra y luego en la última.",
       "words": "Palabras del texto",
       "selected": "Palabras elegidas: {form}",
-      "save": "Guardar las palabras"
+      "save": "Guardar las palabras",
+      "remove": "Quitar la marca",
+      "keep": "Mantener la marca",
+      "removed": "quitada",
+      "kept": "mantenida"
     }
   },
   "Docs": {

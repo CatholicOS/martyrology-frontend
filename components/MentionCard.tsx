@@ -18,7 +18,8 @@ interface Props {
  * Review card for crmedr's mention ops (add_mention, set_span, remove_mention): the quoted passage
  * with the words marked now struck through and the words to mark underlined, in the kind's tint.
  * Accept takes the op as proposed; "Choose the words" picks a span word by word (the first word, then
- * the last) and records it as an edit, in eulogy offsets. An op whose offsets fall outside its context,
+ * the last) and records it as an edit, in eulogy offsets. On a remove_mention, Accept and Reject read
+ * "Remove the mark" and "Keep the mark". An op whose offsets fall outside its context,
  * or whose words there are not its form, can't be accepted as it is.
  */
 export default function MentionCard({ op, decision, onDecide }: Props) {
@@ -44,6 +45,9 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
   const [anchor, setAnchor] = useState<number | null>(null);
   const where = op.where === "text" ? p("inText") : p("inFootnote", { n: op.where.footnote });
   const markStyle = `${tint} text-slate-900 dark:text-slate-100`;
+  // A remove_mention's Accept removes a mark and its Reject keeps one: say so, not "Accept"/"Reject".
+  const removal = op.op === "remove_mention";
+  const decided = decision && (removal && decision.decision !== "edit" ? t(decision.decision === "accept" ? "removed" : "kept") : decisionLabel(r, decision));
 
   const startEditing = () => {
     setPick(wordsIn(words, shown.proposed));
@@ -70,7 +74,7 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
         <span className="flex gap-1 text-xs">
           <span className={`rounded px-2 py-0.5 ${markStyle}`}>{t(`kind.${op.kind}`)}</span>
           {op.confidence && <span className="rounded bg-slate-100 px-2 py-0.5 dark:bg-slate-800">{op.confidence}</span>}
-          {decision && <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decisionLabel(r, decision)}</span>}
+          {decided && <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">{decided}</span>}
         </span>
       </div>
 
@@ -132,12 +136,12 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
       {!editing ? (
         <div className="flex flex-wrap gap-2">
           <button type="button" disabled={!canAccept} aria-describedby={!canAccept ? warningId : undefined} className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, { decision: "accept" })}>
-            {r("actions.accept")}
+            {removal ? t("remove") : r("actions.accept")}
           </button>
           <button type="button" className={`${button} bg-red-600 hover:bg-red-700`} onClick={() => onDecide(uid, { decision: "reject" })}>
-            {r("actions.reject")}
+            {removal ? t("keep") : r("actions.reject")}
           </button>
-          {op.op !== "remove_mention" && (
+          {!removal && (
             <button type="button" disabled={!canEdit} className={`${button} bg-slate-600 hover:bg-slate-700`} onClick={startEditing}>
               {t("choose")}
             </button>
