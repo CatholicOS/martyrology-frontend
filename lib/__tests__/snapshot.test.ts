@@ -30,6 +30,15 @@ describe("buildMisprints", () => {
       { id: "mr:0305-phoca", edition: "martyrologium_romanum_2004_it_IT", printed: "nell’odiena", intended: "nell’odierna" },
     ]);
   });
+
+  it("keeps the footnote a misprint is in", () => {
+    const doc = { misprints: [
+      { id: "mr:0801-x", edition: "martyrologium_romanum_2004_it_IT", footnote: 1, printed: "e maria", intended: "e Maria", verified: "print" },
+    ] };
+    expect(buildMisprints(doc)).toEqual([
+      { id: "mr:0801-x", edition: "martyrologium_romanum_2004_it_IT", footnote: 1, printed: "e maria", intended: "e Maria" },
+    ]);
+  });
 });
 
 describe("buildNotes", () => {

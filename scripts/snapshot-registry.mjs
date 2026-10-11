@@ -61,7 +61,8 @@ export function buildSnapshot(registry, la, it, en) {
  * @returns {Misprint[]}
  */
 export function buildMisprints(doc) {
-  return doc.misprints.map(({ id, edition, printed, intended }) => ({ id, edition, printed, intended }));
+  return doc.misprints.map(({ id, edition, footnote, printed, intended }) =>
+    ({ id, edition, ...(footnote ? { footnote } : {}), printed, intended }));
 }
 
 /**

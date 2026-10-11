@@ -7,6 +7,8 @@ export interface Misprint {
   edition: string;
   printed: string;
   intended: string;
+  /** Set when the misprint is in a footnote: the eulogy's nth footnote in that edition, from 1. */
+  footnote?: number;
 }
 
 /**
@@ -21,9 +23,15 @@ export interface TextSegment {
 
 const MISPRINTS = snapshot as Misprint[];
 
+/** The misprints in a eulogy's text (those in its footnotes apart). */
 export function misprintsFor(edition: string, id: string | null, all: Misprint[] = MISPRINTS): Misprint[] {
   if (!id) return [];
-  return all.filter((m) => m.edition === edition && m.id === id);
+  return all.filter((m) => m.edition === edition && m.id === id && m.footnote === undefined);
+}
+
+/** The misprints in a eulogy's nth footnote (from 1) in an edition. */
+export function footnoteMisprintsFor(edition: string, id: string, footnote: number, all: Misprint[] = MISPRINTS): Misprint[] {
+  return all.filter((m) => m.edition === edition && m.id === id && m.footnote === footnote);
 }
 
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
