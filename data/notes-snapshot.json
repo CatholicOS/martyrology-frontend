@@ -914,6 +914,13 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: the place \"Albáni\" (at Albano) is omitted."
     }
   },
+  "mr:0809-falcus": {
+    "editions": {
+      "martyrologium_romanum_2004": "Error: \"Palénæ in Calábria\": Palena is in Abruzzo (province of Chieti), not in Calabria. Falco, a Basilian monk, came from Taverna in Calabria and lived as a hermit in Abruzzo; he died at Palena, where he is buried and venerated as its patron. His Calabrian origin probably accounts for the error.",
+      "martyrologium_romanum_2004_it_IT": "Error: \"A Palena in Calabria\": Palena is in Abruzzo (province of Chieti), not in Calabria. Falco, a Basilian monk, came from Taverna in Calabria and lived as a hermit in Abruzzo; he died at Palena, where he is buried and venerated as its patron. His Calabrian origin probably accounts for the error.",
+      "martyrologium_romanum_2004_en_unofficial": "Error: \"At Palena in Calabria\": Palena is in Abruzzo (province of Chieti), not in Calabria. Falco, a Basilian monk, came from Taverna in Calabria and lived as a hermit in Abruzzo; he died at Palena, where he is buried and venerated as its patron. His Calabrian origin probably accounts for the error."
+    }
+  },
   "mr:0809-claudius-richard": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"dal monastero di Metz\" where the Latin \"e Mediáno monastério\" is the abbey of Moyenmoutier."
