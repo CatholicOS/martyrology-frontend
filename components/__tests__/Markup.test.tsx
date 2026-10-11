@@ -231,3 +231,31 @@ describe("the markup", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
+
+describe("the pieces of one person", () => {
+  const TEXT2 = "Constantinópoli, sancti Petri, cognoménto Apselámi seu Bálsami, et Ioánnis.";
+  const at = (w: string) => TEXT2.indexOf(w);
+  const piece = (w: string, name: string): Mention =>
+    ({ kind: "person", where: "text", start: at(w), end: at(w) + w.length, form: w, name, qid: null });
+  const MARKS = [piece("Petri", "Petrus Apselamus"), piece("Apselámi", "Petrus Apselamus"),
+                 piece("Bálsami", "Petrus Apselamus"), piece("Ioánnis", "Ioannes")];
+
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it("are tinted together when one is hovered or focused, and another person is not", () => {
+    render(
+      <MarkupProvider on langs={{ ed: "la" }}>
+        <p><MentionText text={TEXT2} mentions={MARKS} where="text" eulogy="mr:0111-petrus-apselamus" edition="ed" /></p>
+      </MarkupProvider>,
+    );
+    const mark = (w: string) => screen.getByText(w);
+    fireEvent.mouseEnter(mark("Apselámi"));
+    for (const w of ["Petri", "Apselámi", "Bálsami"]) expect(mark(w)).toHaveAttribute("data-active");
+    expect(mark("Ioánnis")).not.toHaveAttribute("data-active");
+    fireEvent.mouseLeave(mark("Apselámi"));
+    expect(mark("Petri")).not.toHaveAttribute("data-active");
+    act(() => mark("Bálsami").focus());
+    for (const w of ["Petri", "Apselámi", "Bálsami"]) expect(mark(w)).toHaveAttribute("data-active");
+  });
+});

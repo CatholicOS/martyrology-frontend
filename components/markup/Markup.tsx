@@ -26,14 +26,14 @@ export interface OpenPopup {
 }
 
 export interface MarkupApi {
-  /** The mention tinted: open, hovered or focused. */
+  /** The group of marks tinted (a mention's `group`): open, hovered or focused. */
   active: string | null;
   open: OpenPopup | null;
   hoverStart(t: MarkupTarget, anchor: HTMLElement): void;
   hoverEnd(): void;
   /** Pins the mention's popup, or unpins it when it is the one pinned. */
   pin(t: MarkupTarget, anchor: HTMLElement, keyboard: boolean): void;
-  focus(key: string | null): void;
+  focus(group: string | null): void;
 }
 
 const Ctx = createContext<MarkupApi | null>(null);
@@ -114,10 +114,10 @@ export function MarkupProvider({ on, langs, children }: {
   }, [open, close]);
 
   const api = useMemo<MarkupApi>(() => ({
-    active: open?.target.mention.key ?? hovered ?? focused,
+    active: open?.target.mention.group ?? hovered ?? focused,
     open,
     hoverStart(t, anchor) {
-      setHovered(t.mention.key);
+      setHovered(t.mention.group);
       if (open?.pinned) return;
       if (open?.target.mention.key === t.mention.key) {
         window.clearTimeout(timer.current);
