@@ -1,6 +1,6 @@
 import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, cleanup, waitFor } from "@/test/intl";
+import { render, screen, fireEvent, cleanup, waitFor, within } from "@/test/intl";
 
 const { push, signInMock } = vi.hoisted(() => ({ push: vi.fn(), signInMock: vi.fn() }));
 vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ push }), Link: ({ href, children, ...p }: { href: string | { pathname: string }; children?: React.ReactNode }) => <a href={typeof href === "string" ? href : href.pathname} {...p}>{children}</a> }));
@@ -385,14 +385,17 @@ describe("Reader, subject search", () => {
     render1749();
     await search();
     expect(getCatalog).toHaveBeenCalledWith("martyrologium_romanum_1749", "la");
-    expect([...document.querySelectorAll("#reader-subjects option")].map((o) => o.getAttribute("value"))).toEqual([
+    fireEvent.keyDown(screen.getByRole("combobox", { name: "Find a eulogy by subject" }), { key: "ArrowDown" });
+    const list = screen.getByRole("listbox", { name: "Matching subjects" });
+    expect(within(list).getAllByRole("option").map((o) => o.textContent)).toEqual([
       "Sancta Anastasia — 25 December", "Sanctus Modestus — 2 October",
     ]);
   });
 
   it("goes to the day a picked subject is printed on, keeping the pairing, and finds it there", async () => {
     const first = renderPair();
-    fireEvent.change(await search(), { target: { value: "Sancta Anastasia — 25 December" } });
+    fireEvent.change(await search(), { target: { value: "anastasia" } });
+    fireEvent.click(screen.getByRole("option", { name: "Sancta Anastasia — 25 December" }));
     expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/12/25?with=${EN}`);
     first.unmount();
     vi.mocked(getDay).mockResolvedValue({ ...DAY, elogia: [{ ...DAY.elogia[0], id: "mr:1225-anastasia", text: "Sirmii sanctae Anastasiae." }] });
@@ -415,7 +418,9 @@ describe("Reader, subject search", () => {
 
   it("still finds the eulogy when its day is drawn only after a retry", async () => {
     const first = render1749();
-    fireEvent.change(await search(), { target: { value: "Sancta Anastasia — 25 December" } });
+    const box = await search();
+    fireEvent.change(box, { target: { value: "Sancta Anastasia — 25 December" } });
+    fireEvent.keyDown(box, { key: "Enter" });
     first.unmount();
     vi.mocked(getDay).mockRejectedValueOnce(new ApiError(502, "API unreachable"));
     vi.mocked(getDay).mockResolvedValueOnce({ ...DAY, elogia: [{ ...DAY.elogia[0], id: "mr:1225-anastasia", text: "Sirmii sanctae Anastasiae." }] });

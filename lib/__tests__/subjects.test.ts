@@ -1,6 +1,6 @@
 import { createFormatter } from "use-intl";
 import { describe, it, expect } from "vitest";
-import { findSubject, subjectFor, subjectOptions } from "@/lib/subjects";
+import { findSubject, matchSubjects, subjectFor, subjectOptions } from "@/lib/subjects";
 import type { CatalogEntryOut } from "@/lib/types";
 
 const entry = (id: string, subject: string | null, day_printed: string | null, entry: number | null = 1): CatalogEntryOut => ({
@@ -73,6 +73,35 @@ describe("findSubject", () => {
     expect(findSubject(opts, "basil")?.id).toBe("mr:0101-basilius");
     expect(findSubject(opts, "ioannes")).toBeNull();
     expect(findSubject(opts, "  ")).toBeNull();
+  });
+
+  it("takes typed text with or without accents and marks", () => {
+    const vn = subjectOptions([
+      entry("mr:0726-emmanuel-le-van-phung", "Sant'Emanuele Lê Van Phụng", "07-31"),
+      entry("mr:0130-dinh", "San Tommaso Đinh Viết Dụ", "01-30"),
+      entry("mr:1122-caecilia", "Sancta Cæcilia", "11-22"),
+    ], format);
+    expect(findSubject(vn, "emanuele le van phung")?.id).toBe("mr:0726-emmanuel-le-van-phung");
+    expect(findSubject(vn, "Lê Văn Phụng")?.id).toBe("mr:0726-emmanuel-le-van-phung");
+    expect(findSubject(vn, "dinh viet")?.id).toBe("mr:0130-dinh");
+    expect(findSubject(vn, "caecilia")?.id).toBe("mr:1122-caecilia");
+    expect(findSubject(vn, "san")).toBeNull();
+  });
+});
+
+describe("matchSubjects", () => {
+  const opts = Array.from({ length: 60 }, (_, i) => ({ value: `Sanctus ${i < 30 ? "Phụng" : "Đinh"} ${i}`, id: `mr:${i}`, day: { mm: 1, dd: 1 } }));
+
+  it("keeps the options holding the folded text, in their own order", () => {
+    expect(matchSubjects(opts, "dinh 3").map((o) => o.id)).toEqual(["mr:30", "mr:31", "mr:32", "mr:33", "mr:34", "mr:35", "mr:36", "mr:37", "mr:38", "mr:39"]);
+    expect(matchSubjects(opts, "PHUNG 2")[0].id).toBe("mr:2");
+    expect(matchSubjects(opts, "nobody")).toEqual([]);
+  });
+
+  it("lists the first fifty at most, and with nothing typed the first fifty of all", () => {
+    expect(matchSubjects(opts, "sanctus")).toHaveLength(50);
+    expect(matchSubjects(opts, " ").map((o) => o.id)).toEqual(opts.slice(0, 50).map((o) => o.id));
+    expect(matchSubjects(opts, "đinh", 5)).toHaveLength(5);
   });
 });
 

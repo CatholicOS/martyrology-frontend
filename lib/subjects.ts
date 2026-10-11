@@ -1,7 +1,8 @@
 import { interfaceMonth, type Day } from "@/lib/calendar";
+import { fold } from "@/lib/fold";
 import type { CatalogEntryOut } from "@/lib/types";
 
-/** One eulogy in the reader's subject search: the datalist value and where it is printed. */
+/** One eulogy in the reader's subject search: the suggestion's label and where it is printed. */
 export interface SubjectOption {
   value: string;
   id: string;
@@ -44,13 +45,29 @@ export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<ty
     }));
 }
 
-/** The option the search box names: an exact pick from the list, or typed text that fits only one. */
+/** How many suggestions the subject search lists at most. */
+export const SUGGESTION_LIMIT = 50;
+
+/**
+ * The options whose label holds the typed text, accents, marks and case aside (see `fold`), in the
+ * options' own order, the first `limit` of them; with nothing typed, the first `limit` options.
+ */
+export function matchSubjects(options: SubjectOption[], text: string, limit = SUGGESTION_LIMIT): SubjectOption[] {
+  const q = fold(text.trim());
+  const hits: SubjectOption[] = [];
+  for (const o of options) {
+    if (hits.length >= limit) break;
+    if (!q || fold(o.value).includes(q)) hits.push(o);
+  }
+  return hits;
+}
+
+/** The option the search box names: an exact pick from the list, or typed text that fits only one, accents and marks aside. */
 export function findSubject(options: SubjectOption[], text: string): SubjectOption | null {
   const exact = options.find((o) => o.value === text);
   if (exact) return exact;
-  const q = text.trim().toLocaleLowerCase();
-  if (!q) return null;
-  const hits = options.filter((o) => o.value.toLocaleLowerCase().includes(q));
+  if (!text.trim()) return null;
+  const hits = matchSubjects(options, text, 2);
   return hits.length === 1 ? hits[0] : null;
 }
 

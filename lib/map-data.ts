@@ -1,6 +1,7 @@
 import type { useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
 import type { Day } from "@/lib/calendar";
+import { fold } from "@/lib/fold";
 import type { PlacesSnapshot } from "@/lib/places";
 import { placeLabel, placeLabelLang } from "@/lib/places-index";
 import type { CatalogEntryOut } from "@/lib/types";
@@ -87,19 +88,6 @@ export function mapEntries(
     (a, b) => a.day.mm - b.day.mm || a.day.dd - b.day.dd || (a.entry ?? Infinity) - (b.entry ?? Infinity),
   );
   return { entries, unmapped };
-}
-
-/**
- * Lower case, without accents, with æ/œ spelled out, so "caecilia" finds "Cæcilia". Accents go
- * first: an accented ligature (ǽ) only becomes a plain æ once its accent is stripped.
- */
-function fold(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .replace(/æ/g, "ae")
-    .replace(/œ/g, "oe");
 }
 
 /** Whether the search text is in the eulogy's subject, ID, printed place or the place's name (shown, or English). */
