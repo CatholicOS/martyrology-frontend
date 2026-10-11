@@ -85,6 +85,8 @@ export interface Mention {
   form: string;
   qid: string | null;
   name: string | null;
+  /** The nth person of this name in the eulogy, from 2 (crmedr's `n`); absent for the first. */
+  n?: number | null;
 }
 
 export interface EditionPlacement {

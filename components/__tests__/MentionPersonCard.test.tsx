@@ -11,7 +11,7 @@ import type { PlacedMention } from "@/lib/mentions";
 
 const basil: PlacedMention = {
   kind: "person", where: "text", start: 40, end: 47, form: "Basilíi", name: "Basilius", qid: "Q19546",
-  key: "mr:0101-basilius|text|40", eulogy: "mr:0101-basilius",
+  key: "mr:0101-basilius|text|40", group: "mr:0101-basilius|text|person|Basilius#1", eulogy: "mr:0101-basilius",
 };
 const BASIL = {
   kind: "person",

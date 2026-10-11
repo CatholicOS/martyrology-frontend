@@ -1,8 +1,13 @@
 import type { ElogiumOut, Mention } from "@/lib/types";
 
-/** A mention placed in one eulogy's text or footnote: `key` names it on the page, across its pieces. */
+/**
+ * A mention placed in one eulogy's text or footnote: `key` names it on the page, across its pieces; `group` names
+ * every mark of the same person there (a name printed in pieces, "Petri, cognoménto Apselámi seu Bálsami"), tinted
+ * together.
+ */
 export interface PlacedMention extends Mention {
   key: string;
+  group: string;
   eulogy: string;
 }
 
@@ -25,6 +30,15 @@ export function mentionKey(edition: string, eulogy: string, m: Mention): string 
 }
 
 /**
+ * The marks tinted together with this one: a person's, by their name and n, in one eulogy's text or footnote as
+ * printed in `edition`; a place's mark alone.
+ */
+export function mentionGroup(edition: string, eulogy: string, m: Mention): string {
+  if (m.kind !== "person" || !m.name) return mentionKey(edition, eulogy, m);
+  return `${edition}|${eulogy}|${whereKey(m.where)}|person|${m.name}#${m.n ?? 1}`;
+}
+
+/**
  * The mentions of `where` (the text, or footnote n) that fit a text of `length`, sorted and keyed for the eulogy
  * as printed in `edition`. A mention past the text (the text corrected since) is left out. Two that overlap should
  * not exist (crmedr forbids it): the first in the list is kept, the other dropped with a warning.
@@ -41,7 +55,7 @@ export function mentionsIn(
       console.warn(`markup: ${eulogy}: "${m.form}" (${m.start}–${m.end}) overlaps "${clash.form}" and is not marked`);
       continue;
     }
-    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m) });
+    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m), group: mentionGroup(edition, eulogy, m) });
   }
   return kept.sort((a, b) => a.start - b.start);
 }

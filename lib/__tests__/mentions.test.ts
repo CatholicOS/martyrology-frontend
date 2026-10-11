@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { hasMentions, mentionKey, mentionQids, mentionsIn, splitByMentions } from "@/lib/mentions";
+import { hasMentions, mentionGroup, mentionKey, mentionQids, mentionsIn, splitByMentions } from "@/lib/mentions";
 import type { Mention } from "@/lib/types";
 
 const TEXT = "Cæsaréæ in Cappadócia, sepultúra sancti Basilíi, magístri.";
@@ -91,5 +91,24 @@ describe("hasMentions", () => {
   it("tells whether a page names anyone or anywhere, footnotes included", () => {
     expect(hasMentions([null, {}, { mentions: [] }])).toBe(false);
     expect(hasMentions([{ mentions: [inNote] }])).toBe(true);
+  });
+});
+
+describe("mentionGroup", () => {
+  const piece = (start: number, end: number, name: string, n?: number) =>
+    ({ kind: "person" as const, where: "text" as const, start, end, form: "x", qid: null, name, ...(n ? { n } : {}) });
+
+  it("joins the pieces of one person, apart from another person or another of the same name", () => {
+    const g = (m: ReturnType<typeof piece>) => mentionGroup("ed", "mr:0111-petrus-apselamus", m);
+    expect(g(piece(20, 25, "Petrus Apselamus"))).toBe(g(piece(39, 47, "Petrus Apselamus")));
+    expect(g(piece(20, 25, "Petrus Apselamus"))).not.toBe(g(piece(60, 66, "Ioannes")));
+    expect(g(piece(20, 25, "Felix"))).not.toBe(g(piece(40, 45, "Felix", 2)));
+  });
+
+  it("keeps a place's mark alone, and a person's in the text apart from the same person in a footnote", () => {
+    const place = { kind: "place" as const, where: "text" as const, start: 0, end: 4, form: "Romæ", qid: "Q220", name: null };
+    expect(mentionGroup("ed", "mr:x", place)).toBe(mentionKey("ed", "mr:x", place));
+    const inNote = { ...piece(0, 5, "Felix"), where: { footnote: 1 } };
+    expect(mentionGroup("ed", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("ed", "mr:x", inNote));
   });
 });
