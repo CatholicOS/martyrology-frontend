@@ -161,7 +161,22 @@ export function parseWktPoint(wkt) {
 }
 
 const SPARQL = "https://query.wikidata.org/sparql";
+/** Declared in every query: the Blazegraph endpoint predefines them, QLever's (WDQS v2) does not. */
+export const PREFIXES = [
+  "PREFIX wd: <http://www.wikidata.org/entity/>",
+  "PREFIX wdt: <http://www.wikidata.org/prop/direct/>",
+  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>",
+].join("\n") + "\n";
 const USER_AGENT = "martyrology-frontend snapshot (https://github.com/CatholicOS/martyrology-frontend)";
+
+/**
+ * The SPARQL query for the coordinate location (P625) of `qids`, one per item.
+ * @param {string[]} qids
+ */
+export function coordsQuery(qids) {
+  const values = qids.map((q) => `wd:${q}`).join(" ");
+  return `${PREFIXES}SELECT ?item (SAMPLE(?c) AS ?coord) WHERE { VALUES ?item { ${values} } ?item wdt:P625 ?c } GROUP BY ?item`;
+}
 
 /**
  * [lat, lon] by QID from Wikidata's coordinate location (P625), a few hundred items per query.
@@ -172,8 +187,7 @@ export async function fetchCoords(qids) {
   /** @type {Record<string, [number, number]>} */
   const out = {};
   for (let i = 0; i < qids.length; i += 300) {
-    const values = qids.slice(i, i + 300).map((q) => `wd:${q}`).join(" ");
-    const query = `SELECT ?item (SAMPLE(?c) AS ?coord) WHERE { VALUES ?item { ${values} } ?item wdt:P625 ?c } GROUP BY ?item`;
+    const query = coordsQuery(qids.slice(i, i + 300));
     const res = await fetch(SPARQL, {
       method: "POST",
       headers: {
@@ -204,7 +218,7 @@ export const LABEL_LANGS = ["en", "it", "fr", "de", "es", "pt"];
 export function labelsQuery(qids) {
   const values = qids.map((q) => `wd:${q}`).join(" ");
   const langs = LABEL_LANGS.map((l) => `"${l}"`).join(", ");
-  return `SELECT ?item ?label WHERE { VALUES ?item { ${values} } ?item rdfs:label ?label FILTER(LANG(?label) IN (${langs})) }`;
+  return `${PREFIXES}SELECT ?item ?label WHERE { VALUES ?item { ${values} } ?item rdfs:label ?label FILTER(LANG(?label) IN (${langs})) }`;
 }
 
 /**

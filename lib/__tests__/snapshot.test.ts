@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { buildMisprints, buildNotes, buildPersonDetails, buildPersons, buildPlaces, buildSnapshot, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { buildMisprints, buildNotes, buildPersonDetails, buildPersons, buildPlaces, buildSnapshot, coordsQuery, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -290,5 +290,16 @@ describe("buildPersonDetails", () => {
     expect(buildPersonDetails({ Q2: {} }, ["Q2"])).toEqual({
       Q2: { description: {}, born: null, died: null, image: null, wikipedia: {} },
     });
+  });
+});
+
+describe("SPARQL prefixes", () => {
+  it("every query declares the prefixes it uses (WDQS v2 / QLever predefines none)", () => {
+    for (const q of [coordsQuery(["Q220"]), labelsQuery(["Q220"])]) {
+      for (const p of new Set([...q.matchAll(/\b(wd|wdt|rdfs):[A-Za-z]/g)].map((m) => m[1]))) {
+        expect(q).toContain(`PREFIX ${p}: <`);
+      }
+    }
+    expect(coordsQuery(["Q220", "Q490"])).toContain("VALUES ?item { wd:Q220 wd:Q490 } ?item wdt:P625 ?c");
   });
 });
