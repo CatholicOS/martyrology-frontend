@@ -84,6 +84,13 @@
     "intended": "in Inghilterra"
   },
   {
+    "id": "mr:0801-maria-stella-a-sanctissimo-sacramento-et-socii",
+    "edition": "martyrologium_romanum_2004_it_IT",
+    "footnote": 1,
+    "printed": "e maria",
+    "intended": "e Maria"
+  },
+  {
     "id": "mr:0807-ioannes-woodcock-et-socii",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "Inghiltera",
@@ -130,6 +137,12 @@
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "prospicente",
     "intended": "prospiciente"
+  },
+  {
+    "id": "mr:1009-innocentius-ab-immaculata-et-socii",
+    "edition": "martyrologium_romanum_2004_it_IT",
+    "printed": "compagn",
+    "intended": "compagni"
   },
   {
     "id": "mr:1013-comganus",
