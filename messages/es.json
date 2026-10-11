@@ -186,6 +186,7 @@
     "howToAccess": "Cómo obtener acceso",
     "nothing": "Nada que mostrar para esta edición.",
     "misprint": "Errata: <text>{printed}</text>, <i>sic!</i> léase: <text>{intended}</text>",
+    "misprintFootnote": "Errata en la nota {mark}: <text>{printed}</text>, <i>sic!</i> léase: <text>{intended}</text>",
     "erratum": "<sc>Fe de erratas</sc> ({place}): <text>{entry}</text>",
     "notationes": {
       "noMark": "La letra de la nota no está impresa en el elogio: se colocó según las palabras de su lema.",

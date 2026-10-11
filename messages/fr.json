@@ -186,6 +186,7 @@
     "howToAccess": "Comment obtenir l’accès",
     "nothing": "Rien à afficher pour cette édition.",
     "misprint": "Coquille : <text>{printed}</text>, <i>sic!</i> lire : <text>{intended}</text>",
+    "misprintFootnote": "Coquille dans la note {mark} : <text>{printed}</text>, <i>sic!</i> lire : <text>{intended}</text>",
     "erratum": "<sc>Errata</sc> ({place}) : <text>{entry}</text>",
     "notationes": {
       "noMark": "La lettre de la note n’est pas imprimée dans l’éloge : elle a été placée d’après les mots de son lemme.",

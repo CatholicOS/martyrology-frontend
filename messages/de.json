@@ -186,6 +186,7 @@
     "howToAccess": "So erhalten Sie Zugang",
     "nothing": "Für diese Ausgabe gibt es nichts anzuzeigen.",
     "misprint": "Druckfehler: <text>{printed}</text>, <i>sic!</i> lies: <text>{intended}</text>",
+    "misprintFootnote": "Druckfehler in Fußnote {mark}: <text>{printed}</text>, <i>sic!</i> lies: <text>{intended}</text>",
     "erratum": "<sc>Errata</sc> ({place}): <text>{entry}</text>",
     "notationes": {
       "noMark": "Der Buchstabe der Anmerkung ist im Elogium nicht gedruckt: Er wurde nach den Worten ihres Lemmas gesetzt.",

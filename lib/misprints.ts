@@ -29,6 +29,13 @@ export function misprintsFor(edition: string, id: string | null, all: Misprint[]
   return all.filter((m) => m.edition === edition && m.id === id && m.footnote === undefined);
 }
 
+/** Every misprint of a eulogy in an edition: those in its text, then those in its footnotes, in footnote order. */
+export function eulogyMisprintsFor(edition: string, id: string, all: Misprint[] = MISPRINTS): Misprint[] {
+  return all
+    .filter((m) => m.edition === edition && m.id === id)
+    .sort((a, b) => (a.footnote ?? 0) - (b.footnote ?? 0));
+}
+
 /** The misprints in a eulogy's nth footnote (from 1) in an edition. */
 export function footnoteMisprintsFor(edition: string, id: string, footnote: number, all: Misprint[] = MISPRINTS): Misprint[] {
   return all.filter((m) => m.edition === edition && m.id === id && m.footnote === footnote);

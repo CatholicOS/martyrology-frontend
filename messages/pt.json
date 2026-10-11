@@ -186,6 +186,7 @@
     "howToAccess": "Como obter acesso",
     "nothing": "Nada a mostrar para esta edição.",
     "misprint": "Erro de impressão: <text>{printed}</text>, <i>sic!</i> leia-se: <text>{intended}</text>",
+    "misprintFootnote": "Erro de impressão na nota {mark}: <text>{printed}</text>, <i>sic!</i> leia-se: <text>{intended}</text>",
     "erratum": "<sc>Errata</sc> ({place}): <text>{entry}</text>",
     "notationes": {
       "noMark": "A letra da nota não está impressa no elogio: foi colocada segundo as palavras do seu lema.",

@@ -183,7 +183,8 @@ export default function ApparatusPage({ edition }: { edition: string }) {
                   {shown.has("misprints") &&
                     e.misprints.map((m, i) => (
                       <li key={`m${i}`} className={styles.sic}>
-                        {t.rich("misprint", {
+                        {t.rich(m.mark === undefined ? "misprint" : "misprintFootnote", {
+                          mark: m.mark ?? "",
                           printed: m.printed,
                           intended: m.intended,
                           text: (c) => <span lang={lang}>{c}</span>,

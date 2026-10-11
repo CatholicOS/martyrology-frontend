@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { footnoteMisprintsFor, misprintsFor, splitMisprints, type Misprint } from "@/lib/misprints";
+import { eulogyMisprintsFor, footnoteMisprintsFor, misprintsFor, splitMisprints, type Misprint } from "@/lib/misprints";
 
 const LA = "martyrologium_romanum_2004";
 const IT = "martyrologium_romanum_2004_it_IT";
@@ -21,6 +21,12 @@ describe("misprintsFor", () => {
     expect(footnoteMisprintsFor(IT, "mr:a", 1, withNote)).toEqual([inNote]);
     expect(footnoteMisprintsFor(IT, "mr:a", 2, withNote)).toEqual([]);
     expect(footnoteMisprintsFor(LA, "mr:a", 1, withNote)).toEqual([]);
+  });
+
+  it("eulogyMisprintsFor gives them all: the text's, then the footnotes' in footnote order", () => {
+    const note2 = { ...m("mr:a", IT, "b", "c"), footnote: 2 };
+    const note1 = { ...m("mr:a", IT, "e maria", "e Maria"), footnote: 1 };
+    expect(eulogyMisprintsFor(IT, "mr:a", [note2, ...all, note1])).toEqual([all[1], note1, note2]);
   });
 
   it("reads the bundled snapshot by default", () => {

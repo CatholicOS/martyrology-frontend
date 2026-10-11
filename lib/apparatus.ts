@@ -1,4 +1,4 @@
-import { misprintsFor, type Misprint } from "@/lib/misprints";
+import { eulogyMisprintsFor, type Misprint } from "@/lib/misprints";
 import notesSnapshot from "@/data/notes-snapshot.json";
 import type { EntryNotes } from "@/lib/notes";
 import type { Erratum, MonthOut } from "@/lib/types";
@@ -17,8 +17,9 @@ export interface ApparatusEntry {
   text: string | null;
   /** The curators' notes: on the eulogy (every edition), then on this edition's text. */
   notes: string[];
-  /** The misprints the curators verified in this edition's text. */
-  misprints: Misprint[];
+  /** The misprints the curators verified in this edition's text and footnotes; one in a footnote carries the
+   * footnote's printed mark as `mark` (its number as counted, from 1, when the footnote is not served). */
+  misprints: (Misprint & { mark?: string })[];
   /** The corrections the edition prints in its own errata. */
   errata: Erratum[];
 }
@@ -34,7 +35,7 @@ export function apparatus(
   edition: string,
   months: MonthOut[],
   notes: Record<string, EntryNotes> = notesSnapshot as Record<string, EntryNotes>,
-  misprints: (edition: string, id: string) => Misprint[] = misprintsFor,
+  misprints: (edition: string, id: string) => Misprint[] = eulogyMisprintsFor,
 ): ApparatusEntry[] {
   const out: ApparatusEntry[] = [];
   const seen = new Set<string>();
@@ -53,7 +54,9 @@ export function apparatus(
           unnumbered: e.unnumbered,
           text: e.text,
           notes: [n?.note, n?.editions?.[edition]].filter((x): x is string => Boolean(x)),
-          misprints: misprints(edition, e.id),
+          misprints: misprints(edition, e.id).map((m) =>
+            m.footnote === undefined ? m : { ...m, mark: e.footnotes?.[m.footnote - 1]?.mark ?? String(m.footnote) },
+          ),
           errata: e.errata ?? [],
         };
         if (item.notes.length || item.misprints.length || item.errata.length) out.push(item);
