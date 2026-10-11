@@ -120,6 +120,18 @@ describe("ReaderBar's subject search", () => {
     expect(onFind).toHaveBeenCalledWith(subjects[1]);
   });
 
+  it("leaves the keys that confirm an input method's composition to it", () => {
+    const { box, onFind } = setup();
+    fireEvent.change(box, { target: { value: "emanuele le van phung" } });
+    fireEvent.keyDown(box, { key: "Enter", isComposing: true });
+    fireEvent.keyDown(box, { key: "Enter", keyCode: 229 });
+    fireEvent.keyDown(box, { key: "ArrowDown", isComposing: true });
+    expect(onFind).not.toHaveBeenCalled();
+    expect(box).not.toHaveAttribute("aria-activedescendant");
+    fireEvent.keyDown(box, { key: "Enter" });
+    expect(onFind).toHaveBeenCalledWith(subjects[1]);
+  });
+
   it("picks a suggestion clicked", () => {
     const { box, onFind } = setup();
     fireEvent.change(box, { target: { value: "dinh" } });

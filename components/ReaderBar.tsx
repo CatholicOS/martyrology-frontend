@@ -93,6 +93,8 @@ function SubjectSearch({ subjects, onFind }: { subjects: SubjectOption[] | null;
         }}
         onBlur={close}
         onKeyDown={(e) => {
+          // Keys that confirm an input method's composition (Japanese, Chinese, Vietnamese…) are not ours.
+          if (e.nativeEvent.isComposing || e.keyCode === 229) return;
           if (e.key === "ArrowDown" || e.key === "ArrowUp") {
             e.preventDefault();
             move(e.key === "ArrowDown" ? 1 : -1);
