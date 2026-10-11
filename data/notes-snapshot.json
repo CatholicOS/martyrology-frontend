@@ -4,17 +4,38 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"vicino a Tongeren\" where the Latin has \"prope Traiéctum Mosæ\" (near Maastricht)."
     }
   },
+  "mr:0101-sigismundus-gorazdowski": {
+    "note": "Zygmunt Gorazdowski, blessed in the 2004 editions, was canonized on 23 October 2005."
+  },
+  "mr:0103-cyriacus-elias-chavara": {
+    "note": "Kuriakose Elias Chavara, blessed in the 2004 editions, was canonized on 23 November 2014."
+  },
   "mr:0104-abrunculus": {
-    "note": "Entry 2* in the Latin editio altera 2004 print; absent from the Italian (CEI) edition."
+    "editions": {
+      "martyrologium_romanum_2004": "Not printed in the Italian (CEI) edition.",
+      "martyrologium_romanum_2004_en_unofficial": "Not printed in the Italian (CEI) edition."
+    }
   },
   "mr:0104-ferreolus": {
-    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 4*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (4*)."
+    }
   },
   "mr:0104-rigomerus": {
-    "note": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 5*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (5*)."
+    }
   },
   "mr:0104-pharaildis": {
-    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
+    }
+  },
+  "mr:0104-angela": {
+    "note": "Angela of Foligno, blessed in the 2004 editions, was canonized on 9 October 2013."
   },
   "mr:0104-thomas-plumtree": {
     "editions": {
@@ -22,7 +43,13 @@
     }
   },
   "mr:0104-emmanuel-gonzalez-garcia": {
-    "note": "Numbered 12* in the Latin editio altera 2004 print, 11* in the Italian (CEI) edition. Manuel González García, blessed in the 2004 editions, was canonized in 2016."
+    "note": "Manuel González García, blessed in the 2004 editions, was canonized on 16 October 2016."
+  },
+  "mr:0105-carolus-a-sancto-andrea": {
+    "note": "Charles of St Andrew (Houben), blessed in the 2004 editions, was canonized on 3 June 2007."
+  },
+  "mr:0106-andreas-bessette": {
+    "note": "André Bessette, blessed in the 2004 editions, was canonized on 17 October 2010."
   },
   "mr:0107-canutus-lavard": {
     "editions": {
@@ -54,6 +81,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Lutgardis\" where the Latin has \"Iuttæ\" (Jutta, or Ivetta, of Huy)."
     }
   },
+  "mr:0116-iosephus-vaz": {
+    "note": "Joseph Vaz, blessed in the 2004 editions, was canonized on 14 January 2015."
+  },
   "mr:0117-rosselina": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Forcalquier\" where the Latin has \"Forum Iúlii\" (Fréjus)."
@@ -79,13 +109,19 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Coltevalenza\" where the Latin has \"Coltibóni\" (Coltibuono)."
     }
   },
+  "mr:0120-maria-christina-ab-immaculata": {
+    "note": "Maria Cristina of the Immaculate Conception Brando, blessed in the 2004 editions, was canonized on 17 May 2015."
+  },
   "mr:0121-ioannes-yi-yun-il": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"one of the last victims\" where the Latin has \"última ... víctima\" (the last victim)."
     }
   },
   "mr:0122-ladislaus-batthyany-strattmann": {
-    "note": "Asterisked entry (15*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 15*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (15*)."
+    }
   },
   "mr:0124-felicianus": {
     "editions": {
@@ -177,6 +213,18 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"In April, near Angers\" where the Latin has \"Aprilíaci apud Andégavum\" (at Avrillé near Angers)."
     }
   },
+  "mr:0202-nicolaus-saggio-de-langobardis": {
+    "note": "Nicola Saggio of Longobardi, blessed in the 2004 editions, was canonized on 23 November 2014."
+  },
+  "mr:0202-maria-catharina-kasper": {
+    "note": "Maria Katharina Kasper, blessed in the 2004 editions, was canonized on 14 October 2018."
+  },
+  "mr:0202-maria-dominica-mantovani": {
+    "note": "Maria Domenica Mantovani, blessed in the 2004 editions, was canonized on 15 May 2022."
+  },
+  "mr:0203-maria-anna-rivier": {
+    "note": "Marie Rivier, blessed in the 2004 editions, was canonized on 15 May 2022."
+  },
   "mr:0204-papias-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"In Pamphylia\" omits \"Perge\", the city named in the Latin. Translation error: \"Papirius\" where the Latin has \"Pápiæ\" (Papias)."
@@ -206,6 +254,12 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"eighteen laypeople\" where the Latin has \"septem et decem\" (seventeen)."
     }
+  },
+  "mr:0206-alphonsus-maria-fusco": {
+    "note": "Alfonso Maria Fusco, blessed in the 2004 editions, was canonized on 16 October 2016."
+  },
+  "mr:0206-franciscus-spinelli": {
+    "note": "Francesco Spinelli, blessed in the 2004 editions, was canonized on 14 October 2018."
   },
   "mr:0207-lucas-iunior": {
     "editions": {
@@ -257,6 +311,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Quininus\" where the Latin has \"Quinídii\" (Quinidius)."
     }
   },
+  "mr:0216-iosephus-allamano": {
+    "note": "Giuseppe Allamano, blessed in the 2004 editions, was canonized on 20 October 2024."
+  },
   "mr:0217-septem-fundatores-servorum-mariae": {
     "editions": {
       "martyrologium_romanum_1749": "This edition prints the eulogy of Alexius Falconieri alone, one of the seven founders; the 2004 edition commemorates the seven founders together."
@@ -272,6 +329,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nell’Alsazia\" (Alsace) where the Latin has \"in Holsátia\" (Holstein)."
     }
   },
+  "mr:0218-gertrudis-comensoli": {
+    "note": "Geltrude Comensoli, blessed in the 2004 editions, was canonized on 26 April 2009."
+  },
   "mr:0219-bonifatius": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"tra i monaci cistercensi\" (among Cistercian monks) where the Latin has \"apud moniáles Cisterciénses\" (among Cistercian nuns)."
@@ -281,6 +341,9 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"dal re Carlo Martello\" (by King Charles Martel) where the Latin has \"duce\" (duke); Charles Martel was never king."
     }
+  },
+  "mr:0220-hyacintha-marto": {
+    "note": "Jacinta Marto, blessed in the 2004 editions, was canonized on 13 May 2017."
   },
   "mr:0221-petrus-damianus": {
     "editions": {
@@ -297,6 +360,9 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nella Guascogna\" (Gascony) where the Latin has \"in Vascónia\" (the Basque Country)."
     }
+  },
+  "mr:0223-iosephina-vannini": {
+    "note": "Giuseppina Vannini, blessed in the 2004 editions, was canonized on 13 October 2019."
   },
   "mr:0227-gabriel-a-virgine-perdolenti": {
     "editions": {
@@ -339,6 +405,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Daron\" where the Latin has \"Dariórigi\" (Vannes)."
     }
   },
+  "mr:0304-ioannes-antonius-farina": {
+    "note": "Giovanni Antonio Farina, blessed in the 2004 editions, was canonized on 23 November 2014."
+  },
   "mr:0306-fridolinus": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"due monasteri\" (two monasteries) where the Latin has \"duplex monastérium\" (a double monastery)."
@@ -349,10 +418,16 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"in Grecia\" (in Greece) for \"Chersonésum\", which is Cherson in the Crimea."
     }
   },
+  "mr:0308-faustinus-miguez": {
+    "note": "Faustino Míguez, blessed in the 2004 editions, was canonized on 15 October 2017."
+  },
   "mr:0309-francisca": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"among the offerings\" where the Latin has \"inter oblátas\" (among the Oblates)."
     }
+  },
+  "mr:0310-maria-eugenia-milleret-de-brou": {
+    "note": "Marie-Eugénie of Jesus Milleret, blessed in the 2004 editions, was canonized on 3 June 2007."
   },
   "mr:0311-dominicus-cam": {
     "editions": {
@@ -374,6 +449,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"monaca di clausura nel monastero di San Martino\" (an enclosed nun in the monastery) where the Latin has \"reclúsæ prope cœnóbium Sancti Martíni\" (a recluse near the monastery of Saint Martin)."
     }
   },
+  "mr:0315-artemidis-zatti": {
+    "note": "Artemide Zatti, blessed in the 2004 editions, was canonized on 9 October 2022."
+  },
   "mr:0318-martha-le-bouteiller": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Savior at Vicoigne\" where the Latin has \"Sancti Salvatóris Vicecómitis\" (Saint-Sauveur-le-Vicomte)."
@@ -394,6 +472,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nella Guascogna\" (Gascony, in France) where the Latin has \"in Vascónia Hispániæ\" (the Basque Country of Spain)."
     }
   },
+  "mr:0320-iosephus-bilczewski": {
+    "note": "Józef Bilczewski, blessed in the 2004 editions, was canonized on 23 October 2005."
+  },
   "mr:0321-ioannes": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint-Julien of Valence\" where the Latin \"Iúliæ Valéntiæ\" is simply Valence. Translation error: \"truly ruined\" where the Latin has \"ære dírutos\" (ruined by debt)."
@@ -410,7 +491,10 @@
     }
   },
   "mr:0323-rebecca-de-himlaya": {
-    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 11.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (11.)."
+    }
   },
   "mr:0324-didacus-iosephus-de-gadibus": {
     "editions": {
@@ -432,6 +516,24 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Autun\" where the Latin has \"Augustómagi\" (Senlis)."
     }
   },
+  "mr:0330-ludovicus-de-casaurea": {
+    "note": "Ludovico of Casoria (Palmentieri), blessed in the 2004 editions, was canonized on 23 November 2014."
+  },
+  "mr:0401-ludovicus-pavonus": {
+    "note": "Lodovico Pavoni, blessed in the 2004 editions, was canonized on 16 October 2016."
+  },
+  "mr:0402-didacus-aloysius-de-san-vitores-et-petrus-calungsod": {
+    "note": "Pedro Calungsod, blessed in the 2004 editions, was canonized on 21 October 2012."
+  },
+  "mr:0402-franciscus-coll": {
+    "note": "Francisco Coll y Guitart, blessed in the 2004 editions, was canonized on 11 October 2009."
+  },
+  "mr:0404-franciscus-marto": {
+    "note": "Francisco Marto, blessed in the 2004 editions, was canonized on 13 May 2017."
+  },
+  "mr:0404-caietanus-catanoso": {
+    "note": "Gaetano Catanoso, blessed in the 2004 editions, was canonized on 23 October 2005."
+  },
   "mr:0409-aedesius": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"virgins consecrated to a goddess\" where the Latin has \"vírgines Deo dicátas\" (virgins consecrated to God)."
@@ -452,7 +554,11 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Peter the Younger\" for the subject; the Latin print has sancti Bedæ iunióris and the Italian (CEI) san Beda il Giovane. The English subject follows the Latin."
     }
   },
+  "mr:0411-helena-guerra": {
+    "note": "Elena Guerra, blessed in the 2004 editions, was canonized on 20 October 2024."
+  },
   "mr:0413-margarita": {
+    "note": "Margaret of Città di Castello, blessed in the 2004 editions, was canonized on 24 April 2021.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"born Greek\" where the Latin has \"cæca nata\" (born blind)."
     }
@@ -467,10 +573,19 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Ouen (Ortarius)\" where the Latin has \"sancti Ortárii\" (Saint Ortarius); Ouen is a different saint."
     }
   },
+  "mr:0415-caesar-de-bus": {
+    "note": "César de Bus, blessed in the 2004 editions, was canonized on 15 May 2022."
+  },
+  "mr:0415-damianus-de-veuster": {
+    "note": "Damien de Veuster, blessed in the 2004 editions, was canonized on 11 October 2009."
+  },
   "mr:0417-simeon": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Sapor, Second King of the Persians\" where the Latin has \"Sápore Persárum rege Secúndo\" (Sapor II, King of the Persians)."
     }
+  },
+  "mr:0417-catharina-tekakwitha": {
+    "note": "Kateri Tekakwitha, blessed in the 2004 editions, was canonized on 21 October 2012."
   },
   "mr:0418-idesbaldus": {
     "editions": {
@@ -487,10 +602,19 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Badajoz\" where the Latin has \"Basti\" (Basto, in Portugal)."
     }
   },
+  "mr:0424-maria-elisabeth-hesselblad": {
+    "note": "Maria Elisabeth Hesselblad, blessed in the 2004 editions, was canonized on 5 June 2016."
+  },
   "mr:0425-marcus-evangelista": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"blessed Peter, his son\" where the Latin has \"ab illo fílius nuncupátus\" (called son by him, that is, by Peter)."
     }
+  },
+  "mr:0425-ioannes-piamarta": {
+    "note": "Giovanni Battista Piamarta, blessed in the 2004 editions, was canonized on 21 October 2012."
+  },
+  "mr:0426-raphael-arnaiz-baron": {
+    "note": "Rafael Arnáiz Barón, blessed in the 2004 editions, was canonized on 11 October 2009."
   },
   "mr:0427-ioannes": {
     "editions": {
@@ -507,18 +631,33 @@
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin has 'Episcopi et Confessoris', not a martyr."
     }
   },
+  "mr:0430-maria-ab-incarnatione": {
+    "note": "Marie of the Incarnation Guyart, blessed in the 2004 editions, was canonized on 3 April 2014."
+  },
   "mr:0501-arigius": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Vence\" where the Latin has \"Vapínci\" (Gap)."
     }
   },
   "mr:0502-boleslaus-strzelecki": {
-    "note": "Asterisked entry (12*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 12*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (12*)."
+    }
+  },
+  "mr:0503-stanislaus": {
+    "note": "Stanisław Kazimierczyk, blessed in the 2004 editions, was canonized on 17 October 2010."
+  },
+  "mr:0503-maria-leonia-paradis": {
+    "note": "Marie-Léonie Paradis, blessed in the 2004 editions, was canonized on 20 October 2024."
   },
   "mr:0505-godehardus": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"succeduto a san Bernardo\" where the Latin has \"sancto Bernwárdo\" (Saint Bernward, his predecessor at Hildesheim)."
     }
+  },
+  "mr:0505-nuntius-sulprizio": {
+    "note": "Nunzio Sulprizio, blessed in the 2004 editions, was canonized on 14 October 2018."
   },
   "mr:0506-benedicta": {
     "editions": {
@@ -530,10 +669,19 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"hanged on pitchforks\" where the Latin has \"furcis suspénsi sunt\" (hanged on gallows)."
     }
   },
+  "mr:0506-franciscus-de-montmorency-laval": {
+    "note": "François de Montmorency-Laval, blessed in the 2004 editions, was canonized on 3 April 2014."
+  },
   "mr:0507-gisella": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"spogliatasi di tutti i suoi beni\" (having stripped herself) where the Latin has \"ómnibus facultátibus spoliáta\" (despoiled of all her goods)."
     }
+  },
+  "mr:0507-rosa-venerini": {
+    "note": "Rosa Venerini, blessed in the 2004 editions, was canonized on 15 October 2006."
+  },
+  "mr:0508-amatus-ronconi": {
+    "note": "Amato Ronconi, blessed in the 2004 editions, was canonized on 23 November 2014."
   },
   "mr:0510-gulielmus": {
     "editions": {
@@ -541,12 +689,18 @@
     }
   },
   "mr:0512-imelda-lambertini": {
-    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 10*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (10*)."
+    }
   },
   "mr:0513-andreas-hubertus-fournet": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Puy-en-Vélay\" where the Latin has \"Pódii in pago Pictaviénsi\" (La Puye, near Poitiers)."
     }
+  },
+  "mr:0514-theodora-guerin": {
+    "note": "Théodore Guérin, blessed in the 2004 editions, was canonized on 15 October 2006."
   },
   "mr:0516-peregrinus": {
     "editions": {
@@ -559,6 +713,12 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"blessed Simon Stock\" where the Latin has \"sancti Simónis Stock\" (Saint)."
     }
   },
+  "mr:0517-iulia-salzano": {
+    "note": "Giulia Salzano, blessed in the 2004 editions, was canonized on 17 October 2010."
+  },
+  "mr:0519-maria-bernarda-butler": {
+    "note": "Maria Bernarda Bütler, blessed in the 2004 editions, was canonized on 12 October 2008."
+  },
   "mr:0520-aurea": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Aurore\" where the Latin has \"Aureæ\" (Aurea)."
@@ -568,6 +728,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Chong Kuk-ho\" where the Latin has \"Chong Kuk-bo\"."
     }
+  },
+  "mr:0520-archangelus-tadini": {
+    "note": "Arcangelo Tadini, blessed in the 2004 editions, was canonized on 26 April 2009."
   },
   "mr:0522-quiteria": {
     "editions": {
@@ -580,7 +743,10 @@
     }
   },
   "mr:0524-servulus": {
-    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 4*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (4*)."
+    }
   },
   "mr:0528-paulus-hanh": {
     "editions": {
@@ -597,26 +763,58 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Saint Robert\" where the Latin has \"sancti Hubérti\" (Saint Hubert)."
     }
   },
+  "mr:0531-baptista-varano": {
+    "note": "Camilla Battista da Varano, blessed in the 2004 editions, was canonized on 17 October 2010."
+  },
   "mr:0531-felix-amoroso": {
+    "note": "Felix of Nicosia (Felice Amoroso), blessed in the 2004 editions, was canonized on 23 October 2005.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Erice\" where the Latin has \"Hérbitæ\" (Nicosia)."
     }
   },
+  "mr:0601-ioannes-baptista-scalabrinus": {
+    "note": "Giovanni Battista Scalabrini, blessed in the 2004 editions, was canonized on 9 October 2022."
+  },
+  "mr:0603-ioannes-xxiii": {
+    "note": "Pope John XXIII, blessed in the 2004 editions, was canonized on 27 April 2014; on 29 May 2014 his optional memorial was inscribed in the General Roman Calendar on 11 October."
+  },
   "mr:0604-philippus-smaldone": {
+    "note": "Filippo Smaldone, blessed in the 2004 editions, was canonized on 15 October 2006.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"deaf and mute\" where the Latin has \"surdórum ac cæcórum\" (the deaf and the blind)."
     }
+  },
+  "mr:0606-raphael-guizar-valencia": {
+    "note": "Rafael Guízar Valencia, blessed in the 2004 editions, was canonized on 15 October 2006."
   },
   "mr:0606-innocentius-guz": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"followers of contrary opinions and religions ... was detained by the guards\" where the Latin has \"opiniónum hóminum et religiónis adversárum\" (ideologies hostile to man and religion) and \"a vigílibus ... trucidátus est\" (murdered by the guards)."
     }
   },
+  "mr:0608-iacobus-berthieu": {
+    "note": "Jacques Berthieu, blessed in the 2004 editions, was canonized on 21 October 2012."
+  },
+  "mr:0608-maria-teresia-chiramel-mankidiyan": {
+    "note": "Mariam Thresia Chiramel Mankidiyan, blessed in the 2004 editions, was canonized on 13 October 2019."
+  },
+  "mr:0609-iosephus-anchieta": {
+    "note": "José de Anchieta, blessed in the 2004 editions, was canonized on 3 April 2014."
+  },
   "mr:0610-marcus-antonius-durando": {
-    "note": "Entry 9* at June 10 in the Latin editio altera 2004 print; the Italian (CEI) edition prints the same eulogy at December 10, entry 9* (mr:1210-marcus-antonius-durando)."
+    "editions": {
+      "martyrologium_romanum_2004": "The Italian (CEI) edition prints this eulogy at 10 December (mr:1210-marcus-antonius-durando).",
+      "martyrologium_romanum_2004_en_unofficial": "The Italian (CEI) edition prints this eulogy at 10 December (mr:1210-marcus-antonius-durando)."
+    }
   },
   "mr:0611-bardo": {
-    "note": "Asterisked entry (4*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 4*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (4*)."
+    }
+  },
+  "mr:0611-ignatius-maloyan": {
+    "note": "Ignatius Maloyan, blessed in the 2004 editions, was canonized on 19 October 2025."
   },
   "mr:0612-basilides": {
     "editions": {
@@ -627,6 +825,9 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nell’Alsazia\" (Alsace) where the Latin has \"in Holsátia\" (Holstein), the region of Ratzeburg."
     }
+  },
+  "mr:0615-aloysius-maria-palazzolo": {
+    "note": "Luigi Maria Palazzolo, blessed in the 2004 editions, was canonized on 15 May 2022."
   },
   "mr:0617-teresia": {
     "editions": {
@@ -654,7 +855,13 @@
     }
   },
   "mr:0624-gohardus": {
-    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
+    }
+  },
+  "mr:0624-maria-a-guadalupe-garcia-zavala": {
+    "note": "María Guadalupe García Zavala, blessed in the 2004 editions, was canonized on 12 May 2013."
   },
   "mr:0625-prosperus": {
     "editions": {
@@ -676,6 +883,12 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Valence\" where the Latin has \"Valentiánam\" (Valenciennes)."
     }
+  },
+  "mr:0627-margarita-bays": {
+    "note": "Marguerite Bays, blessed in the 2004 editions, was canonized on 13 October 2019."
+  },
+  "mr:0628-irenaeus": {
+    "note": "Irenaeus was declared a Doctor of the Church on 21 January 2022."
   },
   "mr:0629-petrus-et-paulus-apostoli": {
     "editions": {
@@ -707,6 +920,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"in Borgogna\" (in Burgundy) where the Latin has \"in Sabáudia\" (in Savoy); Hautecombe and Lake Bourget are in Savoy."
     }
   },
+  "mr:0704-petrus-georgius-frassati": {
+    "note": "Pier Giorgio Frassati, blessed in the 2004 editions, was canonized on 7 September 2025."
+  },
   "mr:0705-georgius-nichols-et-richardus-yaxley": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"condemned to death by beheading\" where the Latin has \"cápite damnáti\" (condemned to death); they were hanged."
@@ -721,6 +937,12 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"morì in Inghilterra\" (died in England) where the Latin has \"ibídem óbiit\" (died there, in Scotland)."
     }
+  },
+  "mr:0706-nazaria-a-sancta-teresia": {
+    "note": "Nazaria Ignacia of St Teresa of Jesus March Mesa, blessed in the 2004 editions, was canonized on 14 October 2018."
+  },
+  "mr:0707-petrus-to-rot": {
+    "note": "Peter To Rot, blessed in the 2004 editions, was canonized on 19 October 2025."
   },
   "mr:0708-auspicius": {
     "editions": {
@@ -744,8 +966,14 @@
       "martyrologium_romanum_2004_it_IT": "Absent from the Latin editio altera 2004 print, whose July 9 ends at entry 10*. Bl. Marija Petković was beatified on 6 June 2003."
     }
   },
+  "mr:0710-emmanuel-ruiz-et-socii": {
+    "note": "Manuel Ruiz and his ten companions, the martyrs of Damascus, blessed in the 2004 editions, were canonized on 20 October 2024."
+  },
   "mr:0711-leontius": {
-    "note": "Asterisked entry (5*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 5*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (5*)."
+    }
   },
   "mr:0711-placidus-et-sigisbertus": {
     "editions": {
@@ -782,6 +1010,12 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nel Mare del Nord\" (in the North Sea) where the Latin has \"in mari Británnico\" (in the British Sea, the English Channel)."
     }
   },
+  "mr:0716-bartholomaeus-a-martyribus": {
+    "note": "Bartholomew of the Martyrs (Fernandes), blessed in the 2004 editions, was canonized on 5 July 2019."
+  },
+  "mr:0716-andreas-de-soveral-et-dominicus-carvalho": {
+    "note": "The martyrs of Brazil, André de Soveral, Ambrósio Francisco Ferro and their 28 companions, blessed in the 2004 editions, were canonized on 15 October 2017."
+  },
   "mr:0716-amata-a-iesu-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Anne-Marie of Jesus\" where the Latin has \"Amátæ a Iesu\" (Aimée of Jesus)."
@@ -793,6 +1027,7 @@
     }
   },
   "mr:0717-teresia-a-sancto-augustino-et-socii": {
+    "note": "Teresa of St Augustine and her fifteen companions, the martyrs of Compiègne, blessed in the 2004 editions, were canonized on 18 December 2024.",
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Marta Maddalena Claudina\" where the Latin has \"Maríæ Magdalénæ Claudínæ\" (Marie-Madeleine-Claudine)."
     }
@@ -807,8 +1042,14 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"her seven sons\" where the Latin has \"septem sociórum\" (seven companions)."
     }
   },
+  "mr:0718-simon-de-lipnica": {
+    "note": "Simon of Lipnica, blessed in the 2004 editions, was canonized on 3 June 2007."
+  },
   "mr:0718-tarsicia-mackiv": {
-    "note": "Asterisked entry (13*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 13*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (13*)."
+    }
   },
   "mr:0719-macrina": {
     "editions": {
@@ -850,6 +1091,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Lugduni\" where the Latin has \"beáti\" (blessed)."
     }
   },
+  "mr:0722-maria-magdalena": {
+    "note": "By decree of 3 June 2016 the celebration of Mary Magdalene in the General Roman Calendar was raised from an obligatory memorial to a feast."
+  },
   "mr:0723-severus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Bizerte in Tunisia\" where the Latin has \"Bízyæ in Thrácia\" (Vize in Thrace)."
@@ -859,6 +1103,15 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"sul fiume Don\" where the Latin has \"ad Altam flumen\" (the river Alta)."
     }
+  },
+  "mr:0725-maria-a-monte-carmelo-salles-y-barangueras": {
+    "note": "María del Monte Carmelo Sallés y Barangueras, blessed in the 2004 editions, was canonized on 21 October 2012."
+  },
+  "mr:0726-titus-brandsma": {
+    "note": "Titus Brandsma, blessed in the 2004 editions, was canonized on 15 May 2022."
+  },
+  "mr:0726-georgius-preca": {
+    "note": "George Preca, blessed in the 2004 editions, was canonized on 3 June 2007."
   },
   "mr:0727-desideratus": {
     "editions": {
@@ -870,8 +1123,14 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"la moglie e il figlio\" (one son) where the Latin has \"uxore et filiis\" (wife and children)."
     }
   },
+  "mr:0728-alphonsa-ab-immaculata-conceptione": {
+    "note": "Alphonsa of the Immaculate Conception, blessed in the 2004 editions, was canonized on 12 October 2008."
+  },
   "mr:0730-godeleva": {
-    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 6*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (6*)."
+    }
   },
   "mr:0801-secundinus": {
     "editions": {
@@ -883,8 +1142,14 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Friard and Secundellus, deacons\" where the Latin has \"Friárdi et Secundélli diáconi\" (only Secundellus was a deacon)."
     }
   },
+  "mr:0801-petrus-favre": {
+    "note": "Peter Faber, blessed in the 2004 editions, was canonized on 17 December 2013."
+  },
   "mr:0802-betharius": {
-    "note": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 8*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (8*)."
+    }
   },
   "mr:0804-eleutherius": {
     "editions": {
@@ -906,13 +1171,25 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"At Lyon\" where the Latin has \"Augustodúni\" (Autun)."
     }
   },
+  "mr:0806-maria-francisca-a-iesu": {
+    "note": "Maria Francesca of Jesus Rubatto, blessed in the 2004 editions, was canonized on 15 May 2022."
+  },
   "mr:0807-donatus-vesontione": {
-    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
+    }
   },
   "mr:0808-secundus-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: the place \"Albáni\" (at Albano) is omitted."
     }
+  },
+  "mr:0808-bonifatia-rodriguez-castro": {
+    "note": "Bonifacia Rodríguez de Castro, blessed in the 2004 editions, was canonized on 23 October 2011."
+  },
+  "mr:0808-maria-a-cruce": {
+    "note": "Mary of the Cross MacKillop, blessed in the 2004 editions, was canonized on 17 October 2010."
   },
   "mr:0809-falcus": {
     "editions": {
@@ -926,6 +1203,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"dal monastero di Metz\" where the Latin \"e Mediáno monastério\" is the abbey of Moyenmoutier."
     }
   },
+  "mr:0809-candida-maria-a-iesu": {
+    "note": "Cándida María de Jesús Cipitria, blessed in the 2004 editions, was canonized on 17 October 2010."
+  },
   "mr:0810-archangelus-de-calataphino": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"of Calataphim near Piacenza\" where the Latin has \"de Calataphíno Piacentini\" (of Calatafimi, surnamed Piacentini)."
@@ -937,7 +1217,10 @@
     }
   },
   "mr:0812-iacobus-do-mai-nam-et-socii": {
-    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 11.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (11.)."
+    }
   },
   "mr:0813-maximus-confessor": {
     "editions": {
@@ -954,6 +1237,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Altenburg nelle Fiandre, ora in Germania\" where the Latin \"Aldenbúrgi in Flándria\" is Oudenburg in Flanders, in present-day Belgium."
     }
   },
+  "mr:0814-octingenti-martyres-hydrunti": {
+    "note": "Antonio Primaldo and his companions, the martyrs of Otranto, blessed in the 2004 editions, were canonized on 12 May 2013."
+  },
   "mr:0816-stephanus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"being Alba Regalis just and peaceful ... at in Hungary\" where the Latin has \"iustus et pacíficus ... donec Albæ Regáli in Hungária\" (just and peaceful ... until, at Székesfehérvár in Hungary); and \"churches\" where the Latin has \"ópibus\" (wealth)."
@@ -969,10 +1255,16 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"drawn more frequently like fish into the net\" where the Latin has \"crebrióres píscibus\" (more numerous than the fish drawn into the net)."
     }
   },
+  "mr:0818-albertus-hurtado-cruchaga": {
+    "note": "Alberto Hurtado Cruchaga, blessed in the 2004 editions, was canonized on 23 October 2005."
+  },
   "mr:0819-elvira-a-nativitate-dominae-nostrae-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Nativity of Our Lord Torrente Paraira\" where the Latin has \"Nativitáte Dóminæ Nostræ Torrentallé Paraire\" (Our Lady)."
     }
+  },
+  "mr:0820-bernardus-tolomei": {
+    "note": "Bernardo Tolomei, blessed in the 2004 editions, was canonized on 26 April 2009."
   },
   "mr:0820-ladislaus-maczkowski": {
     "editions": {
@@ -990,7 +1282,10 @@
     }
   },
   "mr:0821-iosephus-dang-dinh-vien": {
-    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 11.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (11.)."
+    }
   },
   "mr:0823-zachaeus": {
     "editions": {
@@ -1017,6 +1312,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Puy-en-Vélay\" where the Latin has \"Podii apud Pictavium\" (La Puye, near Poitiers)."
     }
   },
+  "mr:0826-maria-a-iesu-crucifixo": {
+    "note": "Mary of Jesus Crucified (Mariam Baouardy), blessed in the 2004 editions, was canonized on 17 May 2015."
+  },
   "mr:0827-poemen": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Phermeus\" where the Latin has \"Pœmenis\" (Poemen)."
@@ -1039,6 +1337,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nell’odierna Svizzera\" where the Latin has \"in Suevia\" (Swabia); Constance is in Germany."
     }
   },
+  "mr:0828-iuniperus-serra": {
+    "note": "Junípero Serra, blessed in the 2004 editions, was canonized on 23 September 2015."
+  },
   "mr:0829-basilla": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'Apud Sirmium' is Sirmium, not Smyrna."
@@ -1048,6 +1349,9 @@
     "editions": {
       "martyrologium_romanum_2004": "Error: \"sub Iacobo rege Primo\" (under James I), but Richard Herst was executed in 1628, under Charles I."
     }
+  },
+  "mr:0829-ioanna-jugan": {
+    "note": "Jeanne Jugan (Marie de la Croix), blessed in the 2004 editions, was canonized on 11 October 2009."
   },
   "mr:0830-sexaginta-martyres-coloniae-sufetanae": {
     "editions": {
@@ -1083,6 +1387,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"spring of Elisha\" where the Latin has \"fontem Elíæ\" (the spring of Elijah)."
     }
+  },
+  "mr:0902-ioannes-maria-du-lau-et-socii": {
+    "note": "Salomon Leclercq, one of these martyrs, blessed in the 2004 editions, was canonized on 16 October 2016."
   },
   "mr:0903-rimagilus": {
     "editions": {
@@ -1140,9 +1447,9 @@
     }
   },
   "mr:0909-franciscus-garate-aranguren": {
-    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk.",
     "editions": {
-      "martyrologium_romanum_2004_it_IT": "Translation error: \"nella Guascogna\" (Gascony) where the Latin has \"in Vascónia Hispániæ\" (the Basque Country of Spain)."
+      "martyrologium_romanum_2004": "Asterisked here (entry 10*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (10*). Translation error: \"nella Guascogna\" (Gascony) where the Latin has \"in Vascónia Hispániæ\" (the Basque Country of Spain)."
     }
   },
   "mr:0910-iacobus-gagnot": {
@@ -1185,6 +1492,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"blessed Notburga\" where the Latin has \"sanctæ Notbúrgæ\" (Saint Notburga)."
     }
   },
+  "mr:0917-sigismundus-felix-felinski": {
+    "note": "Zygmunt Szczęsny Feliński, blessed in the 2004 editions, was canonized on 11 October 2009."
+  },
   "mr:0920-andreas-kim-tae-gon-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"ten of whom are commemorated on this day\" where the Latin says that all one hundred and three martyrs are celebrated together on this day."
@@ -1205,6 +1515,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Llantwit Major\" where the Latin has \"Lancarvanénsi\" (Llancarfan)."
     }
+  },
+  "mr:0923-christophorus-et-socii": {
+    "note": "Cristóbal, Antonio and Juan, the child martyrs of Tlaxcala, blessed in the 2004 editions, were canonized on 15 October 2017."
   },
   "mr:0923-maria-aemilia-tavernier": {
     "editions": {
@@ -1239,6 +1552,9 @@
   "mr:1003-candida": {
     "note": "The 1749 and 1914 editions commemorate a male martyr, Candidus; the 2004 edition has Candida, a woman, in the cemetery of Pontianus. It is probably the 2004 correction of the same commemoration."
   },
+  "mr:1003-ambrosius-franciscus-ferro-et-socii": {
+    "note": "The martyrs of Brazil, André de Soveral, Ambrósio Francisco Ferro and their 28 companions, blessed in the 2004 editions, were canonized on 15 October 2017."
+  },
   "mr:1004-franciscus-xaverius-seelos": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"northern United States\" where the Latin has the United States of North America (Louisiana is in the south)."
@@ -1258,6 +1574,12 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Corneto\" where the Latin has \"Coræ\" (Cori)."
     }
+  },
+  "mr:1005-anna-schaffer": {
+    "note": "Anna Schäffer, blessed in the 2004 editions, was canonized on 21 October 2012."
+  },
+  "mr:1005-bartholomaeus-longo": {
+    "note": "Bartolo Longo, blessed in the 2004 editions, was canonized on 19 October 2025."
   },
   "mr:1009-guntherus": {
     "editions": {
@@ -1295,7 +1617,13 @@
     }
   },
   "mr:1021-wendelinus": {
-    "note": "Asterisked entry (8*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 8*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (8*)."
+    }
+  },
+  "mr:1021-laura-montoya-y-upegui": {
+    "note": "Laura of St Catherine of Siena Montoya y Upegui, blessed in the 2004 editions, was canonized on 12 May 2013."
   },
   "mr:1022-abercius": {
     "editions": {
@@ -1322,13 +1650,19 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"A Ramsey\" where the Latin has \"Rumeséiæ\" (Romsey)."
     }
   },
+  "mr:1024-aloysius-guanella": {
+    "note": "Luigi Guanella, blessed in the 2004 editions, was canonized on 23 October 2011."
+  },
   "mr:1025-recaredus-centelles-abad": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Riccardo\" where the Latin has \"Recarédi\" (Recaredo)."
     }
   },
   "mr:1026-eata": {
-    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
+    }
   },
   "mr:1026-witta": {
     "editions": {
@@ -1356,6 +1690,7 @@
     }
   },
   "mr:1029-caietanus-errico": {
+    "note": "Gaetano Errico, blessed in the 2004 editions, was canonized on 12 October 2008.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: the place \"Secundiliáni\" (Secondigliano) is omitted; only \"Near Naples\" is given."
     }
@@ -1365,10 +1700,16 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"la vita stessa\" (his very life) where the Latin has \"ipsam vitem\" (his vine staff, the centurion's badge)."
     }
   },
+  "mr:1030-angelus": {
+    "note": "Angelo of Acri, blessed in the 2004 editions, was canonized on 15 October 2017."
+  },
   "mr:1101-rainerius-aretinus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Città della Pieve\" where the Latin has \"Burgi Sancti Sepúlcri\" (Sansepolcro)."
     }
+  },
+  "mr:1101-nonius-alvarez-pereira": {
+    "note": "Nuno de Santa Maria Álvares Pereira, blessed in the 2004 editions, was canonized on 26 April 2009."
   },
   "mr:1102-victorinus": {
     "editions": {
@@ -1376,10 +1717,16 @@
     }
   },
   "mr:1103-libertinus": {
-    "note": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 3*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (3*)."
+    }
   },
   "mr:1103-odrada": {
-    "note": "Asterisked entry (10*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 10*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (10*)."
+    }
   },
   "mr:1105-domninus": {
     "editions": {
@@ -1394,10 +1741,16 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"monastero di Calais\" where the Latin has \"cœnóbio Calénsi\" (the monastery of Chelles, near Meaux)."
     }
   },
+  "mr:1105-guido-maria-conforti": {
+    "note": "Guido Maria Conforti, blessed in the 2004 editions, was canonized on 23 October 2011."
+  },
   "mr:1106-paulus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"and martyr\" is added; the Latin has only \"epíscopi Constantinopolitáni\"."
     }
+  },
+  "mr:1107-vincentius-grossi": {
+    "note": "Vincenzo Grossi, blessed in the 2004 editions, was canonized on 18 October 2015."
   },
   "mr:1108-godefridus": {
     "editions": {
@@ -1409,6 +1762,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Montegranaro\" where the Latin has \"Monte Novo\" (Montenovo, today Ostra Vetere)."
     }
+  },
+  "mr:1109-elisabeth-a-sanctissima-trinitate": {
+    "note": "Elizabeth of the Trinity (Catez), blessed in the 2004 editions, was canonized on 16 October 2016."
   },
   "mr:1112-benedictus-et-socii": {
     "editions": {
@@ -1436,7 +1792,10 @@
     }
   },
   "mr:1118-theofredus": {
-    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 6*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (6*)."
+    }
   },
   "mr:1118-grimoaldus-a-purificatione": {
     "editions": {
@@ -1444,7 +1803,10 @@
     }
   },
   "mr:1119-eudo": {
-    "note": "Asterisked entry (6*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 6*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (6*)."
+    }
   },
   "mr:1119-elisaeus-garcia-et-alexander-planas-sauri": {
     "editions": {
@@ -1488,7 +1850,10 @@
     }
   },
   "mr:1201-domnolus": {
-    "note": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 5.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (5.)."
+    }
   },
   "mr:1201-liduina-meneguzzi": {
     "editions": {
@@ -1506,12 +1871,18 @@
     }
   },
   "mr:1203-lucius": {
-    "note": "Plain entry (5., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 5.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (5.)."
+    }
   },
   "mr:1207-fara": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Évry\" where the Latin has \"Eboríaci\" (Faremoutiers)."
     }
+  },
+  "mr:1208-narcissa-a-iesu-martillo-moran": {
+    "note": "Narcisa de Jesús Martillo Morán, blessed in the 2004 editions, was canonized on 12 October 2008."
   },
   "mr:1209-liborius-wagner": {
     "editions": {
@@ -1539,7 +1910,10 @@
     }
   },
   "mr:1212-simon-phan-dac-hoa": {
-    "note": "Plain entry (11., no asterisk) in the Latin editio altera 2004 print; the Italian (CEI) edition marks the entry with an asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Printed here without an asterisk (entry 11.); the Italian (CEI) edition marks the entry with one.",
+      "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (11.)."
+    }
   },
   "mr:1214-hero-et-socii": {
     "editions": {
@@ -1547,7 +1921,10 @@
     }
   },
   "mr:1215-marinus": {
-    "note": "Asterisked entry (3*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 3*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (3*)."
+    }
   },
   "mr:1216-aggaeus-propheta": {
     "editions": {
@@ -1573,6 +1950,12 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Hildesheim\" where the Latin has \"Heidenheiménsi\" (Heidenheim), the monastery Saint Winebald founded."
     }
+  },
+  "mr:1220-vincentius-romano": {
+    "note": "Vincenzo Romano, blessed in the 2004 editions, was canonized on 14 October 2018."
+  },
+  "mr:1223-antonius-galvao-de-franca": {
+    "note": "Anthony of St Anne Galvão, blessed in the 2004 editions, was canonized on 11 May 2007."
   },
   "mr:1223-paulus-melendez-gonzalo": {
     "editions": {
@@ -1604,6 +1987,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the day of his death at Annecy\" where the Latin has \"die depositiónis\" (the day of his burial)."
     }
   },
+  "mr:1228-catharina-volpicelli": {
+    "note": "Caterina Volpicelli, blessed in the 2004 editions, was canonized on 26 April 2009."
+  },
   "mr:1229-libosus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Liberius\" where the Latin has \"Libósi\" (Libosus)."
@@ -1620,7 +2006,10 @@
     }
   },
   "mr:1230-egwinus": {
-    "note": "Asterisked entry (7*) in the Latin editio altera 2004 print; the Italian (CEI) edition carries no asterisk."
+    "editions": {
+      "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
+      "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
+    }
   },
   "mr:1231-barbatianus": {
     "editions": {
