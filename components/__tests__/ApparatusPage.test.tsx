@@ -4,6 +4,12 @@ import ApparatusPage from "@/components/ApparatusPage";
 import * as api from "@/lib/api";
 import type { MonthOut } from "@/lib/types";
 
+vi.mock("@/data/misprints-snapshot.json", () => ({
+  default: [
+    { id: "mr:0801-fictus", edition: "martyrologium_romanum_2004_it_IT", printed: "e maria", intended: "e Maria", footnote: 1 },
+  ],
+}));
+
 const month = (mm: number, elogia: MonthOut["days"][string]["elogia"] = [], access: string | null = null): MonthOut => ({
   metadata: { edition: "martyrologium_romanum_2004", month: mm, access },
   days: elogia.length ? { "04": { titulus: null, elogia, conclusio: null } } : {},
@@ -69,5 +75,20 @@ describe("ApparatusPage", () => {
     const section = await screen.findByRole("region", { name: "gennaio" });
     expect(section.querySelector("h2")).toHaveTextContent("gennaio");
     expect(screen.getByRole("link", { name: "4 gennaio" })).toHaveAttribute("href", "/it/read/martyrologium_romanum_2004/01/04#mr:0104-abrunculus");
+  });
+
+  it("lists a misprint in a footnote with the footnote's printed mark", async () => {
+    vi.spyOn(api, "getEditions").mockResolvedValue([]);
+    vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
+      Number(mm) === 8
+        ? month(8, [{
+            id: "mr:0801-fictus", entry: 1, asterisk: false, unnumbered: false, anchor_day: "08-01", text: "A Roma, beati Fittizio e compagni.",
+            footnotes: [{ mark: "32", after: "compagni", text: "Fittizio, Caio e maria." }],
+          }])
+        : month(Number(mm)),
+    );
+    render(<ApparatusPage edition="martyrologium_romanum_2004_it_IT" />);
+    const item = await screen.findByText(/Misprint in footnote 32:/);
+    expect(item.closest("li")).toHaveTextContent("Misprint in footnote 32: e maria, sic! expected: e Maria");
   });
 });

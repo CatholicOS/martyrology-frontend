@@ -186,6 +186,7 @@
     "howToAccess": "Come ottenere l’accesso",
     "nothing": "Niente da mostrare per questa edizione.",
     "misprint": "Refuso: <text>{printed}</text>, <i>sic!</i> leggi: <text>{intended}</text>",
+    "misprintFootnote": "Refuso nella nota {mark}: <text>{printed}</text>, <i>sic!</i> leggi: <text>{intended}</text>",
     "erratum": "<sc>Errata corrige</sc> ({place}): <text>{entry}</text>",
     "notationes": {
       "noMark": "La lettera della nota non è stampata nell’elogio: è stata collocata in base alle parole del suo lemma.",

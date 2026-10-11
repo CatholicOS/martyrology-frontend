@@ -186,6 +186,7 @@
     "howToAccess": "How to get access",
     "nothing": "Nothing to show for this edition.",
     "misprint": "Misprint: <text>{printed}</text>, <i>sic!</i> expected: <text>{intended}</text>",
+    "misprintFootnote": "Misprint in footnote {mark}: <text>{printed}</text>, <i>sic!</i> expected: <text>{intended}</text>",
     "erratum": "<sc>Errata</sc> ({place}): <text>{entry}</text>",
     "notationes": {
       "noMark": "The note's letter isn't printed in the eulogy: it was placed by the words of its lemma.",

@@ -44,4 +44,20 @@ describe("apparatus", () => {
     expect([count(out, "notes"), count(out, "misprints"), count(out, "errata")]).toEqual([2, 1, 1]);
     expect(only(out, new Set(["errata"])).map((e) => e.id)).toEqual(["mr:0201-c"]);
   });
+
+  it("lists a eulogy's footnote misprints with the footnote's printed mark", () => {
+    const footnotes = [{ mark: "31", after: null, text: "Uno." }, { mark: "32", after: null, text: "Due e maria." }];
+    const ms = [month(8, { "01": [el("mr:0801-a", { footnotes }), el("mr:0801-b")] })];
+    const fm = (edition: string, id: string) => [
+      { id, edition, printed: "Text", intended: "Textus" },
+      { id, edition, printed: "e maria", intended: "e Maria", footnote: 2 },
+    ];
+    const out = apparatus("ed", ms, {}, fm);
+    expect(out[0].misprints).toEqual([
+      { id: "mr:0801-a", edition: "ed", printed: "Text", intended: "Textus" },
+      { id: "mr:0801-a", edition: "ed", printed: "e maria", intended: "e Maria", footnote: 2, mark: "32" },
+    ]);
+    // A footnote the month does not serve is named by its number as counted.
+    expect(out[1].misprints[1].mark).toBe("2");
+  });
 });
