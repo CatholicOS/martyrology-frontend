@@ -97,6 +97,7 @@
     "findLabel": "Trouver un éloge par nom",
     "findPlaceholder": "Chercher un nom…",
     "findLoading": "Chargement des noms…",
+    "findSuggestions": "Noms correspondants",
     "switchBook": "Changer de livre",
     "compareWith": "Comparer avec",
     "compareWithPlaceholder": "Comparer avec…",

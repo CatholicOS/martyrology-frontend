@@ -97,6 +97,7 @@
     "findLabel": "Find a eulogy by subject",
     "findPlaceholder": "Find a subject…",
     "findLoading": "Loading subjects…",
+    "findSuggestions": "Matching subjects",
     "switchBook": "Switch book",
     "compareWith": "Compare with",
     "compareWithPlaceholder": "Compare with…",

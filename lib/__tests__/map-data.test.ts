@@ -95,6 +95,11 @@ describe("matchesQuery", () => {
     expect(matchesQuery(byId("mr:0103-thomas"), "london")).toBe(true);
   });
 
+  it("finds a subject by its stroke letters' plain forms (Đ → d)", () => {
+    const dinh = { ...byId("mr:0103-thomas"), subject: "San Tommaso Đinh Viết Dụ" };
+    expect(matchesQuery(dinh, "dinh viet du")).toBe(true);
+  });
+
   it("finds a place printed with an accented ligature (ǽ)", () => {
     const nicaea = { ...byId("mr:0104-basilius"), la: "Nicǽæ in Bithýnia" };
     expect(matchesQuery(nicaea, "nicaeae")).toBe(true);

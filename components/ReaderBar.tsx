@@ -2,10 +2,10 @@
 
 import { Link } from "@/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { daysInMonth, interfaceMonth, todayLocal, type Day } from "@/lib/calendar";
 import { hasPersons } from "@/lib/persons-editions";
-import { findSubject, type SubjectOption } from "@/lib/subjects";
+import { findSubject, matchSubjects, type SubjectOption } from "@/lib/subjects";
 
 const control = "rounded border border-slate-300 bg-white px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
 
@@ -27,6 +27,111 @@ function Switch({ id, label, title, checked, onChange }: {
       />
       {label}
     </label>
+  );
+}
+
+/** The id of the subject search's i-th suggestion, which `aria-activedescendant` names while it is highlighted. */
+const optionId = (i: number) => `reader-subjects-${i}`;
+
+/**
+ * The subject search: a combobox with a listbox of suggestions (the WAI-ARIA 1.2 pattern), which
+ * holds the subjects whose label has the typed text, with or without its accents and marks. The
+ * arrow keys move through them, Enter picks the highlighted one (with none highlighted, the only
+ * one the text fits), Escape closes them.
+ */
+function SubjectSearch({ subjects, onFind }: { subjects: SubjectOption[] | null; onFind: (o: SubjectOption) => void }) {
+  const t = useTranslations("Reader");
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(-1);
+  const matches = useMemo(() => (subjects ? matchSubjects(subjects, query) : []), [subjects, query]);
+  const expanded = open && matches.length > 0;
+  // Keep the highlighted suggestion in view as the arrows move through a long list.
+  useEffect(() => {
+    if (active >= 0) document.getElementById(optionId(active))?.scrollIntoView?.({ block: "nearest" });
+  }, [active]);
+  const close = () => {
+    setOpen(false);
+    setActive(-1);
+  };
+  const pick = (o: SubjectOption | null) => {
+    if (!o) return;
+    setQuery("");
+    close();
+    onFind(o);
+  };
+  /** Moves the highlight one step (wrapping), opening the list first if it is closed. */
+  const move = (step: 1 | -1) => {
+    if (matches.length === 0) return;
+    if (!expanded) {
+      setOpen(true);
+      setActive(step === 1 ? 0 : matches.length - 1);
+    } else {
+      setActive(step === 1 ? (active + 1) % matches.length : active <= 0 ? matches.length - 1 : active - 1);
+    }
+  };
+  return (
+    <div className="relative min-w-40 max-w-xs flex-1">
+      <label className="sr-only" htmlFor="reader-subject">{t("findLabel")}</label>
+      <input
+        id="reader-subject"
+        type="search"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded={expanded}
+        aria-controls="reader-subjects"
+        aria-activedescendant={expanded && active >= 0 ? optionId(active) : undefined}
+        autoComplete="off"
+        className={`${control} w-full`}
+        placeholder={subjects ? t("findPlaceholder") : t("findLoading")}
+        disabled={!subjects}
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setOpen(true);
+          setActive(-1);
+        }}
+        onBlur={close}
+        onKeyDown={(e) => {
+          // Keys that confirm an input method's composition (Japanese, Chinese, Vietnamese…) are not ours.
+          if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            move(e.key === "ArrowDown" ? 1 : -1);
+          } else if (e.key === "Enter" && subjects) {
+            e.preventDefault();
+            pick(expanded && active >= 0 ? matches[active] : findSubject(subjects, query));
+          } else if (e.key === "Escape" && expanded) {
+            // Only closes the list; a second Escape clears the box, as a search box does.
+            e.preventDefault();
+            close();
+          }
+        }}
+      />
+      <ul
+        id="reader-subjects"
+        role="listbox"
+        aria-label={t("findSuggestions")}
+        hidden={!expanded}
+        className="absolute left-0 top-full z-20 mt-1 max-h-72 w-full min-w-64 overflow-y-auto rounded border border-slate-300 bg-white py-1 text-sm shadow-lg dark:border-slate-700 dark:bg-slate-900"
+      >
+        {expanded && matches.map((o, i) => (
+          <li
+            key={o.id}
+            id={optionId(i)}
+            role="option"
+            aria-selected={i === active}
+            className={`cursor-pointer px-2 py-1 ${i === active ? "bg-[#0b6e7f] text-white" : ""}`}
+            // Keep the focus in the box, so the click picks rather than blurring the list away.
+            onMouseDown={(e) => e.preventDefault()}
+            onMouseEnter={() => setActive(i)}
+            onClick={() => pick(o)}
+          >
+            {o.value}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -70,13 +175,6 @@ export default function ReaderBar({
   const t = useTranslations("Reader");
   const tm = useTranslations("Markup");
   const format = useFormatter();
-  const [query, setQuery] = useState("");
-  const pick = (o: SubjectOption | null) => {
-    if (!o) return false;
-    setQuery("");
-    onFind(o);
-    return true;
-  };
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2 px-4 sm:px-0">
       <label className="sr-only" htmlFor="reader-month">{t("month")}</label>
@@ -100,32 +198,7 @@ export default function ReaderBar({
         ))}
       </select>
       <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>{t("today")}</button>
-      <label className="sr-only" htmlFor="reader-subject">{t("findLabel")}</label>
-      <input
-        id="reader-subject"
-        type="search"
-        list="reader-subjects"
-        autoComplete="off"
-        className={`${control} min-w-40 max-w-xs flex-1`}
-        placeholder={subjects ? t("findPlaceholder") : t("findLoading")}
-        disabled={!subjects}
-        value={query}
-        onChange={(e) => {
-          const text = e.target.value;
-          // A pick from the list arrives as its whole value; typing waits for Enter.
-          const hit = subjects?.find((o) => o.value === text) ?? null;
-          if (!pick(hit)) setQuery(text);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && subjects) {
-            e.preventDefault();
-            pick(findSubject(subjects, query));
-          }
-        }}
-      />
-      <datalist id="reader-subjects">
-        {subjects?.map((o) => <option key={o.id} value={o.value} />)}
-      </datalist>
+      <SubjectSearch subjects={subjects} onFind={onFind} />
       <label className="sr-only" htmlFor="reader-book">{t("switchBook")}</label>
       <select id="reader-book" className={`${control} ml-auto`} value={edition} onChange={(e) => onSwitch(e.target.value, "reader-book")}>
         {books.map((b) => (
