@@ -100,6 +100,8 @@ describe("DayPage, a print that numbers no eulogies", () => {
 });
 
 describe("DayPage, curators' notes", () => {
+  // Ferreolus and Rigomerus carry the 2004 Latin's notes on its asterisks (crmedr notes snapshot).
+  const latin = "martyrologium_romanum_2004";
   const noted = {
     ...day,
     elogia: [
@@ -115,7 +117,7 @@ describe("DayPage, curators' notes", () => {
   });
 
   it("marks them †, †† in red after the text, linked to the notes at the foot of the page and back", () => {
-    render(<DayPage day={noted} heading="4 Ianuarii" edition="ed" showIds />);
+    render(<DayPage day={noted} heading="4 Ianuarii" edition={latin} showIds />);
     const first = screen.getByRole("link", { name: "Editorial note 1" });
     const second = screen.getByRole("link", { name: "Editorial note 2" });
     expect(first).toHaveTextContent(/^†$/);
@@ -127,13 +129,13 @@ describe("DayPage, curators' notes", () => {
     const items = notes.querySelectorAll("li");
     expect(items).toHaveLength(2);
     expect(first).toHaveAttribute("href", `#${items[0].id}`);
-    expect(items[0]).toHaveTextContent(/^†Asterisked entry \(4\*\)/);
+    expect(items[0]).toHaveTextContent(/^†Asterisked here \(entry 4\*\)/);
     expect(screen.getByRole("link", { name: "Back to the text of note 2" })).toHaveAttribute("href", `#${second.id}`);
   });
 
   it("marks only the first of two printings of one noted eulogy, so its mark's id stays unique", () => {
     const twice = { ...noted, elogia: [noted.elogia[0], { ...noted.elogia[0], entry: 9, text: "Iterum sancti Ferreoli." }] };
-    const { container } = render(<DayPage day={twice} heading="4 Ianuarii" edition="ed" showIds />);
+    const { container } = render(<DayPage day={twice} heading="4 Ianuarii" edition={latin} showIds />);
     expect(screen.getAllByRole("link", { name: "Editorial note 1" })).toHaveLength(1);
     expect(screen.getByText("Iterum sancti Ferreoli.").closest("p")!.querySelector("a")).toBeNull();
     const ids = [...container.querySelectorAll("[id]")].map((n) => n.id);
@@ -173,7 +175,7 @@ describe("DayPage, printed footnotes", () => {
       ...withNotes,
       elogia: [...withNotes.elogia, { id: "mr:0104-ferreolus", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." }],
     };
-    render(<DayPage day={both} heading="2 Octobris" edition="ed" showIds />);
+    render(<DayPage day={both} heading="2 Octobris" edition="martyrologium_romanum_2004" showIds />);
     const asides = screen.getAllByRole("complementary").map((a) => a.getAttribute("aria-label"));
     expect(asides).toEqual(["Footnotes", "Editorial notes"]);
   });
