@@ -14,7 +14,7 @@ import { dateHeading, dayPath, nextDay, prevDay, type Day, type Lang } from "@/l
 import { editionLang, editionTitle, shelfState, sortForShelf, titleCase } from "@/lib/editions";
 import { hasMentions } from "@/lib/mentions";
 import { getSnapshot } from "@/lib/snapshot";
-import { subjectFor, subjectOptions, type SubjectOption } from "@/lib/subjects";
+import { SUBJECT_LANGS, subjectFor, subjectOptions, type SubjectOption } from "@/lib/subjects";
 import type { AccessMap, EditionOut } from "@/lib/types";
 import { useDay } from "@/lib/use-day";
 import { useMarkupSwitch } from "@/lib/use-reader-switch";
@@ -249,7 +249,14 @@ export default function Reader({
     let cancelled = false;
     getCatalog(edition, lang).then(
       (catalog) => {
-        const options = subjectOptions(catalog, format, (id, own) => subjectFor(getSnapshot()[id]?.subject, locale, own));
+        // Labelled in the interface language, searched in every language crmedr publishes and the
+        // edition's own ("Ioannes a Cruce" finds "Saint John of the Cross").
+        const options = subjectOptions(
+          catalog,
+          format,
+          (id, own) => subjectFor(getSnapshot()[id]?.subject, locale, own),
+          (id, own) => [own, ...SUBJECT_LANGS.map((l) => getSnapshot()[id]?.subject?.[l] ?? "")],
+        );
         subjectsCache.set(subjectsKey, options);
         if (!cancelled) setSubjects({ key: subjectsKey, options });
       },

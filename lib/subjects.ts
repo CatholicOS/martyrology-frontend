@@ -7,6 +7,8 @@ export interface SubjectOption {
   value: string;
   id: string;
   day: Day;
+  /** The eulogy's subject in its other languages, searched with the label: "Ioannes a Cruce" finds "Saint John of the Cross". */
+  also?: string[];
 }
 
 /**
@@ -17,6 +19,8 @@ export interface SubjectOption {
 export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<typeof interfaceMonth>[0],
   /** The subject to show for an eulogy (the interface language's); the catalog's own by default. */
   subjectOf: (id: string, catalogSubject: string) => string = (_id, own) => own,
+  /** The eulogy's subjects in every language, searched besides its label; none by default. */
+  alsoOf?: (id: string, catalogSubject: string) => string[],
 ): SubjectOption[] {
   const rows = catalog.flatMap((e) => {
     const m = e.present !== false && e.subject ? /^(\d{2})-(\d{2})$/.exec(e.day_printed ?? "") : null;
@@ -35,29 +39,37 @@ export function subjectOptions(catalog: CatalogEntryOut[], format: Parameters<ty
         x.day.dd - y.day.dd ||
         (x.e.entry ?? Infinity) - (y.e.entry ?? Infinity),
     )
-    .map((r) => ({
-      value:
-        seen.get(r.base)! > 1
-          ? `${r.base}, ${r.e.entry !== null && r.e.entry !== undefined ? `n. ${r.e.entry}` : r.e.id}`
-          : r.base,
-      id: r.e.id,
-      day: r.day,
-    }));
+    .map((r) => {
+      const option: SubjectOption = {
+        value:
+          seen.get(r.base)! > 1
+            ? `${r.base}, ${r.e.entry !== null && r.e.entry !== undefined ? `n. ${r.e.entry}` : r.e.id}`
+            : r.base,
+        id: r.e.id,
+        day: r.day,
+      };
+      if (alsoOf) {
+        const also = [...new Set(alsoOf(r.e.id, r.e.subject!).map((s) => s.trim()).filter((s) => s && s !== r.subject))];
+        if (also.length) option.also = also;
+      }
+      return option;
+    });
 }
 
 /** How many suggestions the subject search lists at most. */
 export const SUGGESTION_LIMIT = 50;
 
 /**
- * The options whose label holds the typed text, accents, marks and case aside (see `fold`), in the
- * options' own order, the first `limit` of them; with nothing typed, the first `limit` options.
+ * The options whose label, or subject in another language (`also`), holds the typed text, accents,
+ * marks and case aside (see `fold`), in the options' own order, the first `limit` of them; with
+ * nothing typed, the first `limit` options.
  */
 export function matchSubjects(options: SubjectOption[], text: string, limit = SUGGESTION_LIMIT): SubjectOption[] {
   const q = fold(text.trim());
   const hits: SubjectOption[] = [];
   for (const o of options) {
     if (hits.length >= limit) break;
-    if (!q || fold(o.value).includes(q)) hits.push(o);
+    if (!q || fold(o.value).includes(q) || o.also?.some((s) => fold(s).includes(q))) hits.push(o);
   }
   return hits;
 }
