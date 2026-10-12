@@ -40,6 +40,27 @@ describe("subjectOptions", () => {
     expect(subjectOptions(cat, createFormatter({ locale: "fr" }), subjectOf("fr"))[0].value).toBe("Saint John — 27 décembre");
   });
 
+  it("keeps the subject's other languages for the search, apart from the label", () => {
+    const registry: Record<string, { la: string; it: string; en: string }> = {
+      "mr:1214-ioannes-a-cruce": { la: "Sanctus Ioannes a Cruce", it: "San Giovanni della Croce", en: "Saint John of the Cross" },
+    };
+    const cat = [entry("mr:1214-ioannes-a-cruce", "Sanctus Ioannes a Cruce", "12-14")];
+    const opts = subjectOptions(
+      cat,
+      format,
+      (id, own) => subjectFor(registry[id], "en", own),
+      (id, own) => [own, registry[id].la, registry[id].it, registry[id].en],
+    );
+    expect(opts).toEqual([{
+      value: "Saint John of the Cross — 14 December",
+      id: "mr:1214-ioannes-a-cruce",
+      day: { mm: 12, dd: 14 },
+      also: ["Sanctus Ioannes a Cruce", "San Giovanni della Croce"],
+    }]);
+    // Without the other languages, nothing is added.
+    expect(subjectOptions(cat, format)[0]).not.toHaveProperty("also");
+  });
+
   it("tells apart two eulogies of the same subject on the same day by their number", () => {
     const opts = subjectOptions([
       entry("mr:0310-a", "Sancti Martyres", "03-10", 4),
@@ -96,6 +117,16 @@ describe("matchSubjects", () => {
     expect(matchSubjects(opts, "dinh 3").map((o) => o.id)).toEqual(["mr:30", "mr:31", "mr:32", "mr:33", "mr:34", "mr:35", "mr:36", "mr:37", "mr:38", "mr:39"]);
     expect(matchSubjects(opts, "PHUNG 2")[0].id).toBe("mr:2");
     expect(matchSubjects(opts, "nobody")).toEqual([]);
+  });
+
+  it("finds a subject in another language than the label's, with or without accents", () => {
+    const john = [{ value: "Saint John of the Cross — 14 December", id: "mr:1214", day: { mm: 12, dd: 14 },
+      also: ["Sanctus Ioannes a Cruce", "San Giovanni della Croce"] }];
+    expect(matchSubjects(john, "Ioannes a Cruce").map((o) => o.id)).toEqual(["mr:1214"]);
+    expect(matchSubjects(john, "giovanni della croce").map((o) => o.id)).toEqual(["mr:1214"]);
+    expect(matchSubjects(john, "john of the cross").map((o) => o.id)).toEqual(["mr:1214"]);
+    expect(findSubject(john, "ioannes a cruce")?.id).toBe("mr:1214");
+    expect(matchSubjects(john, "Ioannes de Deo")).toEqual([]);
   });
 
   it("lists the first fifty at most, and with nothing typed the first fifty of all", () => {
