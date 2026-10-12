@@ -268,6 +268,11 @@ jobs:
           # correctness problem — every manifest that routes to them is
           # overwritten — but it does mean the vhost grows over time. See the
           # design doc's "Pruning" note.
+          #
+          # The fetch cache (.next/cache/fetch-cache) is the one leftover that is a correctness
+          # problem: it holds the API answers the server fetched (the catalog, revalidated hourly),
+          # so after an API release with renamed IDs a new build would read the old catalog for up
+          # to an hour (the names index left the renamed eulogies out). It is cleared on every deploy.
           for attempt in 1 2 3; do
             echo "SSH attempt $attempt..."
             if ssh -i ~/.ssh/deploy_key \
@@ -276,6 +281,7 @@ jobs:
               "${VPS_USERNAME}@${VPS_HOST}" \
               "set -e; \
                tar -xzf /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz -C ${REMOTE_APP_DIR} && \
+               rm -rf ${REMOTE_APP_DIR}/.next/cache/fetch-cache && \
                mkdir -p ${REMOTE_APP_DIR}/tmp && \
                touch ${REMOTE_APP_DIR}/tmp/restart.txt && \
                rm -f /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"; then
