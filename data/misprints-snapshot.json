@@ -84,7 +84,7 @@
     "intended": "in Inghilterra"
   },
   {
-    "id": "mr:0801-maria-stella-a-sanctissimo-sacramento-et-socii",
+    "id": "mr:0801-adelheidis-mardosewicz-et-socii",
     "edition": "martyrologium_romanum_2004_it_IT",
     "footnote": 1,
     "printed": "e maria",
@@ -95,6 +95,18 @@
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "Inghiltera",
     "intended": "Inghilterra"
+  },
+  {
+    "id": "mr:0905-teresia-calcuttae",
+    "edition": "martyrologium_romanum_2004",
+    "printed": "Gonhxa",
+    "intended": "Gonxha"
+  },
+  {
+    "id": "mr:0905-teresia-calcuttae",
+    "edition": "martyrologium_romanum_2004_it_IT",
+    "printed": "Gonhxa",
+    "intended": "Gonxha"
   },
   {
     "id": "mr:0906-bertrandus-de-garrigues",
@@ -139,7 +151,7 @@
     "intended": "prospiciente"
   },
   {
-    "id": "mr:1009-innocentius-ab-immaculata-et-socii",
+    "id": "mr:1009-emmanuel-canoura-arnau-et-socii",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "compagn",
     "intended": "compagni"
@@ -301,7 +313,7 @@
     "intended": "defending"
   },
   {
-    "id": "mr:1118-grimoaldus-a-purificatione",
+    "id": "mr:1118-ferdinandus-santamaria",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "FerĐinand",
     "intended": "Ferdinand"
