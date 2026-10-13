@@ -32,6 +32,32 @@ export function loadDecisions(key: string): DecisionMap {
   }
 }
 
+/**
+ * The decisions saved for this change-set: those under its own key, over those
+ * saved for an earlier version of it (same edition: a regenerated change-set can
+ * change its op count or base, and so its key), matched by op id, so that the
+ * cards it still has keep their decisions.
+ */
+export function loadDecisionsFor(cs: Changeset): DecisionMap {
+  if (typeof window === "undefined") return {};
+  const key = decisionsKey(cs);
+  const prefix = `mrf:decisions:${cs.base.edition}:`;
+  const ids = new Set(cs.operations.map(opId));
+  const carried: DecisionMap = {};
+  try {
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const k = window.localStorage.key(i);
+      if (!k || k === key || !k.startsWith(prefix)) continue;
+      for (const [id, d] of Object.entries(loadDecisions(k))) {
+        if (ids.has(id)) carried[id] = d;
+      }
+    }
+  } catch {
+    // storage unavailable: only this key's decisions
+  }
+  return { ...carried, ...loadDecisions(key) };
+}
+
 export function saveDecisions(key: string, map: DecisionMap): void {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(key, JSON.stringify(map));

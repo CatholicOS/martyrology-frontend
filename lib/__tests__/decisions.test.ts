@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { summarize, saveDecisions, loadDecisions, decisionsKey, decisionsFromChangeset } from "@/lib/decisions";
+import { summarize, saveDecisions, loadDecisions, loadDecisionsFor, decisionsKey, decisionsFromChangeset } from "@/lib/decisions";
 import type { Changeset } from "@/lib/changeset";
 
 const cs: Changeset = { schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "e", registry: "r" },
@@ -15,6 +15,15 @@ describe("decisions", () => {
     const key = decisionsKey(cs);
     saveDecisions(key, { a: { decision: "edit", edited: { new_id: "z" } } });
     expect(loadDecisions(key)).toEqual({ a: { decision: "edit", edited: { new_id: "z" } } });
+  });
+  it("keeps the decisions of an earlier version for the cards still there", () => {
+    const earlier: Changeset = { ...cs, base: { edition: "e", registry: "r0" },
+      operations: [ ...cs.operations, { op: "delete", id: "gone", decision: null } ] as never };
+    saveDecisions(decisionsKey(earlier), { a: { decision: "accept" }, b: { decision: "reject" }, gone: { decision: "accept" } });
+    saveDecisions(decisionsKey(cs), { b: { decision: "accept" } });
+    saveDecisions(decisionsKey({ ...cs, base: { edition: "other", registry: "r" } }), { c: { decision: "reject" } });
+    // this key's own decisions win; a card no longer in the set and another edition's are left out
+    expect(loadDecisionsFor(cs)).toEqual({ a: { decision: "accept" }, b: { decision: "accept" } });
   });
   it("seeds decisions carried in the change-set file", () => {
     const prefilled: Changeset = { schema: "crmedr-changeset/v1", generated_by: "claude-code", base: { edition: "e", registry: "r" },
