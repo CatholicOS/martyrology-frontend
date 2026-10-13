@@ -117,4 +117,24 @@ describe("PlacesIndex", () => {
     render(<PlacesIndex edition="martyrologium_romanum_2004" title="X" index={index} letter="R" />, { locale: "it" });
     expect(screen.getByRole("heading", { level: 3, name: /Rome/ })).toHaveTextContent("Rome (Italia)");
   });
+
+  it("renders a cross-reference from another printed name to its heading, which carries the id it links to", () => {
+    const withSee: PlacesIndexData = {
+      ...index,
+      letters: [
+        { letter: "A", places: [{ qid: "Q7341", label: "Auschwitz", labelLang: "en", country: "PL", lines: [
+          { id: "mr:0809-teresia", day: { mm: 8, dd: 9 }, entry: 1, subject: "Sancta Teresia", printed: null, typology: "dies_natalis" },
+        ] }] },
+        { letter: "O", places: [], see: [{ name: "Oświęcim", qid: "Q7341", target: "Auschwitz", targetLang: "en", letter: "A" }] },
+      ],
+    };
+    const { container } = renderIndex(withSee, "O");
+    const p = screen.getByText("Oświęcim").closest("p")!;
+    expect(p).toHaveTextContent("Oświęcim → see Auschwitz");
+    expect(within(p).getByText("Oświęcim")).toHaveAttribute("lang", "la");
+    expect(within(p).getByRole("link", { name: "Auschwitz" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/places/a#pl-Q7341");
+    container.remove();
+    renderIndex(withSee, "A");
+    expect(screen.getByRole("heading", { level: 3, name: /Auschwitz/ }).parentElement).toHaveAttribute("id", "pl-Q7341");
+  });
 });

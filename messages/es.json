@@ -207,7 +207,8 @@
     "coverage": "{placed, number} de los {printed, number} elogios de esta edición tienen ya un lugar.",
     "empty": "Ningún elogio de esta edición tiene aún un lugar.",
     "loadError": "No se pudo cargar el índice.",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "see": "véase"
   },
   "Names": {
     "title": "{title}: índice de nombres",

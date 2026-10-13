@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { compareLines, headingLetter, placeLabel, placeLabelLang, placesIndex, type PlaceLine } from "@/lib/places-index";
+import { compareLines, headingLetter, placeHeadingId, placeLabel, placeLabelLang, placeLetterEntries, placesIndex, type PlaceLine } from "@/lib/places-index";
 import type { PlacesSnapshot } from "@/lib/places";
 import type { CatalogEntryOut } from "@/lib/types";
 
@@ -164,5 +164,62 @@ describe("compareLines", () => {
 
   it("is a tie, not NaN, between two unnumbered eulogies of the same day", () => {
     expect(compareLines(line(1, 2, null), line(1, 2, null))).toBe(0);
+  });
+});
+
+describe("placesIndex: a place's other printed names", () => {
+  const variants: PlacesSnapshot = {
+    places: {
+      Q7341: { label: "Auschwitz", country: "PL", coords: null, labels: { en: "Auschwitz", it: "campo di concentramento di Auschwitz" }, also: ["Oświęcim", "Auschwitz"] },
+      Q1: { label: "Samaria", country: "PS", coords: null, also: ["Samaria", "Sebaste"] },
+      Q2: { label: "Sebaste", country: "TR", coords: null },
+      Q3: { label: "Unprinted", country: "IT", coords: null, also: ["Elsewhere", "Nowhere"] },
+    },
+    eulogies: {
+      "mr:0809-teresia": { place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", typology: "dies_natalis" },
+      "mr:0814-maximilianus": { place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", typology: "dies_natalis" },
+      "mr:0614-elisaeus": { place: "Q1", la: "Samaríæ seu Sebáste", typology: "commemoratio" },
+      "mr:0309-milites": { place: "Q2", la: "Sebástæ in Arménia", typology: "dies_natalis" },
+    },
+  };
+  const vcat = [
+    cat("mr:0809-teresia", "Sancta Teresia", "08-09"),
+    cat("mr:0814-maximilianus", "Sanctus Maximilianus", "08-14"),
+    cat("mr:0614-elisaeus", "Sanctus Elisaeus", "06-14"),
+    cat("mr:0309-milites", "Sancti Milites", "03-09"),
+  ];
+
+  it("files each name that is not the heading under its own letter, once, pointing to the heading", () => {
+    const { letters } = placesIndex(vcat, variants, LA, "en");
+    expect(letters.map((l) => l.letter)).toEqual(["A", "O", "S"]);
+    expect(letters.find((l) => l.letter === "O")?.see).toEqual([
+      { name: "Oświęcim", qid: "Q7341", target: "Auschwitz", targetLang: "en", letter: "A" },
+    ]);
+    // "Auschwitz" is the English heading itself: no cross-reference to it.
+    expect(letters.find((l) => l.letter === "A")?.see).toBeUndefined();
+  });
+
+  it("keeps a cross-reference beside a heading of the same name, the heading first", () => {
+    const { letters } = placesIndex(vcat, variants, LA, "en");
+    const s = letters.find((l) => l.letter === "S")!;
+    expect(placeLetterEntries(s, "en").map((e) => ("see" in e ? `see ${e.see.name} → ${e.see.target}` : e.place.label))).toEqual([
+      "Samaria", "Sebaste", "see Sebaste → Samaria",
+    ]);
+  });
+
+  it("cross-refers a name that heads the place in one language from another", () => {
+    const { letters } = placesIndex(vcat, variants, LA, "it");
+    const a = letters.find((l) => l.letter === "A")!;
+    expect(a.places).toEqual([]);
+    expect(a.see?.map((s) => [s.name, s.target, s.letter])).toEqual([["Auschwitz", "campo di concentramento di Auschwitz", "C"]]);
+  });
+
+  it("gives no cross-references for a place the edition doesn't print", () => {
+    const { letters } = placesIndex(vcat, variants, LA, "en");
+    expect(letters.flatMap((l) => l.see ?? []).map((s) => s.name)).not.toContain("Elsewhere");
+  });
+
+  it("makes a heading id from the QID", () => {
+    expect(placeHeadingId("Q7341")).toBe("pl-Q7341");
   });
 });

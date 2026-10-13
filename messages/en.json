@@ -207,7 +207,8 @@
     "coverage": "{placed, number} of the {printed, number} eulogies of this edition are placed so far.",
     "empty": "No eulogies of this edition are placed yet.",
     "loadError": "The index could not be loaded.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "see": "see"
   },
   "Names": {
     "title": "{title}: index of names",
