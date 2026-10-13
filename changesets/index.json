@@ -1,7 +1,6 @@
 {
  "changesets": [
   "gazetteer-review.json",
-  "notationes-1630-review.json",
   "persons-review-01.json",
   "persons-review-02.json",
   "persons-review-03.json",
