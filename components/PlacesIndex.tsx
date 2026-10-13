@@ -4,7 +4,8 @@ import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
-import type { PlacesIndexData } from "@/lib/places-index";
+import { letterSlug } from "@/lib/letters";
+import { placeHeadingId, placeLetterEntries, type IndexPlace, type PlacesIndexData } from "@/lib/places-index";
 import { regionName } from "@/lib/regions";
 
 /**
@@ -24,6 +25,38 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
   const ed = encodeURIComponent(edition);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
+
+  /** One place's heading and lines, with an id the cross-references link to. */
+  const placeBlock = (p: IndexPlace) => {
+    const c = regionName(locale, p.country);
+    return (
+      <div key={p.qid} id={placeHeadingId(p.qid)} className="mb-4">
+        <h3 className="font-semibold">
+          <span lang={langOn(p.labelLang, locale)}>{p.label}</span>
+          {c && <span className="font-normal text-slate-600"> ({c})</span>}
+        </h3>
+        <ul className="ml-4 text-sm">
+          {p.lines.map((line) => {
+            const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
+            return (
+              <li key={line.id}>
+                {/* Named with its eulogy too: the page has thousands of day links. */}
+                <Link href={`${dayPath(edition, line.day)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
+                  {day}
+                </Link>
+                {" · "}
+                <span lang={lang}>{line.subject}</span>
+                {line.printed && <>{" · "}<i lang={lang}>{line.printed}</i></>}
+                {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
+                  <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
 
   return (
     <article className={styles.page} aria-labelledby="places-title">
@@ -50,36 +83,19 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
           <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/places`} label={t("letters")} />
           <section aria-labelledby="letter-h">
             <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
-            {shown.places.map((p) => {
-              const c = regionName(locale, p.country);
-              return (
-                <div key={p.qid} className="mb-4">
-                  <h3 className="font-semibold">
-                    <span lang={langOn(p.labelLang, locale)}>{p.label}</span>
-                    {c && <span className="font-normal text-slate-600"> ({c})</span>}
-                  </h3>
-                  <ul className="ml-4 text-sm">
-                    {p.lines.map((line) => {
-                      const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
-                      return (
-                        <li key={line.id}>
-                          {/* Named with its eulogy too: the page has thousands of day links. */}
-                          <Link href={`${dayPath(edition, line.day)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
-                            {day}
-                          </Link>
-                          {" · "}
-                          <span lang={lang}>{line.subject}</span>
-                          {line.printed && <>{" · "}<i lang={lang}>{line.printed}</i></>}
-                          {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
-                            <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
+            {placeLetterEntries(shown, locale).map((e) =>
+              "see" in e ? (
+                <p key={`see-${e.see.name}-${e.see.qid}`} className="mb-4">
+                  <span lang="la" className="italic">{e.see.name}</span>
+                  {` → ${t("see")} `}
+                  <Link href={`/read/${ed}/places/${letterSlug(e.see.letter)}#${placeHeadingId(e.see.qid)}`} className="font-semibold underline">
+                    <span lang={langOn(e.see.targetLang, locale)}>{e.see.target}</span>
+                  </Link>
+                </p>
+              ) : (
+                placeBlock(e.place)
+              ),
+            )}
           </section>
           <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/places`} />
         </>

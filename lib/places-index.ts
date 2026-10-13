@@ -25,6 +25,43 @@ export interface IndexPlace {
 export interface IndexLetter {
   letter: string;
   places: IndexPlace[];
+  /** Cross-references from a place's other printed names to its heading, by name. */
+  see?: PlaceSee[];
+}
+
+/** A cross-reference from a place's other printed name to its heading: "Oświęcim → see Auschwitz". */
+export interface PlaceSee {
+  /** The name as the Latin prints it, in the nominative. */
+  name: string;
+  /** The heading's place. */
+  qid: string;
+  /** The heading's label. */
+  target: string;
+  /** The heading's language, as IndexPlace.labelLang. */
+  targetLang: Locale | null;
+  /** The heading's letter, whose page holds it. */
+  letter: string;
+}
+
+export type PlacesEntry = { place: IndexPlace } | { see: PlaceSee };
+
+/** A place heading's element id, which its cross-references link to. */
+export function placeHeadingId(qid: string): string {
+  return `pl-${qid.replace(/[^A-Za-z0-9_-]/g, "-")}`;
+}
+
+/** A letter's headings and cross-references in one order: by name, a heading before a cross-reference of the same name. */
+export function placeLetterEntries(l: IndexLetter, locale: Locale): PlacesEntry[] {
+  const collator = new Intl.Collator(locale, { sensitivity: "base" });
+  const out: PlacesEntry[] = [];
+  const see = l.see ?? [];
+  let j = 0;
+  for (const place of l.places) {
+    while (j < see.length && collator.compare(see[j].name, place.label) < 0) out.push({ see: see[j++] });
+    out.push({ place });
+  }
+  while (j < see.length) out.push({ see: see[j++] });
+  return out;
 }
 
 export interface PlacesIndexData {
@@ -131,5 +168,28 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
     }
     l.places.push(p);
   }
+  // Each other name the Latin prints for a place leads to its heading, unless it is the heading.
+  const see: PlaceSee[] = [];
+  for (const p of places) {
+    for (const name of snap.places[p.qid]?.also ?? []) {
+      if (collator.compare(name, p.label) === 0 || see.some((s) => s.qid === p.qid && collator.compare(s.name, name) === 0)) continue;
+      see.push({ name, qid: p.qid, target: p.label, targetLang: p.labelLang, letter: filingLetter(p.label, collator) });
+    }
+  }
+  see.sort((a, b) => collator.compare(a.name, b.name) || collator.compare(a.target, b.target));
+  for (const s of see) {
+    const letter = filingLetter(s.name, collator);
+    let l = byLetter.get(letter);
+    if (!l) {
+      l = { letter, places: [] };
+      byLetter.set(letter, l);
+      letters.push(l);
+    }
+    (l.see ??= []).push(s);
+  }
+  // A letter made by cross-references alone goes in its place: letters sort by their first name.
+  const first = (l: IndexLetter) =>
+    [l.places[0]?.label, l.see?.[0]?.name].filter((n): n is string => !!n).sort(collator.compare)[0];
+  letters.sort((a, b) => collator.compare(first(a), first(b)));
   return { letters, placed, printed };
 }

@@ -128,6 +128,14 @@ describe("buildPlaces", () => {
     const snap = buildPlaces(placesDoc, gazetteerDoc, { typology: {} }, coords);
     expect(snap.eulogies["mr:0101-almachius"].typology).toBeNull();
   });
+
+  it("copies a place's printed names, for the places the eulogies resolve to", () => {
+    const variants = { $comment: "…", Q220: ["Roma", "Urbs"], Q404: ["Nusquam", "Nullibi"] };
+    const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, {}, variants);
+    expect(snap.places.Q220.also).toEqual(["Roma", "Urbs"]);
+    expect(snap.places.Q490.also).toBeUndefined();
+    expect(snap.places).not.toHaveProperty("Q404");
+  });
 });
 
 describe("parseWktPoint", () => {

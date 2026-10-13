@@ -7,6 +7,8 @@ export interface PlaceInfo {
   country: string;
   coords: [number, number] | null;
   labels?: Partial<Record<Locale, string>>;
+  /** The names the Latin prints for the place, "Oświęcim seu Auschwitz" (crmedr's places_variants_curated). */
+  also?: string[];
 }
 
 /** A current eulogy's place (QID), the place as the Latin 2004 and the Italian print it, and its typology. */

@@ -207,7 +207,8 @@
     "coverage": "{placed, number} der {printed, number} Elogien dieser Ausgabe ist bisher ein Ort zugeordnet.",
     "empty": "Den Elogien dieser Ausgabe ist noch kein Ort zugeordnet.",
     "loadError": "Das Register konnte nicht geladen werden.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "see": "siehe"
   },
   "Names": {
     "title": "{title}: Namensregister",
