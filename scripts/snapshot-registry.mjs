@@ -155,8 +155,10 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
         ...(labels[hit.place] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => (l in labels[hit.place] ? [[l, labels[hit.place][l]]] : []))) } : {}),
       };
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    eulogies[id] = { typology: typologyDoc.typology[id] ?? null, places: hits.map(({ g, ...p }) => p) };
+    eulogies[id] = {
+      typology: typologyDoc.typology[id] ?? null,
+      places: hits.map((h) => ({ place: h.place, la: h.la, ...(h.it ? { it: h.it } : {}), roles: h.roles })),
+    };
   }
   // The names the Latin prints for a place ("Oświęcim seu Auschwitz"), for the index's cross-references.
   for (const [qid, names] of Object.entries(variants)) {
