@@ -488,6 +488,37 @@
       "keep": "Keep the mark",
       "removed": "removed",
       "kept": "kept"
+    },
+    "addPlace": {
+      "title": "Place named in the eulogy",
+      "latin": "Latin",
+      "italian": "Italian",
+      "latinPrinting": "Latin printing",
+      "italianPrinting": "Italian printing",
+      "role": "Role",
+      "person": "Person",
+      "everyone": "—",
+      "notPrinted": "Not printed in this text.",
+      "choosePrinting": "Printed {count} times: choose which.",
+      "whose": "whose: {person}",
+      "confidence": "confidence: {value}",
+      "loading": "Loading the texts…",
+      "unavailable": "The texts could not be loaded.",
+      "roles": {
+        "death": "death",
+        "burial": "burial",
+        "translation": "translation",
+        "dedication": "dedication",
+        "cult": "cult",
+        "birth": "birth",
+        "education": "education",
+        "religious_life": "religious life",
+        "ministry": "ministry",
+        "foundation": "foundation",
+        "exile": "exile",
+        "journey": "journey",
+        "mention": "mention"
+      }
     }
   },
   "Docs": {

@@ -488,6 +488,37 @@
       "keep": "Garder la marque",
       "removed": "retirée",
       "kept": "gardée"
+    },
+    "addPlace": {
+      "title": "Lieu nommé dans l'éloge",
+      "latin": "Latin",
+      "italian": "Italien",
+      "latinPrinting": "Occurrence latine",
+      "italianPrinting": "Occurrence italienne",
+      "role": "Rôle",
+      "person": "Personne",
+      "everyone": "—",
+      "notPrinted": "Absent de ce texte.",
+      "choosePrinting": "Imprimé {count} fois : choisissez laquelle.",
+      "whose": "de qui : {person}",
+      "confidence": "confiance : {value}",
+      "loading": "Chargement des textes…",
+      "unavailable": "Impossible de charger les textes.",
+      "roles": {
+        "death": "mort",
+        "burial": "sépulture",
+        "translation": "translation",
+        "dedication": "dédicace",
+        "cult": "culte",
+        "birth": "naissance",
+        "education": "formation",
+        "religious_life": "vie religieuse",
+        "ministry": "ministère",
+        "foundation": "fondation",
+        "exile": "exil",
+        "journey": "voyage",
+        "mention": "mention"
+      }
     }
   },
   "Docs": {

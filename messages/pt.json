@@ -488,6 +488,37 @@
       "keep": "Manter a marca",
       "removed": "removida",
       "kept": "mantida"
+    },
+    "addPlace": {
+      "title": "Lugar nomeado no elogio",
+      "latin": "Latim",
+      "italian": "Italiano",
+      "latinPrinting": "Ocorrência em latim",
+      "italianPrinting": "Ocorrência em italiano",
+      "role": "Função",
+      "person": "Pessoa",
+      "everyone": "—",
+      "notPrinted": "Não aparece neste texto.",
+      "choosePrinting": "Aparece {count} vezes: escolha qual.",
+      "whose": "de quem: {person}",
+      "confidence": "confiança: {value}",
+      "loading": "Carregando os textos…",
+      "unavailable": "Não foi possível carregar os textos.",
+      "roles": {
+        "death": "morte",
+        "burial": "sepultura",
+        "translation": "trasladação",
+        "dedication": "dedicação",
+        "cult": "culto",
+        "birth": "nascimento",
+        "education": "formação",
+        "religious_life": "vida religiosa",
+        "ministry": "ministério",
+        "foundation": "fundação",
+        "exile": "exílio",
+        "journey": "viagem",
+        "mention": "menção"
+      }
     }
   },
   "Docs": {
