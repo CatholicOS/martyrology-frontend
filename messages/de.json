@@ -225,7 +225,9 @@
     "empty": "Den Elogien dieser Ausgabe ist noch kein Ort zugeordnet.",
     "loadError": "Das Register konnte nicht geladen werden.",
     "retry": "Erneut versuchen",
-    "see": "siehe"
+    "see": "siehe",
+    "roleFilter": "Rolle",
+    "allRoles": "Alle"
   },
   "Names": {
     "title": "{title}: Namensregister",

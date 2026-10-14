@@ -225,7 +225,9 @@
     "empty": "Aucun éloge de cette édition n’a encore de lieu.",
     "loadError": "L’index n’a pas pu être chargé.",
     "retry": "Réessayer",
-    "see": "voir"
+    "see": "voir",
+    "roleFilter": "Rôle",
+    "allRoles": "Tous"
   },
   "Names": {
     "title": "{title} : index des noms",

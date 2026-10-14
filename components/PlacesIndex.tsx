@@ -1,8 +1,10 @@
+import { Fragment } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { langOn } from "@/i18n/routing";
 import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
+import { roleLabel, roleText } from "@/lib/body-places";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { letterSlug } from "@/lib/letters";
 import { placeHeadingId, placeLetterEntries, type IndexPlace, type PlacesIndexData } from "@/lib/places-index";
@@ -11,7 +13,8 @@ import { regionName } from "@/lib/regions";
 /**
  * An edition's index of places, as at the back of a printed book: the places A–Z in the interface
  * language, under each the eulogies that name it with their day (linked to the eulogy in the reader),
- * subject, the place as the edition prints it, and their typology unless it is the dies natalis.
+ * subject, the place as the edition prints it, their typology unless it is the dies natalis, and the place's
+ * roles in the eulogy unless it is only the place of death. A role narrows the index to the lines that have it.
  * `index` null: the catalog could not be loaded. `lang`: the edition's language, which its subjects and
  * printed places are in, inside a page in the interface language.
  */
@@ -20,11 +23,14 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
 }) {
   const t = useTranslations("Places");
   const tMap = useTranslations("Map");
+  const tRoles = useTranslations("PlaceRoles");
   const format = useFormatter();
   const locale = useLocale();
   const ed = encodeURIComponent(edition);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
+  // A chosen role goes with every link between the letters.
+  const q = index?.role ? `?role=${encodeURIComponent(index.role)}` : "";
 
   /** One place's heading and lines, with an id the cross-references link to. */
   const placeBlock = (p: IndexPlace) => {
@@ -39,7 +45,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
           {p.lines.map((line) => {
             const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
             return (
-              <li key={line.id}>
+              <li key={line.key}>
                 {/* Named with its eulogy too: the page has thousands of day links. */}
                 <Link href={`${dayPath(edition, line.day)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
                   {day}
@@ -49,6 +55,10 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
                 {line.printed && <>{" · "}<i lang={lang}>{line.printed}</i></>}
                 {line.typology && line.typology !== "dies_natalis" && tMap.has(`typology.${line.typology}` as "typology.none") && (
                   <span className="text-slate-600"> · {tMap(`typology.${line.typology}` as "typology.none")}</span>
+                )}
+                {/* A place of death alone is the norm, as the dies natalis is for the typology: it goes unsaid. */}
+                {line.roles.length > 0 && !(line.roles.length === 1 && line.roles[0].role === "death") && (
+                  <span className="text-slate-600"> · {line.roles.map((r) => roleText(tRoles, r)).join(" · ")}</span>
                 )}
               </li>
             );
@@ -73,31 +83,57 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
           {t("loadError")}{" "}
           <Link href={`/read/${ed}/places`} className="underline">{t("retry")}</Link>
         </p>
-      ) : index.placed === 0 || !shown ? (
-        <p className="text-center text-slate-600">{t("empty")}</p>
       ) : (
         <>
-          {index.placed < index.printed && (
-            <p className="mb-3 text-center text-sm text-slate-600">{t("coverage", { placed: index.placed, printed: index.printed })}</p>
-          )}
-          <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/places`} label={t("letters")} />
-          <section aria-labelledby="letter-h">
-            <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
-            {placeLetterEntries(shown, locale).map((e) =>
-              "see" in e ? (
-                <p key={`see-${e.see.name}-${e.see.qid}`} className="mb-4">
-                  <span lang="la" className="italic">{e.see.name}</span>
-                  {` → ${t("see")} `}
-                  <Link href={`/read/${ed}/places/${letterSlug(e.see.letter)}#${placeHeadingId(e.see.qid)}`} className="font-semibold underline">
-                    <span lang={langOn(e.see.targetLang, locale)}>{e.see.target}</span>
-                  </Link>
-                </p>
+          {index.roles.length > 1 && (
+            // Every role link leads to the first letter: a letter may have no line of that role.
+            <nav aria-label={t("roleFilter")} className="mb-3 text-center text-sm">
+              {index.role ? (
+                <Link href={`/read/${ed}/places`} className="underline">{t("allRoles")}</Link>
               ) : (
-                placeBlock(e.place)
-              ),
-            )}
-          </section>
-          <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/places`} />
+                <span>{t("allRoles")}</span>
+              )}
+              {index.roles.map(([r, n]) => (
+                <Fragment key={r}>
+                  {" · "}
+                  {index.role === r ? (
+                    <span>{roleLabel(tRoles, r)} ({n})</span>
+                  ) : (
+                    <Link href={`/read/${ed}/places?role=${encodeURIComponent(r)}`} className="underline">
+                      {roleLabel(tRoles, r)} ({n})
+                    </Link>
+                  )}
+                </Fragment>
+              ))}
+            </nav>
+          )}
+          {index.placed === 0 || !shown ? (
+            <p className="text-center text-slate-600">{t("empty")}</p>
+          ) : (
+            <>
+              {index.placed < index.printed && (
+                <p className="mb-3 text-center text-sm text-slate-600">{t("coverage", { placed: index.placed, printed: index.printed })}</p>
+              )}
+              <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/places`} label={t("letters")} query={q} />
+              <section aria-labelledby="letter-h">
+                <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
+                {placeLetterEntries(shown, locale).map((e) =>
+                  "see" in e ? (
+                    <p key={`see-${e.see.name}-${e.see.qid}`} className="mb-4">
+                      <span lang="la" className="italic">{e.see.name}</span>
+                      {` → ${t("see")} `}
+                      <Link href={`/read/${ed}/places/${letterSlug(e.see.letter)}${q}#${placeHeadingId(e.see.qid)}`} className="font-semibold underline">
+                        <span lang={langOn(e.see.targetLang, locale)}>{e.see.target}</span>
+                      </Link>
+                    </p>
+                  ) : (
+                    placeBlock(e.place)
+                  ),
+                )}
+              </section>
+              <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/places`} query={q} />
+            </>
+          )}
         </>
       )}
     </article>

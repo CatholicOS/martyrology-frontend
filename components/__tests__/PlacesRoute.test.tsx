@@ -51,6 +51,19 @@ describe("/read/<edition>/places", () => {
     expect(props.lang).toBe("it");
   });
 
+  it("narrows the index to a known role, and ignores any other", async () => {
+    const withRole = (role: string) => ({ ...params(E.edition_id), searchParams: Promise.resolve({ role }) });
+    render(await PlacesRoute(withRole("birth")));
+    expect(indexProps.mock.lastCall![0].index.role).toBe("birth");
+    expect(indexProps.mock.lastCall![0].index.letters).toEqual([]);
+    render(await PlacesRoute(withRole("nativity")));
+    expect(indexProps.mock.lastCall![0].index.role).toBeNull();
+    expect(indexProps.mock.lastCall![0].index.letters).toHaveLength(1);
+    const letterRole = { params: Promise.resolve({ locale: "en", edition: E.edition_id, letter: "r" }), searchParams: Promise.resolve({ role: "death" }) };
+    render(await PlacesLetterRoute(letterRole));
+    expect(indexProps.mock.lastCall![0].index.role).toBe("death");
+  });
+
   it("renders the error state, not a crash, when the catalog cannot be loaded, and logs why", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     const down = new Error("down");

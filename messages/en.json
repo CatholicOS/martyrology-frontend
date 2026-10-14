@@ -225,7 +225,9 @@
     "empty": "No eulogies of this edition are placed yet.",
     "loadError": "The index could not be loaded.",
     "retry": "Try again",
-    "see": "see"
+    "see": "see",
+    "roleFilter": "Role",
+    "allRoles": "All"
   },
   "Names": {
     "title": "{title}: index of names",

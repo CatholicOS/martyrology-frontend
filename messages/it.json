@@ -225,7 +225,9 @@
     "empty": "Nessun elogio di questa edizione ha ancora un luogo.",
     "loadError": "Non è stato possibile caricare l’indice.",
     "retry": "Riprova",
-    "see": "vedi"
+    "see": "vedi",
+    "roleFilter": "Ruolo",
+    "allRoles": "Tutti"
   },
   "Names": {
     "title": "{title}: indice dei nomi",

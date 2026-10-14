@@ -225,7 +225,9 @@
     "empty": "Nenhum elogio desta edição tem ainda um lugar.",
     "loadError": "Não foi possível carregar o índice.",
     "retry": "Tentar novamente",
-    "see": "ver"
+    "see": "ver",
+    "roleFilter": "Papel",
+    "allRoles": "Todos"
   },
   "Names": {
     "title": "{title}: índice de nomes",
