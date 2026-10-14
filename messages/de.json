@@ -519,7 +519,10 @@
         "journey": "Reise",
         "mention": "Erwähnung"
       }
-    }
+    },
+    "bulkAccept": "Die {count} angezeigten offenen annehmen",
+    "bulkConfirm": "{count} annehmen?",
+    "confirm": "Bestätigen"
   },
   "Docs": {
     "index": {

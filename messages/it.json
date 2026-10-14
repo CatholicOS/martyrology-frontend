@@ -519,7 +519,10 @@
         "journey": "viaggio",
         "mention": "menzione"
       }
-    }
+    },
+    "bulkAccept": "Accetta i {count} non decisi mostrati",
+    "bulkConfirm": "Accettare {count}?",
+    "confirm": "Conferma"
   },
   "Docs": {
     "index": {

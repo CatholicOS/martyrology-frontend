@@ -519,7 +519,10 @@
         "journey": "journey",
         "mention": "mention"
       }
-    }
+    },
+    "bulkAccept": "Accept the {count} undecided shown",
+    "bulkConfirm": "Accept {count}?",
+    "confirm": "Confirm"
   },
   "Docs": {
     "index": {
