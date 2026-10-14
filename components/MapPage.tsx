@@ -15,7 +15,7 @@ import { getSnapshot } from "@/lib/snapshot";
 import { subjectFor } from "@/lib/subjects";
 import type { CatalogEntryOut, EditionOut } from "@/lib/types";
 
-const NO_FILTERS: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
+const NO_FILTERS: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set(), hiddenRoles: new Set() };
 const NO_CATALOG: CatalogEntryOut[] = [];
 
 type MapError = "noEditions" | "editionsFailed" | "catalogFailed";
@@ -35,10 +35,10 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   const [edition, setEdition] = useState<string | null>(null);
   const [catalog, setCatalog] = useState(NO_CATALOG);
   const [filters, setFilters] = useState<MapFilters>(NO_FILTERS);
-  // The eulogies of a cluster the map could not split, listed in the sidebar.
+  // The entries (keys) of a cluster the map could not split, listed in the sidebar.
   const [place, setPlace] = useState<string[] | null>(null);
-  // `n` counts the picks, so picking the same eulogy again reveals it again.
-  const [selected, setSelected] = useState<{ id: string; n: number } | null>(null);
+  // The picked entry, by key; `n` counts the picks, so picking the same one again reveals it again.
+  const [selected, setSelected] = useState<{ key: string; n: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<MapError | null>(null);
   // Retry refetches whichever failed: the editions (nothing loaded yet) or the catalog.
@@ -127,11 +127,11 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
   const facets = useMemo(() => facetCounts(mapped.entries, filters), [mapped, filters]);
   const atPlace = useMemo(() => {
     if (!place) return null;
-    const ids = new Set(place);
-    return filtered.filter((e) => ids.has(e.id));
+    const keys = new Set(place);
+    return filtered.filter((e) => keys.has(e.key));
   }, [filtered, place]);
-  const onPlace = useCallback((ids: string[]) => setPlace(ids), []);
-  const onSelect = useCallback((id: string) => setSelected((s) => ({ id, n: (s?.n ?? 0) + 1 })), []);
+  const onPlace = useCallback((keys: string[]) => setPlace(keys), []);
+  const onSelect = useCallback((key: string) => setSelected((s) => ({ key, n: (s?.n ?? 0) + 1 })), []);
 
   return (
     <div className="flex h-[calc(100dvh-4.5rem)] min-h-[32rem] flex-col md:flex-row">
@@ -158,7 +158,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
                 : null
             }
             onShowAll={() => setPlace(null)}
-            selected={selected?.id ?? null}
+            selected={selected?.key ?? null}
             onSelect={onSelect}
             status={{ loading, error: error ? t(`error.${error}`) : null }}
             onRetry={() => (editions.length ? setCatalogTry((n) => n + 1) : setEditionsTry((n) => n + 1))}

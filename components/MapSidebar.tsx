@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { langOn } from "@/i18n/routing";
 import { natureLabel, sortForShelf, yearAndLanguage } from "@/lib/editions";
+import { roleLabel, roleText } from "@/lib/body-places";
 import { typologyLabel, type MapEntry, type MapFilters } from "@/lib/map-data";
 import { regionName } from "@/lib/regions";
 import type { EditionOut } from "@/lib/types";
@@ -14,7 +15,7 @@ interface Props {
   onEdition: (id: string) => void;
   filters: MapFilters;
   onFilters: (f: MapFilters) => void;
-  facets: { typologies: [string, number][]; countries: [string, number][] };
+  facets: { typologies: [string, number][]; countries: [string, number][]; roles: [string, number][] };
   /** The filtered eulogies, or those at the clicked place when `place` is set. */
   results: MapEntry[];
   mapped: number;
@@ -23,8 +24,10 @@ interface Props {
   /** The place picked on the map: its names (one point can hold two places), each in its language. */
   place: { labels: { label: string; lang: string | null }[]; count: number } | null;
   onShowAll: () => void;
+  /** The picked entry's key. */
   selected: string | null;
-  onSelect: (id: string) => void;
+  /** A result was picked: its entry's key (a eulogy at several places is several results). */
+  onSelect: (key: string) => void;
   status: { loading: boolean; error: string | null };
   onRetry: () => void;
 }
@@ -41,10 +44,11 @@ function toggle(set: Set<string>, key: string): Set<string> {
   return next;
 }
 
-/** The map's controls and results: edition, search, typology and country filters, and the eulogies shown. */
+/** The map's controls and results: edition, search, typology, role and country filters, and the eulogies shown. */
 export default function MapSidebar(p: Props) {
   const t = useTranslations("Map");
   const tShelf = useTranslations("Bookshelf");
+  const tRoles = useTranslations("PlaceRoles");
   const locale = useLocale();
   const [countryQuery, setCountryQuery] = useState("");
   const countries = useMemo(() => {
@@ -95,6 +99,22 @@ export default function MapSidebar(p: Props) {
           </label>
         ))}
       </fieldset>
+
+      {p.facets.roles.length > 1 && (
+        <fieldset className="flex flex-col gap-1">
+          <legend className="mb-1 font-medium">{t("roleLegend")}</legend>
+          {p.facets.roles.map(([r, n]) => (
+            <label key={r} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={!p.filters.hiddenRoles.has(r)}
+                onChange={() => p.onFilters({ ...p.filters, hiddenRoles: toggle(p.filters.hiddenRoles, r) })}
+              />
+              {roleLabel(tRoles, r)} ({n})
+            </label>
+          ))}
+        </fieldset>
+      )}
 
       <fieldset className="flex flex-col gap-1">
         <legend className="mb-1 font-medium">{t("countryLegend")}</legend>
@@ -169,19 +189,25 @@ export default function MapSidebar(p: Props) {
           ) : (
             <ul className="flex flex-col">
               {p.results.slice(0, MAX_ROWS).map((e) => (
-                <li key={e.id}>
+                <li key={e.key}>
                   <button
                     type="button"
-                    aria-current={p.selected === e.id ? "true" : undefined}
+                    aria-current={p.selected === e.key ? "true" : undefined}
                     className={`w-full rounded px-2 py-1 text-left hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                      p.selected === e.id ? "bg-slate-200 dark:bg-slate-700" : ""
+                      p.selected === e.key ? "bg-slate-200 dark:bg-slate-700" : ""
                     }`}
-                    onClick={() => p.onSelect(e.id)}
+                    onClick={() => p.onSelect(e.key)}
                   >
                     <span className="block">{e.subject}</span>
                     <span className="block font-mono text-xs text-slate-500 dark:text-slate-400">
                       {e.id} · <span lang={langOn(e.labelLang, locale)}>{e.label}</span>
                     </span>
+                    {/* A place of death alone is the norm: it goes unsaid. */}
+                    {e.roles.length > 0 && !(e.roles.length === 1 && e.roles[0].role === "death") && (
+                      <span className="block text-xs text-slate-600 dark:text-slate-400">
+                        {e.roles.map((r) => roleText(tRoles, r)).join(" · ")}
+                      </span>
+                    )}
                   </button>
                 </li>
               ))}

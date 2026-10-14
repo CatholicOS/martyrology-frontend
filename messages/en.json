@@ -314,7 +314,8 @@
       "reasonPlaceholder": "why no Wikidata item fits",
       "confirmReject": "Confirm reject",
       "cancel": "Cancel"
-    }
+    },
+    "roleLegend": "Role of the place"
   },
   "Compare": {
     "title": "Compare editions",

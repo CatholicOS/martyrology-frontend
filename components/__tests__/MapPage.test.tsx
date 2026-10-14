@@ -9,14 +9,14 @@ vi.mock("@/i18n/navigation", () => ({ useRouter: () => ({ replace }), Link: ({ h
 // The map itself is Leaflet's business (EulogyMap.test); here it reports what it was given.
 vi.mock("@/components/EulogyMap", () => ({
   default: ({ entries, onPlace, selected }: {
-    entries: { id: string }[];
-    onPlace: (ids: string[]) => void;
-    selected: { id: string; n: number } | null;
+    entries: { id: string; key: string }[];
+    onPlace: (keys: string[]) => void;
+    selected: { key: string; n: number } | null;
   }) => (
     <>
       <div data-testid="map">{entries.map((e) => e.id).join(",")}</div>
-      <div data-testid="selected">{selected ? `${selected.id}#${selected.n}` : ""}</div>
-      <button type="button" onClick={() => onPlace(entries.map((e) => e.id))}>cluster</button>
+      <div data-testid="selected">{selected ? `${selected.key}#${selected.n}` : ""}</div>
+      <button type="button" onClick={() => onPlace(entries.map((e) => e.key))}>cluster</button>
     </>
   ),
 }));
@@ -125,7 +125,7 @@ describe("MapPage", () => {
     fireEvent.click(row);
     const first = screen.getByTestId("selected").textContent;
     fireEvent.click(row);
-    expect(screen.getByTestId("selected").textContent).toMatch(/^mr:0101-a#/);
+    expect(screen.getByTestId("selected").textContent).toMatch(/^mr:0101-a@Q220#/);
     expect(screen.getByTestId("selected").textContent).not.toBe(first);
   });
 

@@ -58,7 +58,7 @@ vi.mock("leaflet", () => {
 vi.mock("leaflet.markercluster", () => ({}));
 
 const e = (id: string, qid: string, coords: [number, number]): MapEntry => ({
-  id, subject: `Subject ${id}`, editionSubject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", labelLang: "en", labelEn: "Rome", country: "IT", coords, typology: "dies_natalis",
+  id, key: `${id}@${qid}`, roles: [{ role: "death" }], subject: `Subject ${id}`, editionSubject: `Subject ${id}`, day: { mm: 1, dd: 2 }, entry: 1, qid, la: "Romæ", label: "Rome", labelLang: "en", labelEn: "Rome", country: "IT", coords, typology: "dies_natalis",
 });
 const entries = [e("mr:0102-a", "Q220", [41.9, 12.5]), e("mr:0102-b", "Q220", [41.9, 12.5]), e("mr:0102-c", "Q84", [51.5, -0.1])];
 
@@ -113,7 +113,7 @@ describe("EulogyMap", () => {
     render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
     groups[0].layers[2].handlers.click();
-    expect(onSelect).toHaveBeenCalledWith("mr:0102-c");
+    expect(onSelect).toHaveBeenCalledWith("mr:0102-c@Q84");
   });
 
   it("a cluster at one place lists that place; a mixed cluster zooms in", async () => {
@@ -123,7 +123,7 @@ describe("EulogyMap", () => {
     const [a, b, c] = groups[0].layers;
     const zoomToBounds = vi.fn();
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
-    expect(onPlace).toHaveBeenCalledWith(["mr:0102-a", "mr:0102-b"]);
+    expect(onPlace).toHaveBeenCalledWith(["mr:0102-a@Q220", "mr:0102-b@Q220"]);
     expect(zoomToBounds).not.toHaveBeenCalled();
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, c], zoomToBounds } });
     expect(zoomToBounds).toHaveBeenCalled();
@@ -136,7 +136,7 @@ describe("EulogyMap", () => {
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
     const [a, b] = groups[0].layers;
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds: vi.fn() } });
-    expect(onPlace).toHaveBeenCalledWith(["mr:0521-a", "mr:0521-b"]);
+    expect(onPlace).toHaveBeenCalledWith(["mr:0521-a@Q48338", "mr:0521-b@Q10439273"]);
   });
 
   it("a cluster that still holds several places at the deepest zoom lists them instead of zooming", async () => {
@@ -149,13 +149,13 @@ describe("EulogyMap", () => {
     const [a, b] = groups[0].layers;
     groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
     expect(zoomToBounds).not.toHaveBeenCalled();
-    expect(onPlace).toHaveBeenCalledWith(["mr:0101-rieti", "mr:0101-sabina"]);
+    expect(onPlace).toHaveBeenCalledWith(["mr:0101-rieti@Q1", "mr:0101-sabina@Q2"]);
   });
 
   it("selecting a eulogy whose marker is shown opens its popup", async () => {
     const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
-    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ key: "mr:0102-c@Q84", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0].layers[2].opened).toBe(1));
     expect(zoomToShowLayer).not.toHaveBeenCalled();
   });
@@ -164,7 +164,7 @@ describe("EulogyMap", () => {
     const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
     visibleParent = () => ({ cluster: true });
-    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-a", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ key: "mr:0102-a@Q220", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(popups).toHaveLength(1));
     expect(popups[0].latlng).toEqual([41.9, 12.5]);
     expect(popups[0].content!.textContent).toContain("Subject mr:0102-a");
@@ -173,9 +173,9 @@ describe("EulogyMap", () => {
   });
 
   it("selecting the same eulogy again reopens its popup", async () => {
-    const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    const { rerender } = render(<EulogyMap entries={entries} edition="mr_2004" selected={{ key: "mr:0102-c@Q84", n: 1 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0]?.layers[2]?.opened).toBe(1));
-    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ id: "mr:0102-c", n: 2 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
+    rerender(<EulogyMap entries={entries} edition="mr_2004" selected={{ key: "mr:0102-c@Q84", n: 2 }} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0].layers[2].opened).toBe(2));
   });
 
@@ -185,5 +185,16 @@ describe("EulogyMap", () => {
     rerender(<EulogyMap entries={entries.slice(2)} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={vi.fn()} />);
     await waitFor(() => expect(groups[0].layers).toHaveLength(1));
     expect(groups).toHaveLength(1);
+  });
+
+  it("one eulogy at two places is two markers, each picked by its own key", async () => {
+    const onSelect = vi.fn();
+    const two = [e("mr:0103-x", "Q220", [41.9, 12.5]), { ...e("mr:0103-x", "Q490", [45.5, 9.2]), roles: [{ role: "birth" }] }];
+    render(<EulogyMap entries={two} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
+    groups[0].layers[1].handlers.click();
+    expect(onSelect).toHaveBeenCalledWith("mr:0103-x@Q490");
+    expect(popupOf(groups[0].layers[1]).textContent).toContain("Place of birth");
+    expect(popupOf(groups[0].layers[0]).textContent).not.toContain("Place of death");
   });
 });

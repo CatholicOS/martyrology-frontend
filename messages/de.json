@@ -314,7 +314,8 @@
       "reasonPlaceholder": "warum kein Wikidata-Objekt passt",
       "confirmReject": "Ablehnung bestätigen",
       "cancel": "Abbrechen"
-    }
+    },
+    "roleLegend": "Rolle des Ortes"
   },
   "Compare": {
     "title": "Ausgaben vergleichen",

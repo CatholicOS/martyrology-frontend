@@ -314,7 +314,8 @@
       "reasonPlaceholder": "por que nenhum item do Wikidata serve",
       "confirmReject": "Confirmar a rejeição",
       "cancel": "Cancelar"
-    }
+    },
+    "roleLegend": "Papel do local"
   },
   "Compare": {
     "title": "Comparar edições",

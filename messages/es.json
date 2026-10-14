@@ -314,7 +314,8 @@
       "reasonPlaceholder": "por qué ningún elemento de Wikidata encaja",
       "confirmReject": "Confirmar el rechazo",
       "cancel": "Cancelar"
-    }
+    },
+    "roleLegend": "Papel del lugar"
   },
   "Compare": {
     "title": "Comparar ediciones",

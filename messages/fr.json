@@ -314,7 +314,8 @@
       "reasonPlaceholder": "pourquoi aucun élément Wikidata ne convient",
       "confirmReject": "Confirmer le rejet",
       "cancel": "Annuler"
-    }
+    },
+    "roleLegend": "Rôle du lieu"
   },
   "Compare": {
     "title": "Comparer les éditions",

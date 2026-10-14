@@ -35,7 +35,7 @@ const catalog: CatalogEntryOut[] = [
   cat("mr:0107-nemo", "Sanctus Nemo", "01-07"), // placed, but no coordinates: not on the map
 ];
 
-const all: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
+const all: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set(), hiddenRoles: new Set() };
 
 describe("mapEntries", () => {
   it("keeps the eulogies the edition prints that have a place, in printed order, and counts the rest", () => {
@@ -43,8 +43,9 @@ describe("mapEntries", () => {
     expect(entries.map((e) => e.id)).toEqual(["mr:0101-almachius", "mr:0102-caecilia", "mr:0103-thomas", "mr:0104-basilius"]);
     expect(unmapped).toBe(2); // mr:0106-martina has no place, mr:0107-nemo no coordinates; mr:0105-absent is not printed at all
     expect(entries[0]).toEqual({
-      id: "mr:0101-almachius", subject: "Sanctus Almachius", editionSubject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
+      key: "mr:0101-almachius@Q220", id: "mr:0101-almachius", subject: "Sanctus Almachius", editionSubject: "Sanctus Almachius", day: { mm: 1, dd: 1 }, entry: 4,
       qid: "Q220", la: "Romæ", label: "Rome", labelLang: "en", labelEn: "Rome", country: "IT", coords: [41.9, 12.5], typology: "dies_natalis",
+      roles: [{ role: "death" }],
     });
   });
 
@@ -123,7 +124,7 @@ describe("filterEntries and facetCounts", () => {
   });
 
   it("counts each facet under the other filters, not its own", () => {
-    const f: MapFilters = { query: "", hiddenTypologies: new Set(["depositio"]), countries: new Set(["IT"]) };
+    const f: MapFilters = { query: "", hiddenTypologies: new Set(["depositio"]), countries: new Set(["IT"]), hiddenRoles: new Set() };
     const { typologies, countries } = facetCounts(entries, f);
     // typologies: filtered by country IT only → almachius (dies_natalis), caecilia (depositio)
     expect(typologies).toEqual([["dies_natalis", 1], ["depositio", 1]]);
@@ -143,5 +144,32 @@ describe("typologyLabel", () => {
     expect(typologyLabel(t, "dies_natalis")).toBe("Dies natalis");
     expect(typologyLabel(t, null)).toBe("Not classified");
     expect(typologyLabel(t, "some_new_kind")).toBe("Some new kind");
+  });
+});
+
+describe("mapEntries: places and roles", () => {
+  const snapTwo: PlacesSnapshot = {
+    places: { Q220: { label: "Rome", country: "IT", coords: [41.9, 12.5] }, Q490: { label: "Milan", country: "IT", coords: [45.5, 9.2] } },
+    eulogies: {
+      "mr:0101-a": { typology: "dies_natalis", places: [
+        { place: "Q220", la: "Romæ", roles: [{ role: "death" }] },
+        { place: "Q490", la: "Mediolani", roles: [{ role: "birth" }] },
+      ] },
+    },
+  };
+  const one = [cat("mr:0101-a", "Sanctus A", "01-01")];
+
+  it("two places of one eulogy are two entries with their own keys", () => {
+    const { entries } = mapEntries(one, snapTwo, "en");
+    expect(entries.map((e) => [e.key, e.id, e.qid, e.roles])).toEqual([
+      ["mr:0101-a@Q220", "mr:0101-a", "Q220", [{ role: "death" }]],
+      ["mr:0101-a@Q490", "mr:0101-a", "Q490", [{ role: "birth" }]],
+    ]);
+  });
+
+  it("hiding a role hides the entries that have no other", () => {
+    const { entries } = mapEntries(one, snapTwo, "en");
+    expect(filterEntries(entries, { ...all, hiddenRoles: new Set(["birth"]) }).map((e) => e.key)).toEqual(["mr:0101-a@Q220"]);
+    expect(facetCounts(entries, all).roles).toEqual([["death", 1], ["birth", 1]]);
   });
 });
