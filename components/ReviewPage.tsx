@@ -133,7 +133,6 @@ export default function ReviewPage() {
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, idFilter, decisions]);
 
   // Bulk accept: every undecided add_place op the filters select (all pages), once a confidence is chosen.
-  const [bulkAsk, setBulkAsk] = useState(false);
   const bulkTargets = useMemo(
     () =>
       opFilter === "add_place" && confidenceFilter
@@ -141,6 +140,11 @@ export default function ReviewPage() {
         : [],
     [filteredOps, opFilter, confidenceFilter, decisions]
   );
+  // The batch a confirmation was asked for: another change-set or filter is another batch, asked afresh.
+  const bulkBatch = bulkTargets.map(opId).join("\n");
+  const [bulkAskedFor, setBulkAskedFor] = useState<string | null>(null);
+  const bulkAsk = bulkAskedFor === bulkBatch;
+  const setBulkAsk = (ask: boolean) => setBulkAskedFor(ask ? bulkBatch : null);
   const bulkAccept = () => {
     if (!cs) return;
     const next = { ...decisions };

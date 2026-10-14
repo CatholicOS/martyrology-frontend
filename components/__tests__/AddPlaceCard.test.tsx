@@ -42,6 +42,19 @@ describe("AddPlaceCard", () => {
     expect(screen.getByText("burial")).toBeTruthy();
   });
 
+  it("decides under the op's review key (its uid when it has one)", async () => {
+    const onDecide = vi.fn();
+    render(<AddPlaceCard op={op({ uid: "u1" })} onDecide={onDecide} />);
+    fireEvent.click(await screen.findByRole("button", { name: "Accept" }));
+    expect(onDecide).toHaveBeenLastCalledWith("u1", { decision: "accept" });
+    fireEvent.click(screen.getByRole("button", { name: "Reject" }));
+    expect(onDecide).toHaveBeenLastCalledWith("u1", { decision: "reject" });
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.change(screen.getByLabelText("Role"), { target: { value: "death" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith("u1", { decision: "edit", edited: { role: "death" } });
+  });
+
   it("accepts and rejects", async () => {
     const onDecide = vi.fn();
     render(<AddPlaceCard op={op()} onDecide={onDecide} />);

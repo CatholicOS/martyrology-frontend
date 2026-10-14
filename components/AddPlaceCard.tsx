@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { getElogium } from "@/lib/api";
 import { PLACE_ROLES, printings, printingSpan, type PlaceRole } from "@/lib/body-places";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
-import type { AddPlaceOp, DecisionRecord, EditedFields } from "@/lib/changeset";
+import { opId, type AddPlaceOp, type DecisionRecord, type EditedFields } from "@/lib/changeset";
 
 const LATIN = "martyrologium_romanum_2004";
 const ITALIAN = "martyrologium_romanum_2004_it_IT";
@@ -46,6 +46,7 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
   const [texts, setTexts] = useState<{ la: string; it: string } | null>(null);
   const [failed, setFailed] = useState(false);
   // Seeded from a saved edit (resume), then from the proposal.
+  const id = opId(op); // the key ReviewPage keeps decisions under
   const ed = decision?.decision === "edit" ? decision.edited : undefined;
   const [editing, setEditing] = useState(false);
   const [role, setRole] = useState<PlaceRole>(ed?.role ?? op.role);
@@ -94,7 +95,7 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
     if (itOcc !== (op.occurrence_it ?? null)) edited.occurrence_it = itOcc;
     if (pName !== (op.person ?? null)) edited.person = pName;
     if (pN !== (op.n ?? null)) edited.n = pN;
-    onDecide(op.id, Object.keys(edited).length ? { decision: "edit", edited } : { decision: "accept" });
+    onDecide(id, Object.keys(edited).length ? { decision: "edit", edited } : { decision: "accept" });
     setEditing(false);
   };
 
@@ -166,14 +167,14 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
           <button
             type="button"
             className="rounded bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
-            onClick={() => onDecide(op.id, { decision: "accept" })}
+            onClick={() => onDecide(id, { decision: "accept" })}
           >
             {tr("actions.accept")}
           </button>
           <button
             type="button"
             className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700"
-            onClick={() => onDecide(op.id, { decision: "reject" })}
+            onClick={() => onDecide(id, { decision: "reject" })}
           >
             {tr("actions.reject")}
           </button>

@@ -97,6 +97,7 @@ describe("ReviewPage bulk accept", () => {
   };
 
   beforeEach(() => {
+    localStorage.clear(); // a bulk accept saves its decisions; each test starts undecided
     vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
       ok: true,
       json: () => Promise.resolve({ changesets: ["places-review.json"] }),
@@ -120,5 +121,19 @@ describe("ReviewPage bulk accept", () => {
     expect(screen.getByText("2 accepted")).toBeInTheDocument();
     expect(screen.getByText("1 undecided")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Accept the \d+ undecided shown/ })).not.toBeInTheDocument();
+  });
+
+  it("a confirmation asked for one batch does not carry over to another", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "places-review.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "places-review.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(3));
+    fireEvent.change(screen.getByRole("option", { name: "add_place" }).closest("select")!, { target: { value: "add_place" } });
+    const confidence = screen.getByRole("option", { name: "high" }).closest("select")!;
+    fireEvent.change(confidence, { target: { value: "high" } });
+    fireEvent.click(screen.getByRole("button", { name: "Accept the 2 undecided shown" }));
+    fireEvent.change(confidence, { target: { value: "low" } });
+    expect(screen.queryByRole("button", { name: "Confirm" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Accept the 1 undecided shown" })).toBeInTheDocument();
   });
 });
