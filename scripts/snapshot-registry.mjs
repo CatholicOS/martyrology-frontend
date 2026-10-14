@@ -154,7 +154,11 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
         country: hit.g.country ?? "",
         coords: coords[hit.place] ?? null,
         // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
-        ...(labels[hit.place] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => (l in labels[hit.place] ? [[l, labels[hit.place][l]]] : []))) } : {}),
+        // A language without a label of its own takes the item's multilingual ("mul") one, as on Wikidata.
+        ...(labels[hit.place] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => {
+          const label = labels[hit.place][l] ?? labels[hit.place].mul;
+          return label ? [[l, label]] : [];
+        })) } : {}),
       };
     }
     eulogies[id] = {
@@ -232,12 +236,13 @@ export async function fetchCoords(qids) {
 export const LABEL_LANGS = ["en", "it", "fr", "de", "es", "pt"];
 
 /**
- * The SPARQL query for the labels of `qids` in the interface languages.
+ * The SPARQL query for the labels of `qids` in the interface languages, and the multilingual
+ * ("mul") label that stands for any language without its own.
  * @param {string[]} qids
  */
 export function labelsQuery(qids) {
   const values = qids.map((q) => `wd:${q}`).join(" ");
-  const langs = LABEL_LANGS.map((l) => `"${l}"`).join(", ");
+  const langs = [...LABEL_LANGS, "mul"].map((l) => `"${l}"`).join(", ");
   return `${PREFIXES}SELECT ?item ?label WHERE { VALUES ?item { ${values} } ?item rdfs:label ?label FILTER(LANG(?label) IN (${langs})) }`;
 }
 
