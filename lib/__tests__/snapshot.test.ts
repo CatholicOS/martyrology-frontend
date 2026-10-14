@@ -147,6 +147,19 @@ describe("buildPlaces", () => {
     expect(resolvedQids(doc, gaz)).toEqual(["Q220", "Q490"]);
   });
 
+  it("a role stated twice on one place is listed once", () => {
+    const doc = { places: { "mr:0105-v": [
+      { role: "death", la: "Romæ", source: "lead" },
+      { role: "death", la: "in Urbe", source: "curated" },
+      { role: "burial", la: "in Urbe", source: "curated", person: "Felix", n: 2 },
+      { role: "burial", la: "Romæ", source: "curated", person: "Felix", n: 2 },
+    ] } };
+    const gaz = { places: { ...gazetteerDoc.places, "in Urbe": { wikidata: "Q220", label: "Rome", country: "IT", status: "reviewed" } } };
+    expect(buildPlaces(doc, gaz, { typology: {} }, coords).eulogies["mr:0105-v"].places[0].roles).toEqual([
+      { role: "death" }, { role: "burial", name: "Felix", n: 2 },
+    ]);
+  });
+
   it("copies a place's printed names, for the places the eulogies resolve to", () => {
     const variants = { $comment: "…", Q220: ["Roma", "Urbs"], Q404: ["Nusquam", "Nullibi"] };
     const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, {}, variants);

@@ -118,4 +118,10 @@ describe("MapSidebar", () => {
     expect(screen.getByText("Place of birth · Place of ministry (Pionius)")).toBeInTheDocument();
     expect(screen.getAllByRole("listitem").filter((li) => li.textContent?.includes("Place of death"))).toHaveLength(0);
   });
+
+  it("counts the eulogies shown, not their places", () => {
+    const atTwo = [{ ...results[0], key: "mr:0101-almachius@Q1" }, { ...results[0], key: "mr:0101-almachius@Q2" }];
+    setup({ results: atTwo, mapped: 1, unmapped: 5 });
+    expect(screen.getByText("1 shown · 1 mapped · 5 not mapped in this edition")).toBeInTheDocument();
+  });
 });

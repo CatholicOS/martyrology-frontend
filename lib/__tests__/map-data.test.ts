@@ -167,6 +167,10 @@ describe("mapEntries: places and roles", () => {
     ]);
   });
 
+  it("counts the mapped eulogies, not their places", () => {
+    expect(mapEntries(one, snapTwo, "en").mapped).toBe(1);
+  });
+
   it("hiding a role hides the entries that have no other", () => {
     const { entries } = mapEntries(one, snapTwo, "en");
     expect(filterEntries(entries, { ...all, hiddenRoles: new Set(["birth"]) }).map((e) => e.key)).toEqual(["mr:0101-a@Q220"]);

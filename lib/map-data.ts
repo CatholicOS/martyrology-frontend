@@ -57,7 +57,7 @@ const TYPOLOGY_ORDER = [
  * The eulogies an edition prints (its catalog's `present` entries with a printed day) at each of their
  * places on the map, in printed order, a eulogy's places in crmedr's order; `unmapped` counts the
  * printed ones that have none (no resolved place, no place with coordinates, or a deprecated ID, which
- * the gazetteer does not cover).
+ * the gazetteer does not cover) and `mapped` those that have one or more: both count eulogies, not places.
  */
 export function mapEntries(
   catalog: CatalogEntryOut[],
@@ -65,22 +65,24 @@ export function mapEntries(
   locale: Locale,
   /** The subject to show for an eulogy (the interface language's); the catalog's own, else the ID, by default. */
   subjectOf: (id: string, catalogSubject: string) => string = (_id, s) => s,
-): { entries: MapEntry[]; unmapped: number } {
+): { entries: MapEntry[]; mapped: number; unmapped: number } {
   const entries: MapEntry[] = [];
   let unmapped = 0;
+  let mapped = 0;
   for (const c of catalog) {
     const m = c.present !== false ? /^(\d{2})-(\d{2})$/.exec(c.day_printed ?? "") : null;
     if (!m) continue;
     const ep = snap.eulogies[c.id];
-    const mapped = (ep?.places ?? []).flatMap((pa) => {
+    const onMap = (ep?.places ?? []).flatMap((pa) => {
       const place = snap.places[pa.place];
       return place?.coords ? [{ pa, place, coords: place.coords }] : [];
     });
-    if (!ep || mapped.length === 0) {
+    if (!ep || onMap.length === 0) {
       unmapped++;
       continue;
     }
-    for (const { pa, place, coords } of mapped) {
+    mapped++;
+    for (const { pa, place, coords } of onMap) {
       entries.push({
         key: `${c.id}@${pa.place}`,
         id: c.id,
@@ -103,7 +105,7 @@ export function mapEntries(
   entries.sort(
     (a, b) => a.day.mm - b.day.mm || a.day.dd - b.day.dd || (a.entry ?? Infinity) - (b.entry ?? Infinity),
   );
-  return { entries, unmapped };
+  return { entries, mapped, unmapped };
 }
 
 /** Whether the search text is in the eulogy's subject, ID, printed place or the place's name (shown, or English). */

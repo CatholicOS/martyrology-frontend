@@ -150,7 +150,7 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
             onFilters={changeFilters}
             facets={facets}
             results={atPlace ?? filtered}
-            mapped={mapped.entries.length}
+            mapped={mapped.mapped}
             unmapped={mapped.unmapped}
             place={
               atPlace && atPlace.length > 0

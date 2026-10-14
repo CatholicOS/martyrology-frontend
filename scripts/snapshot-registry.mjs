@@ -104,8 +104,10 @@ function resolvedPlaces(stated, gazetteer) {
     if (!g?.wikidata) continue;
     const role = { role: s.role, ...(s.person ? { name: s.person } : {}), ...(s.person && s.n ? { n: s.n } : {}) };
     const hit = out.get(g.wikidata);
-    if (hit) hit.roles.push(role);
-    else out.set(g.wikidata, { place: g.wikidata, la: s.la, ...(s.it ? { it: s.it } : {}), roles: [role], g });
+    // Two printed forms of one place can state the same role: it is listed once.
+    const same = (r) => r.role === role.role && r.name === role.name && r.n === role.n;
+    if (!hit) out.set(g.wikidata, { place: g.wikidata, la: s.la, ...(s.it ? { it: s.it } : {}), roles: [role], g });
+    else if (!hit.roles.some(same)) hit.roles.push(role);
   }
   return [...out.values()];
 }

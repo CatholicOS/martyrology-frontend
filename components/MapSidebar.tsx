@@ -18,6 +18,7 @@ interface Props {
   facets: { typologies: [string, number][]; countries: [string, number][]; roles: [string, number][] };
   /** The filtered eulogies, or those at the clicked place when `place` is set. */
   results: MapEntry[];
+  /** Eulogies with a place on the map, and printed ones with none (the results count eulogies too). */
   mapped: number;
   unmapped: number;
   /** The place whose eulogies the list shows (a single-place cluster was clicked), or null. */
@@ -161,7 +162,7 @@ export default function MapSidebar(p: Props) {
       ) : (
         <>
           <p className="text-slate-600 dark:text-slate-400">
-            {t("summary", { shown: p.results.length, mapped: p.mapped, unmapped: p.unmapped })}
+            {t("summary", { shown: new Set(p.results.map((e) => e.id)).size, mapped: p.mapped, unmapped: p.unmapped })}
           </p>
           {p.place && (
             <div className="flex items-baseline justify-between gap-2">
