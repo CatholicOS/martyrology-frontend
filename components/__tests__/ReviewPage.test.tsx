@@ -85,3 +85,55 @@ describe("ReviewPage with a mentions change-set", () => {
     expect(screen.getByText("Remove the mark on this place")).toBeInTheDocument();
   });
 });
+
+describe("ReviewPage bulk accept", () => {
+  const place = (eulogy: string, confidence: string) => ({
+    op: "add_place", id: `${eulogy}#birth#Romæ`, eulogy, role: "birth", la: "Romæ", confidence, decision: null, edited: null,
+  });
+  const places = {
+    schema: "crmedr-changeset/v1", generated_by: "scripts/body_places.py",
+    base: { edition: "martyrologium_romanum_2004", registry: "data/places_curated.json" },
+    operations: [place("mr:0101-a", "high"), place("mr:0101-b", "high"), place("mr:0101-c", "low")],
+  };
+
+  beforeEach(() => {
+    localStorage.clear(); // a bulk accept saves its decisions; each test starts undecided
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ changesets: ["places-review.json"] }),
+      text: () => Promise.resolve(JSON.stringify(places)),
+      url,
+    })));
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("bulk-accepts the undecided add_place ops of one confidence", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "places-review.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "places-review.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(3));
+    expect(screen.queryByRole("button", { name: /Accept the \d+ undecided shown/ })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole("option", { name: "add_place" }).closest("select")!, { target: { value: "add_place" } });
+    expect(screen.queryByRole("button", { name: /Accept the \d+ undecided shown/ })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole("option", { name: "high" }).closest("select")!, { target: { value: "high" } });
+    fireEvent.click(screen.getByRole("button", { name: "Accept the 2 undecided shown" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+    expect(screen.getByText("2 accepted")).toBeInTheDocument();
+    expect(screen.getByText("1 undecided")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Accept the \d+ undecided shown/ })).not.toBeInTheDocument();
+  });
+
+  it("a confirmation asked for one batch does not carry over to another", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "places-review.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "places-review.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(3));
+    fireEvent.change(screen.getByRole("option", { name: "add_place" }).closest("select")!, { target: { value: "add_place" } });
+    const confidence = screen.getByRole("option", { name: "high" }).closest("select")!;
+    fireEvent.change(confidence, { target: { value: "high" } });
+    fireEvent.click(screen.getByRole("button", { name: "Accept the 2 undecided shown" }));
+    fireEvent.change(confidence, { target: { value: "low" } });
+    expect(screen.queryByRole("button", { name: "Confirm" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Accept the 1 undecided shown" })).toBeInTheDocument();
+  });
+});

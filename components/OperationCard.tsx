@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import AddPlaceCard from "@/components/AddPlaceCard";
 import AttachNoteCard from "@/components/AttachNoteCard";
 import EulogyView from "@/components/EulogyView";
 import MentionCard from "@/components/MentionCard";
@@ -20,6 +21,7 @@ import {
   type MergeOp,
   type DecisionRecord,
   type ResolvePlaceOp,
+  type AddPlaceOp,
   type ResolvePersonOp,
   type RealignOp,
   type AttachNoteOp,
@@ -48,6 +50,10 @@ export default function OperationCard(props: Props) {
   // A gazetteer place has its own card: no eulogy of its own, candidates instead.
   if (props.op.op === "resolve_place") {
     return <PlaceCard {...props} op={props.op as ResolvePlaceOp} />;
+  }
+  // A place a eulogy names, with its role (crmedr body places): both 2004 texts, the printing marked.
+  if (props.op.op === "add_place") {
+    return <AddPlaceCard op={props.op as AddPlaceOp} decision={props.decision} onDecide={props.onDecide} />;
   }
   // A person named in a eulogy (crmedr persons): candidates, like a place.
   if (props.op.op === "resolve_person") {

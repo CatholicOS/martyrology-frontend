@@ -488,7 +488,41 @@
       "keep": "Markierung behalten",
       "removed": "entfernt",
       "kept": "behalten"
-    }
+    },
+    "addPlace": {
+      "title": "Im Elogium genannter Ort",
+      "latin": "Latein",
+      "italian": "Italienisch",
+      "latinPrinting": "Lateinische Stelle",
+      "italianPrinting": "Italienische Stelle",
+      "role": "Rolle",
+      "person": "Person",
+      "everyone": "—",
+      "notPrinted": "In diesem Text nicht gedruckt.",
+      "choosePrinting": "{count}-mal gedruckt: Stelle wählen.",
+      "whose": "wessen: {person}",
+      "confidence": "Sicherheit: {value}",
+      "loading": "Texte werden geladen…",
+      "unavailable": "Die Texte konnten nicht geladen werden.",
+      "roles": {
+        "death": "Tod",
+        "burial": "Begräbnis",
+        "translation": "Translation",
+        "dedication": "Weihe",
+        "cult": "Verehrung",
+        "birth": "Geburt",
+        "education": "Ausbildung",
+        "religious_life": "Ordensleben",
+        "ministry": "Amt",
+        "foundation": "Gründung",
+        "exile": "Exil",
+        "journey": "Reise",
+        "mention": "Erwähnung"
+      }
+    },
+    "bulkAccept": "Die {count} angezeigten offenen annehmen",
+    "bulkConfirm": "{count} annehmen?",
+    "confirm": "Bestätigen"
   },
   "Docs": {
     "index": {

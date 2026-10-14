@@ -1,3 +1,5 @@
+import type { PlaceRole } from "@/lib/body-places";
+
 export type Decision = null | "accept" | "reject" | "edit";
 
 export interface TextSays {
@@ -13,6 +15,14 @@ export interface EditedFields {
   // resolve_place (text_says is derived by crmedr's apply, never chosen)
   wikidata?: string;
   country?: string;
+  // add_place: the item's fields; null removes an optional one
+  role?: PlaceRole;
+  la?: string;
+  it?: string | null;
+  person?: string | null;
+  n?: number | null;
+  occurrence?: number | null;
+  occurrence_it?: number | null;
   // realign
   action?: RealignAction;
   /** An empty string removes the proposed link. */
@@ -93,6 +103,27 @@ export interface ResolvePlaceOp extends Base {
   failed: string[];
   candidates: PlaceCandidate[];
   suggested?: { wikidata: string; country: string } | null;
+}
+
+/**
+ * A place a eulogy names outside its opening place, with its role (crmedr's
+ * scripts/body_places.py). `la` / `it` are the place designation as printed in the
+ * Latin and Italian 2004 texts; `occurrence` / `occurrence_it` pick the printing when
+ * it is printed more than once; `person` / `n` say whose role it is. `persons` lists
+ * the eulogy's persons when it has several. Keyed `<eulogy>#<role>#<la>[#occ][#person[#n]]`.
+ */
+export interface AddPlaceOp extends Base {
+  op: "add_place";
+  id: string;
+  eulogy: string;
+  role: PlaceRole;
+  la: string;
+  it?: string;
+  person?: string;
+  n?: number;
+  occurrence?: number;
+  occurrence_it?: number;
+  persons?: { name: string; n?: number }[];
 }
 
 /** A Wikidata candidate for a person, as written by crmedr's scripts/build_person_items.py. */
@@ -286,6 +317,7 @@ export type Op =
   | DeleteOp
   | MergeOp
   | ResolvePlaceOp
+  | AddPlaceOp
   | ResolvePersonOp
   | RealignOp
   | AttachNoteOp
@@ -320,6 +352,7 @@ export function isAdjudicable(op: Op): boolean {
     op.op === "delete" ||
     op.op === "merge" ||
     op.op === "resolve_place" ||
+    op.op === "add_place" ||
     op.op === "resolve_person" ||
     op.op === "realign" ||
     op.op === "attach_note" ||

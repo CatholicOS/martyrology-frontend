@@ -58,6 +58,9 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Review.margin.kind.note": ["fr"], "Docs.index.title": ["fr"], "Docs.finder.date": ["fr"],
   "Compare.columns.status": ["de", "pt"], // Brazilian Portuguese says "Status"
   "Footer.repos.website": ["de"], // German says "Website"
+  // The add_place card: a dash for "no one in particular"; French Latin, translation, mention; German Person.
+  "Review.addPlace.everyone": ALL, "Review.addPlace.latin": ["fr"], "Review.addPlace.roles.translation": ["fr"],
+  "Review.addPlace.roles.mention": ["fr"], "Review.addPlace.person": ["de"],
   // Names of the two sites, and a format made only of arguments and a dash; "c." for circa in Spanish and Portuguese too.
   "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.circa": ["es", "pt"],
 };

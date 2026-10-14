@@ -132,6 +132,28 @@ export default function ReviewPage() {
     });
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, idFilter, decisions]);
 
+  // Bulk accept: every undecided add_place op the filters select (all pages), once a confidence is chosen.
+  const bulkTargets = useMemo(
+    () =>
+      opFilter === "add_place" && confidenceFilter
+        ? filteredOps.filter((op) => op.op === "add_place" && !decisions[opId(op)])
+        : [],
+    [filteredOps, opFilter, confidenceFilter, decisions]
+  );
+  // The batch a confirmation was asked for: another change-set or filter is another batch, asked afresh.
+  const bulkBatch = bulkTargets.map(opId).join("\n");
+  const [bulkAskedFor, setBulkAskedFor] = useState<string | null>(null);
+  const bulkAsk = bulkAskedFor === bulkBatch;
+  const setBulkAsk = (ask: boolean) => setBulkAskedFor(ask ? bulkBatch : null);
+  const bulkAccept = () => {
+    if (!cs) return;
+    const next = { ...decisions };
+    for (const op of bulkTargets) next[opId(op)] = { decision: "accept" };
+    setDecisions(next);
+    saveDecisions(decisionsKey(cs), next);
+    setBulkAsk(false);
+  };
+
   const classOptions = useMemo(
     () => Array.from(new Set((cs?.operations ?? []).map((o) => o.class).filter(Boolean))) as string[],
     [cs]
@@ -285,6 +307,37 @@ export default function ReviewPage() {
           </div>
 
           <div className="mt-4">
+            {bulkTargets.length > 0 && (
+              <div className="mb-2 flex items-center gap-2 text-sm">
+                {!bulkAsk ? (
+                  <button
+                    type="button"
+                    className="rounded bg-green-700 px-2 py-1 text-xs font-medium text-white hover:bg-green-800"
+                    onClick={() => setBulkAsk(true)}
+                  >
+                    {t("bulkAccept", { count: bulkTargets.length })}
+                  </button>
+                ) : (
+                  <>
+                    <span>{t("bulkConfirm", { count: bulkTargets.length })}</span>
+                    <button
+                      type="button"
+                      className="rounded bg-green-700 px-2 py-1 text-xs font-medium text-white hover:bg-green-800"
+                      onClick={bulkAccept}
+                    >
+                      {t("confirm")}
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded bg-slate-400 px-2 py-1 text-xs font-medium text-white hover:bg-slate-500"
+                      onClick={() => setBulkAsk(false)}
+                    >
+                      {t("actions.cancel")}
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
             {filteredOps.length === 0 && (
               <p className="text-slate-500 dark:text-slate-400">{t("noMatch")}</p>
             )}

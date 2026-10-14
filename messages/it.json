@@ -488,7 +488,41 @@
       "keep": "Mantieni il segno",
       "removed": "rimosso",
       "kept": "mantenuto"
-    }
+    },
+    "addPlace": {
+      "title": "Luogo nominato nell'elogio",
+      "latin": "Latino",
+      "italian": "Italiano",
+      "latinPrinting": "Stampa latina",
+      "italianPrinting": "Stampa italiana",
+      "role": "Ruolo",
+      "person": "Persona",
+      "everyone": "—",
+      "notPrinted": "Non stampato in questo testo.",
+      "choosePrinting": "Stampato {count} volte: scegli quale.",
+      "whose": "di chi: {person}",
+      "confidence": "affidabilità: {value}",
+      "loading": "Caricamento dei testi…",
+      "unavailable": "Impossibile caricare i testi.",
+      "roles": {
+        "death": "morte",
+        "burial": "sepoltura",
+        "translation": "traslazione",
+        "dedication": "dedicazione",
+        "cult": "culto",
+        "birth": "nascita",
+        "education": "formazione",
+        "religious_life": "vita religiosa",
+        "ministry": "ministero",
+        "foundation": "fondazione",
+        "exile": "esilio",
+        "journey": "viaggio",
+        "mention": "menzione"
+      }
+    },
+    "bulkAccept": "Accetta i {count} non decisi mostrati",
+    "bulkConfirm": "Accettare {count}?",
+    "confirm": "Conferma"
   },
   "Docs": {
     "index": {
