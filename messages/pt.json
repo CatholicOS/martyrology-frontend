@@ -155,7 +155,24 @@
     "century": "século {ordinal}",
     "portrait": "Retrato de {name}",
     "mapLabel": "Mapa de {name}",
-    "mapCredits": "Créditos do mapa"
+    "mapCredits": "Créditos do mapa",
+    "roles": "Papéis do local"
+  },
+  "PlaceRoles": {
+    "death": "Local da morte",
+    "burial": "Local da sepultura",
+    "translation": "Local da trasladação",
+    "dedication": "Local da dedicação",
+    "cult": "Local do culto",
+    "birth": "Local de nascimento",
+    "education": "Local da formação",
+    "religious_life": "Local da vida religiosa",
+    "ministry": "Local do ministério",
+    "foundation": "Local de uma fundação",
+    "exile": "Local do exílio",
+    "journey": "Local de uma viagem",
+    "mention": "Nomeado no elogio",
+    "of": "{role} ({name})"
   },
   "DayHeading": {
     "derivation": "{year}: número áureo {golden}, epacta {epact}, letra {letter}",

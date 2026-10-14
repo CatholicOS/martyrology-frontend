@@ -45,6 +45,19 @@ describe("MentionPlaceCard", () => {
     await waitFor(() => expect(mapSpy).toHaveBeenCalled());
   });
 
+  it("lists the place's roles in the interface language, with whose", async () => {
+    card("it", { ...caesarea, roles: [{ role: "birth" }, { role: "ministry", name: "Basilius" }] });
+    expect(screen.getByRole("list", { name: "Ruoli del luogo" })).toHaveTextContent("Luogo di nascita");
+    expect(screen.getByText("Luogo del ministero (Basilius)")).toBeInTheDocument();
+    await waitFor(() => expect(mapSpy).toHaveBeenCalled());
+  });
+
+  it("shows no role line without roles", async () => {
+    card();
+    expect(screen.queryByRole("list", { name: "Roles of the place" })).not.toBeInTheDocument();
+    await waitFor(() => expect(mapSpy).toHaveBeenCalled());
+  });
+
   it("tags an English fallback name", async () => {
     card("de");
     expect(screen.getByText("Kayseri")).toHaveAttribute("lang", "en");

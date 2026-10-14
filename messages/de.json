@@ -155,7 +155,24 @@
     "century": "{ordinal}. Jahrhundert",
     "portrait": "Porträt von {name}",
     "mapLabel": "Karte von {name}",
-    "mapCredits": "Kartennachweise"
+    "mapCredits": "Kartennachweise",
+    "roles": "Rollen des Ortes"
+  },
+  "PlaceRoles": {
+    "death": "Sterbeort",
+    "burial": "Begräbnisort",
+    "translation": "Ort der Translation",
+    "dedication": "Ort der Weihe",
+    "cult": "Ort der Verehrung",
+    "birth": "Geburtsort",
+    "education": "Ort der Ausbildung",
+    "religious_life": "Ort des Ordenslebens",
+    "ministry": "Ort des Wirkens",
+    "foundation": "Ort einer Gründung",
+    "exile": "Ort des Exils",
+    "journey": "Ort einer Reise",
+    "mention": "Im Elogium genannt",
+    "of": "{role} ({name})"
   },
   "DayHeading": {
     "derivation": "{year}: Goldene Zahl {golden}, Epakte {epact}, Buchstabe {letter}",
