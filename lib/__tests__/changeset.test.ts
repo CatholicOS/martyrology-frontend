@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseChangeset, exportChangeset, opId, isAdjudicable, isMentionOp, type MentionOp } from "@/lib/changeset";
+import { parseChangeset, exportChangeset, opId, isAdjudicable, isMentionOp, type MentionOp, type Op } from "@/lib/changeset";
 import { convertManifest, main, quotesText, splitByMonth, toBundledChangeset, writeBundle } from "@/scripts/import-changeset.mjs";
 
 const manifest = [
@@ -18,6 +18,13 @@ describe("changeset", () => {
     expect(cs.operations[0]).toMatchObject({ op: "rename", id: "mr:0104-titi", new_id: "mr:0104-titus", subject_la: "Sanctus Titus", decision: null });
     expect(cs.operations[1]).toMatchObject({ op: "delete", id: "mr:1225-quodsequitur-legitur-in", reason: "rubric" });
     expect(cs.operations[2]).toMatchObject({ op: "merge", ids: ["mr:0108-severinus-neapoli"], winner: "mr:0108-severinus" });
+  });
+
+  it("an add_place op is adjudicable and keyed by its id", () => {
+    const op = { op: "add_place", id: "mr:0711-benedictus#birth#Núrsiæ in Umbria", eulogy: "mr:0711-benedictus",
+      role: "birth", la: "Núrsiæ in Umbria", decision: null } as const;
+    expect(isAdjudicable(op as Op)).toBe(true);
+    expect(opId(op as Op)).toBe("mr:0711-benedictus#birth#Núrsiæ in Umbria");
   });
 
   it("parseChangeset rejects wrong schema", () => {
