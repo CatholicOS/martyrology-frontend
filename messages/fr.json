@@ -155,7 +155,24 @@
     "century": "{ordinal} siècle",
     "portrait": "Portrait de {name}",
     "mapLabel": "Carte de {name}",
-    "mapCredits": "Crédits de la carte"
+    "mapCredits": "Crédits de la carte",
+    "roles": "Rôles du lieu"
+  },
+  "PlaceRoles": {
+    "death": "Lieu de la mort",
+    "burial": "Lieu de la sépulture",
+    "translation": "Lieu de la translation",
+    "dedication": "Lieu de la dédicace",
+    "cult": "Lieu du culte",
+    "birth": "Lieu de naissance",
+    "education": "Lieu de la formation",
+    "religious_life": "Lieu de la vie religieuse",
+    "ministry": "Lieu du ministère",
+    "foundation": "Lieu d’une fondation",
+    "exile": "Lieu de l’exil",
+    "journey": "Lieu d’un voyage",
+    "mention": "Nommé dans l’éloge",
+    "of": "{role} ({name})"
   },
   "DayHeading": {
     "derivation": "{year} : nombre d’or {golden}, épacte {epact}, lettre {letter}",
@@ -208,7 +225,9 @@
     "empty": "Aucun éloge de cette édition n’a encore de lieu.",
     "loadError": "L’index n’a pas pu être chargé.",
     "retry": "Réessayer",
-    "see": "voir"
+    "see": "voir",
+    "roleFilter": "Rôle",
+    "allRoles": "Tous"
   },
   "Names": {
     "title": "{title} : index des noms",
@@ -295,7 +314,8 @@
       "reasonPlaceholder": "pourquoi aucun élément Wikidata ne convient",
       "confirmReject": "Confirmer le rejet",
       "cancel": "Annuler"
-    }
+    },
+    "roleLegend": "Rôle du lieu"
   },
   "Compare": {
     "title": "Comparer les éditions",

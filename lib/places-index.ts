@@ -1,16 +1,21 @@
 import type { Locale } from "@/i18n/routing";
 import type { Day } from "@/lib/calendar";
 import type { PlaceInfo, PlacesSnapshot } from "@/lib/places";
-import type { CatalogEntryOut } from "@/lib/types";
+import { PLACE_ROLES } from "@/lib/body-places";
+import type { CatalogEntryOut, MentionRole } from "@/lib/types";
 
-/** One eulogy under a place: its day, number, subject in the edition's language, the place as the edition prints it, and its typology. */
+/** One eulogy under a place: its day, number, subject in the edition's language, the place as the edition prints it, its typology, and the place's roles in it. */
 export interface PlaceLine {
   id: string;
+  /** `<eulogy>@<qid>`: a eulogy is listed once under each place it names. */
+  key: string;
   day: Day;
   entry: number | null;
   subject: string;
   printed: string | null;
   typology: string | null;
+  /** What the place is to the eulogy (crmedr roles), in crmedr's order. */
+  roles: MentionRole[];
 }
 
 export interface IndexPlace {
@@ -70,6 +75,10 @@ export interface PlacesIndexData {
   placed: number;
   /** The eulogies the edition prints. */
   printed: number;
+  /** Lines per role over the whole index, in crmedr's role order, whatever role is chosen. */
+  roles: [string, number][];
+  /** The role the index is narrowed to, or null for every line. */
+  role: string | null;
 }
 
 /** Which printed form of a place is the edition's own: the snapshot's forms come from these two editions' texts. */
@@ -124,34 +133,49 @@ export function filingLetter(label: string, collator: Intl.Collator): string {
  * An edition's index of places: the eulogies it prints (its catalog's `present` entries with a
  * printed day) that have a place, grouped by place, the places sorted in the interface language and
  * filed by letter, each place's eulogies in calendar order, the unnumbered first on their day as
- * printed. `placed` and `printed` count the eulogies for the coverage note.
+ * printed. A eulogy is listed under each place it names, with the place's roles there; with `role`, only
+ * the lines that have it. `placed` and `printed` count the eulogies for the coverage note, whatever the role.
  */
-export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, edition: string, locale: Locale): PlacesIndexData {
+export function placesIndex(
+  catalog: CatalogEntryOut[],
+  snap: PlacesSnapshot,
+  edition: string,
+  locale: Locale,
+  role: string | null = null,
+): PlacesIndexData {
   const form = PRINTED_FORM[edition];
   const byPlace = new Map<string, IndexPlace>();
   let printed = 0;
   let placed = 0;
+  const roleCount = new Map<string, number>();
   for (const c of catalog) {
     const m = c.present !== false ? /^(\d{2})-(\d{2})$/.exec(c.day_printed ?? "") : null;
     if (!m) continue;
     printed++;
     const ep = snap.eulogies[c.id];
-    const place = ep ? snap.places[ep.place] : undefined;
-    if (!ep || !place) continue;
+    const at = (ep?.places ?? []).filter((pa) => snap.places[pa.place]);
+    if (!ep || at.length === 0) continue;
     placed++;
-    let p = byPlace.get(ep.place);
-    if (!p) {
-      p = { qid: ep.place, label: placeLabel(place, ep.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
-      byPlace.set(ep.place, p);
+    for (const pa of at) {
+      for (const r of new Set(pa.roles.map((x) => x.role))) roleCount.set(r, (roleCount.get(r) ?? 0) + 1);
+      if (role && !pa.roles.some((x) => x.role === role)) continue;
+      const place = snap.places[pa.place];
+      let p = byPlace.get(pa.place);
+      if (!p) {
+        p = { qid: pa.place, label: placeLabel(place, pa.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
+        byPlace.set(pa.place, p);
+      }
+      p.lines.push({
+        id: c.id,
+        key: `${c.id}@${pa.place}`,
+        day: { mm: Number(m[1]), dd: Number(m[2]) },
+        entry: c.entry ?? null,
+        subject: c.subject ?? c.id,
+        printed: (form && pa[form]) || null,
+        typology: ep.typology,
+        roles: pa.roles,
+      });
     }
-    p.lines.push({
-      id: c.id,
-      day: { mm: Number(m[1]), dd: Number(m[2]) },
-      entry: c.entry ?? null,
-      subject: c.subject ?? c.id,
-      printed: (form && ep[form]) || null,
-      typology: ep.typology,
-    });
   }
   const collator = new Intl.Collator(locale, { sensitivity: "base" });
   const places = [...byPlace.values()].sort((a, b) => collator.compare(a.label, b.label) || a.qid.localeCompare(b.qid));
@@ -191,5 +215,6 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
   const first = (l: IndexLetter) =>
     [l.places[0]?.label, l.see?.[0]?.name].filter((n): n is string => !!n).sort(collator.compare)[0];
   letters.sort((a, b) => collator.compare(first(a), first(b)));
-  return { letters, placed, printed };
+  const rank = (r: string) => (PLACE_ROLES as readonly string[]).indexOf(r) + 1 || PLACE_ROLES.length + 1;
+  return { letters, placed, printed, role, roles: [...roleCount].sort(([a], [b]) => rank(a) - rank(b)) };
 }

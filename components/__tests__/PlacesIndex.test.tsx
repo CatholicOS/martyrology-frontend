@@ -4,16 +4,18 @@ import PlacesIndex from "@/components/PlacesIndex";
 import type { PlacesIndexData } from "@/lib/places-index";
 
 const index: PlacesIndexData = {
+  role: null,
+  roles: [["death", 3], ["birth", 1], ["ministry", 1]],
   placed: 3,
   printed: 5,
   letters: [
     { letter: "L", places: [{ qid: "Q84", label: "London", labelLang: "en", country: "GB", lines: [
-      { id: "mr:0103-thomas", day: { mm: 1, dd: 3 }, entry: 1, subject: "Sanctus Thomas", printed: "Londínii", typology: "dies_natalis" },
+      { id: "mr:0103-thomas", key: "mr:0103-thomas@Q84", roles: [{ role: "death" }], day: { mm: 1, dd: 3 }, entry: 1, subject: "Sanctus Thomas", printed: "Londínii", typology: "dies_natalis" },
     ] }] },
     { letter: "R", places: [{ qid: "Q220", label: "Rome", labelLang: "en", country: "IT", lines: [
-      { id: "mr:0101-almachius", day: { mm: 1, dd: 1 }, entry: 2, subject: "Sanctus Almachius", printed: null, typology: "dies_natalis" },
-      { id: "mr:0102-caecilia", day: { mm: 1, dd: 2 }, entry: 3, subject: "Sancta Cæcilia", printed: null, typology: "depositio" },
-      { id: "mr:0104-novus", day: { mm: 1, dd: 4 }, entry: 1, subject: "Sanctus Novus", printed: null, typology: "nova_typologia" },
+      { id: "mr:0101-almachius", key: "mr:0101-almachius@Q220", roles: [{ role: "death" }], day: { mm: 1, dd: 1 }, entry: 2, subject: "Sanctus Almachius", printed: null, typology: "dies_natalis" },
+      { id: "mr:0102-caecilia", key: "mr:0102-caecilia@Q220", roles: [{ role: "birth" }, { role: "ministry", name: "Pionius" }], day: { mm: 1, dd: 2 }, entry: 3, subject: "Sancta Cæcilia", printed: null, typology: "depositio" },
+      { id: "mr:0104-novus", key: "mr:0104-novus@Q220", roles: [{ role: "death" }], day: { mm: 1, dd: 4 }, entry: 1, subject: "Sanctus Novus", printed: null, typology: "nova_typologia" },
     ] }] },
   ],
 };
@@ -102,7 +104,7 @@ describe("PlacesIndex", () => {
   });
 
   it("says so when no eulogy is placed", () => {
-    renderIndex({ letters: [], placed: 0, printed: 0 });
+    renderIndex({ letters: [], placed: 0, printed: 0, roles: [], role: null });
     expect(screen.getByText("No eulogies of this edition are placed yet.")).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Letters" })).toBeNull();
   });
@@ -123,7 +125,7 @@ describe("PlacesIndex", () => {
       ...index,
       letters: [
         { letter: "A", places: [{ qid: "Q7341", label: "Auschwitz", labelLang: "en", country: "PL", lines: [
-          { id: "mr:0809-teresia", day: { mm: 8, dd: 9 }, entry: 1, subject: "Sancta Teresia", printed: null, typology: "dies_natalis" },
+          { id: "mr:0809-teresia", key: "mr:0809-teresia@Q7341", roles: [{ role: "death" }], day: { mm: 8, dd: 9 }, entry: 1, subject: "Sancta Teresia", printed: null, typology: "dies_natalis" },
         ] }] },
         { letter: "O", places: [], see: [{ name: "Oświęcim", qid: "Q7341", target: "Auschwitz", targetLang: "en", letter: "A" }] },
       ],
@@ -136,5 +138,29 @@ describe("PlacesIndex", () => {
     container.remove();
     renderIndex(withSee, "A");
     expect(screen.getByRole("heading", { level: 3, name: /Auschwitz/ }).parentElement).toHaveAttribute("id", "pl-Q7341");
+  });
+
+  it("shows a line's roles unless it is only the place of death", () => {
+    renderIndex(index, "R");
+    expect(screen.getByText(/Place of birth · Place of ministry \(Pionius\)/)).toBeInTheDocument();
+    // (the role filter above names it; the lines do not)
+    for (const li of screen.getAllByRole("listitem")) expect(li).not.toHaveTextContent("Place of death");
+  });
+
+  it("role links go to the first letter", () => {
+    renderIndex(index, "R");
+    const nav = screen.getByRole("navigation", { name: "Role" });
+    expect(within(nav).getByRole("link", { name: "Place of birth (1)" })).toHaveAttribute(
+      "href", "/en/read/martyrologium_romanum_2004/places?role=birth");
+    expect(within(nav).getByText("All")).not.toHaveAttribute("href"); // the current choice is not a link
+  });
+
+  it("letter links keep the role", () => {
+    renderIndex({ ...index, role: "birth" });
+    const links = within(screen.getByRole("navigation", { name: "Letters" })).queryAllByRole("link");
+    expect(links.length).toBeGreaterThan(0);
+    for (const a of links) expect(a.getAttribute("href")).toMatch(/\?role=birth$/);
+    expect(within(screen.getByRole("navigation", { name: "Role" })).getByRole("link", { name: "All" })).toHaveAttribute(
+      "href", "/en/read/martyrologium_romanum_2004/places");
   });
 });

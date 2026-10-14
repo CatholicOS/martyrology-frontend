@@ -155,7 +155,24 @@
     "century": "siglo {ordinal}",
     "portrait": "Retrato de {name}",
     "mapLabel": "Mapa de {name}",
-    "mapCredits": "Créditos del mapa"
+    "mapCredits": "Créditos del mapa",
+    "roles": "Papeles del lugar"
+  },
+  "PlaceRoles": {
+    "death": "Lugar de la muerte",
+    "burial": "Lugar de la sepultura",
+    "translation": "Lugar de la traslación",
+    "dedication": "Lugar de la dedicación",
+    "cult": "Lugar del culto",
+    "birth": "Lugar de nacimiento",
+    "education": "Lugar de la formación",
+    "religious_life": "Lugar de la vida religiosa",
+    "ministry": "Lugar del ministerio",
+    "foundation": "Lugar de una fundación",
+    "exile": "Lugar del exilio",
+    "journey": "Lugar de un viaje",
+    "mention": "Nombrado en el elogio",
+    "of": "{role} ({name})"
   },
   "DayHeading": {
     "derivation": "{year}: número áureo {golden}, epacta {epact}, letra {letter}",
@@ -208,7 +225,9 @@
     "empty": "Ningún elogio de esta edición tiene aún un lugar.",
     "loadError": "No se pudo cargar el índice.",
     "retry": "Reintentar",
-    "see": "véase"
+    "see": "véase",
+    "roleFilter": "Papel",
+    "allRoles": "Todos"
   },
   "Names": {
     "title": "{title}: índice de nombres",
@@ -295,7 +314,8 @@
       "reasonPlaceholder": "por qué ningún elemento de Wikidata encaja",
       "confirmReject": "Confirmar el rechazo",
       "cancel": "Cancelar"
-    }
+    },
+    "roleLegend": "Papel del lugar"
   },
   "Compare": {
     "title": "Comparar ediciones",

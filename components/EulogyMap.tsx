@@ -10,32 +10,35 @@ import { dayPath } from "@/lib/calendar";
 import { describeError } from "@/lib/describe-error";
 import { getPathname } from "@/i18n/navigation";
 import { langOn, type Locale } from "@/i18n/routing";
+import { roleText, type RolesT } from "@/lib/body-places";
 import { typologyLabel, type MapEntry } from "@/lib/map-data";
 import { ESRI_ATTRIBUTION, ESRI_STREET_TILES } from "@/lib/esri-tiles";
 
 interface Props {
   entries: MapEntry[];
   edition: string;
-  /** The eulogy to reveal; `n` changes with every pick, so picking it again reveals it again. */
-  selected: { id: string; n: number } | null;
-  onSelect: (id: string) => void;
-  /** A cluster that zooming cannot split was clicked: list its eulogies (by ID). */
-  onPlace: (ids: string[]) => void;
+  /** The entry to reveal, by key; `n` changes with every pick, so picking it again reveals it again. */
+  selected: { key: string; n: number } | null;
+  /** A marker was clicked: its entry's key (a eulogy at several places has a marker at each). */
+  onSelect: (key: string) => void;
+  /** A cluster that zooming cannot split was clicked: list its entries (by key). */
+  onPlace: (keys: string[]) => void;
 }
 
 type MapT = ReturnType<typeof useTranslations<"Map">>;
 type Leaflet = typeof import("leaflet");
-type PlacedMarker = CircleMarker & { eulogyId?: string };
+type PlacedMarker = CircleMarker & { entryKey?: string };
 
 const MARKER = { color: "#7f1d1d", fillColor: "#b91c1c", radius: 6, weight: 2, fillOpacity: 0.85 };
 // How close a pick from the list brings the map when its marker is folded into a cluster.
 const REVEAL_ZOOM = 10;
 
 /**
- * The popup: subject, ID, typology, place as printed and on Wikidata, and a link into the reader.
+ * The popup: subject, ID, typology, the place's roles unless it is only the place of death, place as
+ * printed and on Wikidata, and a link into the reader.
  * Built as DOM, not HTML, so no text is parsed as markup.
  */
-function popupFor(e: MapEntry, edition: string, t: MapT, locale: Locale): HTMLElement {
+function popupFor(e: MapEntry, edition: string, t: MapT, tRoles: RolesT, locale: Locale): HTMLElement {
   const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, cls?: string) => {
     const n = document.createElement(tag);
     if (text) n.textContent = text;
@@ -46,6 +49,9 @@ function popupFor(e: MapEntry, edition: string, t: MapT, locale: Locale): HTMLEl
   root.append(el("p", e.subject, "font-semibold"));
   root.append(el("p", e.id, "font-mono text-xs"));
   root.append(el("p", typologyLabel(t, e.typology)));
+  if (e.roles.length > 0 && !(e.roles.length === 1 && e.roles[0].role === "death")) {
+    root.append(el("p", e.roles.map((r) => roleText(tRoles, r)).join(" · ")));
+  }
   const place = el("p");
   const printed = el("span", e.la);
   printed.lang = "la";
@@ -74,8 +80,10 @@ function popupFor(e: MapEntry, edition: string, t: MapT, locale: Locale): HTMLEl
  */
 export default function EulogyMap({ entries, edition, selected, onSelect, onPlace }: Props) {
   const t = useTranslations("Map");
+  const tRoles = useTranslations("PlaceRoles");
   const locale = useLocale() as Locale;
   const tRef = useRef(t);
+  const tRolesRef = useRef(tRoles);
   const localeRef = useRef(locale);
   const el = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState<{ L: Leaflet; map: LeafletMap; group: MarkerClusterGroup } | null>(null);
@@ -88,8 +96,9 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     onSelectRef.current = onSelect;
     onPlaceRef.current = onPlace;
     tRef.current = t;
+    tRolesRef.current = tRoles;
     localeRef.current = locale;
-  }, [onSelect, onPlace, t, locale]);
+  }, [onSelect, onPlace, t, tRoles, locale]);
 
   // The map and its cluster group, once.
   useEffect(() => {
@@ -121,7 +130,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
         const first = children[0].getLatLng();
         const onePoint = children.every((m) => m.getLatLng().equals(first));
         if (onePoint || mapRef.getZoom() >= mapRef.getMaxZoom()) {
-          onPlaceRef.current(children.flatMap((m) => (m.eulogyId ? [m.eulogyId] : [])));
+          onPlaceRef.current(children.flatMap((m) => (m.entryKey ? [m.entryKey] : [])));
         } else {
           cluster.zoomToBounds();
         }
@@ -145,10 +154,10 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     const layers = entries.map((e) => {
       // The popup is built when opened: thousands of markers are rebuilt as the filters change.
       const m: PlacedMarker = L.circleMarker(e.coords, MARKER)
-        .bindPopup(() => popupFor(e, edition, tRef.current, localeRef.current))
-        .on("click", () => onSelectRef.current(e.id));
-      m.eulogyId = e.id;
-      markers.current.set(e.id, { marker: m, entry: e });
+        .bindPopup(() => popupFor(e, edition, tRef.current, tRolesRef.current, localeRef.current))
+        .on("click", () => onSelectRef.current(e.key));
+      m.entryKey = e.key;
+      markers.current.set(e.key, { marker: m, entry: e });
       return m;
     });
     group.addLayers(layers);
@@ -159,7 +168,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
   // gets a popup at its place, since splitting the cluster could mean fanning out Rome's 205.
   useEffect(() => {
     if (!ready || !selected) return;
-    const hit = markers.current.get(selected.id);
+    const hit = markers.current.get(selected.key);
     if (!hit) return;
     const { L, map, group } = ready;
     // Typed for Marker only; markercluster walks any layer's __parent the same way.
@@ -169,7 +178,7 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       return;
     }
     map.setView(hit.entry.coords, Math.max(map.getZoom(), REVEAL_ZOOM));
-    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current, tRef.current, localeRef.current)).openOn(map);
+    L.popup().setLatLng(hit.entry.coords).setContent(popupFor(hit.entry, editionRef.current, tRef.current, tRolesRef.current, localeRef.current)).openOn(map);
   }, [ready, selected]);
 
   if (failed) {

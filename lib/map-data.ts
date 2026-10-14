@@ -4,10 +4,14 @@ import type { Day } from "@/lib/calendar";
 import { fold } from "@/lib/fold";
 import type { PlacesSnapshot } from "@/lib/places";
 import { placeLabel, placeLabelLang } from "@/lib/places-index";
-import type { CatalogEntryOut } from "@/lib/types";
+import { PLACE_ROLES } from "@/lib/body-places";
+import type { CatalogEntryOut, MentionRole } from "@/lib/types";
 
-/** One eulogy an edition prints, at its place. */
+/** One eulogy an edition prints, at one of its places: a eulogy naming several places is several entries. */
 export interface MapEntry {
+  /** `<eulogy>@<qid>`: the entry's identity (markers, selection, list rows, cluster picks). */
+  key: string;
+  /** The eulogy's ID, shown and linked into the reader. */
   id: string;
   /** The interface language's subject. */
   subject: string;
@@ -26,6 +30,8 @@ export interface MapEntry {
   country: string;
   coords: [number, number];
   typology: string | null;
+  /** What the place is to the eulogy (crmedr roles), in crmedr's order. */
+  roles: MentionRole[];
 }
 
 type MapT = ReturnType<typeof useTranslations<"Map">>;
@@ -36,6 +42,8 @@ export interface MapFilters {
   hiddenTypologies: Set<string>;
   /** Countries checked in the sidebar; empty means every country. */
   countries: Set<string>;
+  /** Roles unchecked in the sidebar (all checked by default): an entry shows while any of its roles is checked. */
+  hiddenRoles: Set<string>;
 }
 
 export const NO_TYPOLOGY = "none";
@@ -46,9 +54,10 @@ const TYPOLOGY_ORDER = [
 ];
 
 /**
- * The eulogies an edition prints (its catalog's `present` entries with a printed day) that have a
- * place on the map, in printed order; `unmapped` counts the printed ones that have none (no
- * resolved place, a place without coordinates, or a deprecated ID, which the gazetteer does not cover).
+ * The eulogies an edition prints (its catalog's `present` entries with a printed day) at each of their
+ * places on the map, in printed order, a eulogy's places in crmedr's order; `unmapped` counts the
+ * printed ones that have none (no resolved place, no place with coordinates, or a deprecated ID, which
+ * the gazetteer does not cover) and `mapped` those that have one or more: both count eulogies, not places.
  */
 export function mapEntries(
   catalog: CatalogEntryOut[],
@@ -56,38 +65,47 @@ export function mapEntries(
   locale: Locale,
   /** The subject to show for an eulogy (the interface language's); the catalog's own, else the ID, by default. */
   subjectOf: (id: string, catalogSubject: string) => string = (_id, s) => s,
-): { entries: MapEntry[]; unmapped: number } {
+): { entries: MapEntry[]; mapped: number; unmapped: number } {
   const entries: MapEntry[] = [];
   let unmapped = 0;
+  let mapped = 0;
   for (const c of catalog) {
     const m = c.present !== false ? /^(\d{2})-(\d{2})$/.exec(c.day_printed ?? "") : null;
     if (!m) continue;
     const ep = snap.eulogies[c.id];
-    const place = ep ? snap.places[ep.place] : undefined;
-    if (!ep || !place?.coords) {
+    const onMap = (ep?.places ?? []).flatMap((pa) => {
+      const place = snap.places[pa.place];
+      return place?.coords ? [{ pa, place, coords: place.coords }] : [];
+    });
+    if (!ep || onMap.length === 0) {
       unmapped++;
       continue;
     }
-    entries.push({
-      id: c.id,
-      subject: subjectOf(c.id, c.subject ?? c.id),
-      editionSubject: c.subject ?? c.id,
-      day: { mm: Number(m[1]), dd: Number(m[2]) },
-      entry: c.entry ?? null,
-      qid: ep.place,
-      la: ep.la,
-      label: placeLabel(place, ep.place, locale),
-      labelLang: placeLabelLang(place, locale),
-      labelEn: place.label,
-      country: place.country,
-      coords: place.coords,
-      typology: ep.typology,
-    });
+    mapped++;
+    for (const { pa, place, coords } of onMap) {
+      entries.push({
+        key: `${c.id}@${pa.place}`,
+        id: c.id,
+        subject: subjectOf(c.id, c.subject ?? c.id),
+        editionSubject: c.subject ?? c.id,
+        day: { mm: Number(m[1]), dd: Number(m[2]) },
+        entry: c.entry ?? null,
+        qid: pa.place,
+        la: pa.la,
+        label: placeLabel(place, pa.place, locale),
+        labelLang: placeLabelLang(place, locale),
+        labelEn: place.label,
+        country: place.country,
+        coords,
+        typology: ep.typology,
+        roles: pa.roles,
+      });
+    }
   }
   entries.sort(
     (a, b) => a.day.mm - b.day.mm || a.day.dd - b.day.dd || (a.entry ?? Infinity) - (b.entry ?? Infinity),
   );
-  return { entries, unmapped };
+  return { entries, mapped, unmapped };
 }
 
 /** Whether the search text is in the eulogy's subject, ID, printed place or the place's name (shown, or English). */
@@ -100,9 +118,10 @@ export function matchesQuery(e: MapEntry, query: string): boolean {
 const typologyKey = (e: MapEntry) => e.typology ?? NO_TYPOLOGY;
 const typologyOk = (e: MapEntry, f: MapFilters) => !f.hiddenTypologies.has(typologyKey(e));
 const countryOk = (e: MapEntry, f: MapFilters) => f.countries.size === 0 || f.countries.has(e.country);
+const roleOk = (e: MapEntry, f: MapFilters) => e.roles.length === 0 || e.roles.some((r) => !f.hiddenRoles.has(r.role));
 
 export function filterEntries(entries: MapEntry[], f: MapFilters): MapEntry[] {
-  return entries.filter((e) => matchesQuery(e, f.query) && typologyOk(e, f) && countryOk(e, f));
+  return entries.filter((e) => matchesQuery(e, f.query) && typologyOk(e, f) && countryOk(e, f) && roleOk(e, f));
 }
 
 function tally(entries: MapEntry[], key: (e: MapEntry) => string): Map<string, number> {
@@ -114,23 +133,30 @@ function tally(entries: MapEntry[], key: (e: MapEntry) => string): Map<string, n
 const typologyRank = (t: string) =>
   t === NO_TYPOLOGY ? Infinity : TYPOLOGY_ORDER.indexOf(t) + 1 || TYPOLOGY_ORDER.length + 1;
 
+const roleRank = (r: string) => (PLACE_ROLES as readonly string[]).indexOf(r) + 1 || PLACE_ROLES.length + 1;
+
 /**
- * How many eulogies each typology and each country would show: each facet is counted under the
- * search and the other facet, not its own, so every choice says what it would yield.
- * Typologies in crmedr's order ("none" last); countries by code.
+ * How many entries each typology, country and role would show: each facet is counted under the
+ * search and the other facets, not its own, so every choice says what it would yield (an entry with
+ * two roles counts under both). Typologies in crmedr's order ("none" last); countries by code; roles
+ * in crmedr's order.
  */
 export function facetCounts(
   entries: MapEntry[],
   f: MapFilters,
-): { typologies: [string, number][]; countries: [string, number][] } {
+): { typologies: [string, number][]; countries: [string, number][]; roles: [string, number][] } {
   const searched = entries.filter((e) => matchesQuery(e, f.query));
-  const typologies = [...tally(searched.filter((e) => countryOk(e, f)), typologyKey)].sort(
+  const typologies = [...tally(searched.filter((e) => countryOk(e, f) && roleOk(e, f)), typologyKey)].sort(
     ([a], [b]) => typologyRank(a) - typologyRank(b),
   );
-  const countries = [...tally(searched.filter((e) => typologyOk(e, f)), (e) => e.country)].sort(([a], [b]) =>
-    a.localeCompare(b),
+  const countries = [...tally(searched.filter((e) => typologyOk(e, f) && roleOk(e, f)), (e) => e.country)].sort(
+    ([a], [b]) => a.localeCompare(b),
   );
-  return { typologies, countries };
+  const roles = new Map<string, number>();
+  for (const e of searched.filter((x) => typologyOk(x, f) && countryOk(x, f))) {
+    for (const r of new Set(e.roles.map((x) => x.role))) roles.set(r, (roles.get(r) ?? 0) + 1);
+  }
+  return { typologies, countries, roles: [...roles].sort(([a], [b]) => roleRank(a) - roleRank(b)) };
 }
 
 /** "dies_natalis" → "Dies natalis"; a typology without a message is spelled out from its id. */

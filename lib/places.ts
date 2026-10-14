@@ -1,5 +1,6 @@
 import snapshot from "@/data/places-snapshot.json";
 import type { Locale } from "@/i18n/routing";
+import type { MentionRole } from "@/lib/types";
 
 /** A Wikidata place: its English label, its labels in the interface languages, its modern country (ISO 3166-1 alpha-2) and [lat, lon], null when Wikidata has none. */
 export interface PlaceInfo {
@@ -11,17 +12,26 @@ export interface PlaceInfo {
   also?: string[];
 }
 
-/** A current eulogy's place (QID), the place as the Latin 2004 and the Italian print it, and its typology. */
-export interface EulogyPlace {
+/**
+ * One place a eulogy names (QID), as the Latin 2004 and the Italian print it, with its roles in the
+ * eulogy (crmedr's, in its order: whose, when the eulogy says).
+ */
+export interface PlaceAt {
   place: string;
   la: string;
   it?: string;
+  roles: MentionRole[];
+}
+
+/** A current eulogy's typology and the places it names that resolve to Wikidata, the opening place first. */
+export interface EulogyPlaces {
   typology: string | null;
+  places: PlaceAt[];
 }
 
 export interface PlacesSnapshot {
   places: Record<string, PlaceInfo>;
-  eulogies: Record<string, EulogyPlace>;
+  eulogies: Record<string, EulogyPlaces>;
 }
 
 export function getPlaces(): PlacesSnapshot {

@@ -155,7 +155,24 @@
     "century": "{ordinal} century",
     "portrait": "Portrait of {name}",
     "mapLabel": "Map of {name}",
-    "mapCredits": "Map credits"
+    "mapCredits": "Map credits",
+    "roles": "Roles of the place"
+  },
+  "PlaceRoles": {
+    "death": "Place of death",
+    "burial": "Place of burial",
+    "translation": "Place of translation",
+    "dedication": "Place of dedication",
+    "cult": "Place of cult",
+    "birth": "Place of birth",
+    "education": "Place of education",
+    "religious_life": "Place of religious life",
+    "ministry": "Place of ministry",
+    "foundation": "Place of a foundation",
+    "exile": "Place of exile",
+    "journey": "Place on a journey",
+    "mention": "Named in the eulogy",
+    "of": "{role} ({name})"
   },
   "DayHeading": {
     "derivation": "{year}: golden number {golden}, epact {epact}, letter {letter}",
@@ -208,7 +225,9 @@
     "empty": "No eulogies of this edition are placed yet.",
     "loadError": "The index could not be loaded.",
     "retry": "Try again",
-    "see": "see"
+    "see": "see",
+    "roleFilter": "Role",
+    "allRoles": "All"
   },
   "Names": {
     "title": "{title}: index of names",
@@ -295,7 +314,8 @@
       "reasonPlaceholder": "why no Wikidata item fits",
       "confirmReject": "Confirm reject",
       "cancel": "Cancel"
-    }
+    },
+    "roleLegend": "Role of the place"
   },
   "Compare": {
     "title": "Compare editions",

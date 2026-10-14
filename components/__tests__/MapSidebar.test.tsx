@@ -11,15 +11,15 @@ const edition = (id: string, year: number, locale: string, nature = "editio_typi
 const editions = [edition("mr_2004", 2004, "la"), edition("mr_1914_en", 1914, "en", "translation")];
 
 const entry = (id: string, subject: string, label: string): MapEntry => ({
-  id, subject, editionSubject: subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, labelLang: label === "Roma" ? "it" : "en", labelEn: "Rome", country: "IT", coords: [0, 0], typology: "dies_natalis",
+  id, key: `${id}@Q1`, roles: [{ role: "death" }], subject, editionSubject: subject, day: { mm: 1, dd: 1 }, entry: 1, qid: "Q1", la: "Romæ", label, labelLang: label === "Roma" ? "it" : "en", labelEn: "Rome", country: "IT", coords: [0, 0], typology: "dies_natalis",
 });
 const results = [entry("mr:0101-almachius", "Sanctus Almachius", "Rome"), entry("mr:0102-x", "Sanctus X", "Rome")];
-const filters: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set() };
+const filters: MapFilters = { query: "", hiddenTypologies: new Set(), countries: new Set(), hiddenRoles: new Set() };
 
 function setup(over: Partial<React.ComponentProps<typeof MapSidebar>> = {}, locale: "en" | "it" = "en") {
   const props: React.ComponentProps<typeof MapSidebar> = {
     editions, edition: "mr_2004", onEdition: vi.fn(), filters, onFilters: vi.fn(),
-    facets: { typologies: [["dies_natalis", 2], ["none", 1]], countries: [["IT", 2], ["DE", 1]] },
+    facets: { typologies: [["dies_natalis", 2], ["none", 1]], countries: [["IT", 2], ["DE", 1]], roles: [["death", 2], ["birth", 1]] },
     results, mapped: 3, unmapped: 5, place: null, onShowAll: vi.fn(), selected: null, onSelect: vi.fn(),
     status: { loading: false, error: null }, onRetry: vi.fn(), ...over,
   };
@@ -75,7 +75,7 @@ describe("MapSidebar", () => {
     const p = setup();
     expect(screen.getByText("2 shown · 3 mapped · 5 not mapped in this edition")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Sanctus Almachius/ }));
-    expect(p.onSelect).toHaveBeenCalledWith("mr:0101-almachius");
+    expect(p.onSelect).toHaveBeenCalledWith("mr:0101-almachius@Q1"); // the entry's key: a eulogy can be at several places
   });
 
   it("lists a place's eulogies with a way back", () => {
@@ -104,5 +104,24 @@ describe("MapSidebar", () => {
     const p = setup({ status: { loading: false, error: "Could not load this edition's eulogies." } });
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
     expect(p.onRetry).toHaveBeenCalled();
+  });
+
+  it("filters by role", () => {
+    const p = setup();
+    const group = screen.getByRole("group", { name: "Role of the place" });
+    fireEvent.click(within(group).getByRole("checkbox", { name: "Place of birth (1)" }));
+    expect(p.onFilters).toHaveBeenCalledWith({ ...filters, hiddenRoles: new Set(["birth"]) });
+  });
+
+  it("names a result's roles unless it is only the place of death", () => {
+    setup({ results: [{ ...results[0], roles: [{ role: "birth" }, { role: "ministry", name: "Pionius" }] }, results[1]] });
+    expect(screen.getByText("Place of birth · Place of ministry (Pionius)")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem").filter((li) => li.textContent?.includes("Place of death"))).toHaveLength(0);
+  });
+
+  it("counts the eulogies shown, not their places", () => {
+    const atTwo = [{ ...results[0], key: "mr:0101-almachius@Q1" }, { ...results[0], key: "mr:0101-almachius@Q2" }];
+    setup({ results: atTwo, mapped: 1, unmapped: 5 });
+    expect(screen.getByText("1 shown · 1 mapped · 5 not mapped in this edition")).toBeInTheDocument();
   });
 });

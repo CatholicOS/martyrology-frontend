@@ -77,6 +77,13 @@ export interface Erratum {
  * from 1 in the eulogy's footnotes), and the Wikidata item crmedr decided for it, null while undecided.
  * `name` is a person's nominative, the key crmedr files them by; the API always sends it, null for a place.
  */
+/** The role a place plays in a eulogy (crmedr `roles`); `name` / `n` say whose, as person mentions name them. */
+export interface MentionRole {
+  role: string;
+  name?: string | null;
+  n?: number | null;
+}
+
 export interface Mention {
   kind: "person" | "place";
   where: "text" | { footnote: number };
@@ -87,6 +94,8 @@ export interface Mention {
   name: string | null;
   /** The nth person of this name in the eulogy, from 2 (crmedr's `n`); absent for the first. */
   n?: number | null;
+  /** A place's roles in the eulogy, in crmedr's order; null for a person. Absent from APIs older than v0.18.0. */
+  roles?: MentionRole[] | null;
 }
 
 export interface EditionPlacement {

@@ -85,21 +85,31 @@ export function buildNotes(registry) {
 }
 
 /**
- * @typedef {{role: string, la: string, it?: string, source?: string}} StatedPlace
+ * @typedef {{role: string, la: string, it?: string, source?: string, person?: string, n?: number}} StatedPlace
  * @typedef {{wikidata?: string|null, label?: string, country?: string, status: string}} GazetteerPlace
  */
 
 /**
- * A eulogy's first stated place that the gazetteer resolves to a Wikidata item, if any.
+ * A eulogy's stated places that the gazetteer resolves to a Wikidata item: one per item, in the
+ * order crmedr states them (the opening place first), its first printed forms, and every stated
+ * role on it, with whose role it is when the eulogy says.
  * @param {StatedPlace[]} stated
  * @param {Record<string, GazetteerPlace>} gazetteer
  */
-function firstResolved(stated, gazetteer) {
+function resolvedPlaces(stated, gazetteer) {
+  /** @type {Map<string, {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[], g: GazetteerPlace}>} */
+  const out = new Map();
   for (const s of stated) {
     const g = gazetteer[s.la];
-    if (g?.wikidata) return { la: s.la, it: s.it, qid: g.wikidata, g };
+    if (!g?.wikidata) continue;
+    const role = { role: s.role, ...(s.person ? { name: s.person } : {}), ...(s.person && s.n ? { n: s.n } : {}) };
+    const hit = out.get(g.wikidata);
+    // Two printed forms of one place can state the same role: it is listed once.
+    const same = (r) => r.role === role.role && r.name === role.name && r.n === role.n;
+    if (!hit) out.set(g.wikidata, { place: g.wikidata, la: s.la, ...(s.it ? { it: s.it } : {}), roles: [role], g });
+    else if (!hit.roles.some(same)) hit.roles.push(role);
   }
-  return null;
+  return [...out.values()];
 }
 
 /**
@@ -112,15 +122,15 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
   /** @type {Set<string>} */
   const qids = new Set();
   for (const stated of Object.values(placesDoc.places)) {
-    const hit = firstResolved(stated, gazetteerDoc.places);
-    if (hit) qids.add(hit.qid);
+    for (const hit of resolvedPlaces(stated, gazetteerDoc.places)) qids.add(hit.place);
   }
   return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
 }
 
 /**
- * The places of the map and of the index: each current eulogy's place (the first it states that the
- * gazetteer resolves), as the Latin 2004 and the Italian print it, its typology, and each place's
+ * The places of the map and of the index: each current eulogy's places (those it states that the
+ * gazetteer resolves, the opening place first) with their roles, as the Latin 2004 and the Italian
+ * print them, its typology, and each place's
  * label, its labels in the interface languages, modern country and coordinates (null when Wikidata
  * has none: the index lists the place, the map leaves it out).
  * @param {{places: Record<string, StatedPlace[]>}} placesDoc crmedr data/places.json (curated places included)
@@ -133,19 +143,24 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
 export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels = {}, variants = {}) {
   /** @type {Record<string, {label: string, country: string, coords: [number, number] | null, labels?: Record<string, string>, also?: string[]}>} */
   const places = {};
-  /** @type {Record<string, {place: string, la: string, it?: string, typology: string|null}>} */
+  /** @type {Record<string, {typology: string|null, places: {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[]}[]}>} */
   const eulogies = {};
   for (const [id, stated] of Object.entries(placesDoc.places)) {
-    const hit = firstResolved(stated, gazetteerDoc.places);
-    if (!hit) continue;
-    places[hit.qid] ??= {
-      label: hit.g.label ?? hit.qid,
-      country: hit.g.country ?? "",
-      coords: coords[hit.qid] ?? null,
-      // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
-      ...(labels[hit.qid] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => (l in labels[hit.qid] ? [[l, labels[hit.qid][l]]] : []))) } : {}),
+    const hits = resolvedPlaces(stated, gazetteerDoc.places);
+    if (hits.length === 0) continue;
+    for (const hit of hits) {
+      places[hit.place] ??= {
+        label: hit.g.label ?? hit.place,
+        country: hit.g.country ?? "",
+        coords: coords[hit.place] ?? null,
+        // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
+        ...(labels[hit.place] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => (l in labels[hit.place] ? [[l, labels[hit.place][l]]] : []))) } : {}),
+      };
+    }
+    eulogies[id] = {
+      typology: typologyDoc.typology[id] ?? null,
+      places: hits.map((h) => ({ place: h.place, la: h.la, ...(h.it ? { it: h.it } : {}), roles: h.roles })),
     };
-    eulogies[id] = { place: hit.qid, la: hit.la, ...(hit.it ? { it: hit.it } : {}), typology: typologyDoc.typology[id] ?? null };
   }
   // The names the Latin prints for a place ("Oświęcim seu Auschwitz"), for the index's cross-references.
   for (const [qid, names] of Object.entries(variants)) {
