@@ -4012,6 +4012,12 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Palmarola in Liguria\" where the Latin \"ínsula Palmária\" is Palmarola in the Pontine Islands, off Lazio, not in Liguria."
     }
   },
+  "mr:1202-melchior-chylinski": {
+    "editions": {
+      "martyrologium_romanum_2004": "Name error: \"Logiewniki\" for Łagiewniki, now a district of Łódź, where Raphael Chyliński died in the Franciscan friary.",
+      "martyrologium_romanum_2004_it_IT": "Name error: \"Logiewniki\" for Łagiewniki, now a district of Łódź, where Raphael Chyliński died in the Franciscan friary."
+    }
+  },
   "mr:1203-birinus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"who had not yet believed\" is added; the Latin has only \"Sáxonum occidentálium genti\" (the people of the West Saxons)."
