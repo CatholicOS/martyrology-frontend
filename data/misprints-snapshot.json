@@ -329,5 +329,11 @@
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "defenĐing",
     "intended": "defending"
+  },
+  {
+    "id": "mr:1204-adrehildis",
+    "edition": "martyrologium_romanum_2004",
+    "printed": "monastériii",
+    "intended": "monastérii"
   }
 ]
