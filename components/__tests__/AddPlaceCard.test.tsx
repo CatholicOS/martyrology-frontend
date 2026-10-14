@@ -85,6 +85,42 @@ describe("AddPlaceCard", () => {
     expect(screen.getByRole("button", { name: "Save edit" })).toHaveProperty("disabled", true);
   });
 
+  it("asks which Italian printing and blocks an Italian form not printed", async () => {
+    render(<AddPlaceCard op={op({ id: "y", la: "Fictopoli", occurrence: undefined, it: undefined, occurrence_it: undefined })} onDecide={vi.fn()} />);
+    await screen.findByTestId("la-mark");
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    const save = () => screen.getByRole("button", { name: "Save edit" });
+    expect(save()).toHaveProperty("disabled", false);
+    fireEvent.change(screen.getByLabelText("Italian"), { target: { value: "a Roma" } });
+    expect(save()).toHaveProperty("disabled", true);
+    fireEvent.change(screen.getByLabelText("Italian printing"), { target: { value: "2" } });
+    expect(save()).toHaveProperty("disabled", false);
+    fireEvent.change(screen.getByLabelText("Italian"), { target: { value: "a Parigi" } });
+    expect(save()).toHaveProperty("disabled", true);
+  });
+
+  it("a resumed edit of n alone is kept", async () => {
+    const onDecide = vi.fn();
+    const one = op({ person: "Fictus", persons: [{ name: "Fictus" }, { name: "Fictus", n: 2 }] });
+    render(<AddPlaceCard op={one} decision={{ decision: "edit", edited: { n: 2 } }} onDecide={onDecide} />);
+    await screen.findByTestId("la-mark");
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.change(screen.getByLabelText("Role"), { target: { value: "death" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith(one.id, { decision: "edit", edited: { role: "death", n: 2 } });
+  });
+
+  it("a person can be cleared when the op lists no persons", async () => {
+    const onDecide = vi.fn();
+    const one = op({ person: "Fictus", persons: undefined });
+    render(<AddPlaceCard op={one} onDecide={onDecide} />);
+    await screen.findByTestId("la-mark");
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.change(screen.getByLabelText("Person"), { target: { value: "" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith(one.id, { decision: "edit", edited: { person: null } });
+  });
+
   it("OperationCard routes add_place here", async () => {
     render(<OperationCard op={op()} onDecide={vi.fn()} locale="la" baseEdition="martyrologium_romanum_2004" />);
     expect(await screen.findByTestId("la-mark")).toBeTruthy();

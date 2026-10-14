@@ -56,8 +56,10 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
     ed?.occurrence_it !== undefined ? ed.occurrence_it : (op.occurrence_it ?? null)
   );
   const [person, setPerson] = useState(
-    ed?.person !== undefined ? personKey(ed.person, ed.n) : personKey(op.person, op.n)
+    personKey(ed?.person !== undefined ? ed.person : op.person, ed?.n !== undefined ? ed.n : op.n)
   );
+  // The eulogy's persons, or at least the one the op names, so a person can always be changed or cleared.
+  const persons = op.persons?.length ? op.persons : op.person ? [{ name: op.person, n: op.n }] : [];
 
   useEffect(() => {
     let cancelled = false;
@@ -78,7 +80,8 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
   // A form printed once needs no printing; printed several times, one must be chosen.
   const laOcc = laCount > 1 ? occ : null;
   const itOcc = itCount > 1 ? occIt : null;
-  const canSave = laCount === 1 || (laCount > 1 && laOcc !== null && laOcc <= laCount);
+  const printed = (count: number, n: number | null) => count === 1 || (count > 1 && n !== null && n <= count);
+  const canSave = printed(laCount, laOcc) && (!it || printed(itCount, itOcc));
 
   const [pName, pNs] = person ? person.split("#") : [null, undefined];
   const pN = pNs ? Number(pNs) : null;
@@ -204,12 +207,12 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
             <input aria-label={t("italian")} className={input} value={it} onChange={(e) => setIt(e.target.value)} />
           </label>
           {printingSelect(t("italianPrinting"), itCount, itOcc, setOccIt)}
-          {op.persons && op.persons.length > 0 && (
+          {persons.length > 0 && (
             <label className="flex items-center gap-2 text-xs">
               {t("person")}
               <select aria-label={t("person")} className={input} value={person} onChange={(e) => setPerson(e.target.value)}>
                 <option value="">{t("everyone")}</option>
-                {op.persons.map((p) => (
+                {persons.map((p) => (
                   <option key={personKey(p.name, p.n)} value={personKey(p.name, p.n)}>
                     {p.name}
                     {p.n ? ` (${p.n})` : ""}
