@@ -104,6 +104,15 @@ describe("buildPlaces", () => {
     expect(Object.keys(snap.places.Q220.labels ?? {})).toEqual(["en", "it", "de", "pt"]);
   });
 
+  it("takes a language's label from the multilingual (mul) label when the item has none of its own", () => {
+    const labels = { Q220: { mul: "Cúcuta" }, Q490: { it: "Milano", mul: "Milano (mul)" } };
+    const { places } = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels);
+    expect(places.Q220.labels).toEqual({ en: "Cúcuta", it: "Cúcuta", fr: "Cúcuta", de: "Cúcuta", es: "Cúcuta", pt: "Cúcuta" });
+    expect(places.Q490.labels).toEqual({
+      en: "Milano (mul)", it: "Milano", fr: "Milano (mul)", de: "Milano (mul)", es: "Milano (mul)", pt: "Milano (mul)",
+    });
+  });
+
   it("keeps a place without coordinates, for the index, with null coordinates", () => {
     const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, {});
     expect(snap.places.Q220.coords).toBeNull();
@@ -181,11 +190,11 @@ describe("parseWktPoint", () => {
 });
 
 describe("labelsQuery", () => {
-  it("asks for the labels of the items in the six interface languages", () => {
+  it("asks for the labels of the items in the six interface languages and the multilingual (mul) one", () => {
     const q = labelsQuery(["Q220", "Q490"]);
     expect(q).toContain("VALUES ?item { wd:Q220 wd:Q490 }");
     expect(q).toContain("rdfs:label ?label");
-    expect(q).toContain('FILTER(LANG(?label) IN ("en", "it", "fr", "de", "es", "pt"))');
+    expect(q).toContain('FILTER(LANG(?label) IN ("en", "it", "fr", "de", "es", "pt", "mul"))');
   });
 });
 
