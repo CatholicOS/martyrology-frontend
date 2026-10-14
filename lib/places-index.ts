@@ -136,20 +136,21 @@ export function placesIndex(catalog: CatalogEntryOut[], snap: PlacesSnapshot, ed
     if (!m) continue;
     printed++;
     const ep = snap.eulogies[c.id];
-    const place = ep ? snap.places[ep.place] : undefined;
-    if (!ep || !place) continue;
+    const first = ep?.places[0];
+    const place = first ? snap.places[first.place] : undefined;
+    if (!ep || !first || !place) continue;
     placed++;
-    let p = byPlace.get(ep.place);
+    let p = byPlace.get(first.place);
     if (!p) {
-      p = { qid: ep.place, label: placeLabel(place, ep.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
-      byPlace.set(ep.place, p);
+      p = { qid: first.place, label: placeLabel(place, first.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
+      byPlace.set(first.place, p);
     }
     p.lines.push({
       id: c.id,
       day: { mm: Number(m[1]), dd: Number(m[2]) },
       entry: c.entry ?? null,
       subject: c.subject ?? c.id,
-      printed: (form && ep[form]) || null,
+      printed: (form && first[form]) || null,
       typology: ep.typology,
     });
   }

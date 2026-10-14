@@ -63,8 +63,9 @@ export function mapEntries(
     const m = c.present !== false ? /^(\d{2})-(\d{2})$/.exec(c.day_printed ?? "") : null;
     if (!m) continue;
     const ep = snap.eulogies[c.id];
-    const place = ep ? snap.places[ep.place] : undefined;
-    if (!ep || !place?.coords) {
+    const first = ep?.places[0];
+    const place = first ? snap.places[first.place] : undefined;
+    if (!ep || !first || !place?.coords) {
       unmapped++;
       continue;
     }
@@ -74,9 +75,9 @@ export function mapEntries(
       editionSubject: c.subject ?? c.id,
       day: { mm: Number(m[1]), dd: Number(m[2]) },
       entry: c.entry ?? null,
-      qid: ep.place,
-      la: ep.la,
-      label: placeLabel(place, ep.place, locale),
+      qid: first.place,
+      la: first.la,
+      label: placeLabel(place, first.place, locale),
       labelLang: placeLabelLang(place, locale),
       labelEn: place.label,
       country: place.country,

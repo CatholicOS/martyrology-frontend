@@ -13,11 +13,11 @@ const snap: PlacesSnapshot = {
     Q2: { label: "Nowhere", country: "", coords: null },
   },
   eulogies: {
-    "mr:0101-almachius": { place: "Q220", la: "Romæ", typology: "dies_natalis" },
-    "mr:0102-caecilia": { place: "Q220", la: "Romæ", typology: "depositio" },
-    "mr:0103-thomas": { place: "Q84", la: "Londínii", typology: "dies_natalis" },
-    "mr:0104-basilius": { place: "Q1", la: "Cæsaréæ in Cappadócia", typology: null },
-    "mr:0107-nemo": { place: "Q2", la: "Nusquam", typology: "dies_natalis" },
+    "mr:0101-almachius": { typology: "dies_natalis", places: [{ place: "Q220", la: "Romæ", roles: [{ role: "death" }] }] },
+    "mr:0102-caecilia": { typology: "depositio", places: [{ place: "Q220", la: "Romæ", roles: [{ role: "death" }] }] },
+    "mr:0103-thomas": { typology: "dies_natalis", places: [{ place: "Q84", la: "Londínii", roles: [{ role: "death" }] }] },
+    "mr:0104-basilius": { typology: null, places: [{ place: "Q1", la: "Cæsaréæ in Cappadócia", roles: [{ role: "death" }] }] },
+    "mr:0107-nemo": { typology: "dies_natalis", places: [{ place: "Q2", la: "Nusquam", roles: [{ role: "death" }] }] },
   },
 };
 

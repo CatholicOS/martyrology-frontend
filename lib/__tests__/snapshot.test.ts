@@ -82,7 +82,7 @@ describe("buildPlaces", () => {
   const typologyDoc = { typology: { "mr:0101-almachius": "dies_natalis", "mr:0102-x": "depositio", "mr:0104-z": "dies_natalis" } };
   const coords = { Q220: [41.893, 12.483] as [number, number], Q490: [45.464, 9.19] as [number, number] };
 
-  it("gives each eulogy its first resolved place, its Italian form, typology, and the place's coordinates and labels", () => {
+  it("gives each eulogy its resolved places with their roles, typology, and the places' coordinates and labels", () => {
     const labels = { Q220: { en: "Rome", it: "Roma", fr: "Rome" }, Q490: { it: "Milano" } };
     expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels)).toEqual({
       places: {
@@ -91,9 +91,9 @@ describe("buildPlaces", () => {
         Q999: { label: "Island", country: "GR", coords: null },
       },
       eulogies: {
-        "mr:0101-almachius": { place: "Q220", la: "Romæ", it: "A Roma", typology: "dies_natalis" },
-        "mr:0102-x": { place: "Q490", la: "Mediolani", typology: "depositio" },
-        "mr:0104-z": { place: "Q999", la: "Insula", typology: "dies_natalis" },
+        "mr:0101-almachius": { typology: "dies_natalis", places: [{ place: "Q220", la: "Romæ", it: "A Roma", roles: [{ role: "death" }] }] },
+        "mr:0102-x": { typology: "depositio", places: [{ place: "Q490", la: "Mediolani", roles: [{ role: "burial" }] }] },
+        "mr:0104-z": { typology: "dies_natalis", places: [{ place: "Q999", la: "Insula", roles: [{ role: "death" }] }] },
       },
     });
   });
@@ -107,7 +107,7 @@ describe("buildPlaces", () => {
   it("keeps a place without coordinates, for the index, with null coordinates", () => {
     const snap = buildPlaces(placesDoc, gazetteerDoc, typologyDoc, {});
     expect(snap.places.Q220.coords).toBeNull();
-    expect(snap.eulogies["mr:0101-almachius"].place).toBe("Q220");
+    expect(snap.eulogies["mr:0101-almachius"].places[0].place).toBe("Q220");
   });
 
   it("gives the QID as the label of a place the gazetteer has no label for", () => {
@@ -127,6 +127,24 @@ describe("buildPlaces", () => {
   it("a eulogy without typology gets null", () => {
     const snap = buildPlaces(placesDoc, gazetteerDoc, { typology: {} }, coords);
     expect(snap.eulogies["mr:0101-almachius"].typology).toBeNull();
+  });
+
+  it("one entry per place, its roles merged", () => {
+    const doc = { places: { "mr:0105-w": [
+      { role: "death", la: "Romæ", source: "lead" },
+      { role: "birth", la: "Mediolani", source: "curated" },
+      { role: "burial", la: "in Urbe", source: "curated", person: "Felix", n: 2 },
+      { role: "ministry", la: "Nusquam", source: "curated" },
+    ] } };
+    const gaz = { places: { ...gazetteerDoc.places, "in Urbe": { wikidata: "Q220", label: "Rome", country: "IT", status: "reviewed" } } };
+    expect(buildPlaces(doc, gaz, { typology: {} }, coords).eulogies["mr:0105-w"]).toEqual({
+      typology: null,
+      places: [
+        { place: "Q220", la: "Romæ", roles: [{ role: "death" }, { role: "burial", name: "Felix", n: 2 }] },
+        { place: "Q490", la: "Mediolani", roles: [{ role: "birth" }] },
+      ],
+    });
+    expect(resolvedQids(doc, gaz)).toEqual(["Q220", "Q490"]);
   });
 
   it("copies a place's printed names, for the places the eulogies resolve to", () => {

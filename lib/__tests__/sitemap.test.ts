@@ -12,7 +12,7 @@ vi.mock("@/lib/persons", () => ({
 vi.mock("@/lib/places", () => ({
   getPlaces: () => ({
     places: { Q220: { label: "Rome", labels: { it: "Roma", de: "Rom" }, country: "IT", coords: null } },
-    eulogies: { "mr:0101-basilius": { place: "Q220", la: "Romae", typology: "death" } },
+    eulogies: { "mr:0101-basilius": { typology: "death", places: [{ place: "Q220", la: "Romae", roles: [{ role: "death" }] }] } },
   }),
 }));
 

@@ -12,13 +12,13 @@ const snap: PlacesSnapshot = {
     Q3: { label: "Q3", country: "", coords: null },
   },
   eulogies: {
-    "mr:0101-almachius": { place: "Q220", la: "Romæ", it: "A Roma", typology: "dies_natalis" },
-    "mr:0102-caecilia": { place: "Q220", la: "Romæ via Appia", typology: "depositio" },
-    "mr:0103-thomas": { place: "Q84", la: "Londínii", it: "A Londra", typology: "dies_natalis" },
-    "mr:0104-otsu": { place: "Q1", la: "Otsu", typology: null },
-    "mr:0105-avila": { place: "Q2", la: "Abulæ", typology: "dies_natalis" },
-    "mr:0106-nemo": { place: "Q3", la: "Nusquam", typology: "dies_natalis" },
-    "mr:0107-lost": { place: "Q404", la: "Ubique", typology: "dies_natalis" }, // the QID is missing from places
+    "mr:0101-almachius": { typology: "dies_natalis", places: [{ place: "Q220", la: "Romæ", it: "A Roma", roles: [{ role: "death" }] }] },
+    "mr:0102-caecilia": { typology: "depositio", places: [{ place: "Q220", la: "Romæ via Appia", roles: [{ role: "death" }] }] },
+    "mr:0103-thomas": { typology: "dies_natalis", places: [{ place: "Q84", la: "Londínii", it: "A Londra", roles: [{ role: "death" }] }] },
+    "mr:0104-otsu": { typology: null, places: [{ place: "Q1", la: "Otsu", roles: [{ role: "death" }] }] },
+    "mr:0105-avila": { typology: "dies_natalis", places: [{ place: "Q2", la: "Abulæ", roles: [{ role: "death" }] }] },
+    "mr:0106-nemo": { typology: "dies_natalis", places: [{ place: "Q3", la: "Nusquam", roles: [{ role: "death" }] }] },
+    "mr:0107-lost": { typology: "dies_natalis", places: [{ place: "Q404", la: "Ubique", roles: [{ role: "death" }] }] }, // the QID is missing from places
   },
 };
 
@@ -39,7 +39,7 @@ const catalog: CatalogEntryOut[] = [
   cat("mr:0110-nodate", "Sanctus Sine Die", null),
   cat("mr:0111-lead", "In Nativitate", "01-02", null), // unnumbered: printed first on its day
 ];
-snap.eulogies["mr:0111-lead"] = { place: "Q220", la: "Romæ", typology: "commemoratio" };
+snap.eulogies["mr:0111-lead"] = { typology: "commemoratio", places: [{ place: "Q220", la: "Romæ", roles: [{ role: "death" }] }] };
 
 const LA = "martyrologium_romanum_2004";
 const IT = "martyrologium_romanum_2004_it_IT";
@@ -103,11 +103,11 @@ describe("placesIndex", () => {
         Q14: { label: "Dire Dawa", country: "ET", coords: null },
       },
       eulogies: {
-        "mr:0101-a": { place: "Q10", la: "A", typology: null },
-        "mr:0101-b": { place: "Q11", la: "B", typology: null },
-        "mr:0101-c": { place: "Q12", la: "C", typology: null },
-        "mr:0101-d": { place: "Q13", la: "D", typology: null },
-        "mr:0101-e": { place: "Q14", la: "E", typology: null },
+        "mr:0101-a": { typology: null, places: [{ place: "Q10", la: "A", roles: [{ role: "death" }] }] },
+        "mr:0101-b": { typology: null, places: [{ place: "Q11", la: "B", roles: [{ role: "death" }] }] },
+        "mr:0101-c": { typology: null, places: [{ place: "Q12", la: "C", roles: [{ role: "death" }] }] },
+        "mr:0101-d": { typology: null, places: [{ place: "Q13", la: "D", roles: [{ role: "death" }] }] },
+        "mr:0101-e": { typology: null, places: [{ place: "Q14", la: "E", roles: [{ role: "death" }] }] },
       },
     };
     const cats = ["a", "b", "c", "d", "e"].map((x) => cat(`mr:0101-${x}`, x, "01-01"));
@@ -176,10 +176,10 @@ describe("placesIndex: a place's other printed names", () => {
       Q3: { label: "Unprinted", country: "IT", coords: null, also: ["Elsewhere", "Nowhere"] },
     },
     eulogies: {
-      "mr:0809-teresia": { place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", typology: "dies_natalis" },
-      "mr:0814-maximilianus": { place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", typology: "dies_natalis" },
-      "mr:0614-elisaeus": { place: "Q1", la: "Samaríæ seu Sebáste", typology: "commemoratio" },
-      "mr:0309-milites": { place: "Q2", la: "Sebástæ in Arménia", typology: "dies_natalis" },
+      "mr:0809-teresia": { typology: "dies_natalis", places: [{ place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", roles: [{ role: "death" }] }] },
+      "mr:0814-maximilianus": { typology: "dies_natalis", places: [{ place: "Q7341", la: "In campo exítii Oświęcim seu Auschwitz", roles: [{ role: "death" }] }] },
+      "mr:0614-elisaeus": { typology: "commemoratio", places: [{ place: "Q1", la: "Samaríæ seu Sebáste", roles: [{ role: "death" }] }] },
+      "mr:0309-milites": { typology: "dies_natalis", places: [{ place: "Q2", la: "Sebástæ in Arménia", roles: [{ role: "death" }] }] },
     },
   };
   const vcat = [

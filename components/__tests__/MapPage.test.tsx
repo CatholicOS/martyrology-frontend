@@ -25,8 +25,8 @@ vi.mock("@/lib/places", () => ({
   getPlaces: () => ({
     places: { Q220: { label: "Rome", country: "IT", coords: [41.9, 12.5] }, Q84: { label: "London", country: "GB", coords: [51.5, -0.1] } },
     eulogies: {
-      "mr:0101-a": { place: "Q220", la: "Romæ", typology: "dies_natalis" },
-      "mr:0101-b": { place: "Q84", la: "Londínii", typology: "dies_natalis" },
+      "mr:0101-a": { typology: "dies_natalis", places: [{ place: "Q220", la: "Romæ", roles: [{ role: "death" }] }] },
+      "mr:0101-b": { typology: "dies_natalis", places: [{ place: "Q84", la: "Londínii", roles: [{ role: "death" }] }] },
     },
   }),
 }));

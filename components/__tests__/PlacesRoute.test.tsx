@@ -14,7 +14,7 @@ vi.mock("@/components/PlacesIndex", () => ({ default: (p: unknown) => { indexPro
 vi.mock("@/lib/places", () => ({
   getPlaces: () => ({
     places: { Q220: { label: "Rome", country: "IT", coords: null } },
-    eulogies: { "mr:0101-almachius": { place: "Q220", la: "Romæ", typology: "dies_natalis" } },
+    eulogies: { "mr:0101-almachius": { typology: "dies_natalis", places: [{ place: "Q220", la: "Romæ", roles: [{ role: "death" }] }] } },
   }),
 }));
 
