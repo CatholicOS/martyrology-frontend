@@ -199,12 +199,29 @@ export default function AddPlaceCard({ op, decision, onDecide }: Props) {
           </label>
           <label className="flex items-center gap-2 text-xs">
             {t("latin")}
-            <input aria-label={t("latin")} className={input} value={la} onChange={(e) => setLa(e.target.value)} />
+            <input
+              aria-label={t("latin")}
+              className={input}
+              value={la}
+              onChange={(e) => {
+                // A new form's printings are not the old one's: choose again.
+                setLa(e.target.value);
+                setOcc(null);
+              }}
+            />
           </label>
           {printingSelect(t("latinPrinting"), laCount, laOcc, setOcc)}
           <label className="flex items-center gap-2 text-xs">
             {t("italian")}
-            <input aria-label={t("italian")} className={input} value={it} onChange={(e) => setIt(e.target.value)} />
+            <input
+              aria-label={t("italian")}
+              className={input}
+              value={it}
+              onChange={(e) => {
+                setIt(e.target.value);
+                setOccIt(null);
+              }}
+            />
           </label>
           {printingSelect(t("italianPrinting"), itCount, itOcc, setOccIt)}
           {persons.length > 0 && (

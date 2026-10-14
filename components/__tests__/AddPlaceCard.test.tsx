@@ -85,6 +85,20 @@ describe("AddPlaceCard", () => {
     expect(screen.getByRole("button", { name: "Save edit" })).toHaveProperty("disabled", true);
   });
 
+  it("a changed form asks for its printing again", async () => {
+    render(<AddPlaceCard op={op()} onDecide={vi.fn()} />);
+    await screen.findByTestId("la-mark");
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    const save = screen.getByRole("button", { name: "Save edit" });
+    expect(save).toHaveProperty("disabled", false);
+    fireEvent.change(screen.getByLabelText("Latin"), { target: { value: "Rom" } }); // printed twice too
+    expect(save).toHaveProperty("disabled", true);
+    fireEvent.change(screen.getByLabelText("Latin printing"), { target: { value: "2" } });
+    expect(save).toHaveProperty("disabled", false);
+    fireEvent.change(screen.getByLabelText("Italian"), { target: { value: "Roma" } }); // printed twice too
+    expect(save).toHaveProperty("disabled", true);
+  });
+
   it("asks which Italian printing and blocks an Italian form not printed", async () => {
     render(<AddPlaceCard op={op({ id: "y", la: "Fictopoli", occurrence: undefined, it: undefined, occurrence_it: undefined })} onDecide={vi.fn()} />);
     await screen.findByTestId("la-mark");
