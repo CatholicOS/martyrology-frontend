@@ -582,6 +582,10 @@
         "title": "Notes, coquilles et errata",
         "description": "Ce qu’une édition imprime, et ce que les curateurs ajoutent."
       },
+      "names-and-places": {
+        "title": "Noms et lieux",
+        "description": "Comment les personnes et les lieux sont marqués, mis en couleur et reliés à Wikidata."
+      },
       "ids": {
         "title": "Les identifiants canoniques des éloges",
         "description": "Pourquoi chaque éloge a un identifiant, et les règles qui le forment."

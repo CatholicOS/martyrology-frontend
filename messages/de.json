@@ -582,6 +582,10 @@
         "title": "Anmerkungen, Druckfehler und Errata",
         "description": "Was eine Ausgabe druckt und was die Kuratoren hinzufügen."
       },
+      "names-and-places": {
+        "title": "Namen und Orte",
+        "description": "Wie Personen und Orte markiert, hervorgehoben und mit Wikidata verknüpft werden."
+      },
       "ids": {
         "title": "Die kanonischen IDs der Elogien",
         "description": "Warum jedes Elogium eine Kennung hat und nach welchen Regeln sie gebildet wird."
