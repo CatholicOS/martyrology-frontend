@@ -82,7 +82,10 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
       {op.name && (
         <p className="mb-1 text-slate-700 dark:text-slate-300">
           <span lang="la">{op.name}</span>
-          {op.op === "add_mention" && op.n && <span className="ml-2 text-xs text-slate-600 dark:text-slate-400">{p("ordinal", { n: op.n })}</span>}
+          {/* Another person of the name: what tells two marks of one name apart, so it stands out. */}
+          {op.op === "add_mention" && op.n && (
+            <span className={`ml-2 rounded px-2 py-0.5 text-xs font-semibold ring-1 ring-amber-500 ${markStyle}`}>{p("ordinal", { n: op.n })}</span>
+          )}
         </p>
       )}
 

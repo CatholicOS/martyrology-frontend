@@ -58,6 +58,19 @@ describe("MentionCard", () => {
     expect(screen.getByText("kept")).toBeInTheDocument();
   });
 
+  it("badges a second person of the name beside the name, in the person tint", () => {
+    renderCard(add({ n: 2 }));
+    const badge = screen.getByText("the 2nd of this name in this eulogy");
+    expect(badge.className).toContain("font-semibold");
+    expect(badge.className).toContain("bg-amber-100");
+    expect(badge.className).toContain("ring-1");
+  });
+
+  it("shows no ordinal for the first person of a name", () => {
+    renderCard(add());
+    expect(screen.queryByText(/of this name in this eulogy/)).toBeNull();
+  });
+
   it("accepts and rejects under the op's id", () => {
     const { onDecide } = renderCard(add());
     fireEvent.click(screen.getByRole("button", { name: "Accept" }));
