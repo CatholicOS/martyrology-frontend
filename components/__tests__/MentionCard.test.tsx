@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@/test/intl";
+import { render, screen, fireEvent, cleanup } from "@/test/intl";
 import OperationCard from "@/components/OperationCard";
 import type { AddMentionOp, DecisionRecord, RemoveMentionOp, SetSpanOp } from "@/lib/changeset";
 
@@ -69,6 +69,30 @@ describe("MentionCard", () => {
   it("shows no ordinal for the first person of a name", () => {
     renderCard(add());
     expect(screen.queryByText(/of this name in this eulogy/)).toBeNull();
+  });
+
+  it("shows Jev's suggestion with its confidence, and takes it as the curator's own decision", () => {
+    const { onDecide } = renderCard(add({ suggested: { decision: "accept", probability: 0.93, confidence: 0.87, model: "jev-1.14.0" } }));
+    expect(screen.getByText("Jev suggests: accept (87%)")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+    expect(onDecide).toHaveBeenCalledWith(ID, { decision: "accept" });
+  });
+
+  it("takes an edit suggestion as an edit with the suggested words", () => {
+    const suggested = { decision: "edit" as const, start: 156, end: 172, form: "Fictíni et Ficti", probability: 0.8, confidence: 0.7, model: "jev-1.14.0" };
+    const { onDecide } = renderCard(add({ suggested }));
+    expect(screen.getByText("Jev suggests: mark «Fictíni et Ficti» (70%)")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+    expect(onDecide).toHaveBeenCalledWith(ID, { decision: "edit", edited: { start: 156, end: 172, form: "Fictíni et Ficti" } });
+  });
+
+  it("shows a reject suggestion, and no suggestion line or button without one", () => {
+    renderCard(add({ suggested: { decision: "reject", probability: 0.9, confidence: 0.9, model: "jev-1.14.0" } }));
+    expect(screen.getByText("Jev suggests: reject (90%)")).toBeInTheDocument();
+    cleanup();
+    renderCard(add());
+    expect(screen.queryByText(/Jev suggests/)).toBeNull();
+    expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
   });
 
   it("accepts and rejects under the op's id", () => {

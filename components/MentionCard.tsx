@@ -48,6 +48,14 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
   // A remove_mention's Accept removes a mark and its Reject keeps one: say so, not "Accept"/"Reject".
   const removal = op.op === "remove_mention";
   const decided = decision && (removal && decision.decision !== "edit" ? t(decision.decision === "accept" ? "removed" : "kept") : decisionLabel(r, decision));
+  const suggested = op.op === "add_mention" ? (op.suggested ?? null) : null;
+  const suggestedRecord: DecisionRecord | null = suggested
+    ? suggested.decision === "edit" && suggested.start != null && suggested.end != null && suggested.form
+      ? { decision: "edit", edited: { start: suggested.start, end: suggested.end, form: suggested.form } }
+      : suggested.decision === "edit" ? null : { decision: suggested.decision }
+    : null;
+  // A suggested accept is takeable only when the op itself can be accepted.
+  const canTake = suggestedRecord !== null && (suggestedRecord.decision !== "accept" || canAccept);
 
   const startEditing = () => {
     setPick(wordsIn(words, shown.proposed));
@@ -140,9 +148,22 @@ export default function MentionCard({ op, decision, onDecide }: Props) {
         <p id={warningId} className="mb-2 text-xs text-amber-700 dark:text-amber-400">{t("noSpan")}</p>
       )}
       {op.reasoning && <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">{t("why", { text: op.reasoning })}</p>}
+      {suggested && (
+        <p className="mb-2 text-xs text-slate-700 dark:text-slate-300">
+          {t("suggests", {
+            what: suggested.decision === "edit" ? t("suggestEdit", { form: suggested.form ?? "" }) : t(`suggest.${suggested.decision}`),
+            confidence: Math.round(suggested.confidence * 100),
+          })}
+        </p>
+      )}
 
       {!editing ? (
         <div className="flex flex-wrap gap-2">
+          {suggestedRecord && (
+            <button type="button" disabled={!canTake} className={`${button} bg-indigo-600 hover:bg-indigo-700`} onClick={() => onDecide(uid, suggestedRecord)}>
+              {t("take")}
+            </button>
+          )}
           <button type="button" disabled={!canAccept} aria-describedby={!canAccept ? warningId : undefined} className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, { decision: "accept" })}>
             {removal ? t("remove") : r("actions.accept")}
           </button>
