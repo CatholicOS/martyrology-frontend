@@ -86,7 +86,7 @@ describe("mentions in the reader's text", () => {
     expect(screen.getByRole("button", { name: "Petri" })).toHaveAttribute("data-mention", `ed|${ID}|fn1|5`);
   });
 
-  it("keeps the two columns of a spread apart when both print the same eulogy", () => {
+  it("tints a person in both columns of a spread, but opens the popup of the mark hovered only", () => {
     const column = (edition: string) => (
       <div data-side={edition}>
         <p><EulogyText text={TEXT} id={ID} edition={edition} mentions={[place, person]} /></p>
@@ -96,8 +96,9 @@ describe("mentions in the reader's text", () => {
     const pieces = (side: string) => [...container.querySelectorAll<HTMLElement>(`[data-side="${side}"] [data-mention]`)];
     const basilius = (side: string) => pieces(side).find((p) => p.textContent === "Basilíi")!;
     fireEvent.mouseEnter(basilius("b"));
+    // The same person (name and n) in the other column is tinted too; the place beside it is not.
     expect(pieces("b").filter((p) => p.hasAttribute("data-active"))).toEqual([basilius("b")]);
-    expect(pieces("a").filter((p) => p.hasAttribute("data-active"))).toEqual([]);
+    expect(pieces("a").filter((p) => p.hasAttribute("data-active"))).toEqual([basilius("a")]);
     fireEvent.mouseLeave(basilius("b"));
     // From the keyboard in column b: the focus goes into the popup, and back to column b's mention.
     act(() => basilius("b").focus());

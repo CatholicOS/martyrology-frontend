@@ -2,8 +2,8 @@ import type { ElogiumOut, Mention } from "@/lib/types";
 
 /**
  * A mention placed in one eulogy's text or footnote: `key` names it on the page, across its pieces; `group` names
- * every mark of the same person there (a name printed in pieces, "Petri, cognoménto Apselámi seu Bálsami"), tinted
- * together.
+ * every mark of the same person in the eulogy (a name printed in pieces, "Petri, cognoménto Apselámi seu Bálsami",
+ * or again in a footnote, or in the other column of a spread), tinted together.
  */
 export interface PlacedMention extends Mention {
   key: string;
@@ -30,12 +30,13 @@ export function mentionKey(edition: string, eulogy: string, m: Mention): string 
 }
 
 /**
- * The marks tinted together with this one: a person's, by their name and n, in one eulogy's text or footnote as
- * printed in `edition`; a place's mark alone.
+ * The marks tinted together with this one: a person's, by their name and n in one eulogy, which is who they are
+ * (crmedr's persons), in its text and its footnotes and in every edition printed beside it (the Italian marks carry
+ * the Latin name and n); a place's mark alone. Never by the Wikidata item, which most persons do not have.
  */
 export function mentionGroup(edition: string, eulogy: string, m: Mention): string {
   if (m.kind !== "person" || !m.name) return mentionKey(edition, eulogy, m);
-  return `${edition}|${eulogy}|${whereKey(m.where)}|person|${m.name}#${m.n ?? 1}`;
+  return `${eulogy}|person|${m.name}#${m.n ?? 1}`;
 }
 
 /**

@@ -105,10 +105,18 @@ describe("mentionGroup", () => {
     expect(g(piece(20, 25, "Felix"))).not.toBe(g(piece(40, 45, "Felix", 2)));
   });
 
-  it("keeps a place's mark alone, and a person's in the text apart from the same person in a footnote", () => {
+  it("keeps a place's mark alone", () => {
     const place = { kind: "place" as const, where: "text" as const, start: 0, end: 4, form: "Romæ", qid: "Q220", name: null };
     expect(mentionGroup("ed", "mr:x", place)).toBe(mentionKey("ed", "mr:x", place));
+  });
+
+  it("joins a person's marks in the text and in the footnotes, and in both columns of a spread", () => {
+    // One person is one name and n in one eulogy, wherever and in whichever edition it is printed: the Italian
+    // marks carry the Latin name and n.
     const inNote = { ...piece(0, 5, "Felix"), where: { footnote: 1 } };
-    expect(mentionGroup("ed", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("ed", "mr:x", inNote));
+    expect(mentionGroup("ed", "mr:x", piece(0, 5, "Felix"))).toBe(mentionGroup("ed", "mr:x", inNote));
+    expect(mentionGroup("la", "mr:x", piece(0, 5, "Felix"))).toBe(mentionGroup("it", "mr:x", piece(9, 14, "Felix")));
+    expect(mentionGroup("la", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("it", "mr:x", piece(9, 14, "Felix", 2)));
+    expect(mentionGroup("la", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("la", "mr:y", piece(0, 5, "Felix")));
   });
 });
