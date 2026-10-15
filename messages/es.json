@@ -507,7 +507,14 @@
       "remove": "Quitar la marca",
       "keep": "Mantener la marca",
       "removed": "quitada",
-      "kept": "mantenida"
+      "kept": "mantenida",
+      "suggests": "Jev sugiere: {what} ({confidence} %)",
+      "suggest": {
+        "accept": "aceptar",
+        "reject": "rechazar"
+      },
+      "suggestEdit": "marcar «{form}»",
+      "take": "Seguir la sugerencia"
     },
     "addPlace": {
       "title": "Lugar nombrado en el elogio",

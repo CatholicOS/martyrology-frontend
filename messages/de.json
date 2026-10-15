@@ -507,7 +507,14 @@
       "remove": "Markierung entfernen",
       "keep": "Markierung behalten",
       "removed": "entfernt",
-      "kept": "behalten"
+      "kept": "behalten",
+      "suggests": "Jev schlägt vor: {what} ({confidence} %)",
+      "suggest": {
+        "accept": "annehmen",
+        "reject": "ablehnen"
+      },
+      "suggestEdit": "„{form}“ markieren",
+      "take": "Vorschlag übernehmen"
     },
     "addPlace": {
       "title": "Im Elogium genannter Ort",

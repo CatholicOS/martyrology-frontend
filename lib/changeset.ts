@@ -279,6 +279,18 @@ interface MentionBase extends Base {
   context_start: number;
 }
 
+/** Jev's suggestion on a mention card (crmedr scripts/suggest_mentions.py): never a decision by itself. */
+export interface MentionSuggestion {
+  decision: "accept" | "reject" | "edit";
+  /** An edit's words, in the same offsets as the op. */
+  start?: number;
+  end?: number;
+  form?: string;
+  probability: number;
+  confidence: number;
+  model: string;
+}
+
 /** Mark words not marked yet. No span (all null): crmedr could not find the person; the curator picks the words. */
 export interface AddMentionOp extends MentionBase {
   op: "add_mention";
@@ -287,6 +299,8 @@ export interface AddMentionOp extends MentionBase {
   start: number | null;
   end: number | null;
   form: string | null;
+  /** Jev's suggestion, when its confidence reached crmedr's threshold. */
+  suggested?: MentionSuggestion | null;
 }
 
 /** Move a mark: the words it covers now (`from`) and the words it should cover (`to`). */

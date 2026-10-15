@@ -507,7 +507,14 @@
       "remove": "Rimuovi il segno",
       "keep": "Mantieni il segno",
       "removed": "rimosso",
-      "kept": "mantenuto"
+      "kept": "mantenuto",
+      "suggests": "Jev suggerisce: {what} ({confidence}%)",
+      "suggest": {
+        "accept": "accettare",
+        "reject": "respingere"
+      },
+      "suggestEdit": "segnare «{form}»",
+      "take": "Accogli il suggerimento"
     },
     "addPlace": {
       "title": "Luogo nominato nell'elogio",

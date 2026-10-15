@@ -507,7 +507,14 @@
       "remove": "Remove the mark",
       "keep": "Keep the mark",
       "removed": "removed",
-      "kept": "kept"
+      "kept": "kept",
+      "suggests": "Jev suggests: {what} ({confidence}%)",
+      "suggest": {
+        "accept": "accept",
+        "reject": "reject"
+      },
+      "suggestEdit": "mark «{form}»",
+      "take": "Take the suggestion"
     },
     "addPlace": {
       "title": "Place named in the eulogy",
