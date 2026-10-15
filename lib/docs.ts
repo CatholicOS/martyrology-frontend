@@ -17,6 +17,7 @@ export const DOC_PAGES = [
   { slug: "lunar-table", part: "martyrology" },
   { slug: "editions", part: "martyrology" },
   { slug: "notes-and-marks", part: "martyrology" },
+  { slug: "names-and-places", part: "martyrology" },
   { slug: "ids", part: "project" },
   { slug: "data", part: "project" },
   { slug: "contributing", part: "project" },

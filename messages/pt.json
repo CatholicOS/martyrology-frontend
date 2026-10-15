@@ -582,6 +582,10 @@
         "title": "Notas, erros de impressão e errata",
         "description": "O que uma edição imprime e o que os curadores acrescentam."
       },
+      "names-and-places": {
+        "title": "Nomes e lugares",
+        "description": "Como as pessoas e os lugares são marcados, realçados e ligados ao Wikidata."
+      },
       "ids": {
         "title": "Os identificadores canônicos dos elogios",
         "description": "Por que cada elogio tem um identificador e as regras que o formam."

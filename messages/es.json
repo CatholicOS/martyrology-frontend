@@ -582,6 +582,10 @@
         "title": "Notas, erratas y fe de erratas",
         "description": "Lo que imprime una edición y lo que añaden los curadores."
       },
+      "names-and-places": {
+        "title": "Nombres y lugares",
+        "description": "Cómo se marcan, resaltan y enlazan con Wikidata las personas y los lugares."
+      },
       "ids": {
         "title": "Los identificadores canónicos de los elogios",
         "description": "Por qué cada elogio tiene un identificador y las reglas que lo forman."

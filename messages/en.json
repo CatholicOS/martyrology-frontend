@@ -582,6 +582,10 @@
         "title": "Notes, misprints and errata",
         "description": "What an edition prints, and what the curators add."
       },
+      "names-and-places": {
+        "title": "Names and places",
+        "description": "How persons and places are marked, highlighted and linked to Wikidata."
+      },
       "ids": {
         "title": "Canonical eulogy IDs",
         "description": "Why every eulogy has an identifier, and the rules that form it."

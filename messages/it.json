@@ -582,6 +582,10 @@
         "title": "Note, refusi ed errata",
         "description": "Ciò che un’edizione stampa e ciò che aggiungono i curatori."
       },
+      "names-and-places": {
+        "title": "Nomi e luoghi",
+        "description": "Come persone e luoghi sono segnati, evidenziati e collegati a Wikidata."
+      },
       "ids": {
         "title": "Gli identificatori canonici degli elogi",
         "description": "Perché ogni elogio ha un identificatore, e le regole che lo formano."

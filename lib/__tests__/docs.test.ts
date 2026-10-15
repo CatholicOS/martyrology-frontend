@@ -5,14 +5,14 @@ import {
 import en from "@/messages/en.json";
 
 describe("the docs registry", () => {
-  it("lists the ten pages in reading order, Part I then Part II", () => {
+  it("lists the eleven pages in reading order, Part I then Part II", () => {
     expect(DOC_PAGES.map((p) => p.slug)).toEqual([
       "history", "using", "particular-calendars", "reading-a-day", "lunar-table", "editions", "notes-and-marks",
-      "ids", "data", "contributing",
+      "names-and-places", "ids", "data", "contributing",
     ]);
     expect(DOC_PAGES.map((p) => p.part)).toEqual([
       "martyrology", "martyrology", "martyrology", "martyrology", "martyrology", "martyrology", "martyrology",
-      "project", "project", "project",
+      "martyrology", "project", "project", "project",
     ]);
   });
 
@@ -46,7 +46,8 @@ describe("the docs registry", () => {
   it("gives neighbours, open at both ends and across the parts", () => {
     expect(neighbours("history")).toEqual({ prev: undefined, next: findPage("using") });
     expect(neighbours("contributing")).toEqual({ prev: findPage("data"), next: undefined });
-    expect(neighbours("notes-and-marks").next?.slug).toBe("ids");
+    expect(neighbours("notes-and-marks").next?.slug).toBe("names-and-places");
+    expect(neighbours("names-and-places").next?.slug).toBe("ids");
     expect(neighbours("nope")).toEqual({});
   });
 
