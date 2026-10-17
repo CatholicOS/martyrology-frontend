@@ -1837,6 +1837,11 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Loreto\" where the Latin has \"Lórii\" (Lorium, on the Via Aurelia)."
     }
   },
+  "mr:0612-laurentius-maria-a-sancto-francisco-xaverio": {
+    "editions": {
+      "martyrologium_romanum_2004": "Usage: \"devotiónem dístulit\" means \"spread the devotion\": differre in its sense \"to spread abroad\" (Lewis and Short, differo I.B.2), not \"to postpone\". The Italian has \"diffuse\"."
+    }
+  },
   "mr:0612-mercedis-maria-a-iesu": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Rivibamba\" for the city of Riobamba (Latin \"Rivibámbæ\")."
