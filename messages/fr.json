@@ -467,7 +467,8 @@
         "companion": "trouvé par un parent ({prop})",
         "sparql": "mort ce jour-là",
         "title": "titre ou fête",
-        "curated": "titre établi"
+        "curated": "titre établi",
+        "group": "trouvé via un groupe ({prop})"
       },
       "jevSuggests": "Jev suggère : {what} ({confidence} %)",
       "jevNone": "aucun élément",
@@ -491,7 +492,13 @@
       "noItem": "Aucun élément",
       "reason": "Motif",
       "confirm": "Confirmer",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "kind": {
+        "person": "une personne",
+        "celebration_or_title": "une fête ou un titre",
+        "anonymous_group": "un groupe anonyme",
+        "not_identifiable": "non identifiable"
+      }
     },
     "mention": {
       "kind": {

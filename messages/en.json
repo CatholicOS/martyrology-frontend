@@ -467,7 +467,8 @@
         "companion": "found through a relative ({prop})",
         "sparql": "died on this day",
         "title": "title or feast",
-        "curated": "curated title"
+        "curated": "curated title",
+        "group": "found through a group ({prop})"
       },
       "jevSuggests": "Jev suggests: {what} ({confidence}%)",
       "jevNone": "no item",
@@ -491,7 +492,13 @@
       "noItem": "No item",
       "reason": "Reason",
       "confirm": "Confirm",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "kind": {
+        "person": "person",
+        "celebration_or_title": "a feast or title",
+        "anonymous_group": "an anonymous group",
+        "not_identifiable": "not identifiable"
+      }
     },
     "mention": {
       "kind": {

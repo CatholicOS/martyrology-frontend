@@ -467,7 +467,8 @@
         "companion": "encontrado a través de un pariente ({prop})",
         "sparql": "murió en este día",
         "title": "título o fiesta",
-        "curated": "título curado"
+        "curated": "título curado",
+        "group": "encontrado a través de un grupo ({prop})"
       },
       "jevSuggests": "Jev sugiere: {what} ({confidence} %)",
       "jevNone": "ningún elemento",
@@ -491,7 +492,13 @@
       "noItem": "Ningún elemento",
       "reason": "Motivo",
       "confirm": "Confirmar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "kind": {
+        "person": "una persona",
+        "celebration_or_title": "una fiesta o un título",
+        "anonymous_group": "un grupo anónimo",
+        "not_identifiable": "no identificable"
+      }
     },
     "mention": {
       "kind": {
@@ -585,7 +592,7 @@
         "record": "registro: {field}",
         "grammar": "{field} se lee como {choice}"
       },
-      "acceptSelected": "Aceptar los seleccionados",
+      "acceptSelected": "Aceptar la selección",
       "labels": "etiquetas"
     },
     "eulogyGroup": "Elogio {eulogy}"

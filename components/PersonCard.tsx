@@ -16,6 +16,9 @@ interface Props {
   baseEdition: string;
 }
 
+const JEV_KINDS = ["person", "celebration_or_title", "anonymous_group", "not_identifiable"] as const;
+const isJevKind = (k: string): k is (typeof JEV_KINDS)[number] => (JEV_KINDS as readonly string[]).includes(k);
+
 const ITALIAN_2004 = "martyrologium_romanum_2004_it_IT";
 
 /**
@@ -103,7 +106,7 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
       {jev && (
         <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-indigo-700 dark:text-indigo-300">
           <span>{t("jevSuggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}</span>
-          {jev.kind && jev.kind !== "person" && <span className="text-amber-700 dark:text-amber-400">{t("jevKind", { kind: jev.kind })}</span>}
+          {jev.kind && jev.kind !== "person" && <span className="text-amber-700 dark:text-amber-400">{t("jevKind", { kind: isJevKind(jev.kind) ? t(`kind.${jev.kind}`) : jev.kind })}</span>}
           <button
             type="button"
             disabled={!jevRecord}
@@ -113,7 +116,11 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
               if (jevRecord.decision === "edit" && jevRecord.edited?.wikidata) {
                 setSelected(jevRecord.edited.wikidata);
                 setOtherQid("");
+              } else if (jevRecord.decision === "accept") {
+                setSelected(defaultQid);
+                setOtherQid("");
               }
+              if (jevRecord.decision !== "reject") setRejecting(false);
               onDecide(id, jevRecord);
             }}
           >
@@ -147,9 +154,10 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
             <span className="text-xs text-slate-500 dark:text-slate-400">{c.evidence.join(", ")}</span>
             {(() => {
               const source = sourceKey(c.source);
+              const prop = companionProp(c.source) ?? "";
               return source === "search" ? null : (
                 <span className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
-                  {t(`source.${source}`, { prop: companionProp(c.source) ?? "" })}
+                  {source === "companion" && prop === "P361" ? t("source.group", { prop }) : t(`source.${source}`, { prop })}
                 </span>
               );
             })()}

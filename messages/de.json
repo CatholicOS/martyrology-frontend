@@ -467,7 +467,8 @@
         "companion": "über einen Verwandten gefunden ({prop})",
         "sparql": "an diesem Tag gestorben",
         "title": "Titel oder Fest",
-        "curated": "kuratierter Titel"
+        "curated": "kuratierter Titel",
+        "group": "über eine Gruppe gefunden ({prop})"
       },
       "jevSuggests": "Jev schlägt vor: {what} ({confidence} %)",
       "jevNone": "kein Eintrag",
@@ -491,7 +492,13 @@
       "noItem": "Kein Datenobjekt",
       "reason": "Grund",
       "confirm": "Bestätigen",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "kind": {
+        "person": "eine Person",
+        "celebration_or_title": "ein Fest oder ein Titel",
+        "anonymous_group": "eine anonyme Gruppe",
+        "not_identifiable": "nicht identifizierbar"
+      }
     },
     "mention": {
       "kind": {

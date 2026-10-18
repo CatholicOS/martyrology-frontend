@@ -127,7 +127,16 @@ export default function RenameCard({ op, decision, onDecide, locale, baseEdition
               type="button"
               disabled={!jevRecord}
               className={`${button} bg-indigo-600 hover:bg-indigo-700`}
-              onClick={() => jevRecord && onDecide(uid, jevRecord)}
+              onClick={() => {
+                if (!jevRecord) return;
+                const taken = jevRecord.decision === "edit" ? (jevRecord.edited?.new_id ?? op.new_id) : op.new_id;
+                setSelected(taken);
+                if (jevRecord.decision === "edit") {
+                  setNewIdInput(taken);
+                  setSubjectLaInput(jevRecord.edited?.subject_la ?? "");
+                }
+                onDecide(uid, jevRecord);
+              }}
             >
               {t("take")}
             </button>

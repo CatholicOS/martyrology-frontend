@@ -67,6 +67,24 @@ describe("RenameCard", () => {
     expect(screen.getByText("Jev suggests: keep the proposed ID (90%)")).toBeInTheDocument();
   });
 
+  it("after taking Jev's edit the chosen radio is checked and Accept selected keeps it", () => {
+    const onDecide = vi.fn();
+    const jev = { decision: "edit" as const, new_id: "mr:0101-eugendus-condatiscensis", probability: 0.87, confidence: 3, model: "jev", flags: [], scores: {} };
+    render(<OperationCard op={withJev(jev)} onDecide={onDecide} {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+    expect(screen.getAllByRole("radio")[1]).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+    expect(onDecide).toHaveBeenLastCalledWith("subject:mr:0101-eugendus", EDIT);
+  });
+
+  it("after taking Jev's accept the proposal is selected again", () => {
+    const jev = { decision: "accept" as const, probability: 0.9, confidence: 3, model: "jev", flags: [], scores: {} };
+    render(<OperationCard op={withJev(jev)} onDecide={vi.fn()} {...props} />);
+    fireEvent.click(screen.getAllByRole("radio")[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+    expect(screen.getAllByRole("radio")[0]).toBeChecked();
+  });
+
   it("shows flags and, when Jev only doubts, no take button", () => {
     const jev = { flags: ["record:places[0]", "grammar:places[1]:genitive"], model: "jev", scores: {} };
     render(<OperationCard op={withJev(jev)} onDecide={vi.fn()} {...props} />);
