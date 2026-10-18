@@ -549,7 +549,35 @@
     },
     "bulkAccept": "Aceitar os {count} pendentes exibidos",
     "bulkConfirm": "Aceitar {count}?",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "rename": {
+      "candidates": "Candidate IDs",
+      "category": {
+        "surname": "surname",
+        "place-genitive": "place (genitive)",
+        "place-adjective": "place (adjective)",
+        "role": "role",
+        "role-place": "role and place",
+        "epithet": "epithet",
+        "twin": "twin",
+        "papa": "pope",
+        "biblical-title": "biblical title"
+      },
+      "weak": "weak",
+      "uncertain": "uncertain genitive",
+      "draft": "earlier draft",
+      "clarity": "clarity {score}/3",
+      "suggests": "Jev suggests: {what} ({confidence}%)",
+      "keep": "keep the proposed ID",
+      "take": "Take the suggestion",
+      "doubts": "Jev doubts the record",
+      "flag": {
+        "record": "record: {field}",
+        "grammar": "{field} reads as {choice}"
+      },
+      "acceptSelected": "Accept selected",
+      "labels": "labels"
+    }
   },
   "Docs": {
     "index": {

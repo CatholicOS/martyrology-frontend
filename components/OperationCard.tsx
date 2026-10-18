@@ -10,6 +10,7 @@ import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PersonCard from "@/components/PersonCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
+import RenameCard from "@/components/RenameCard";
 import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
 import {
   isAdjudicable,
@@ -73,6 +74,10 @@ export default function OperationCard(props: Props) {
   // crmedr's mentions (eulogy markup): a quoted passage and a span, no eulogy fetched.
   if (isMentionOp(props.op)) {
     return <MentionCard op={props.op} decision={props.decision} onDecide={props.onDecide} />;
+  }
+  // A subject-identity rename with ranked candidates (crmedr subject identity).
+  if (props.op.op === "rename" && (props.op as RenameOp).candidates?.length) {
+    return <RenameCard {...props} op={props.op as RenameOp} />;
   }
   return <IdOperationCard {...props} />;
 }
