@@ -464,15 +464,15 @@
     "person": {
       "inText": "nel testo",
       "source": {
-        "companion": "found through a relative ({prop})",
-        "sparql": "died on this day",
-        "title": "title or feast",
-        "curated": "curated title"
+        "companion": "trovato tramite un parente ({prop})",
+        "sparql": "morto in questo giorno",
+        "title": "titolo o festa",
+        "curated": "titolo curato"
       },
-      "jevSuggests": "Jev suggests: {what} ({confidence}%)",
-      "jevNone": "no item",
-      "jevKind": "Jev reads this name as: {kind}",
-      "take": "Take the suggestion",
+      "jevSuggests": "Jev suggerisce: {what} ({confidence}%)",
+      "jevNone": "nessuna voce",
+      "jevKind": "Jev legge questo nome come: {kind}",
+      "take": "Accetta il suggerimento",
       "inFootnote": "nella nota {n}",
       "companions": "Nominato con: {names}",
       "ordinal": "la {n}ª persona con questo nome in questo elogio",
@@ -561,34 +561,34 @@
     "bulkConfirm": "Accettare {count}?",
     "confirm": "Conferma",
     "rename": {
-      "candidates": "Candidate IDs",
+      "candidates": "ID candidati",
       "category": {
-        "surname": "surname",
-        "place-genitive": "place (genitive)",
-        "place-adjective": "place (adjective)",
-        "role": "role",
-        "role-place": "role and place",
-        "epithet": "epithet",
-        "twin": "twin",
-        "papa": "pope",
-        "biblical-title": "biblical title"
+        "surname": "cognome",
+        "place-genitive": "luogo (genitivo)",
+        "place-adjective": "luogo (aggettivo)",
+        "role": "ruolo",
+        "role-place": "ruolo e luogo",
+        "epithet": "epiteto",
+        "twin": "gemello",
+        "papa": "papa",
+        "biblical-title": "titolo biblico"
       },
-      "weak": "weak",
-      "uncertain": "uncertain genitive",
-      "draft": "earlier draft",
-      "clarity": "clarity {score}/3",
-      "suggests": "Jev suggests: {what} ({confidence}%)",
-      "keep": "keep the proposed ID",
-      "take": "Take the suggestion",
-      "doubts": "Jev doubts the record",
+      "weak": "debole",
+      "uncertain": "genitivo incerto",
+      "draft": "bozza precedente",
+      "clarity": "chiarezza {score}/3",
+      "suggests": "Jev suggerisce: {what} ({confidence}%)",
+      "keep": "mantieni l’ID proposto",
+      "take": "Accetta il suggerimento",
+      "doubts": "Jev dubita del record",
       "flag": {
         "record": "record: {field}",
-        "grammar": "{field} reads as {choice}"
+        "grammar": "{field} si legge come {choice}"
       },
-      "acceptSelected": "Accept selected",
-      "labels": "labels"
+      "acceptSelected": "Accetta i selezionati",
+      "labels": "etichette"
     },
-    "eulogyGroup": "Eulogy {eulogy}"
+    "eulogyGroup": "Elogio {eulogy}"
   },
   "Docs": {
     "index": {

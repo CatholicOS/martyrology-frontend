@@ -64,6 +64,8 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Review.addPlace.everyone": ALL, "Review.addPlace.latin": ["fr"], "Review.addPlace.roles.translation": ["fr"],
   "Review.addPlace.roles.mention": ["fr"], "Review.addPlace.person": ["de"],
   // Names of the two sites, and a format made only of arguments and a dash; "c." for circa in Spanish and Portuguese too.
+  // "record: {field}": Italian says "record" too.
+  "Review.rename.flag.record": ["it"],
   "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.circa": ["es", "pt"],
 };
 
