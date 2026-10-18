@@ -137,3 +137,45 @@ describe("ReviewPage bulk accept", () => {
     expect(screen.getByRole("button", { name: "Accept the 1 undecided shown" })).toBeInTheDocument();
   });
 });
+
+describe("ReviewPage groups a eulogy's cards", () => {
+  const person = (eulogy: string, name: string, n?: number) => ({
+    op: "resolve_person", id: `${eulogy}|${name}${n ? `#${n}` : ""}`, eulogy, day: "01-01", typology: null, subject: "Fictinus",
+    name, ...(n ? { n } : {}), where: "text", companions: [], failed: [], candidates: [], suggested: null,
+    reasoning: "r", confidence: "high", class: "bare", decision: null, edited: null,
+  });
+  const rename = (id: string) => ({
+    op: "rename", id, new_id: `${id}-abbas`, uid: `subject:${id}`, subject_la: "Fictinus", class: "bare", confidence: "high",
+    reasoning: "r", decision: null,
+    candidates: [{ new_id: `${id}-abbas`, category: "role", weak: false, labels: { la: "Fictinus Abbas", en: null, it: null }, basis: "bare-name draft" }],
+  });
+  const load = async (operations: unknown[], file: string) => {
+    const set = { schema: "crmedr-changeset/v1", generated_by: "t", base: { edition: "martyrologium_romanum_1749", registry: "data/subjects.json" }, operations };
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true, json: () => Promise.resolve({ changesets: [file] }), text: () => Promise.resolve(JSON.stringify(set)), url,
+    })));
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: file })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: file } });
+  };
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("puts the rename before the person cards under one heading per eulogy", async () => {
+    await load([person("mr:0101-a", "Fictinus"), rename("mr:0102-b"), rename("mr:0101-a"), person("mr:0102-b", "Ficta", 2)], "month.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(4));
+    const headings = screen.getAllByText(/^Eulogy mr:/);
+    expect(headings.map((h) => h.textContent)).toEqual(["Eulogy mr:0101-a", "Eulogy mr:0102-b"]);
+    const ids = screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"));
+    expect(ids).toEqual([
+      "op-card-subject:mr:0101-a", "op-card-mr:0101-a|Fictinus",
+      "op-card-subject:mr:0102-b", "op-card-mr:0102-b|Ficta#2",
+    ]);
+  });
+
+  it("keeps file order and shows no heading without rename candidates", async () => {
+    await load([person("mr:0102-b", "Ficta"), person("mr:0101-a", "Fictinus")], "people.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    expect(screen.queryByText(/^Eulogy mr:/)).not.toBeInTheDocument();
+    expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"))).toEqual(["op-card-mr:0102-b|Ficta", "op-card-mr:0101-a|Fictinus"]);
+  });
+});

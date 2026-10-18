@@ -587,7 +587,8 @@
       },
       "acceptSelected": "Accept selected",
       "labels": "labels"
-    }
+    },
+    "eulogyGroup": "Eulogy {eulogy}"
   },
   "Docs": {
     "index": {

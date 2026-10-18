@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp } from "@/lib/changeset";
+import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RenameOp } from "@/lib/changeset";
+import { groupByEulogy } from "@/lib/subject-review";
 import {
   decisionsFromChangeset,
   decisionsKey,
@@ -132,6 +133,24 @@ export default function ReviewPage() {
     });
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, idFilter, decisions]);
 
+  // A change-set with rename candidates (crmedr's subject month) shows a eulogy's cards together.
+  const grouped = useMemo(
+    () => !!cs && cs.operations.some((op) => op.op === "rename" && !!(op as RenameOp).candidates),
+    [cs]
+  );
+  // Paging counts cards; a group may be cut by "show more".
+  const pageGroups = useMemo(() => {
+    if (!grouped) return [];
+    let left = shown;
+    const out: ReturnType<typeof groupByEulogy> = [];
+    for (const group of groupByEulogy(filteredOps)) {
+      if (left <= 0) break;
+      out.push({ eulogy: group.eulogy, ops: group.ops.slice(0, left) });
+      left -= group.ops.length;
+    }
+    return out;
+  }, [grouped, filteredOps, shown]);
+
   // Bulk accept: every undecided add_place op the filters select (all pages), once a confidence is chosen.
   const bulkTargets = useMemo(
     () =>
@@ -177,6 +196,17 @@ export default function ReviewPage() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const renderCard = (op: Op) => (
+    <OperationCard
+      key={opId(op)}
+      op={op}
+      decision={decisions[opId(op)]}
+      onDecide={onDecide}
+      locale={locale}
+      baseEdition={cs?.base.edition ?? ""}
+    />
+  );
 
   return (
     <main className="mx-auto max-w-5xl p-8">
@@ -341,16 +371,14 @@ export default function ReviewPage() {
             {filteredOps.length === 0 && (
               <p className="text-slate-500 dark:text-slate-400">{t("noMatch")}</p>
             )}
-            {filteredOps.slice(0, shown).map((op) => (
-              <OperationCard
-                key={opId(op)}
-                op={op}
-                decision={decisions[opId(op)]}
-                onDecide={onDecide}
-                locale={locale}
-                baseEdition={cs.base.edition}
-              />
-            ))}
+            {grouped
+              ? pageGroups.map((group, i) => (
+                  <section key={group.eulogy ?? `single-${i}`} className={group.eulogy ? "mb-3 rounded border border-slate-300 p-2 dark:border-slate-600" : undefined}>
+                    {group.eulogy && <h2 className="mb-2 font-mono text-xs text-slate-500 dark:text-slate-400">{t("eulogyGroup", { eulogy: group.eulogy })}</h2>}
+                    {group.ops.map(renderCard)}
+                  </section>
+                ))
+              : filteredOps.slice(0, shown).map(renderCard)}
             {filteredOps.length > shown && (
               <button
                 type="button"
