@@ -116,4 +116,19 @@ describe("RenameCard", () => {
     expect(screen.getByText("mr:0101-eugendus-abbas")).toBeInTheDocument();
     expect(screen.queryByRole("radio")).not.toBeInTheDocument();
   });
+
+  it("confirming the edit form after taking Jev's edit omits subject_la when the candidate has no Latin label", () => {
+    const onDecide = vi.fn();
+    const noLa: RenameOp = {
+      ...op,
+      candidates: op.candidates!.map((c, k) => (k === 1 ? { ...c, labels: { ...c.labels, la: null } } : c)),
+      jev: { decision: "edit", new_id: "mr:0101-eugendus-condatiscensis", probability: 0.87, confidence: 3, model: "jev", flags: [], scores: {} },
+    };
+    render(<OperationCard op={noLa} onDecide={onDecide} {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith("subject:mr:0101-eugendus", { decision: "edit", edited: { new_id: "mr:0101-eugendus-condatiscensis" } });
+    expect(Object.keys(onDecide.mock.calls.at(-1)![1].edited)).toEqual(["new_id"]);
+  });
 });

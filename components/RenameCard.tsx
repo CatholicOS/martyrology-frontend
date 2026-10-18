@@ -166,7 +166,8 @@ export default function RenameCard({ op, decision, onDecide, locale, baseEdition
               type="button"
               className={`${button} bg-amber-600 hover:bg-amber-700`}
               onClick={() => {
-                onDecide(uid, { decision: "edit", edited: { new_id: newIdInput, subject_la: subjectLaInput } });
+                const subjectLa = subjectLaInput.trim();
+                onDecide(uid, { decision: "edit", edited: { new_id: newIdInput, ...(subjectLa ? { subject_la: subjectLaInput } : {}) } });
                 setEditing(false);
               }}
             >
