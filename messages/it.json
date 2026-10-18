@@ -463,6 +463,16 @@
     },
     "person": {
       "inText": "nel testo",
+      "source": {
+        "companion": "found through a relative ({prop})",
+        "sparql": "died on this day",
+        "title": "title or feast",
+        "curated": "curated title"
+      },
+      "jevSuggests": "Jev suggests: {what} ({confidence}%)",
+      "jevNone": "no item",
+      "jevKind": "Jev reads this name as: {kind}",
+      "take": "Take the suggestion",
       "inFootnote": "nella nota {n}",
       "companions": "Nominato con: {names}",
       "ordinal": "la {n}ª persona con questo nome in questo elogio",

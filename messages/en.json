@@ -463,6 +463,16 @@
     },
     "person": {
       "inText": "in the text",
+      "source": {
+        "companion": "found through a relative ({prop})",
+        "sparql": "died on this day",
+        "title": "title or feast",
+        "curated": "curated title"
+      },
+      "jevSuggests": "Jev suggests: {what} ({confidence}%)",
+      "jevNone": "no item",
+      "jevKind": "Jev reads this name as: {kind}",
+      "take": "Take the suggestion",
       "inFootnote": "in footnote {n}",
       "companions": "Named with: {names}",
       "ordinal": "the {n, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} of this name in this eulogy",

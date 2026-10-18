@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type ResolvePersonOp } from "@/lib/changeset";
+import { companionProp, personAppliable, personDefaultQid, personJevRecord, sourceKey } from "@/lib/subject-review";
 import type { Locale } from "@/lib/types";
 
 interface Props {
@@ -29,7 +30,7 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
   const tr = useTranslations("Review");
   const suggested = op.suggested ?? null;
   const byQid = new Set(op.candidates.map((c) => c.wikidata));
-  const defaultQid = suggested?.wikidata ?? op.candidates[0]?.wikidata ?? "";
+  const defaultQid = personDefaultQid(op);
   const ed = decision?.decision === "edit" ? decision.edited : undefined;
   const seedQid = ed?.wikidata ?? defaultQid;
   const [selected, setSelected] = useState(byQid.has(seedQid) ? seedQid : defaultQid);
@@ -39,13 +40,16 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
   const [showEulogy, setShowEulogy] = useState(false);
 
   const qid = otherQid.trim() || selected;
-  // A listed candidate must pass what crmedr's apply checks (its own evidence: human, a saint or
-  // blessed status), or apply refuses the whole export; a typed QID is left for apply to check.
+  // A listed candidate must pass what crmedr's apply checks (a title or curated item, or a human
+  // with a saint or blessed status), or apply refuses the whole export; a typed QID is left for apply to check.
   const listed = otherQid.trim() ? null : op.candidates.find((c) => c.wikidata === qid);
-  const eligible = !listed || (listed.evidence.includes("human") && listed.evidence.includes("status"));
+  const eligible = !listed || personAppliable(listed);
   const canAccept = /^Q[1-9]\d*$/.test(qid) && eligible;
   const id = opId(op);
   const unchanged = qid === defaultQid;
+  const jev = op.jev;
+  const jevRecord = personJevRecord(op);
+  const jevWhat = jev?.decision === "reject" ? t("jevNone") : (op.candidates.find((c) => c.wikidata === jev?.wikidata)?.label ?? jev?.wikidata ?? "");
   const where = op.where === "text" ? t("inText") : t("inFootnote", { n: op.where.footnote });
 
   return (
@@ -96,6 +100,28 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
         </p>
       )}
 
+      {jev && (
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-indigo-700 dark:text-indigo-300">
+          <span>{t("jevSuggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}</span>
+          {jev.kind && jev.kind !== "person" && <span className="text-amber-700 dark:text-amber-400">{t("jevKind", { kind: jev.kind })}</span>}
+          <button
+            type="button"
+            disabled={!jevRecord}
+            className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
+            onClick={() => {
+              if (!jevRecord) return;
+              if (jevRecord.decision === "edit" && jevRecord.edited?.wikidata) {
+                setSelected(jevRecord.edited.wikidata);
+                setOtherQid("");
+              }
+              onDecide(id, jevRecord);
+            }}
+          >
+            {t("take")}
+          </button>
+        </div>
+      )}
+
       <fieldset className="mb-2 flex flex-col gap-1">
         <legend className="text-xs font-medium">{t("candidates")}</legend>
         {op.candidates.map((c) => (
@@ -119,6 +145,14 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
               {c.wikidata}
             </a>
             <span className="text-xs text-slate-500 dark:text-slate-400">{c.evidence.join(", ")}</span>
+            {(() => {
+              const source = sourceKey(c.source);
+              return source === "search" ? null : (
+                <span className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
+                  {t(`source.${source}`, { prop: companionProp(c.source) ?? "" })}
+                </span>
+              );
+            })()}
           </div>
         ))}
         <label className="mt-1 flex items-center gap-2 text-xs">
