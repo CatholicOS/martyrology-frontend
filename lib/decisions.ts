@@ -1,5 +1,6 @@
 import type { Changeset, DecisionRecord } from "@/lib/changeset";
 import { opId } from "@/lib/changeset";
+import { resolvedTarget } from "@/lib/subject-review";
 
 export type DecisionMap = Record<string, DecisionRecord>;
 
@@ -42,14 +43,18 @@ export function loadDecisionsFor(cs: Changeset): DecisionMap {
   if (typeof window === "undefined") return {};
   const key = decisionsKey(cs);
   const prefix = `mrf:decisions:${cs.base.edition}:`;
-  const ids = new Set(cs.operations.map(opId));
+  const ops = new Map(cs.operations.map((op) => [opId(op), op]));
   const carried: DecisionMap = {};
   try {
     for (let i = 0; i < window.localStorage.length; i++) {
       const k = window.localStorage.key(i);
       if (!k || k === key || !k.startsWith(prefix)) continue;
       for (const [id, d] of Object.entries(loadDecisions(k))) {
-        if (ids.has(id)) carried[id] = d;
+        const op = ops.get(id);
+        if (!op) continue;
+        // An accept carried from another version keeps its meaning only if it still resolves to the same target.
+        if (d.target !== undefined && d.target !== resolvedTarget(op)) continue;
+        carried[id] = d;
       }
     }
   } catch {

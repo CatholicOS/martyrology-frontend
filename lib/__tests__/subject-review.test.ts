@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { opId, type Op, type RenameOp, type ResolvePersonOp, type PersonCandidate } from "@/lib/changeset";
 import {
   companionProp, groupByEulogy, personAppliable, personDefaultQid, personJevRecord,
-  renameChoiceRecord, renameJevRecord, sourceKey,
+  renameChoiceRecord, renameJevRecord, resolvedTarget, sourceKey,
 } from "@/lib/subject-review";
 
 const rename = (id: string, newId: string): RenameOp => ({
@@ -40,6 +40,18 @@ describe("subject review", () => {
       { decision: "edit", edited: { new_id: "mr:0101-eugendus-condatiscensis", subject_la: "Sanctus Eugendus Condatiscensis" } });
     expect(renameChoiceRecord(OP, "mr:0101-other")).toEqual(
       { decision: "edit", edited: { new_id: "mr:0101-other", subject_la: "Sanctus Eugendus" } });
+  });
+
+  it("a candidate with no Latin label records no subject_la", () => {
+    const nol = { ...OP, candidates: [...OP.candidates!, { new_id: "mr:0101-nol", category: "role" as const, weak: false, labels: { la: null, en: null, it: null }, basis: "x" }] };
+    expect(renameChoiceRecord(nol, "mr:0101-nol")).toEqual({ decision: "edit", edited: { new_id: "mr:0101-nol" } });
+  });
+
+  it("resolvedTarget is what a plain accept applies", () => {
+    expect(resolvedTarget(OP)).toBe(OP.new_id);
+    expect(resolvedTarget(POP)).toBe("Q1");
+    expect(resolvedTarget({ ...POP, suggested: { wikidata: "Q2" } })).toBe("Q2");
+    expect(resolvedTarget({ op: "delete", id: "x", decision: null } as never)).toBeNull();
   });
 
   it("Jev's rename suggestion records only a candidate", () => {

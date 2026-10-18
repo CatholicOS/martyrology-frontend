@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RenameOp } from "@/lib/changeset";
-import { groupByEulogy } from "@/lib/subject-review";
+import { groupByEulogy, resolvedTarget } from "@/lib/subject-review";
 import {
   decisionsFromChangeset,
   decisionsKey,
@@ -116,7 +116,9 @@ export default function ReviewPage() {
 
   const onDecide = (id: string, d: DecisionRecord) => {
     if (!cs) return;
-    const next = { ...decisions, [id]: d };
+    const op = cs.operations.find((o) => opId(o) === id);
+    const target = d.decision === "accept" && op ? resolvedTarget(op) : null;
+    const next = { ...decisions, [id]: target ? { ...d, target } : d };
     setDecisions(next);
     saveDecisions(decisionsKey(cs), next);
   };
@@ -135,7 +137,7 @@ export default function ReviewPage() {
 
   // A change-set with rename candidates (crmedr's subject month) shows a eulogy's cards together.
   const grouped = useMemo(
-    () => !!cs && cs.operations.some((op) => op.op === "rename" && !!(op as RenameOp).candidates),
+    () => !!cs && cs.operations.some((op) => op.op === "rename" && !!(op as RenameOp).candidates?.length),
     [cs]
   );
   // Paging counts cards; a group may be cut by "show more".

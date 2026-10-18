@@ -44,6 +44,8 @@ export interface EditedFields {
 export interface DecisionRecord {
   decision: Exclude<Decision, null>;
   edited?: EditedFields;
+  /** Review-page bookkeeping, never exported: what an accept resolved to when it was saved. */
+  target?: string;
 }
 
 interface Base {
@@ -74,7 +76,7 @@ export interface RenameCandidate {
   category: RenameCategory;
   weak: boolean;
   certain?: boolean;
-  labels: { la: string; en: string | null; it: string | null };
+  labels: { la: string | null; en: string | null; it: string | null };
   /** "bare-name draft" marks the earlier draft. */
   basis: string;
   draft_class?: string;

@@ -1,10 +1,18 @@
 import type { DecisionRecord, Op, PersonCandidate, RenameOp, ResolvePersonOp } from "@/lib/changeset";
 
+/** What a plain accept on this op applies (a person card's default item, a rename's proposed ID); null for other ops. */
+export function resolvedTarget(op: Op): string | null {
+  if (op.op === "rename") return (op as RenameOp).new_id;
+  if (op.op === "resolve_person") return personDefaultQid(op as ResolvePersonOp) || null;
+  return null;
+}
+
 /** The rename choice a click records: accept the proposed ID, or edit to another candidate. */
 export function renameChoiceRecord(op: RenameOp, newId: string): DecisionRecord {
   if (newId === op.new_id) return { decision: "accept" };
   const candidate = op.candidates?.find((c) => c.new_id === newId);
-  return { decision: "edit", edited: { new_id: newId, subject_la: candidate?.labels.la ?? op.subject_la } };
+  if (!candidate) return { decision: "edit", edited: { new_id: newId, subject_la: op.subject_la } };
+  return { decision: "edit", edited: { new_id: newId, ...(candidate.labels.la !== null ? { subject_la: candidate.labels.la } : {}) } };
 }
 
 /** What taking Jev's rename suggestion records; null when Jev gave none, or chose an ID that is not a candidate. */
