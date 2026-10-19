@@ -119,16 +119,26 @@ describe("PersonCard, from the review of #113", () => {
       expect(screen.getByText("found through a group (P361)")).toBeInTheDocument();
     });
 
-    it("taking Jev's accept resets a typed QID and the selection, and closes the reject form", () => {
+    it("taking Jev's accept resets a typed QID and the selection", () => {
       renderCard(withQ2({ suggested: { wikidata: "Q1" }, jev: jev({ decision: "accept", wikidata: "Q1" }) }));
       fireEvent.click(screen.getByLabelText(/Jean Légo/));
       fireEvent.change(screen.getByLabelText("Other QID"), { target: { value: "Q99" } });
-      fireEvent.click(screen.getByRole("button", { name: "No item" }));
-      expect(screen.getByLabelText("Reason")).toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
-      expect(screen.queryByLabelText("Reason")).not.toBeInTheDocument();
       expect(screen.getByLabelText("Other QID")).toHaveValue("");
       expect(screen.getByLabelText(/Thomas Kozaki/)).toBeChecked();
+    });
+
+    it("puts Take first in the button row, under the hint and the candidates; the reject form replaces the row", () => {
+      renderCard(withQ2({ jev: jev({ decision: "edit", wikidata: "Q2" }) }));
+      const take = screen.getByRole("button", { name: "Take the suggestion" });
+      expect(take.parentElement?.firstElementChild).toBe(take);
+      expect(take.parentElement).toContainElement(screen.getByRole("button", { name: "No item" }));
+      const hint = screen.getByText("Jev suggests: Q2 Jean Légo (93%)");
+      const candidate = screen.getByLabelText(/Jean Légo/);
+      expect(candidate.compareDocumentPosition(hint) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(hint.compareDocumentPosition(take) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      fireEvent.click(screen.getByRole("button", { name: "No item" }));
+      expect(screen.queryByRole("button", { name: "Take the suggestion" })).not.toBeInTheDocument();
     });
 
     it("accepts a title item that is not a human", () => {

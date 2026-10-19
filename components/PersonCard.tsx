@@ -105,32 +105,6 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
         </p>
       )}
 
-      {jev && (
-        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-indigo-700 dark:text-indigo-300">
-          <span>{t("jevSuggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}</span>
-          {jev.kind && jev.kind !== "person" && <span className="text-amber-700 dark:text-amber-400">{t("jevKind", { kind: isJevKind(jev.kind) ? t(`kind.${jev.kind}`) : jev.kind })}</span>}
-          <button
-            type="button"
-            disabled={!jevRecord}
-            className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
-            onClick={() => {
-              if (!jevRecord) return;
-              if (jevRecord.decision === "edit" && jevRecord.edited?.wikidata) {
-                setSelected(jevRecord.edited.wikidata);
-                setOtherQid("");
-              } else if (jevRecord.decision === "accept") {
-                setSelected(defaultQid);
-                setOtherQid("");
-              }
-              if (jevRecord.decision !== "reject") setRejecting(false);
-              onDecide(id, jevRecord);
-            }}
-          >
-            {t("take")}
-          </button>
-        </div>
-      )}
-
       <fieldset className="mb-2 flex flex-col gap-1">
         <legend className="text-xs font-medium">{t("candidates")}</legend>
         {op.candidates.map((c) => (
@@ -176,8 +150,35 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
         </label>
       </fieldset>
 
+      {jev && (
+        <p className="mb-2 flex flex-wrap items-center gap-2 text-xs text-indigo-700 dark:text-indigo-300">
+          <span>{t("jevSuggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}</span>
+          {jev.kind && jev.kind !== "person" && <span className="text-amber-700 dark:text-amber-400">{t("jevKind", { kind: isJevKind(jev.kind) ? t(`kind.${jev.kind}`) : jev.kind })}</span>}
+        </p>
+      )}
+
       {!rejecting ? (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {jev && (
+            <button
+              type="button"
+              disabled={!jevRecord}
+              className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
+              onClick={() => {
+                if (!jevRecord) return;
+                if (jevRecord.decision === "edit" && jevRecord.edited?.wikidata) {
+                  setSelected(jevRecord.edited.wikidata);
+                  setOtherQid("");
+                } else if (jevRecord.decision === "accept") {
+                  setSelected(defaultQid);
+                  setOtherQid("");
+                }
+                onDecide(id, jevRecord);
+              }}
+            >
+              {t("take")}
+            </button>
+          )}
           <button
             type="button"
             disabled={!canAccept}
