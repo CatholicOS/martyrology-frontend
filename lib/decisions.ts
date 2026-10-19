@@ -44,23 +44,26 @@ export function loadDecisionsFor(cs: Changeset): DecisionMap {
   const key = decisionsKey(cs);
   const prefix = `mrf:decisions:${cs.base.edition}:`;
   const ops = new Map(cs.operations.map((op) => [opId(op), op]));
+  // An accept keeps its meaning only if it still resolves to the same target: a regenerated
+  // change-set can keep its key (same op count) and still change what an accept applies.
+  const current = (id: string, d: DecisionRecord) => {
+    const op = ops.get(id);
+    return op !== undefined && (d.target === undefined || d.target === resolvedTarget(op));
+  };
   const carried: DecisionMap = {};
   try {
     for (let i = 0; i < window.localStorage.length; i++) {
       const k = window.localStorage.key(i);
       if (!k || k === key || !k.startsWith(prefix)) continue;
       for (const [id, d] of Object.entries(loadDecisions(k))) {
-        const op = ops.get(id);
-        if (!op) continue;
-        // An accept carried from another version keeps its meaning only if it still resolves to the same target.
-        if (d.target !== undefined && d.target !== resolvedTarget(op)) continue;
-        carried[id] = d;
+        if (current(id, d)) carried[id] = d;
       }
     }
   } catch {
     // storage unavailable: only this key's decisions
   }
-  return { ...carried, ...loadDecisions(key) };
+  const own = Object.fromEntries(Object.entries(loadDecisions(key)).filter(([id, d]) => d.target === undefined || current(id, d)));
+  return { ...carried, ...own };
 }
 
 export function saveDecisions(key: string, map: DecisionMap): void {

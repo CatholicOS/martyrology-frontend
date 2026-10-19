@@ -37,10 +37,12 @@ describe("decisions", () => {
       saveDecisions(decisionsKey(earlier), { "p|A": { decision: "accept" } });
       expect(loadDecisionsFor(csOf("r1", person("Q2")))).toEqual({ "p|A": { decision: "accept" } });
     });
-    it("leaves a same-key decision untouched", () => {
+    it("drops a same-key accept whose target changed, keeps one that still matches", () => {
       const now = csOf("r1", person("Q2"));
       saveDecisions(decisionsKey(now), { "p|A": { decision: "accept", target: "Q1" } });
-      expect(loadDecisionsFor(now)).toEqual({ "p|A": { decision: "accept", target: "Q1" } });
+      expect(loadDecisionsFor(now)).toEqual({});
+      saveDecisions(decisionsKey(now), { "p|A": { decision: "accept", target: "Q2" } });
+      expect(loadDecisionsFor(now)).toEqual({ "p|A": { decision: "accept", target: "Q2" } });
     });
   });
   it("seeds decisions carried in the change-set file", () => {

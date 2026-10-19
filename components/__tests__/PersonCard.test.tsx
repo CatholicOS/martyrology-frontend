@@ -141,7 +141,7 @@ describe("PersonCard, from the review of #113", () => {
 
     it("takes Jev's edit and moves the selection", () => {
       const d = renderCard(withQ2({ jev: jev({ decision: "edit", wikidata: "Q2" }) }));
-      expect(screen.getByText("Jev suggests: Jean Légo (93%)")).toBeInTheDocument();
+      expect(screen.getByText("Jev suggests: Q2 Jean Légo (93%)")).toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
       expect(d).toHaveBeenCalledWith(op().id, { decision: "edit", edited: { wikidata: "Q2" } });
       expect(screen.getByLabelText(/Jean Légo/)).toBeChecked();

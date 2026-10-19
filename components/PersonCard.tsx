@@ -52,7 +52,9 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
   const unchanged = qid === defaultQid;
   const jev = op.jev;
   const jevRecord = personJevRecord(op);
-  const jevWhat = jev?.decision === "reject" ? t("jevNone") : (op.candidates.find((c) => c.wikidata === jev?.wikidata)?.label ?? jev?.wikidata ?? "");
+  const jevLabel = op.candidates.find((c) => c.wikidata === jev?.wikidata)?.label;
+  // The QID too: two candidates can share a label.
+  const jevWhat = jev?.decision === "reject" ? t("jevNone") : [jev?.wikidata, jevLabel].filter(Boolean).join(" ");
   const where = op.where === "text" ? t("inText") : t("inFootnote", { n: op.where.footnote });
 
   return (
