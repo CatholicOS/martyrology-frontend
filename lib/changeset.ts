@@ -44,6 +44,8 @@ export interface EditedFields {
 export interface DecisionRecord {
   decision: Exclude<Decision, null>;
   edited?: EditedFields;
+  /** Review-page bookkeeping, never exported: what an accept resolved to when it was saved. */
+  target?: string;
 }
 
 interface Base {
@@ -57,11 +59,64 @@ interface Base {
   edited?: EditedFields | null;
 }
 
+export type RenameCategory =
+  | "surname"
+  | "place-genitive"
+  | "place-adjective"
+  | "role"
+  | "role-place"
+  | "epithet"
+  | "twin"
+  | "papa"
+  | "biblical-title";
+
+/** One ranked ID a subject-identity rename may take (crmedr subject identity). */
+export interface RenameCandidate {
+  new_id: string;
+  category: RenameCategory;
+  weak: boolean;
+  certain?: boolean;
+  labels: { la: string | null; en: string | null; it: string | null };
+  /** "bare-name draft" marks the earlier draft. */
+  basis: string;
+  draft_class?: string;
+}
+
+/** Jev's suggestion on a rename card: never a decision by itself. Without `decision`, Jev doubts the record. */
+export interface RenameJev {
+  decision?: "accept" | "edit";
+  /** An edit's chosen candidate. */
+  new_id?: string;
+  probability?: number;
+  confidence?: number;
+  model: string;
+  flags: string[];
+  /** Candidate ID → clarity score, 0..3. */
+  scores: Record<string, number>;
+}
+
+/** Jev's suggestion on a person card: never a decision by itself. */
+export interface PersonJev {
+  decision: "accept" | "edit" | "reject";
+  /** accept/edit: the item. */
+  wikidata?: string;
+  source?: string;
+  /** reject: why. */
+  reason?: string;
+  kind?: string;
+  probability: number;
+  confidence: number;
+  model: string;
+  flags?: string[];
+}
+
 export interface RenameOp extends Base {
   op: "rename";
   id: string;
   new_id: string;
   subject_la?: string;
+  candidates?: RenameCandidate[];
+  jev?: RenameJev | null;
 }
 
 export interface DeleteOp extends Base {
@@ -138,6 +193,8 @@ export interface PersonCandidate {
   died: string | null;
   feast: string[];
   evidence: string[];
+  /** search | companion:Pnnn | sparql | title | curated */
+  source?: string;
 }
 
 /** Identify a saint or blessed named in a eulogy with a Wikidata item (crmedr persons). */
@@ -159,6 +216,7 @@ export interface ResolvePersonOp extends Base {
   failed: string[];
   candidates: PersonCandidate[];
   suggested?: { wikidata: string } | null;
+  jev?: PersonJev | null;
 }
 
 export type RealignAction = "rename" | "rekey" | "split" | "merge" | "link" | "note" | "rubric";

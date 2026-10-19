@@ -463,6 +463,17 @@
     },
     "person": {
       "inText": "en el texto",
+      "source": {
+        "companion": "encontrado a través de un pariente ({prop})",
+        "sparql": "murió en este día",
+        "title": "título o fiesta",
+        "curated": "título curado",
+        "group": "encontrado a través de un grupo ({prop})"
+      },
+      "jevSuggests": "Jev sugiere: {what} ({confidence} %)",
+      "jevNone": "ningún elemento",
+      "jevKind": "Jev lee este nombre como: {kind}",
+      "take": "Seguir la sugerencia",
       "inFootnote": "en la nota {n}",
       "companions": "Nombrado con: {names}",
       "ordinal": "la {n}.ª persona con este nombre en este elogio",
@@ -481,7 +492,13 @@
       "noItem": "Ningún elemento",
       "reason": "Motivo",
       "confirm": "Confirmar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "kind": {
+        "person": "una persona",
+        "celebration_or_title": "una fiesta o un título",
+        "anonymous_group": "un grupo anónimo",
+        "not_identifiable": "no identificable"
+      }
     },
     "mention": {
       "kind": {
@@ -549,7 +566,36 @@
     },
     "bulkAccept": "Aceptar los {count} pendientes mostrados",
     "bulkConfirm": "¿Aceptar {count}?",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "rename": {
+      "candidates": "ID candidatos",
+      "category": {
+        "surname": "apellido",
+        "place-genitive": "lugar (genitivo)",
+        "place-adjective": "lugar (adjetivo)",
+        "role": "cargo",
+        "role-place": "cargo y lugar",
+        "epithet": "epíteto",
+        "twin": "gemelo",
+        "papa": "papa",
+        "biblical-title": "título bíblico"
+      },
+      "weak": "débil",
+      "uncertain": "genitivo incierto",
+      "draft": "borrador anterior",
+      "clarity": "claridad {score}/3",
+      "suggests": "Jev sugiere: {what} ({confidence} %)",
+      "keep": "mantener el ID propuesto",
+      "take": "Seguir la sugerencia",
+      "doubts": "Jev duda del registro",
+      "flag": {
+        "record": "registro: {field}",
+        "grammar": "{field} se lee como {choice}"
+      },
+      "acceptSelected": "Aceptar la selección",
+      "labels": "etiquetas"
+    },
+    "eulogyGroup": "Elogio {eulogy}"
   },
   "Docs": {
     "index": {

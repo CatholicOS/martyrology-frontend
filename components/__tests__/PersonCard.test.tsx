@@ -103,4 +103,65 @@ describe("PersonCard, from the review of #113", () => {
     fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
     expect(d).toHaveBeenLastCalledWith("u-1", { decision: "reject", edited: { reason: "None" } });
   });
+
+  describe("sources and Jev", () => {
+    const jev = (extra: object) => ({ probability: 0.93, confidence: 0.9, model: "jev", ...extra }) as ResolvePersonOp["jev"];
+    const withQ2 = (extra: Partial<ResolvePersonOp> = {}) =>
+      op({ candidates: [c("Q1", "Thomas Kozaki"), c("Q2", "Jean Légo")], ...extra });
+
+    it("shows how a non-search candidate was found", () => {
+      renderCard(op({ candidates: [c("Q1", "Thomas Kozaki"), c("Q2", "Thomas Xico", { source: "companion:P3373" })] }));
+      expect(screen.getByText("found through a relative (P3373)")).toBeInTheDocument();
+    });
+
+    it("says a P361 candidate was found through a group", () => {
+      renderCard(op({ candidates: [c("Q1", "Thomas Kozaki"), c("Q2", "Thomas Xico", { source: "companion:P361" })] }));
+      expect(screen.getByText("found through a group (P361)")).toBeInTheDocument();
+    });
+
+    it("taking Jev's accept resets a typed QID and the selection, and closes the reject form", () => {
+      renderCard(withQ2({ suggested: { wikidata: "Q1" }, jev: jev({ decision: "accept", wikidata: "Q1" }) }));
+      fireEvent.click(screen.getByLabelText(/Jean Légo/));
+      fireEvent.change(screen.getByLabelText("Other QID"), { target: { value: "Q99" } });
+      fireEvent.click(screen.getByRole("button", { name: "No item" }));
+      expect(screen.getByLabelText("Reason")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(screen.queryByLabelText("Reason")).not.toBeInTheDocument();
+      expect(screen.getByLabelText("Other QID")).toHaveValue("");
+      expect(screen.getByLabelText(/Thomas Kozaki/)).toBeChecked();
+    });
+
+    it("accepts a title item that is not a human", () => {
+      const d = renderCard(op({ candidates: [c("Q1", "Thomas Kozaki"), c("Q7", "Feast item", { evidence: ["name"], source: "title" })] }));
+      expect(screen.getByText("title or feast")).toBeInTheDocument();
+      fireEvent.click(screen.getByLabelText(/Feast item/));
+      fireEvent.click(screen.getByRole("button", { name: "Accept (edited)" }));
+      expect(d).toHaveBeenCalledWith(op().id, { decision: "edit", edited: { wikidata: "Q7" } });
+    });
+
+    it("takes Jev's edit and moves the selection", () => {
+      const d = renderCard(withQ2({ jev: jev({ decision: "edit", wikidata: "Q2" }) }));
+      expect(screen.getByText("Jev suggests: Q2 Jean Légo (93%)")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith(op().id, { decision: "edit", edited: { wikidata: "Q2" } });
+      expect(screen.getByLabelText(/Jean Légo/)).toBeChecked();
+    });
+
+    it("takes Jev's rejection and notes an odd kind", () => {
+      const d = renderCard(op({ jev: jev({ decision: "reject", reason: "A place", kind: "celebration_or_title" }) }));
+      expect(screen.getByText("Jev suggests: no item (93%)")).toBeInTheDocument();
+      expect(screen.getByText("Jev reads this name as: a feast or title")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith(op().id, { decision: "reject", edited: { reason: "A place" } });
+    });
+
+    it("disables the button for an unlisted item and shows nothing without Jev", () => {
+      const { unmount } = render(<OperationCard op={op({ jev: jev({ decision: "edit", wikidata: "Q9" }) })} onDecide={vi.fn()} locale="en" baseEdition="x" />);
+      expect(screen.getByRole("button", { name: "Take the suggestion" })).toBeDisabled();
+      unmount();
+      renderCard(op());
+      expect(screen.queryByText(/Jev suggests/)).toBeNull();
+      expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
+    });
+  });
 });

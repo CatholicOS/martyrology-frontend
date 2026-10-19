@@ -137,3 +137,103 @@ describe("ReviewPage bulk accept", () => {
     expect(screen.getByRole("button", { name: "Accept the 1 undecided shown" })).toBeInTheDocument();
   });
 });
+
+describe("ReviewPage groups a eulogy's cards", () => {
+  const person = (eulogy: string, name: string, n?: number) => ({
+    op: "resolve_person", id: `${eulogy}|${name}${n ? `#${n}` : ""}`, eulogy, day: "01-01", typology: null, subject: "Fictinus",
+    name, ...(n ? { n } : {}), where: "text", companions: [], failed: [], candidates: [], suggested: null,
+    reasoning: "r", confidence: "high", class: "bare", decision: null, edited: null,
+  });
+  const rename = (id: string) => ({
+    op: "rename", id, new_id: `${id}-abbas`, uid: `subject:${id}`, subject_la: "Fictinus", class: "bare", confidence: "high",
+    reasoning: "r", decision: null,
+    candidates: [{ new_id: `${id}-abbas`, category: "role", weak: false, labels: { la: "Fictinus Abbas", en: null, it: null }, basis: "bare-name draft" }],
+  });
+  const load = async (operations: unknown[], file: string) => {
+    const set = { schema: "crmedr-changeset/v1", generated_by: "t", base: { edition: "martyrologium_romanum_1749", registry: "data/subjects.json" }, operations };
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true, json: () => Promise.resolve({ changesets: [file] }), text: () => Promise.resolve(JSON.stringify(set)), url,
+    })));
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: file })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: file } });
+  };
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("puts the rename before the person cards under one heading per eulogy", async () => {
+    await load([person("mr:0101-a", "Fictinus"), rename("mr:0102-b"), rename("mr:0101-a"), person("mr:0102-b", "Ficta", 2)], "month.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(4));
+    const headings = screen.getAllByText(/^Eulogy mr:/);
+    expect(headings.map((h) => h.textContent)).toEqual(["Eulogy mr:0101-a", "Eulogy mr:0102-b"]);
+    const ids = screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"));
+    expect(ids).toEqual([
+      "op-card-subject:mr:0101-a", "op-card-mr:0101-a|Fictinus",
+      "op-card-subject:mr:0102-b", "op-card-mr:0102-b|Ficta#2",
+    ]);
+  });
+
+  it("keeps file order and shows no heading without rename candidates", async () => {
+    await load([person("mr:0102-b", "Ficta"), person("mr:0101-a", "Fictinus")], "people.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    expect(screen.queryByText(/^Eulogy mr:/)).not.toBeInTheDocument();
+    expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"))).toEqual(["op-card-mr:0102-b|Ficta", "op-card-mr:0101-a|Fictinus"]);
+  });
+});
+
+describe("ReviewPage stores the resolved target of an accept", () => {
+  // Invented records, never the copyrighted 2004 text.
+  const person = {
+    op: "resolve_person", id: "mr:0101-fictinus|Fictinus", eulogy: "mr:0101-fictinus", day: "01-01", typology: "dies_natalis",
+    subject: "Sanctus Fictinus", name: "Fictinus", where: "text", companions: [], failed: [],
+    candidates: ["Q1", "Q2"].map((q) => ({ wikidata: q, label: `Fictinus ${q}`, description: "d", names: ["Fictinus"], human: true, statuses: ["Q43115"], born: null, died: null, feast: [], evidence: ["human", "status", "name"] })),
+    suggested: null, confidence: "high", decision: null, edited: null,
+  };
+  const rename = {
+    op: "rename", id: "mr:0102-ficta", new_id: "mr:0102-ficta-abbatissa", uid: "subject:mr:0102-ficta", subject_la: "Sancta Ficta",
+    class: "bare", confidence: "medium", decision: null,
+    candidates: [{ new_id: "mr:0102-ficta-abbatissa", category: "role-place", weak: false, labels: { la: "Sancta Ficta Abbatissa", en: null, it: null }, basis: "bare-name draft" }],
+  };
+  const changeset = {
+    schema: "crmedr-changeset/v1", generated_by: "t",
+    base: { edition: "martyrologium_romanum_2004", registry: "data/test.json" }, operations: [person, rename],
+  };
+  const key = `mrf:decisions:${changeset.base.edition}:${changeset.base.registry}:2`;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ changesets: ["subjects.json"] }),
+      text: () => Promise.resolve(JSON.stringify(changeset)),
+      url,
+    })));
+  });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    window.localStorage.clear();
+  });
+
+  const load = async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "subjects.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "subjects.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+  };
+  const stored = () => JSON.parse(window.localStorage.getItem(key) ?? "{}");
+
+  it("records the person's first candidate and the rename's new_id on accept", async () => {
+    await load();
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+    expect(stored()[person.id]).toEqual({ decision: "accept", target: "Q1" });
+    expect(stored()[rename.uid]).toEqual({ decision: "accept", target: rename.new_id });
+  });
+
+  it("stores no target for an edit", async () => {
+    await load();
+    fireEvent.click(screen.getByLabelText(/Fictinus Q2/));
+    fireEvent.click(screen.getByRole("button", { name: "Accept (edited)" }));
+    expect(stored()[person.id]).toEqual({ decision: "edit", edited: { wikidata: "Q2" } });
+    expect(stored()[person.id]).not.toHaveProperty("target");
+  });
+});

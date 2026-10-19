@@ -463,6 +463,17 @@
     },
     "person": {
       "inText": "in the text",
+      "source": {
+        "companion": "found through a relative ({prop})",
+        "sparql": "died on this day",
+        "title": "title or feast",
+        "curated": "curated title",
+        "group": "found through a group ({prop})"
+      },
+      "jevSuggests": "Jev suggests: {what} ({confidence}%)",
+      "jevNone": "no item",
+      "jevKind": "Jev reads this name as: {kind}",
+      "take": "Take the suggestion",
       "inFootnote": "in footnote {n}",
       "companions": "Named with: {names}",
       "ordinal": "the {n, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} of this name in this eulogy",
@@ -481,7 +492,13 @@
       "noItem": "No item",
       "reason": "Reason",
       "confirm": "Confirm",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "kind": {
+        "person": "person",
+        "celebration_or_title": "a feast or title",
+        "anonymous_group": "an anonymous group",
+        "not_identifiable": "not identifiable"
+      }
     },
     "mention": {
       "kind": {
@@ -549,7 +566,36 @@
     },
     "bulkAccept": "Accept the {count} undecided shown",
     "bulkConfirm": "Accept {count}?",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "rename": {
+      "candidates": "Candidate IDs",
+      "category": {
+        "surname": "surname",
+        "place-genitive": "place (genitive)",
+        "place-adjective": "place (adjective)",
+        "role": "role",
+        "role-place": "role and place",
+        "epithet": "epithet",
+        "twin": "twin",
+        "papa": "pope",
+        "biblical-title": "biblical title"
+      },
+      "weak": "weak",
+      "uncertain": "uncertain genitive",
+      "draft": "earlier draft",
+      "clarity": "clarity {score}/3",
+      "suggests": "Jev suggests: {what} ({confidence}%)",
+      "keep": "keep the proposed ID",
+      "take": "Take the suggestion",
+      "doubts": "Jev doubts the record",
+      "flag": {
+        "record": "record: {field}",
+        "grammar": "{field} reads as {choice}"
+      },
+      "acceptSelected": "Accept selected",
+      "labels": "labels"
+    },
+    "eulogyGroup": "Eulogy {eulogy}"
   },
   "Docs": {
     "index": {
