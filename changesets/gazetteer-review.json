@@ -1779,7 +1779,16 @@
     "probability": 1.0,
     "confidence": 1.0,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -4572,7 +4581,16 @@
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -10118,7 +10136,16 @@
     "probability": 0.95,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48685",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Kingdom of Judah; its land spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -132229,7 +132256,16 @@
     "probability": 1.0,
     "confidence": 1.0,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
