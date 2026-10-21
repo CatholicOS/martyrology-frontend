@@ -82,9 +82,9 @@ describe("PlaceCard", () => {
     expect(screen.getByText(/Fictopolis is the town on the river\./)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Q1" })).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q1");
     expect(screen.getByLabelText(/Fictopolis —/)).toBeChecked();
-    expect(screen.getByLabelText(/country/i)).toHaveValue("AT");
-    // text_says is derived and shown read-only: no checkboxes
-    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("AT");
+    // text_says is derived and shown read-only: the only checkbox is "no single country"
+    expect(screen.getAllByRole("checkbox")).toEqual([screen.getByLabelText(/no single country/i)]);
     expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
     expect(screen.getByTestId("text-says")).toHaveTextContent(claimIt);
   });
@@ -98,7 +98,7 @@ describe("PlaceCard", () => {
   it("choosing another candidate records an edit; text_says follows the chosen country", () => {
     const onDecide = renderCard(makeOp());
     fireEvent.click(screen.getByLabelText(/Fictopolis Nova —/));
-    expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("FR");
     // the DE claim still disagrees with FR
     expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
     fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
@@ -111,7 +111,7 @@ describe("PlaceCard", () => {
   it("a typed QID with a country records an edit", () => {
     const onDecide = renderCard(makeOp({ claims: [], suggested: undefined }));
     fireEvent.change(screen.getByLabelText(/other qid/i), { target: { value: "Q999" } });
-    fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "de" } });
+    fireEvent.change(screen.getByLabelText(/^country$/i), { target: { value: "de" } });
     fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
       decision: "edit",
@@ -121,7 +121,7 @@ describe("PlaceCard", () => {
 
   it("a country that agrees with the Italian claim records no text_says", () => {
     renderCard(makeOp());
-    fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "DE" } });
+    fireEvent.change(screen.getByLabelText(/^country$/i), { target: { value: "DE" } });
     expect(screen.queryByTestId("text-says")).not.toBeInTheDocument();
   });
 
@@ -145,13 +145,35 @@ describe("PlaceCard", () => {
     const onDecide = renderCard(op);
     const accept = screen.getByRole("button", { name: /^accept/i });
     expect(accept).toBeDisabled();
-    fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "IT" } });
+    fireEvent.change(screen.getByLabelText(/^country$/i), { target: { value: "IT" } });
     expect(accept).not.toBeDisabled();
     fireEvent.click(accept);
     expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
       decision: "edit",
       edited: { wikidata: "Q3", country: "IT" },
     });
+  });
+
+  it("a place in no single country is accepted with no_country", () => {
+    const op = makeOp({ suggested: undefined, claims: [], candidates: [candidate("Q205653", "Orient", null, { countries: [] })] });
+    const onDecide = renderCard(op);
+    const accept = screen.getByRole("button", { name: /^accept/i });
+    expect(accept).toBeDisabled();
+    fireEvent.click(screen.getByLabelText(/no single country/i));
+    expect(screen.getByLabelText(/^country$/i)).toBeDisabled();
+    expect(accept).not.toBeDisabled();
+    fireEvent.click(accept);
+    expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
+      decision: "edit",
+      edited: { wikidata: "Q205653", no_country: true },
+    });
+  });
+
+  it("no single country hides the Italian's country claims and resumes from a saved edit", () => {
+    renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", no_country: true } });
+    expect(screen.getByLabelText(/no single country/i)).toBeChecked();
+    expect(screen.queryByTestId("text-says")).toBeNull();
+    expect(screen.getByRole("button", { name: /^accept/i })).toHaveTextContent(/edited/i);
   });
 
   it("labels a candidate's country, its countries, or ? when it has neither", () => {
@@ -171,7 +193,7 @@ describe("PlaceCard", () => {
 
   it("an invalid country code disables accept", () => {
     renderCard(makeOp());
-    fireEvent.change(screen.getByLabelText(/country/i), { target: { value: "AUT" } });
+    fireEvent.change(screen.getByLabelText(/^country$/i), { target: { value: "AUT" } });
     expect(screen.getByRole("button", { name: /^accept/i })).toBeDisabled();
   });
 
@@ -195,7 +217,7 @@ describe("PlaceCard", () => {
     expect(screen.getByTestId("place-map")).toHaveTextContent("Q1,Q2|Q1");
     fireEvent.click(screen.getByRole("button", { name: "pick Q2" }));
     expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
-    expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("FR");
   });
 
   it("loads an occurrence's eulogy only when asked", () => {
@@ -238,7 +260,7 @@ describe("PlaceCard", () => {
   it("resumes a saved edit", () => {
     renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", country: "FR" } });
     expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
-    expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("FR");
     expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE/);
   });
 
@@ -273,7 +295,7 @@ describe("PlaceCard", () => {
       expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "edit", edited: { wikidata: "Q2", country: "FR" } });
       expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
       expect(screen.getByLabelText("Other QID")).toHaveValue("");
-      expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
+      expect(screen.getByLabelText(/^country$/i)).toHaveValue("FR");
     });
 
     it("takes a reject as a reject with its reason", () => {
