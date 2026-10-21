@@ -82,6 +82,24 @@ describe("buildPlaces", () => {
   const typologyDoc = { typology: { "mr:0101-almachius": "dies_natalis", "mr:0102-x": "depositio", "mr:0104-z": "dies_natalis" } };
   const coords = { Q220: [41.893, 12.483] as [number, number], Q490: [45.464, 9.19] as [number, number] };
 
+  it("resolves a phrase per eulogy when the gazetteer keys it so", () => {
+    const docs = { places: {
+      "mr:0406-galla": [{ role: "death", la: "ecclésiam Sancti Petri", source: "body" }],
+      "mr:0710-petrus-vincioli": [{ role: "ministry", la: "ecclésiam Sancti Petri", source: "body" }],
+      "mr:0101-almachius": [{ role: "death", la: "Romæ", source: "lead" }],
+    } };
+    const gaz = { places: {
+      "ecclésiam Sancti Petri@mr:0406-galla": { wikidata: "Q12512", label: "St. Peter's Basilica", country: "VA", status: "reviewed" },
+      "ecclésiam Sancti Petri@mr:0710-petrus-vincioli": { wikidata: "Q644850", label: "San Pietro", country: "IT", status: "reviewed" },
+      "Romæ": { wikidata: "Q220", label: "Rome", country: "IT", status: "auto" },
+    } };
+    const { eulogies } = buildPlaces(docs, gaz, { typology: {} }, {});
+    expect(eulogies["mr:0406-galla"].places[0].place).toBe("Q12512");
+    expect(eulogies["mr:0710-petrus-vincioli"].places[0].place).toBe("Q644850");
+    expect(eulogies["mr:0101-almachius"].places[0].place).toBe("Q220");
+    expect(resolvedQids(docs, gaz)).toEqual(["Q220", "Q12512", "Q644850"]);
+  });
+
   it("gives each eulogy its resolved places with their roles, typology, and the places' coordinates and labels", () => {
     const labels = { Q220: { en: "Rome", it: "Roma", fr: "Rome" }, Q490: { it: "Milano" } };
     expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels)).toEqual({
