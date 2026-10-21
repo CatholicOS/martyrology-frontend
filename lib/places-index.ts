@@ -24,6 +24,8 @@ export interface IndexPlace {
   /** The label's language: the interface's, or English when it fell back; null when the heading is the QID. */
   labelLang: Locale | null;
   country: string;
+  /** A place in several countries (PlaceInfo.countries). */
+  countries?: string[];
   lines: PlaceLine[];
 }
 
@@ -162,7 +164,7 @@ export function placesIndex(
       const place = snap.places[pa.place];
       let p = byPlace.get(pa.place);
       if (!p) {
-        p = { qid: pa.place, label: placeLabel(place, pa.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, lines: [] };
+        p = { qid: pa.place, label: placeLabel(place, pa.place, locale), labelLang: placeLabelLang(place, locale), country: place.country, ...(place.countries ? { countries: place.countries } : {}), lines: [] };
         byPlace.set(pa.place, p);
       }
       p.lines.push({

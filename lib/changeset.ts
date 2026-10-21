@@ -17,6 +17,8 @@ export interface EditedFields {
   country?: string;
   /** resolve_place: the place lies in no single country (a macro-area such as the Orient); no `country`. */
   no_country?: boolean;
+  /** resolve_place: the place lies in several countries (Frisia: NL, DE); no `country`. */
+  countries?: string[];
   // add_place: the item's fields; null removes an optional one
   role?: PlaceRole;
   la?: string;

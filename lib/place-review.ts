@@ -8,10 +8,20 @@ export function placeDefaultQid(op: ResolvePlaceOp): string {
   return op.suggested?.wikidata ?? op.candidates[0]?.wikidata ?? "";
 }
 
-/** The country a place card starts with for an item: the suggestion's for the suggested item, else the candidate's. */
+/**
+ * The country a place card starts with for an item: the suggestion's for the suggested item, else the
+ * candidate's; for a candidate in several countries (Frisia), its codes as the card writes them ("NL, DE").
+ */
 export function placeCountryFor(op: ResolvePlaceOp, qid: string): string {
   if (op.suggested && op.suggested.wikidata === qid) return op.suggested.country;
-  return op.candidates.find((c) => c.wikidata === qid)?.country ?? "";
+  const c = op.candidates.find((x) => x.wikidata === qid);
+  if (!c) return "";
+  return c.country ?? (c.countries.length > 1 ? c.countries.join(", ") : "");
+}
+
+/** The codes a place card's country field holds: one, or several separated by commas or spaces. */
+export function countryCodes(field: string): string[] {
+  return field.toUpperCase().split(/[\s,]+/).filter(Boolean);
 }
 
 /**

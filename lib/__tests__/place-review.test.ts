@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
+import { countryCodes, placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { PlaceCandidate, PlaceJev, ResolvePlaceOp } from "@/lib/changeset";
 
 const cand = (wikidata: string, country: string | null): PlaceCandidate => ({
@@ -36,6 +36,18 @@ describe("placeDefaultQid", () => {
     expect(placeDefaultQid(op())).toBe("Q1");
     expect(placeDefaultQid(op({ suggested: null, candidates: [cand("Q2", "FR")] }))).toBe("Q2");
     expect(placeDefaultQid(op({ suggested: null, candidates: [] }))).toBe("");
+  });
+});
+
+describe("placeCountryFor and countryCodes", () => {
+  it("a candidate in several countries starts with them; one with none starts empty", () => {
+    const op = { candidates: [{ ...cand("Q165111", null), countries: ["NL", "DE"] }, cand("Q9", null)] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q165111")).toBe("NL, DE");
+    expect(placeCountryFor(op, "Q9")).toBe("");
+  });
+  it("splits the field on commas and spaces, upper-cased", () => {
+    expect(countryCodes(" nl, DE  at ")).toEqual(["NL", "DE", "AT"]);
+    expect(countryCodes("")).toEqual([]);
   });
 });
 

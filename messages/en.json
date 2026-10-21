@@ -306,6 +306,7 @@
       "hideMap": "Hide map",
       "showMap": "Show map",
       "country": "Country",
+      "countryHint": "several: NL, DE",
       "noCountry": "In no single country (e.g. the Orient, Africa)",
       "italianSays": "The Italian says {claimed} (“{phrase}”), not {country}: recorded as text_says.",
       "accept": "Accept",

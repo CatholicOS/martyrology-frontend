@@ -82,6 +82,18 @@ describe("buildPlaces", () => {
   const typologyDoc = { typology: { "mr:0101-almachius": "dies_natalis", "mr:0102-x": "depositio", "mr:0104-z": "dies_natalis" } };
   const coords = { Q220: [41.893, 12.483] as [number, number], Q490: [45.464, 9.19] as [number, number] };
 
+  it("keeps a place's several countries, and none for a macro-area", () => {
+    const docs = { places: { "mr:0605-b": [{ role: "death", la: "Frísia", source: "lead" }, { role: "cult", la: "Oriénte", source: "body" }] } };
+    const gaz = { places: {
+      "Frísia": { wikidata: "Q165111", label: "Frisia", country: null, countries: ["NL", "DE"], status: "reviewed" },
+      "Oriénte": { wikidata: "Q205653", label: "Orient", country: null, status: "reviewed" },
+    } };
+    const { places } = buildPlaces(docs, gaz, { typology: {} }, {});
+    expect(places.Q165111).toMatchObject({ country: "", countries: ["NL", "DE"] });
+    expect(places.Q205653.country).toBe("");
+    expect(places.Q205653).not.toHaveProperty("countries");
+  });
+
   it("resolves a phrase per eulogy when the gazetteer keys it so", () => {
     const docs = { places: {
       "mr:0406-galla": [{ role: "death", la: "ecclésiam Sancti Petri", source: "body" }],

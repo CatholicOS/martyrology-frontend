@@ -28,6 +28,8 @@ export interface MapEntry {
   /** The gazetteer's (English) name, kept for searching. */
   labelEn: string;
   country: string;
+  /** A place in several countries (PlaceInfo.countries): the entry counts and filters under each. */
+  countries?: string[];
   coords: [number, number];
   typology: string | null;
   /** What the place is to the eulogy (crmedr roles), in crmedr's order. */
@@ -96,6 +98,7 @@ export function mapEntries(
         labelLang: placeLabelLang(place, locale),
         labelEn: place.label,
         country: place.country,
+        ...(place.countries ? { countries: place.countries } : {}),
         coords,
         typology: ep.typology,
         roles: pa.roles,
@@ -117,16 +120,18 @@ export function matchesQuery(e: MapEntry, query: string): boolean {
 
 const typologyKey = (e: MapEntry) => e.typology ?? NO_TYPOLOGY;
 const typologyOk = (e: MapEntry, f: MapFilters) => !f.hiddenTypologies.has(typologyKey(e));
-const countryOk = (e: MapEntry, f: MapFilters) => f.countries.size === 0 || f.countries.has(e.country);
+// An entry in no country counts under "" (shown as unknown).
+const countryKeys = (e: MapEntry) => (e.countries?.length ? e.countries : [e.country]);
+const countryOk = (e: MapEntry, f: MapFilters) => f.countries.size === 0 || countryKeys(e).some((c) => f.countries.has(c));
 const roleOk = (e: MapEntry, f: MapFilters) => e.roles.length === 0 || e.roles.some((r) => !f.hiddenRoles.has(r.role));
 
 export function filterEntries(entries: MapEntry[], f: MapFilters): MapEntry[] {
   return entries.filter((e) => matchesQuery(e, f.query) && typologyOk(e, f) && countryOk(e, f) && roleOk(e, f));
 }
 
-function tally(entries: MapEntry[], key: (e: MapEntry) => string): Map<string, number> {
+function tally(entries: MapEntry[], key: (e: MapEntry) => string | string[]): Map<string, number> {
   const out = new Map<string, number>();
-  for (const e of entries) out.set(key(e), (out.get(key(e)) ?? 0) + 1);
+  for (const e of entries) for (const k of [key(e)].flat()) out.set(k, (out.get(k) ?? 0) + 1);
   return out;
 }
 
@@ -149,7 +154,7 @@ export function facetCounts(
   const typologies = [...tally(searched.filter((e) => countryOk(e, f) && roleOk(e, f)), typologyKey)].sort(
     ([a], [b]) => typologyRank(a) - typologyRank(b),
   );
-  const countries = [...tally(searched.filter((e) => typologyOk(e, f) && roleOk(e, f)), (e) => e.country)].sort(
+  const countries = [...tally(searched.filter((e) => typologyOk(e, f) && roleOk(e, f)), countryKeys)].sort(
     ([a], [b]) => a.localeCompare(b),
   );
   const roles = new Map<string, number>();

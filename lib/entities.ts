@@ -35,7 +35,7 @@ export interface PersonDetails {
 /** What a popup shows of one Wikidata item: a person's names and details, or a place's names and position. */
 export type Entity =
   | { kind: "person"; labels: Labels; details: PersonDetails | null }
-  | { kind: "place"; labels: Labels; label: string; country: string; coords: [number, number] | null };
+  | { kind: "place"; labels: Labels; label: string; country: string; countries?: string[]; coords: [number, number] | null };
 
 /** The most items one request may ask for: a day names a few dozen, a spread of two long days up to ~150. */
 export const MAX_IDS = 200;
@@ -58,7 +58,7 @@ export function entitiesFor(
   const out: Record<string, Entity> = {};
   for (const q of ids) {
     const p = places.places[q];
-    if (p) out[q] = { kind: "place", labels: p.labels ?? {}, label: p.label, country: p.country, coords: p.coords };
+    if (p) out[q] = { kind: "place", labels: p.labels ?? {}, label: p.label, country: p.country, ...(p.countries ? { countries: p.countries } : {}), coords: p.coords };
     else if (persons.labels[q] || details[q]) out[q] = { kind: "person", labels: persons.labels[q] ?? {}, details: details[q] ?? null };
   }
   return out;

@@ -9,7 +9,7 @@ import { roleText } from "@/lib/body-places";
 import { useEntity } from "@/lib/entities-client";
 import type { PlacedMention } from "@/lib/mentions";
 import { placeLabel, placeLabelLang } from "@/lib/places-index";
-import { regionName } from "@/lib/regions";
+import { placeCountries, regionNames } from "@/lib/regions";
 import { wikidataUrl } from "@/lib/wikimedia";
 
 // Leaflet comes with the first place popup, not with the reader.
@@ -32,7 +32,7 @@ export default function MentionPlaceCard({ mention, edition, lang, headingId }: 
   const place = state.status === "ready" && state.entity?.kind === "place" ? state.entity : null;
   const name = place && mention.qid ? placeLabel(place, mention.qid, locale) : mention.form;
   const nameLang = place ? placeLabelLang(place, locale) : lang ?? null;
-  const country = place ? regionName(locale, place.country) : undefined;
+  const country = place ? regionNames(locale, placeCountries(place)) : undefined;
   return (
     <>
       <h2 id={headingId} className="font-semibold">
