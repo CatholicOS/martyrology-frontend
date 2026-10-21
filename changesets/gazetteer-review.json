@@ -156289,6 +156289,28 @@
      "evidence": [
       "type"
      ]
+    },
+    {
+     "wikidata": "Q125295274",
+     "label": "Monastery Saint Maroun - Annaya",
+     "description": "monastery in Lebanon",
+     "country": "LB",
+     "countries": [
+      "LB"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      34.12098,
+      35.75334
+     ],
+     "types": [
+      "Q44613"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
     }
    ],
    "decision": null,
@@ -156301,8 +156323,12 @@
     "confidence": 1,
     "model": "jev-1.14.0"
    },
-   "reasoning": "Research: no Wikidata item yet; a new item is proposed to the curator. Monastery of Saint Maron at Annaya (Charbel's monastery); no item found, only the Qannoubine monastery exists.",
-   "confidence": "medium"
+   "reasoning": "Monastery of Saint Maron at Annaya, where Charbel lived and is buried; Wikidata has it as Monastery Saint Maroun - Annaya.",
+   "confidence": "high",
+   "suggested": {
+    "wikidata": "Q125295274",
+    "country": "LB"
+   }
   },
   {
    "op": "resolve_place",
