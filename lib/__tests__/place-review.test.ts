@@ -45,6 +45,11 @@ describe("placeCountryFor and countryCodes", () => {
     expect(placeCountryFor(op, "Q165111")).toBe("NL, DE");
     expect(placeCountryFor(op, "Q9")).toBe("");
   });
+  it("keeps only ISO codes, once each, from Wikidata's list", () => {
+    const op = { candidates: [{ ...cand("Q39760", null), countries: ["PS", "Q42620"] }, { ...cand("Q123559", null), countries: ["Q8575586", "ES", "PT", "ES"] }] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q39760")).toBe("PS");
+    expect(placeCountryFor(op, "Q123559")).toBe("ES, PT");
+  });
   it("a suggestion in several countries starts with them", () => {
     const op = { suggested: { wikidata: "Q1218", countries: ["IL", "PS"] }, candidates: [cand("Q1218", null)] } as unknown as ResolvePlaceOp;
     expect(placeCountryFor(op, "Q1218")).toBe("IL, PS");
