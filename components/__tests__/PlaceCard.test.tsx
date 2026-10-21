@@ -355,8 +355,15 @@ describe("PlaceCard", () => {
     });
 
     it("disables Take when the pick has no country", () => {
-      renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null)], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
+      renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null, { countries: [] })], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
       expect(screen.getByRole("button", { name: "Take the suggestion" })).toBeDisabled();
+    });
+
+    it("takes a pick in several countries with all of them", () => {
+      const d = renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Fictaria", null, { countries: ["IL", "PS"] })], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "edit", edited: { wikidata: "Q3", countries: ["IL", "PS"] } });
+      expect(screen.getByLabelText(/^country$/i)).toHaveValue("IL, PS");
     });
 
     it("a kind-only jev shows the kind and no Take", () => {

@@ -88,6 +88,20 @@ describe("placeJevRecord", () => {
   });
 });
 
+describe("Jev's pick of an item in several countries", () => {
+  it("takes the card's countries for it, even when Jev carries one or none", () => {
+    const op = {
+      suggested: { wikidata: "Q104028", countries: ["IL", "PS"] },
+      candidates: [cand("Q104028", "IL")],
+      jev: { decision: "accept", wikidata: "Q104028", country: "IL", kind: "place", probability: 0.6, confidence: 0.6, model: "m" },
+    } as unknown as ResolvePlaceOp;
+    expect(placeJevRecord(op)).toEqual({ decision: "edit", edited: { wikidata: "Q104028", countries: ["IL", "PS"] } });
+    const none = { ...op, jev: { ...op.jev!, country: undefined } } as ResolvePlaceOp;
+    expect(placeJevBlock(none)).toBeNull();
+    expect(placeJevRecord(none)).toEqual({ decision: "edit", edited: { wikidata: "Q104028", countries: ["IL", "PS"] } });
+  });
+});
+
 describe("placeJevBlock", () => {
   it("names why the suggestion cannot be taken", () => {
     expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "Q9", country: "FR" }) }))).toBe("not_listed");

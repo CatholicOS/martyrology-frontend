@@ -85530,7 +85530,16 @@
     "probability": 0.6,
     "confidence": 0.52,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q104028",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "Judea, the historical region; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -158168,6 +158177,28 @@
       "Q1288568"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q2046004",
+     "label": "Judaean Desert",
+     "description": "desert in the southern Levant",
+     "country": null,
+     "countries": [
+      "IL",
+      "PS"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      31.7,
+      35.3
+     ],
+     "types": [
+      "Q8514"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
@@ -158180,7 +158211,16 @@
     "probability": 0.89,
     "confidence": 0.87,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q2046004",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Judaean Desert, as for \"In erémo Iudǽæ\" (decided); it spans Israel and the West Bank, so IL and PS."
   },
   {
    "op": "resolve_place",

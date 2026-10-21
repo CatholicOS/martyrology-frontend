@@ -259,7 +259,10 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
               onClick={() => {
                 if (!jevRecord) return;
                 setNoCountry(false);
-                const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
+                const pick =
+                  jevRecord.decision === "reject"
+                    ? null
+                    : { wikidata: jev.wikidata, country: jevRecord.edited?.countries?.join(", ") ?? jev.country };
                 if (pick?.wikidata && pick.country) {
                   setSelected(pick.wikidata);
                   setOtherQid("");

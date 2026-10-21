@@ -27,7 +27,8 @@ export function countryCodes(field: string): string[] {
 /**
  * What taking Jev's place suggestion records; null when it cannot be applied as written
  * (no decision, a pick without a country or outside the candidates, a reject without a reason).
- * An accept is a plain accept only when the item and its country are the card's defaults.
+ * An accept is a plain accept only when the item and its country are the card's defaults. Jev picks
+ * the item, not its countries: for an item the card places in several (Jerusalem: IL, PS), it takes them.
  */
 export function placeJevRecord(op: ResolvePlaceOp): DecisionRecord | null {
   const jev = op.jev;
@@ -37,6 +38,8 @@ export function placeJevRecord(op: ResolvePlaceOp): DecisionRecord | null {
   }
   if (placeJevBlock(op)) return null;
   const qid = jev.wikidata!;
+  const several = countryCodes(placeCountryFor(op, qid));
+  if (several.length > 1) return { decision: "edit", edited: { wikidata: qid, countries: several } };
   const country = jev.country!;
   if (qid === placeDefaultQid(op) && country === placeCountryFor(op, qid)) return { decision: "accept" };
   return { decision: "edit", edited: { wikidata: qid, country } };
@@ -53,6 +56,7 @@ export function placeJevBlock(op: ResolvePlaceOp): "not_listed" | "no_country" |
   if (jev.decision === "reject") return jev.reason ? null : "no_reason";
   const qid = jev.wikidata;
   if (!qid || !QID.test(qid) || !op.candidates.some((c) => c.wikidata === qid)) return "not_listed";
+  if (countryCodes(placeCountryFor(op, qid)).length > 1) return null;
   if (!jev.country || !ISO.test(jev.country)) return "no_country";
   return null;
 }
