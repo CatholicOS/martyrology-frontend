@@ -6,6 +6,7 @@ import EulogyView from "@/components/EulogyView";
 import PlaceMap from "@/components/PlaceMap";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import type { DecisionRecord, ResolvePlaceOp, TextSays } from "@/lib/changeset";
+import { placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { Locale } from "@/lib/types";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const ISO = /^[A-Z]{2}$/;
+const JEV_KINDS: readonly string[] = ["place", "people", "relative", "not_place"];
 const claimKey = (c: TextSays) => `${c.country}|${c.it}`;
 
 /**
@@ -38,9 +40,8 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const suggested = op.suggested ?? null;
   const byQid = new Map(op.candidates.map((c) => [c.wikidata, c]));
 
-  const countryFor = (qid: string) =>
-    suggested && suggested.wikidata === qid ? suggested.country : (byQid.get(qid)?.country ?? "");
-  const defaultQid = suggested?.wikidata ?? op.candidates[0]?.wikidata ?? "";
+  const countryFor = (qid: string) => placeCountryFor(op, qid);
+  const defaultQid = placeDefaultQid(op);
   const defaultCountry = countryFor(defaultQid);
 
   // Seeded from a saved edit (resume), then from the default.
@@ -59,6 +60,13 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const canAccept = /^Q[1-9]\d*$/.test(qid) && ISO.test(country);
   const unchanged = qid === defaultQid && country === defaultCountry;
   const textSays = op.claims.filter((c) => c.country !== country);
+
+  const jev = op.jev;
+  const jevRecord = placeJevRecord(op);
+  const jevBlock = placeJevBlock(op);
+  const jevLabel = op.candidates.find((c) => c.wikidata === jev?.wikidata)?.label;
+  // The QID too: two candidates can share a label.
+  const jevWhat = jev?.decision === "reject" ? t("jevNone") : [jev?.wikidata, jevLabel].filter(Boolean).join(" ");
 
   const choose = (q: string) => {
     setSelected(q);
@@ -82,11 +90,18 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
           {op.op} · {t("occurrences", { count: op.occurrences.length })}
         </span>
-        {decision && (
-          <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
-            {decisionLabel(tr, decision)}
-          </span>
-        )}
+        <span className="flex items-center gap-2">
+          {op.prefilled === "jev" && (
+            <span className="rounded bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800 dark:bg-indigo-950 dark:text-indigo-200">
+              {t("prefilled")}
+            </span>
+          )}
+          {decision && (
+            <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
+              {decisionLabel(tr, decision)}
+            </span>
+          )}
+        </span>
       </div>
 
       <p className="text-base font-semibold">{op.la}</p>
@@ -171,6 +186,15 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         </label>
       </fieldset>
 
+      {jev && (
+        <p className="mb-2 flex flex-wrap items-center gap-2 text-xs text-indigo-700 dark:text-indigo-300">
+          {jev.decision && <span>{t("jevSuggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}</span>}
+          {(!jev.decision || jev.kind !== "place") && (
+            <span className="text-amber-700 dark:text-amber-400">{JEV_KINDS.includes(jev.kind) ? t(`jevKind.${jev.kind}`) : jev.kind}</span>
+          )}
+        </p>
+      )}
+
       <div className="mb-2">
         <button
           type="button"
@@ -208,7 +232,27 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
       </div>
 
       {!rejecting ? (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {jev?.decision && (
+            <button
+              type="button"
+              disabled={!jevRecord}
+              title={jevBlock ? t(`takeDisabled.${jevBlock}`) : undefined}
+              className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
+              onClick={() => {
+                if (!jevRecord) return;
+                const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
+                if (pick?.wikidata && pick.country) {
+                  setSelected(pick.wikidata);
+                  setOtherQid("");
+                  setCountry(pick.country);
+                }
+                onDecide(op.id, jevRecord);
+              }}
+            >
+              {t("take")}
+            </button>
+          )}
           <button
             type="button"
             disabled={!canAccept}

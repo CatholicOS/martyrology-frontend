@@ -313,7 +313,22 @@
       "reason": "Reason",
       "reasonPlaceholder": "why no Wikidata item fits",
       "confirmReject": "Confirm reject",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "jevSuggests": "Jev suggests: {what} ({confidence}%)",
+      "jevNone": "no item",
+      "jevKind": {
+        "place": "Jev reads this as a place",
+        "people": "Jev reads this as a nationality or people, not a place",
+        "relative": "Jev reads this as a place that depends on its eulogy",
+        "not_place": "Jev reads this as not a place"
+      },
+      "take": "Take the suggestion",
+      "takeDisabled": {
+        "not_listed": "The suggested item is not among the candidates: pick or enter it yourself",
+        "no_country": "The suggested item has no country: choose it and set the country",
+        "no_reason": "Jev's rejection has no reason: reject it yourself with one"
+      },
+      "prefilled": "pre-filled by Jev"
     },
     "roleLegend": "Role of the place"
   },
@@ -362,6 +377,7 @@
       "op": "Op",
       "idContains": "ID contains",
       "undecidedOnly": "Undecided only",
+      "prefilledOnly": "Pre-filled only",
       "all": "All"
     },
     "noMatch": "No operations match the current filters.",

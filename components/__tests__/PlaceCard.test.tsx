@@ -247,4 +247,80 @@ describe("PlaceCard", () => {
     expect(screen.getByText("Fictópoli in Fíctia")).toBeInTheDocument();
     expect(getElogium).not.toHaveBeenCalled();
   });
+  describe("Jev", () => {
+    const jev = (extra: object) => ({ kind: "place", probability: 0.93, confidence: 0.9, model: "jev", ...extra }) as ResolvePlaceOp["jev"];
+
+    it("shows the hint after the candidates and puts Take first in the row", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2", country: "FR" }) }));
+      const take = screen.getByRole("button", { name: "Take the suggestion" });
+      expect(take.parentElement?.firstElementChild).toBe(take);
+      const hint = screen.getByText("Jev suggests: Q2 Fictopolis Nova (93%)");
+      expect(screen.getByLabelText(/Fictopolis Nova —/).compareDocumentPosition(hint) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(hint.compareDocumentPosition(take) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it("explains a disabled Take", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2" }) }));
+      const take = screen.getByRole("button", { name: "Take the suggestion" });
+      expect(take).toBeDisabled();
+      expect(take).toHaveAttribute("title", "The suggested item has no country: choose it and set the country");
+    });
+
+    it("takes the pick: records it and moves the selection and country", () => {
+      const d = renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2", country: "FR" }) }));
+      fireEvent.change(screen.getByLabelText("Other QID"), { target: { value: "Q99" } });
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "edit", edited: { wikidata: "Q2", country: "FR" } });
+      expect(screen.getByLabelText(/Fictopolis Nova —/)).toBeChecked();
+      expect(screen.getByLabelText("Other QID")).toHaveValue("");
+      expect(screen.getByLabelText(/country/i)).toHaveValue("FR");
+    });
+
+    it("takes a reject as a reject with its reason", () => {
+      const d = renderCard(makeOp({ jev: jev({ decision: "reject", reason: "Jev: not a place", kind: "not_place" }) }));
+      expect(screen.getByText("Jev suggests: no item (93%)")).toBeInTheDocument();
+      expect(screen.getByText("Jev reads this as not a place")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "reject", edited: { reason: "Jev: not a place" } });
+    });
+
+    it("explains a pick that is not among the candidates", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q9", country: "FR" }) }));
+      expect(screen.getByRole("button", { name: "Take the suggestion" })).toHaveAttribute(
+        "title",
+        "The suggested item is not among the candidates: pick or enter it yourself",
+      );
+    });
+
+    it("disables Take when the pick has no country", () => {
+      renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null)], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
+      expect(screen.getByRole("button", { name: "Take the suggestion" })).toBeDisabled();
+    });
+
+    it("a kind-only jev shows the kind and no Take", () => {
+      renderCard(makeOp({ jev: jev({}) }));
+      expect(screen.getByText("Jev reads this as a place")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
+    });
+
+    it("notes a people kind next to the hint", () => {
+      renderCard(makeOp({ jev: jev({ decision: "reject", reason: "r", kind: "people" }) }));
+      expect(screen.getByText("Jev reads this as a nationality or people, not a place")).toBeInTheDocument();
+    });
+
+    it("marks a pre-filled card, and shows nothing without Jev", () => {
+      const { unmount } = render(<PlaceCard op={makeOp({ prefilled: "jev", jev: jev({ decision: "accept", wikidata: "Q1", country: "AT" }) })} onDecide={vi.fn()} locale="la" baseEdition="x" />);
+      expect(screen.getByText("pre-filled by Jev")).toBeInTheDocument();
+      unmount();
+      renderCard(makeOp());
+      expect(screen.queryByText("pre-filled by Jev")).toBeNull();
+      expect(screen.queryByText(/Jev suggests/)).toBeNull();
+    });
+
+    it("the reject form replaces the row", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2", country: "FR" }) }));
+      fireEvent.click(screen.getByRole("button", { name: "Reject" }));
+      expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
+    });
+  });
 });

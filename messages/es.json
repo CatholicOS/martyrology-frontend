@@ -313,7 +313,22 @@
       "reason": "Motivo",
       "reasonPlaceholder": "por qué ningún elemento de Wikidata encaja",
       "confirmReject": "Confirmar el rechazo",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "jevSuggests": "Jev sugiere: {what} ({confidence} %)",
+      "jevNone": "ningún elemento",
+      "jevKind": {
+        "place": "Jev lo lee como un lugar",
+        "people": "Jev lo lee como una nacionalidad o un pueblo, no un lugar",
+        "relative": "Jev lo lee como un lugar que depende de su elogio",
+        "not_place": "Jev no lo lee como un lugar"
+      },
+      "take": "Seguir la sugerencia",
+      "takeDisabled": {
+        "not_listed": "El elemento sugerido no está entre los candidatos: elíjalo o introdúzcalo usted",
+        "no_country": "El elemento sugerido no tiene país: elíjalo e indique el país",
+        "no_reason": "El rechazo de Jev no tiene motivo: rechace usted indicando uno"
+      },
+      "prefilled": "rellenado por Jev"
     },
     "roleLegend": "Papel del lugar"
   },
@@ -362,6 +377,7 @@
       "op": "Operación",
       "idContains": "El ID contiene",
       "undecidedOnly": "Solo pendientes",
+      "prefilledOnly": "Solo prerrellenadas",
       "all": "Todas"
     },
     "noMatch": "Ninguna operación coincide con los filtros actuales.",

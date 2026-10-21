@@ -25,6 +25,11 @@ function opKind(op: Op): string {
   return op.op === "realign" ? `realign:${(op as RealignOp).action}` : op.op;
 }
 
+// Any truthy `prefilled` ("jev" on a place, "rule"/"jev" on a rename or person op).
+function isPrefilled(op: Op): boolean {
+  return "prefilled" in op && !!op.prefilled;
+}
+
 function stripExt(name: string): string {
   return name.replace(/\.json$/i, "");
 }
@@ -44,9 +49,10 @@ export default function ReviewPage() {
   const [confidenceFilter, setConfidenceFilter] = useState("");
   const [opFilter, setOpFilter] = useState("");
   const [undecidedOnly, setUndecidedOnly] = useState(false);
+  const [prefilledOnly, setPrefilledOnly] = useState(false);
   const [idFilter, setIdFilter] = useState("");
   // Paging restarts when the change-set or a filter changes (derived, not reset in an effect).
-  const pageKey = `${name}|${classFilter}|${confidenceFilter}|${opFilter}|${undecidedOnly}|${idFilter}`;
+  const pageKey = `${name}|${classFilter}|${confidenceFilter}|${opFilter}|${undecidedOnly}|${prefilledOnly}|${idFilter}`;
   const [paging, setPaging] = useState({ key: pageKey, shown: PAGE_SIZE });
   const shown = paging.key === pageKey ? paging.shown : PAGE_SIZE;
 
@@ -81,6 +87,7 @@ export default function ReviewPage() {
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisionsFor(parsed) });
+      setPrefilledOnly(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadFailed"));
       setCs(null);
@@ -106,6 +113,7 @@ export default function ReviewPage() {
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisionsFor(parsed) });
+      setPrefilledOnly(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("parseFailed"));
       setCs(null);
@@ -123,6 +131,9 @@ export default function ReviewPage() {
     saveDecisions(decisionsKey(cs), next);
   };
 
+  // Pre-filled cards (Jev's pick, or a rule's) carry a truthy `prefilled`; the box appears only when some do.
+  const hasPrefilled = useMemo(() => !!cs && cs.operations.some(isPrefilled), [cs]);
+
   const filteredOps = useMemo(() => {
     if (!cs) return [];
     return cs.operations.filter((op) => {
@@ -131,9 +142,10 @@ export default function ReviewPage() {
       if (opFilter && opKind(op) !== opFilter) return false;
       if (idFilter && !opId(op).includes(idFilter.trim())) return false;
       if (undecidedOnly && decisions[opId(op)]) return false;
+      if (prefilledOnly && hasPrefilled && !isPrefilled(op)) return false;
       return true;
     });
-  }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, idFilter, decisions]);
+  }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, prefilledOnly, hasPrefilled, idFilter, decisions]);
 
   // A change-set with rename candidates (crmedr's subject month) shows a eulogy's cards together.
   const grouped = useMemo(
@@ -332,6 +344,16 @@ export default function ReviewPage() {
               />
               {t("filters.undecidedOnly")}
             </label>
+            {hasPrefilled && (
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={prefilledOnly}
+                  onChange={(e) => setPrefilledOnly(e.target.checked)}
+                />
+                {t("filters.prefilledOnly")}
+              </label>
+            )}
           </div>
 
           <div className="mt-4">

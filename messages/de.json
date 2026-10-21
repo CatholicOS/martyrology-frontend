@@ -313,7 +313,22 @@
       "reason": "Grund",
       "reasonPlaceholder": "warum kein Wikidata-Objekt passt",
       "confirmReject": "Ablehnung bestätigen",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "jevSuggests": "Jev schlägt vor: {what} ({confidence} %)",
+      "jevNone": "kein Eintrag",
+      "jevKind": {
+        "place": "Jev liest dies als Ort",
+        "people": "Jev liest dies als Nationalität oder Volk, nicht als Ort",
+        "relative": "Jev liest dies als Ort, der vom Elogium abhängt",
+        "not_place": "Jev liest dies nicht als Ort"
+      },
+      "take": "Vorschlag übernehmen",
+      "takeDisabled": {
+        "not_listed": "Der vorgeschlagene Eintrag ist nicht unter den Kandidaten: selbst wählen oder eingeben",
+        "no_country": "Der vorgeschlagene Eintrag hat kein Land: Eintrag wählen und Land setzen",
+        "no_reason": "Jevs Ablehnung hat keinen Grund: selbst mit Grund ablehnen"
+      },
+      "prefilled": "von Jev vorausgefüllt"
     },
     "roleLegend": "Rolle des Ortes"
   },
@@ -362,6 +377,7 @@
       "op": "Vorgang",
       "idContains": "ID enthält",
       "undecidedOnly": "Nur offene",
+      "prefilledOnly": "Nur vorausgefüllte",
       "all": "Alle"
     },
     "noMatch": "Keine Vorgänge entsprechen den aktuellen Filtern.",
