@@ -146,6 +146,20 @@ export interface PlaceCandidate {
   evidence: string[];
 }
 
+/** Jev's suggestion on a place card: never a decision by itself. `decision` is absent only for a place with no candidates. */
+export interface PlaceJev {
+  decision?: "accept" | "edit" | "reject";
+  /** accept/edit: the item, and its country when the candidate has one. */
+  wikidata?: string;
+  country?: string;
+  /** reject: why. */
+  reason?: string;
+  kind: "place" | "people" | "relative" | "not_place";
+  probability: number;
+  confidence: number;
+  model: string;
+}
+
 /** Resolve a printed Latin place designation to a Wikidata item (crmedr gazetteer). */
 export interface ResolvePlaceOp extends Base {
   op: "resolve_place";
@@ -158,6 +172,9 @@ export interface ResolvePlaceOp extends Base {
   failed: string[];
   candidates: PlaceCandidate[];
   suggested?: { wikidata: string; country: string } | null;
+  jev?: PlaceJev;
+  /** Set when crmedr pre-filled the decision from Jev's pick. */
+  prefilled?: "jev";
 }
 
 /**

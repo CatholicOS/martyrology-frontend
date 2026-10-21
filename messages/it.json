@@ -313,7 +313,17 @@
       "reason": "Motivo",
       "reasonPlaceholder": "perché nessun elemento di Wikidata è adatto",
       "confirmReject": "Conferma il rifiuto",
-      "cancel": "Annulla"
+      "cancel": "Annulla",
+      "jevSuggests": "Jev suggerisce: {what} ({confidence}%)",
+      "jevNone": "nessun elemento",
+      "jevKind": {
+        "place": "Jev lo legge come un luogo",
+        "people": "Jev lo legge come una nazionalità o un popolo, non un luogo",
+        "relative": "Jev lo legge come un luogo che dipende dal suo elogio",
+        "not_place": "Jev lo legge come non un luogo"
+      },
+      "take": "Accetta il suggerimento",
+      "prefilled": "precompilata da Jev"
     },
     "roleLegend": "Ruolo del luogo"
   },

@@ -313,7 +313,17 @@
       "reason": "Grund",
       "reasonPlaceholder": "warum kein Wikidata-Objekt passt",
       "confirmReject": "Ablehnung bestätigen",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "jevSuggests": "Jev schlägt vor: {what} ({confidence} %)",
+      "jevNone": "kein Eintrag",
+      "jevKind": {
+        "place": "Jev liest dies als Ort",
+        "people": "Jev liest dies als Nationalität oder Volk, nicht als Ort",
+        "relative": "Jev liest dies als Ort, der vom Elogium abhängt",
+        "not_place": "Jev liest dies nicht als Ort"
+      },
+      "take": "Vorschlag übernehmen",
+      "prefilled": "von Jev vorausgefüllt"
     },
     "roleLegend": "Rolle des Ortes"
   },
