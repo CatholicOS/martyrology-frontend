@@ -93,14 +93,17 @@ export function buildNotes(registry) {
  * A eulogy's stated places that the gazetteer resolves to a Wikidata item: one per item, in the
  * order crmedr states them (the opening place first), its first printed forms, and every stated
  * role on it, with whose role it is when the eulogy says.
+ * A phrase crmedr resolves per eulogy (data/gazetteer_scoped.json) is keyed "<phrase>@<eulogy ID>";
+ * its per-eulogy entry wins over a plain one (crmedr gazetteer_text.lookup).
  * @param {StatedPlace[]} stated
  * @param {Record<string, GazetteerPlace>} gazetteer
+ * @param {string} eulogy the eulogy's ID
  */
-function resolvedPlaces(stated, gazetteer) {
+function resolvedPlaces(stated, gazetteer, eulogy) {
   /** @type {Map<string, {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[], g: GazetteerPlace}>} */
   const out = new Map();
   for (const s of stated) {
-    const g = gazetteer[s.la];
+    const g = gazetteer[`${s.la}@${eulogy}`] ?? gazetteer[s.la];
     if (!g?.wikidata) continue;
     const role = { role: s.role, ...(s.person ? { name: s.person } : {}), ...(s.person && s.n ? { n: s.n } : {}) };
     const hit = out.get(g.wikidata);
@@ -121,8 +124,8 @@ function resolvedPlaces(stated, gazetteer) {
 export function resolvedQids(placesDoc, gazetteerDoc) {
   /** @type {Set<string>} */
   const qids = new Set();
-  for (const stated of Object.values(placesDoc.places)) {
-    for (const hit of resolvedPlaces(stated, gazetteerDoc.places)) qids.add(hit.place);
+  for (const [id, stated] of Object.entries(placesDoc.places)) {
+    for (const hit of resolvedPlaces(stated, gazetteerDoc.places, id)) qids.add(hit.place);
   }
   return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
 }
@@ -146,7 +149,7 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
   /** @type {Record<string, {typology: string|null, places: {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[]}[]}>} */
   const eulogies = {};
   for (const [id, stated] of Object.entries(placesDoc.places)) {
-    const hits = resolvedPlaces(stated, gazetteerDoc.places);
+    const hits = resolvedPlaces(stated, gazetteerDoc.places, id);
     if (hits.length === 0) continue;
     for (const hit of hits) {
       places[hit.place] ??= {
