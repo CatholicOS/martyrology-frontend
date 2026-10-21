@@ -51,15 +51,17 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const [selected, setSelected] = useState(byQid.has(seedQid) ? seedQid : defaultQid);
   const [otherQid, setOtherQid] = useState(byQid.has(seedQid) ? "" : seedQid);
   const [country, setCountry] = useState(seedCountry);
+  // A macro-area (the Orient, Africa) lies in no single country: crmedr records country null.
+  const [noCountry, setNoCountry] = useState(ed?.no_country === true);
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState(decision?.decision === "reject" ? (decision.edited?.reason ?? "") : "");
   const [openEulogy, setOpenEulogy] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
 
   const qid = otherQid.trim() || selected;
-  const canAccept = /^Q[1-9]\d*$/.test(qid) && ISO.test(country);
-  const unchanged = qid === defaultQid && country === defaultCountry;
-  const textSays = op.claims.filter((c) => c.country !== country);
+  const canAccept = /^Q[1-9]\d*$/.test(qid) && (noCountry || ISO.test(country));
+  const unchanged = !noCountry && qid === defaultQid && country === defaultCountry;
+  const textSays = noCountry ? [] : op.claims.filter((c) => c.country !== country);
 
   const jev = op.jev;
   const jevRecord = placeJevRecord(op);
@@ -80,7 +82,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         ? { decision: "accept" }
         : {
             decision: "edit",
-            edited: { wikidata: qid, country },
+            edited: noCountry ? { wikidata: qid, no_country: true } : { wikidata: qid, country },
           }
     );
 
@@ -217,8 +219,13 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             className="w-16 rounded border border-slate-300 px-2 py-1 font-mono dark:border-slate-700 dark:bg-slate-900"
             value={country}
             maxLength={3}
+            disabled={noCountry}
             onChange={(e) => setCountry(e.target.value.trim().toUpperCase())}
           />
+        </label>
+        <label className="flex items-center gap-2 text-xs">
+          <input type="checkbox" checked={noCountry} onChange={(e) => setNoCountry(e.target.checked)} />
+          {t("noCountry")}
         </label>
         {ISO.test(country) && textSays.length > 0 && (
           <ul className="text-xs text-amber-700 dark:text-amber-400" data-testid="text-says">
@@ -241,6 +248,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
               className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
               onClick={() => {
                 if (!jevRecord) return;
+                setNoCountry(false);
                 const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
                 if (pick?.wikidata && pick.country) {
                   setSelected(pick.wikidata);

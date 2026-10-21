@@ -306,6 +306,7 @@
       "hideMap": "Masquer la carte",
       "showMap": "Afficher la carte",
       "country": "Pays",
+      "noCountry": "Dans aucun pays en particulier (p. ex. l’Orient, l’Afrique)",
       "italianSays": "Le texte italien dit {claimed} (« {phrase} »), et non {country} : enregistré comme text_says.",
       "accept": "Accepter",
       "acceptEdited": "Accepter (modifié)",

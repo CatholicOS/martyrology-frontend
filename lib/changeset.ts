@@ -15,6 +15,8 @@ export interface EditedFields {
   // resolve_place (text_says is derived by crmedr's apply, never chosen)
   wikidata?: string;
   country?: string;
+  /** resolve_place: the place lies in no single country (a macro-area such as the Orient); no `country`. */
+  no_country?: boolean;
   // add_place: the item's fields; null removes an optional one
   role?: PlaceRole;
   la?: string;
