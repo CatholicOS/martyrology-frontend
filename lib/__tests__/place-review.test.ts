@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { placeDefaultQid, placeJevRecord } from "@/lib/place-review";
+import { placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { PlaceCandidate, PlaceJev, ResolvePlaceOp } from "@/lib/changeset";
 
 const cand = (wikidata: string, country: string | null): PlaceCandidate => ({
@@ -69,5 +69,23 @@ describe("placeJevRecord", () => {
   it("is null without a decision or without jev", () => {
     expect(placeJevRecord(op({ jev: jev({}) }))).toBeNull();
     expect(placeJevRecord(op())).toBeNull();
+  });
+});
+
+describe("placeJevBlock", () => {
+  it("names why the suggestion cannot be taken", () => {
+    expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "Q9", country: "FR" }) }))).toBe("not_listed");
+    expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "X1", country: "FR" }) }))).toBe("not_listed");
+    expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "Q3" }) }))).toBe("no_country");
+    expect(placeJevBlock(op({ jev: jev({ decision: "reject" }) }))).toBe("no_reason");
+  });
+  it("is null when it can be taken, or when there is nothing to take", () => {
+    expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "Q2", country: "FR" }) }))).toBeNull();
+    expect(placeJevBlock(op({ jev: jev({ decision: "reject", reason: "Jev: not a place" }) }))).toBeNull();
+    expect(placeJevBlock(op({ jev: jev({}) }))).toBeNull();
+  });
+  it("refuses a country that is not an ISO code, as the card's accept does", () => {
+    expect(placeJevBlock(op({ jev: jev({ decision: "edit", wikidata: "Q2", country: "France" }) }))).toBe("no_country");
+    expect(placeJevRecord(op({ jev: jev({ decision: "edit", wikidata: "Q2", country: "fr" }) }))).toBeNull();
   });
 });

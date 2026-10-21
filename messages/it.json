@@ -323,7 +323,11 @@
         "not_place": "Jev non lo legge come un luogo"
       },
       "take": "Segui il suggerimento",
-      "takeDisabled": "L’elemento suggerito non ha il paese: sceglilo e imposta il paese",
+      "takeDisabled": {
+        "not_listed": "L’elemento suggerito non è tra i candidati: sceglilo o inseriscilo tu",
+        "no_country": "L’elemento suggerito non ha il paese: sceglilo e imposta il paese",
+        "no_reason": "Il rifiuto di Jev non ha un motivo: rifiuta tu indicandone uno"
+      },
       "prefilled": "precompilata da Jev"
     },
     "roleLegend": "Ruolo del luogo"

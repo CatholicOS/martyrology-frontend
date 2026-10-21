@@ -6,7 +6,7 @@ import EulogyView from "@/components/EulogyView";
 import PlaceMap from "@/components/PlaceMap";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import type { DecisionRecord, ResolvePlaceOp, TextSays } from "@/lib/changeset";
-import { placeCountryFor, placeDefaultQid, placeJevRecord } from "@/lib/place-review";
+import { placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { Locale } from "@/lib/types";
 
 interface Props {
@@ -63,6 +63,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
 
   const jev = op.jev;
   const jevRecord = placeJevRecord(op);
+  const jevBlock = placeJevBlock(op);
   const jevLabel = op.candidates.find((c) => c.wikidata === jev?.wikidata)?.label;
   // The QID too: two candidates can share a label.
   const jevWhat = jev?.decision === "reject" ? t("jevNone") : [jev?.wikidata, jevLabel].filter(Boolean).join(" ");
@@ -236,11 +237,11 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             <button
               type="button"
               disabled={!jevRecord}
-              title={jevRecord ? undefined : t("takeDisabled")}
+              title={jevBlock ? t(`takeDisabled.${jevBlock}`) : undefined}
               className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
               onClick={() => {
                 if (!jevRecord) return;
-                const pick = jevRecord.decision === "edit" ? jevRecord.edited : jev.decision === "accept" ? { wikidata: jev.wikidata, country: jev.country } : null;
+                const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
                 if (pick?.wikidata && pick.country) {
                   setSelected(pick.wikidata);
                   setOtherQid("");

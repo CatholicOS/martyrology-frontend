@@ -323,7 +323,11 @@
         "not_place": "Jev liest dies nicht als Ort"
       },
       "take": "Vorschlag übernehmen",
-      "takeDisabled": "Der vorgeschlagene Eintrag hat kein Land: Eintrag wählen und Land setzen",
+      "takeDisabled": {
+        "not_listed": "Der vorgeschlagene Eintrag ist nicht unter den Kandidaten: selbst wählen oder eingeben",
+        "no_country": "Der vorgeschlagene Eintrag hat kein Land: Eintrag wählen und Land setzen",
+        "no_reason": "Jevs Ablehnung hat keinen Grund: selbst mit Grund ablehnen"
+      },
       "prefilled": "von Jev vorausgefüllt"
     },
     "roleLegend": "Rolle des Ortes"

@@ -323,7 +323,11 @@
         "not_place": "Jev lê isto como não sendo um lugar"
       },
       "take": "Seguir a sugestão",
-      "takeDisabled": "O item sugerido não tem país: escolha-o e defina o país",
+      "takeDisabled": {
+        "not_listed": "O item sugerido não está entre os candidatos: escolha-o ou insira-o você",
+        "no_country": "O item sugerido não tem país: escolha-o e defina o país",
+        "no_reason": "A rejeição de Jev não tem motivo: rejeite você indicando um"
+      },
       "prefilled": "preenchido por Jev"
     },
     "roleLegend": "Papel do local"

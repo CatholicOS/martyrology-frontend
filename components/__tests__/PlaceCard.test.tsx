@@ -284,6 +284,14 @@ describe("PlaceCard", () => {
       expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "reject", edited: { reason: "Jev: not a place" } });
     });
 
+    it("explains a pick that is not among the candidates", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q9", country: "FR" }) }));
+      expect(screen.getByRole("button", { name: "Take the suggestion" })).toHaveAttribute(
+        "title",
+        "The suggested item is not among the candidates: pick or enter it yourself",
+      );
+    });
+
     it("disables Take when the pick has no country", () => {
       renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null)], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
       expect(screen.getByRole("button", { name: "Take the suggestion" })).toBeDisabled();

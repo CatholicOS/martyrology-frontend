@@ -87,6 +87,7 @@ export default function ReviewPage() {
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisionsFor(parsed) });
+      setPrefilledOnly(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadFailed"));
       setCs(null);
@@ -112,6 +113,7 @@ export default function ReviewPage() {
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisionsFor(parsed) });
+      setPrefilledOnly(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("parseFailed"));
       setCs(null);
