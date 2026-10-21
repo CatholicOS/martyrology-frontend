@@ -372,6 +372,7 @@
       "op": "Op",
       "idContains": "ID contains",
       "undecidedOnly": "Undecided only",
+      "prefilledOnly": "pre-filled only",
       "all": "All"
     },
     "noMatch": "No operations match the current filters.",

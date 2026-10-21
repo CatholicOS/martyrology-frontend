@@ -237,3 +237,33 @@ describe("ReviewPage stores the resolved target of an accept", () => {
     expect(stored()[person.id]).not.toHaveProperty("target");
   });
 });
+
+describe("ReviewPage pre-filled only filter", () => {
+  const place = (la: string, extra: object = {}) => ({
+    op: "resolve_place", id: la, la, it: [], occurrences: [], claims: [], failed: [], candidates: [], decision: null, edited: null, ...extra,
+  });
+  const load = async (operations: unknown[], file: string) => {
+    const set = { schema: "crmedr-changeset/v1", generated_by: "t", base: { edition: "2004", registry: "data/places.json" }, operations };
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true, json: () => Promise.resolve({ changesets: [file] }), text: () => Promise.resolve(JSON.stringify(set)), url,
+    })));
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: file })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: file } });
+  };
+  beforeEach(() => localStorage.clear());
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("lists only the pre-filled cards when the box is checked", async () => {
+    await load([place("Fictopolis", { prefilled: "jev" }), place("Utopia")], "pf.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    fireEvent.click(screen.getByLabelText("pre-filled only"));
+    expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"))).toEqual(["op-card-Fictopolis"]);
+  });
+
+  it("offers no box when no card is pre-filled", async () => {
+    await load([place("Fictopolis"), place("Utopia")], "plain.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    expect(screen.queryByLabelText("pre-filled only")).not.toBeInTheDocument();
+  });
+});

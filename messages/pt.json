@@ -372,6 +372,7 @@
       "op": "Operação",
       "idContains": "O ID contém",
       "undecidedOnly": "Só pendentes",
+      "prefilledOnly": "apenas pré-preenchidas",
       "all": "Todas"
     },
     "noMatch": "Nenhuma operação corresponde aos filtros atuais.",

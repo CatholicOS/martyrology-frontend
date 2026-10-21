@@ -372,6 +372,7 @@
       "op": "Vorgang",
       "idContains": "ID enthält",
       "undecidedOnly": "Nur offene",
+      "prefilledOnly": "nur vorausgefüllte",
       "all": "Alle"
     },
     "noMatch": "Keine Vorgänge entsprechen den aktuellen Filtern.",
