@@ -45,6 +45,10 @@ describe("placeCountryFor and countryCodes", () => {
     expect(placeCountryFor(op, "Q165111")).toBe("NL, DE");
     expect(placeCountryFor(op, "Q9")).toBe("");
   });
+  it("a suggestion in several countries starts with them", () => {
+    const op = { suggested: { wikidata: "Q1218", countries: ["IL", "PS"] }, candidates: [cand("Q1218", null)] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q1218")).toBe("IL, PS");
+  });
   it("splits the field on commas and spaces, upper-cased", () => {
     expect(countryCodes(" nl, DE  at ")).toEqual(["NL", "DE", "AT"]);
     expect(countryCodes("")).toEqual([]);

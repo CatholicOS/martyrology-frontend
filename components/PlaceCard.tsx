@@ -147,7 +147,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
           {t.rich("suggested", {
             wikidata: suggested.wikidata,
-            country: suggested.country,
+            country: suggested.countries?.join(", ") ?? suggested.country ?? "",
             qid: (chunks) => <span className="font-mono">{chunks}</span>,
           })}
           {op.confidence ? ` · ${t("confidence", { value: op.confidence })}` : ""}

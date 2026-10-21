@@ -13,7 +13,7 @@ export function placeDefaultQid(op: ResolvePlaceOp): string {
  * candidate's; for a candidate in several countries (Frisia), its codes as the card writes them ("NL, DE").
  */
 export function placeCountryFor(op: ResolvePlaceOp, qid: string): string {
-  if (op.suggested && op.suggested.wikidata === qid) return op.suggested.country;
+  if (op.suggested && op.suggested.wikidata === qid) return op.suggested.countries?.join(", ") ?? op.suggested.country ?? "";
   const c = op.candidates.find((x) => x.wikidata === qid);
   if (!c) return "";
   return c.country ?? (c.countries.length > 1 ? c.countries.join(", ") : "");
