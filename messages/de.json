@@ -323,6 +323,7 @@
         "not_place": "Jev liest dies nicht als Ort"
       },
       "take": "Vorschlag übernehmen",
+      "takeDisabled": "Der vorgeschlagene Eintrag hat kein Land: Eintrag wählen und Land setzen",
       "prefilled": "von Jev vorausgefüllt"
     },
     "roleLegend": "Rolle des Ortes"
@@ -372,7 +373,7 @@
       "op": "Vorgang",
       "idContains": "ID enthält",
       "undecidedOnly": "Nur offene",
-      "prefilledOnly": "nur vorausgefüllte",
+      "prefilledOnly": "Nur vorausgefüllte",
       "all": "Alle"
     },
     "noMatch": "Keine Vorgänge entsprechen den aktuellen Filtern.",

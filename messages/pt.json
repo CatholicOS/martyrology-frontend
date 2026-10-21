@@ -323,6 +323,7 @@
         "not_place": "Jev lê isto como não sendo um lugar"
       },
       "take": "Seguir a sugestão",
+      "takeDisabled": "O item sugerido não tem país: escolha-o e defina o país",
       "prefilled": "preenchido por Jev"
     },
     "roleLegend": "Papel do local"
@@ -372,7 +373,7 @@
       "op": "Operação",
       "idContains": "O ID contém",
       "undecidedOnly": "Só pendentes",
-      "prefilledOnly": "apenas pré-preenchidas",
+      "prefilledOnly": "Apenas pré-preenchidas",
       "all": "Todas"
     },
     "noMatch": "Nenhuma operação corresponde aos filtros atuais.",

@@ -259,6 +259,13 @@ describe("PlaceCard", () => {
       expect(hint.compareDocumentPosition(take) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
 
+    it("explains a disabled Take", () => {
+      renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2" }) }));
+      const take = screen.getByRole("button", { name: "Take the suggestion" });
+      expect(take).toBeDisabled();
+      expect(take).toHaveAttribute("title", "The suggested item has no country: choose it and set the country");
+    });
+
     it("takes the pick: records it and moves the selection and country", () => {
       const d = renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q2", country: "FR" }) }));
       fireEvent.change(screen.getByLabelText("Other QID"), { target: { value: "Q99" } });

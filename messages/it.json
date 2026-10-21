@@ -320,9 +320,10 @@
         "place": "Jev lo legge come un luogo",
         "people": "Jev lo legge come una nazionalità o un popolo, non un luogo",
         "relative": "Jev lo legge come un luogo che dipende dal suo elogio",
-        "not_place": "Jev lo legge come non un luogo"
+        "not_place": "Jev non lo legge come un luogo"
       },
-      "take": "Accetta il suggerimento",
+      "take": "Segui il suggerimento",
+      "takeDisabled": "L’elemento suggerito non ha il paese: sceglilo e imposta il paese",
       "prefilled": "precompilata da Jev"
     },
     "roleLegend": "Ruolo del luogo"
@@ -372,7 +373,7 @@
       "op": "Operazione",
       "idContains": "L’ID contiene",
       "undecidedOnly": "Solo da decidere",
-      "prefilledOnly": "solo precompilate",
+      "prefilledOnly": "Solo precompilate",
       "all": "Tutte"
     },
     "noMatch": "Nessuna operazione corrisponde ai filtri attuali.",

@@ -320,9 +320,10 @@
         "place": "Jev lo lee como un lugar",
         "people": "Jev lo lee como una nacionalidad o un pueblo, no un lugar",
         "relative": "Jev lo lee como un lugar que depende de su elogio",
-        "not_place": "Jev lo lee como no un lugar"
+        "not_place": "Jev no lo lee como un lugar"
       },
       "take": "Seguir la sugerencia",
+      "takeDisabled": "El elemento sugerido no tiene país: elíjalo y indique el país",
       "prefilled": "rellenado por Jev"
     },
     "roleLegend": "Papel del lugar"
@@ -372,7 +373,7 @@
       "op": "Operación",
       "idContains": "El ID contiene",
       "undecidedOnly": "Solo pendientes",
-      "prefilledOnly": "solo prerrellenadas",
+      "prefilledOnly": "Solo prerrellenadas",
       "all": "Todas"
     },
     "noMatch": "Ninguna operación coincide con los filtros actuales.",

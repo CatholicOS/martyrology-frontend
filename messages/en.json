@@ -323,6 +323,7 @@
         "not_place": "Jev reads this as not a place"
       },
       "take": "Take the suggestion",
+      "takeDisabled": "The suggested item has no country: choose it and set the country",
       "prefilled": "pre-filled by Jev"
     },
     "roleLegend": "Role of the place"
@@ -372,7 +373,7 @@
       "op": "Op",
       "idContains": "ID contains",
       "undecidedOnly": "Undecided only",
-      "prefilledOnly": "pre-filled only",
+      "prefilledOnly": "Pre-filled only",
       "all": "All"
     },
     "noMatch": "No operations match the current filters.",

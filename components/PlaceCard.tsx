@@ -236,6 +236,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             <button
               type="button"
               disabled={!jevRecord}
+              title={jevRecord ? undefined : t("takeDisabled")}
               className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
               onClick={() => {
                 if (!jevRecord) return;

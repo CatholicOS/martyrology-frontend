@@ -257,7 +257,7 @@ describe("ReviewPage pre-filled only filter", () => {
   it("lists only the pre-filled cards when the box is checked", async () => {
     await load([place("Fictopolis", { prefilled: "jev" }), place("Utopia")], "pf.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
-    fireEvent.click(screen.getByLabelText("pre-filled only"));
+    fireEvent.click(screen.getByLabelText("Pre-filled only"));
     expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"))).toEqual(["op-card-Fictopolis"]);
   });
 
