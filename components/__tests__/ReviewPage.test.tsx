@@ -264,6 +264,6 @@ describe("ReviewPage pre-filled only filter", () => {
   it("offers no box when no card is pre-filled", async () => {
     await load([place("Fictopolis"), place("Utopia")], "plain.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
-    expect(screen.queryByLabelText("pre-filled only")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Pre-filled only")).not.toBeInTheDocument();
   });
 });
