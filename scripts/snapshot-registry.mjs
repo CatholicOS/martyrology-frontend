@@ -86,7 +86,7 @@ export function buildNotes(registry) {
 
 /**
  * @typedef {{role: string, la: string, it?: string, source?: string, person?: string, n?: number}} StatedPlace
- * @typedef {{wikidata?: string|null, label?: string, country?: string, status: string}} GazetteerPlace
+ * @typedef {{wikidata?: string|null, label?: string, country?: string|null, countries?: string[], status: string}} GazetteerPlace
  */
 
 /**
@@ -144,7 +144,7 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
  * @param {Record<string, string[] | string>} [variants] crmedr data/places_variants_curated.json: a place's printed names by QID ("$" keys are comments)
  */
 export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels = {}, variants = {}) {
-  /** @type {Record<string, {label: string, country: string, coords: [number, number] | null, labels?: Record<string, string>, also?: string[]}>} */
+  /** @type {Record<string, {label: string, country: string, countries?: string[], coords: [number, number] | null, labels?: Record<string, string>, also?: string[]}>} */
   const places = {};
   /** @type {Record<string, {typology: string|null, places: {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[]}[]}>} */
   const eulogies = {};
@@ -155,6 +155,8 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
       places[hit.place] ??= {
         label: hit.g.label ?? hit.place,
         country: hit.g.country ?? "",
+        // A place in several countries (Frisia): country is "" and these are its countries.
+        ...(hit.g.countries?.length ? { countries: hit.g.countries } : {}),
         coords: coords[hit.place] ?? null,
         // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
         // A language without a label of its own takes the item's multilingual ("mul") one, as on Wikidata.

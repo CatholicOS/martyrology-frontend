@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
+import { countryCodes, placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { PlaceCandidate, PlaceJev, ResolvePlaceOp } from "@/lib/changeset";
 
 const cand = (wikidata: string, country: string | null): PlaceCandidate => ({
@@ -39,6 +39,27 @@ describe("placeDefaultQid", () => {
   });
 });
 
+describe("placeCountryFor and countryCodes", () => {
+  it("a candidate in several countries starts with them; one with none starts empty", () => {
+    const op = { candidates: [{ ...cand("Q165111", null), countries: ["NL", "DE"] }, cand("Q9", null)] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q165111")).toBe("NL, DE");
+    expect(placeCountryFor(op, "Q9")).toBe("");
+  });
+  it("keeps only ISO codes, once each, from Wikidata's list", () => {
+    const op = { candidates: [{ ...cand("Q39760", null), countries: ["PS", "Q42620"] }, { ...cand("Q123559", null), countries: ["Q8575586", "ES", "PT", "ES"] }] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q39760")).toBe("PS");
+    expect(placeCountryFor(op, "Q123559")).toBe("ES, PT");
+  });
+  it("a suggestion in several countries starts with them", () => {
+    const op = { suggested: { wikidata: "Q1218", countries: ["IL", "PS"] }, candidates: [cand("Q1218", null)] } as unknown as ResolvePlaceOp;
+    expect(placeCountryFor(op, "Q1218")).toBe("IL, PS");
+  });
+  it("splits the field on commas and spaces, upper-cased", () => {
+    expect(countryCodes(" nl, DE  at ")).toEqual(["NL", "DE", "AT"]);
+    expect(countryCodes("")).toEqual([]);
+  });
+});
+
 describe("placeJevRecord", () => {
   it("accepts when the pick is the default and its country is the default's", () => {
     expect(placeJevRecord(op({ jev: jev({ decision: "accept", wikidata: "Q1", country: "AT" }) }))).toEqual({ decision: "accept" });
@@ -69,6 +90,20 @@ describe("placeJevRecord", () => {
   it("is null without a decision or without jev", () => {
     expect(placeJevRecord(op({ jev: jev({}) }))).toBeNull();
     expect(placeJevRecord(op())).toBeNull();
+  });
+});
+
+describe("Jev's pick of an item in several countries", () => {
+  it("takes the card's countries for it, even when Jev carries one or none", () => {
+    const op = {
+      suggested: { wikidata: "Q104028", countries: ["IL", "PS"] },
+      candidates: [cand("Q104028", "IL")],
+      jev: { decision: "accept", wikidata: "Q104028", country: "IL", kind: "place", probability: 0.6, confidence: 0.6, model: "m" },
+    } as unknown as ResolvePlaceOp;
+    expect(placeJevRecord(op)).toEqual({ decision: "edit", edited: { wikidata: "Q104028", countries: ["IL", "PS"] } });
+    const none = { ...op, jev: { ...op.jev!, country: undefined } } as ResolvePlaceOp;
+    expect(placeJevBlock(none)).toBeNull();
+    expect(placeJevRecord(none)).toEqual({ decision: "edit", edited: { wikidata: "Q104028", countries: ["IL", "PS"] } });
   });
 });
 

@@ -530,8 +530,8 @@
     "wikidata": "Q220",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -1501,7 +1501,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -1582,8 +1582,8 @@
     "decision": "accept",
     "wikidata": "Q1218",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -1636,9 +1636,9 @@
      "wikidata": "Q801",
      "label": "Israel",
      "description": "stato sovrano dell'Asia occidentale",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Civitas Israel",
@@ -1669,7 +1669,7 @@
      "description": "regione compresa tra il Mar Mediterraneo ed il fiume Giordano",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [],
@@ -1691,9 +1691,9 @@
      "wikidata": "Q6654471",
      "label": "Franciscan Monastery",
      "description": "",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -1776,10 +1776,19 @@
     "decision": "edit",
     "wikidata": "Q48175",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -3006,8 +3015,8 @@
     "wikidata": "Q48292",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -3759,7 +3768,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -4378,8 +4387,8 @@
     "wikidata": "Q22",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -4429,9 +4438,9 @@
      "wikidata": "Q801",
      "label": "Israel",
      "description": "stato sovrano dell'Asia occidentale",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Civitas Israel",
@@ -4462,7 +4471,7 @@
      "description": "regione compresa tra il Mar Mediterraneo ed il fiume Giordano",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [],
@@ -4484,9 +4493,9 @@
      "wikidata": "Q6654471",
      "label": "Franciscan Monastery",
      "description": "",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -4572,7 +4581,16 @@
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -4820,9 +4838,9 @@
      "wikidata": "Q604557",
      "label": "Bethlehem of Galilee",
      "description": "human settlement in Israel",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Bethleem Galileae"
@@ -5059,8 +5077,8 @@
     "wikidata": "Q1458",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -5269,8 +5287,8 @@
     "wikidata": "Q14314",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -5715,8 +5733,8 @@
     "wikidata": "Q45656",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -6096,8 +6114,8 @@
     "wikidata": "Q107299",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -6805,8 +6823,8 @@
     "wikidata": "Q6548",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -7546,9 +7564,9 @@
      "wikidata": "Q604557",
      "label": "Bethlehem of Galilee",
      "description": "human settlement in Israel",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Bethleem Galileae"
@@ -8369,8 +8387,8 @@
     "wikidata": "Q23148",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -8510,8 +8528,8 @@
     "wikidata": "Q193826",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -8894,8 +8912,8 @@
     "decision": "accept",
     "wikidata": "Q46",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -9461,7 +9479,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -9542,8 +9560,8 @@
     "decision": "accept",
     "wikidata": "Q1218",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -9961,9 +9979,9 @@
      "wikidata": "Q104028",
      "label": "Judea",
      "description": "regione storica del Vicino Oriente",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Iudaea (regio)"
@@ -10042,7 +10060,7 @@
       "GB",
       "HU",
       "DE",
-      "PS",
+      "IL",
       "CA",
       "CR",
       "LV",
@@ -10084,7 +10102,7 @@
      "description": "gruppo di dialetti",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "IR",
       "AF",
       "TJ",
@@ -10118,7 +10136,16 @@
     "probability": 0.95,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48685",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Kingdom of Judah; its land spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -10757,8 +10784,8 @@
     "wikidata": "Q107299",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -12382,8 +12409,8 @@
     "wikidata": "Q220",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -15298,8 +15325,8 @@
     "wikidata": "Q167600",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -15692,16 +15719,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q501773",
      "label": "Bethsaida",
      "description": "archaeological site in Israel",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -15721,16 +15748,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q501773",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.92,
     "confidence": 0.84,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -17396,8 +17423,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -17703,9 +17730,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -17772,9 +17799,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -17827,7 +17854,7 @@
    "jev": {
     "decision": "edit",
     "wikidata": "Q319242",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.37,
     "confidence": 0.26,
@@ -19914,7 +19941,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -19995,8 +20022,8 @@
     "decision": "accept",
     "wikidata": "Q1218",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -20155,7 +20182,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -20236,8 +20263,8 @@
     "decision": "accept",
     "wikidata": "Q1218",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -20437,7 +20464,7 @@
       "PS",
       "JO",
       "SY",
-      "PS"
+      "IL"
      ],
      "la": [
       "Iordanes",
@@ -23287,8 +23314,8 @@
     "wikidata": "Q5770784",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -24082,8 +24109,8 @@
     "wikidata": "Q1085",
     "country": "CZ",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -24262,8 +24289,8 @@
     "wikidata": "Q1085",
     "country": "CZ",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -25072,7 +25099,7 @@
      "description": "luogo di culto cristiano a Gerusalemme",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -25500,8 +25527,8 @@
     "wikidata": "Q22",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -25771,8 +25798,8 @@
     "wikidata": "Q2751",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -26817,8 +26844,8 @@
     "wikidata": "Q1135603",
     "country": "TR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -27102,8 +27129,8 @@
     "wikidata": "Q1309",
     "country": "NL",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -30156,8 +30183,8 @@
     "wikidata": "Q377485",
     "country": "EG",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -32482,8 +32509,8 @@
     "decision": "edit",
     "wikidata": "Q130212",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -34013,8 +34040,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -34634,8 +34661,8 @@
     "decision": "edit",
     "wikidata": "Q18",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -34883,8 +34910,8 @@
     "decision": "edit",
     "wikidata": "Q18",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -37655,8 +37682,8 @@
     "wikidata": "Q3476",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -41776,8 +41803,8 @@
     "wikidata": "Q190827",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -41855,8 +41882,8 @@
     "wikidata": "Q3367",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -42272,8 +42299,8 @@
     "wikidata": "Q6548",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -43272,8 +43299,8 @@
     "wikidata": "Q3936",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -46220,8 +46247,8 @@
     "wikidata": "Q836",
     "country": "MM",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -47775,8 +47802,8 @@
     "wikidata": "Q1891",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -49377,8 +49404,8 @@
     "wikidata": "Q1479",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -50393,9 +50420,9 @@
      "wikidata": "Q170516",
      "label": "Calvary",
      "description": "collina di Gerusalemme, luogo della crocifissione di Gesù di Nazareth",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Calvaria",
@@ -50416,14 +50443,17 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q170516",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Calvary (Golgotha) hill in Jerusalem.",
    "confidence": "high",
    "jev": {
     "decision": "accept",
     "wikidata": "Q170516",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.98,
@@ -51067,9 +51097,9 @@
      "wikidata": "Q83241",
      "label": "Galilee",
      "description": "regione storica del Vicino Oriente",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Galilaea",
@@ -51095,7 +51125,7 @@
      "description": "città della Galilea",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "Q104028"
      ],
      "la": [
@@ -52363,8 +52393,8 @@
     "wikidata": "Q5813",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -52462,9 +52492,9 @@
      "wikidata": "Q83241",
      "label": "Galilee",
      "description": "regione storica del Vicino Oriente",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Galilaea",
@@ -52490,7 +52520,7 @@
      "description": "città della Galilea",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "Q104028"
      ],
      "la": [
@@ -57224,8 +57254,8 @@
     "wikidata": "Q1476",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -58238,7 +58268,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -58271,7 +58301,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q1218",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Holy City in Mary of Egypt's life is Jerusalem; Palestinian-territories code per convention.",
    "confidence": "medium",
@@ -58573,7 +58606,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -58606,7 +58639,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q1218",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Holy City of Jeremiah's prophecy is Jerusalem.",
    "confidence": "high",
@@ -64376,8 +64412,8 @@
     "wikidata": "Q23148",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -65523,8 +65559,8 @@
     "wikidata": "Q34374",
     "country": "GR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -67493,9 +67529,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -67563,9 +67599,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -67648,9 +67684,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -67694,9 +67730,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -67796,7 +67832,7 @@
    "jev": {
     "decision": "edit",
     "wikidata": "Q319242",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.94,
     "confidence": 0.93,
@@ -67816,16 +67852,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -67855,7 +67891,7 @@
    "jev": {
     "decision": "accept",
     "wikidata": "Q319242",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.96,
     "confidence": 0.92,
@@ -67881,9 +67917,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -67927,9 +67963,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -68029,7 +68065,7 @@
    "jev": {
     "decision": "edit",
     "wikidata": "Q319242",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.97,
     "confidence": 0.96,
@@ -68078,9 +68114,9 @@
      "wikidata": "Q1615560",
      "label": "Caesarea",
      "description": "città in Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -68147,9 +68183,9 @@
      "wikidata": "Q319242",
      "label": "Caesarea Maritima",
      "description": "città antica in Palestina",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Caesarea Maritima",
@@ -68202,7 +68238,7 @@
    "jev": {
     "decision": "edit",
     "wikidata": "Q319242",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.65,
     "confidence": 0.59,
@@ -68597,8 +68633,8 @@
     "wikidata": "Q3766",
     "country": "SY",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -68698,8 +68734,8 @@
     "wikidata": "Q3766",
     "country": "SY",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -70296,8 +70332,8 @@
     "wikidata": "Q193826",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -71138,8 +71174,8 @@
     "wikidata": "Q42462",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -73819,8 +73855,8 @@
     "decision": "accept",
     "wikidata": "Q46",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -75679,8 +75715,8 @@
     "wikidata": "Q334263",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -75750,8 +75786,8 @@
     "wikidata": "Q334263",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -79581,8 +79617,8 @@
     "wikidata": "Q21768",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -81224,7 +81260,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -81644,8 +81680,8 @@
     "wikidata": "Q8717",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -84550,8 +84586,8 @@
     "wikidata": "Q928",
     "country": "PH",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -84777,7 +84813,7 @@
       "PS",
       "JO",
       "SY",
-      "PS"
+      "IL"
      ],
      "la": [
       "Iordanes",
@@ -84860,7 +84896,7 @@
       "PS",
       "JO",
       "SY",
-      "PS"
+      "IL"
      ],
      "la": [
       "Iordanes",
@@ -85391,16 +85427,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q104028",
      "label": "Judea",
      "description": "regione storica del Vicino Oriente",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Iudaea (regio)"
@@ -85447,9 +85483,9 @@
      "wikidata": "Q513200",
      "label": "Judea and Samaria Area",
      "description": "nome israeliano per la Cisgiordania",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -85516,12 +85552,21 @@
    "jev": {
     "decision": "accept",
     "wikidata": "Q104028",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.6,
     "confidence": 0.52,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q104028",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "Judea, the historical region; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -85535,16 +85580,16 @@
    ],
    "claims": [],
    "failed": [
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q167677",
      "label": "Yavne",
      "description": "città di Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Iamnia"
@@ -85585,9 +85630,9 @@
      "wikidata": "Q970828",
      "label": "Iamnia",
      "description": "",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -85605,7 +85650,7 @@
    "jev": {
     "decision": "accept",
     "wikidata": "Q167677",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.57,
     "confidence": 0.43,
@@ -90344,8 +90389,8 @@
     "wikidata": "Q3327",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -92866,8 +92911,8 @@
     "wikidata": "Q1733",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -93165,8 +93210,8 @@
     "wikidata": "Q546516",
     "country": "GR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -93340,9 +93385,9 @@
      "wikidata": "Q124260777",
      "label": "Magidovitch House",
      "description": "",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -94744,8 +94789,8 @@
     "wikidata": "Q3869",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -96953,8 +96998,8 @@
     "wikidata": "Q1720",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -97844,16 +97889,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q185318",
      "label": "Mount Carmel",
      "description": "sistema collinare della Galilea",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Carmel mons"
@@ -98047,16 +98092,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q185318",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.98,
     "confidence": 0.98,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -98381,8 +98426,8 @@
     "wikidata": "Q6441",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -100301,8 +100346,8 @@
     "wikidata": "Q43266",
     "country": "CZ",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -101697,16 +101742,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q430776",
      "label": "Nazareth",
      "description": "città israeliana",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Nazara"
@@ -101839,16 +101884,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q430776",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -101863,16 +101908,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q430776",
      "label": "Nazareth",
      "description": "città israeliana",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Nazara"
@@ -102005,16 +102050,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q430776",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -102091,8 +102136,8 @@
     "wikidata": "Q2634",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -104687,8 +104732,8 @@
     "wikidata": "Q49831",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -104804,8 +104849,8 @@
     "wikidata": "Q49831",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -107325,8 +107370,8 @@
     "decision": "accept",
     "wikidata": "Q188871",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -110465,8 +110510,8 @@
     "wikidata": "Q6616",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -110545,8 +110590,8 @@
     "wikidata": "Q6616",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -112178,8 +112223,8 @@
     "wikidata": "Q3663197",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -114414,8 +114459,8 @@
     "wikidata": "Q41876",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -114797,8 +114842,8 @@
     "wikidata": "Q647",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -117802,8 +117847,8 @@
     "wikidata": "Q30974",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -118138,8 +118183,8 @@
     "wikidata": "Q206837",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -118258,8 +118303,8 @@
     "wikidata": "Q188780",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -120431,8 +120476,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -121399,7 +121444,7 @@
      "description": "luogo di culto cristiano a Gerusalemme",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -123220,16 +123265,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q152368",
      "label": "Beit She'an",
      "description": "città israeliana",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -123248,16 +123293,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q152368",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.97,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -123544,9 +123589,9 @@
      "wikidata": "Q1177750",
      "label": "City of David",
      "description": "nucleo originario di Gerusalemme",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -123638,9 +123683,9 @@
      "wikidata": "Q332444",
      "label": "Mount Zion",
      "description": "monte in Israele, di grande importanza storica e religiosa",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Sion"
@@ -123767,9 +123812,9 @@
      "wikidata": "Q1177750",
      "label": "City of David",
      "description": "nucleo originario di Gerusalemme",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -123837,9 +123882,9 @@
      "wikidata": "Q332444",
      "label": "Mount Zion",
      "description": "monte in Israele, di grande importanza storica e religiosa",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Sion"
@@ -123885,8 +123930,8 @@
     "wikidata": "Q68136",
     "country": "CH",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -129274,8 +129319,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -129740,8 +129785,8 @@
     "wikidata": "Q34",
     "country": "SE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -132009,7 +132054,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q3906600",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "The Jerusalem Temple where the Presentation took place.",
    "confidence": "medium",
@@ -132065,9 +132113,9 @@
      "wikidata": "Q801",
      "label": "Israel",
      "description": "stato sovrano dell'Asia occidentale",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Civitas Israel",
@@ -132098,7 +132146,7 @@
      "description": "regione compresa tra il Mar Mediterraneo ed il fiume Giordano",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [],
@@ -132120,9 +132168,9 @@
      "wikidata": "Q6654471",
      "label": "Franciscan Monastery",
      "description": "",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -132205,10 +132253,19 @@
     "decision": "edit",
     "wikidata": "Q48175",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q48175",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Holy Land; it spans Israel and the West Bank today, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -132598,8 +132655,8 @@
     "decision": "accept",
     "wikidata": "Q768515",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -132741,8 +132798,8 @@
     "decision": "accept",
     "wikidata": "Q768515",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -135391,8 +135448,8 @@
     "wikidata": "Q1309",
     "country": "NL",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -135574,8 +135631,8 @@
     "wikidata": "Q717942",
     "country": "PL",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -136466,8 +136523,8 @@
     "wikidata": "Q3806",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -136592,8 +136649,8 @@
     "wikidata": "Q154728",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -136741,8 +136798,8 @@
     "wikidata": "Q1020145",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -137548,8 +137605,8 @@
     "wikidata": "Q62378",
     "country": "GB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -138705,8 +138762,8 @@
     "wikidata": "Q82070",
     "country": "LB",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -139040,8 +139097,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -139231,7 +139288,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -141867,8 +141924,8 @@
     "wikidata": "Q2028",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -143454,8 +143511,8 @@
     "wikidata": "Q13395",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -143535,8 +143592,8 @@
     "wikidata": "Q102217",
     "country": "BY",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -144025,8 +144082,8 @@
     "wikidata": "Q3852",
     "country": "DE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -144517,8 +144574,8 @@
     "wikidata": "Q187843",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -146514,8 +146571,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -147155,9 +147212,9 @@
      "wikidata": "Q604557",
      "label": "Bethlehem of Galilee",
      "description": "human settlement in Israel",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Bethleem Galileae"
@@ -148396,7 +148453,7 @@
      "description": "luogo di culto cristiano a Gerusalemme",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -148426,7 +148483,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q187702",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Basilica of the Resurrection, on Christ's tomb: Church of the Holy Sepulchre.",
    "confidence": "high",
@@ -149263,9 +149323,9 @@
      "wikidata": "Q907482",
      "label": "Nea Ekklesia of the Theotokos",
      "description": "chiesa bizantina di Gerusalemme, consacrata nel 543, dedicata alla Madre di Dio",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -149286,14 +149346,14 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q907482",
-    "country": "PS"
+    "country": "IL"
    },
    "reasoning": "Nea Church of the Theotokos in Jerusalem, dedicated 543.",
    "confidence": "high",
    "jev": {
     "decision": "accept",
     "wikidata": "Q907482",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.54,
     "confidence": 0.5,
@@ -149748,8 +149808,8 @@
     "wikidata": "Q186282",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -150458,9 +150518,9 @@
      "wikidata": "Q1271243",
      "label": "Titular Episcopal See of Emmaüs",
      "description": "titular see",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -150555,8 +150615,8 @@
     "wikidata": "Q207985",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -150734,16 +150794,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q430776",
      "label": "Nazareth",
      "description": "città israeliana",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Nazara"
@@ -150876,16 +150936,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q430776",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -151023,8 +151083,8 @@
     "wikidata": "Q5990",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -151387,7 +151447,7 @@
      "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -151468,8 +151528,8 @@
     "decision": "accept",
     "wikidata": "Q1218",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -152722,8 +152782,8 @@
     "wikidata": "Q1053000",
     "country": "VA",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -155844,8 +155904,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -157960,9 +158020,9 @@
      "wikidata": "Q104028",
      "label": "Judea",
      "description": "regione storica del Vicino Oriente",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Iudaea (regio)"
@@ -158088,7 +158148,7 @@
       "GB",
       "HU",
       "DE",
-      "PS",
+      "IL",
       "CA",
       "CR",
       "LV",
@@ -158130,7 +158190,7 @@
      "description": "gruppo di dialetti",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "IR",
       "AF",
       "TJ",
@@ -158153,6 +158213,28 @@
       "Q1288568"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q2046004",
+     "label": "Judaean Desert",
+     "description": "desert in the southern Levant",
+     "country": null,
+     "countries": [
+      "IL",
+      "PS"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      31.7,
+      35.3
+     ],
+     "types": [
+      "Q8514"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
@@ -158160,12 +158242,21 @@
    "jev": {
     "decision": "accept",
     "wikidata": "Q104028",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.89,
     "confidence": 0.87,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q2046004",
+    "countries": [
+     "IL",
+     "PS"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "The Judaean Desert, as for \"In erémo Iudǽæ\" (decided); it spans Israel and the West Bank, so IL and PS."
   },
   {
    "op": "resolve_place",
@@ -160199,7 +160290,7 @@
      "description": "luogo di culto cristiano a Gerusalemme",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -160229,7 +160320,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q187702",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Church of the Resurrection (Anastasis) in Jerusalem, i.e. the Holy Sepulchre.",
    "confidence": "high",
@@ -160548,8 +160642,8 @@
     "wikidata": "Q12506",
     "country": "TR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -161685,8 +161779,8 @@
     "decision": "accept",
     "wikidata": "Q1653",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -162709,8 +162803,8 @@
     "wikidata": "Q1059946",
     "country": "PS",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -163178,8 +163272,8 @@
     "wikidata": "Q1059946",
     "country": "PS",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -166581,8 +166675,8 @@
     "wikidata": "Q630414",
     "country": "CH",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -167991,8 +168085,8 @@
     "wikidata": "Q15622515",
     "country": "TR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -172364,8 +172458,8 @@
     "wikidata": "Q1551419",
     "country": "TR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -173922,7 +174016,7 @@
    ],
    "claims": [],
    "failed": [
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS",
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL",
     "type: the item is not a place"
    ],
    "candidates": [
@@ -173930,9 +174024,9 @@
      "wikidata": "Q170516",
      "label": "Calvary",
      "description": "collina di Gerusalemme, luogo della crocifissione di Gesù di Nazareth",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Calvaria",
@@ -174147,6 +174241,27 @@
       "Q2175765"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q3001765",
+     "label": "Église du couvent des bénédictines du Calvaire d'Angers",
+     "description": "convent located in Maine-et-Loire, in France",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      47.4785,
+      -0.5631
+     ],
+     "types": [
+      "Q1128397"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
@@ -174158,7 +174273,13 @@
     "probability": 0.61,
     "confidence": 0.48,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q3001765",
+    "country": "FR"
+   },
+   "confidence": "high",
+   "reasoning": "Rosalie du Verdier de la Sorinière was a nun of the Benedictines of the Calvary at Angers (French Wikipedia); Q3001765 is that convent (founded 1623, Angers). Not Golgotha."
   },
   {
    "op": "resolve_place",
@@ -181894,8 +182015,8 @@
     "wikidata": "Q18713494",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -186975,8 +187096,8 @@
     "wikidata": "Q314520",
     "country": "BE",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -187746,9 +187867,9 @@
      "wikidata": "Q185318",
      "label": "Mount Carmel",
      "description": "sistema collinare della Galilea",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Carmel mons"
@@ -187770,14 +187891,14 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q185318",
-    "country": "PS"
+    "country": "IL"
    },
    "reasoning": "Mount Carmel in northern Israel; convention gives PS.",
    "confidence": "high",
    "jev": {
     "decision": "accept",
     "wikidata": "Q185318",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.98,
     "confidence": 0.98,
@@ -187979,8 +188100,8 @@
     "wikidata": "Q216104",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -188549,8 +188670,8 @@
     "wikidata": "Q731916",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -188574,8 +188695,8 @@
    "reasoning": "Research: no item. Mount Quros in Armenia for Dometius the Physician is unidentified (possibly a Cyrus/Cyrrhus mount); cannot be pinned down.",
    "jev": {
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -188868,9 +188989,9 @@
      "wikidata": "Q170516",
      "label": "Calvary",
      "description": "collina di Gerusalemme, luogo della crocifissione di Gesù di Nazareth",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Calvaria",
@@ -188891,14 +189012,17 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q170516",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Calvary / Golgotha in Jerusalem.",
    "confidence": "high",
    "jev": {
     "decision": "accept",
     "wikidata": "Q170516",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.98,
@@ -189074,9 +189198,9 @@
      "wikidata": "Q715213",
      "label": "Carmelit",
      "description": "funicolare sotterranea di Haifa, Israele",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -189094,9 +189218,9 @@
      "wikidata": "Q185318",
      "label": "Mount Carmel",
      "description": "sistema collinare della Galilea",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [
       "Carmel mons"
@@ -189118,17 +189242,17 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q185318",
-    "country": "PS"
+    "country": "IL"
    },
    "reasoning": "Mount Carmel.",
    "confidence": "high",
    "jev": {
     "decision": "accept",
     "wikidata": "Q185318",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -191496,8 +191620,8 @@
     "wikidata": "Q6616",
     "country": "FR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -193039,7 +193163,7 @@
       "IN",
       "IE",
       "IM",
-      "PS",
+      "IL",
       "JM",
       "JE",
       "KE",
@@ -193417,8 +193541,8 @@
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -194493,7 +194617,7 @@
      "description": "luogo di culto cristiano a Gerusalemme",
      "country": null,
      "countries": [
-      "PS",
+      "IL",
       "PS"
      ],
      "la": [
@@ -194523,7 +194647,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q187702",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "Tomb of the Lord is within the Church of the Holy Sepulchre; the tomb item itself has no coordinates or country.",
    "confidence": "medium",
@@ -194914,8 +195041,8 @@
     "decision": "accept",
     "wikidata": "Q12630",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -195304,7 +195431,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q3906600",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "The Jerusalem Temple item matches the temple where Mary was presented.",
    "confidence": "medium",
@@ -195362,7 +195492,10 @@
    "edited": null,
    "suggested": {
     "wikidata": "Q3906600",
-    "country": "PS"
+    "countries": [
+     "IL",
+     "PS"
+    ]
    },
    "reasoning": "The Jerusalem Temple of Simeon and Anna.",
    "confidence": "medium",
@@ -195527,8 +195660,8 @@
     "wikidata": "Q99309",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -197241,8 +197374,8 @@
     "wikidata": "Q54886",
     "country": "EC",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -197447,16 +197580,16 @@
    "claims": [],
    "failed": [
     "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in PS"
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IL"
    ],
    "candidates": [
     {
      "wikidata": "Q152368",
      "label": "Beit She'an",
      "description": "città israeliana",
-     "country": "PS",
+     "country": "IL",
      "countries": [
-      "PS"
+      "IL"
      ],
      "la": [],
      "p9314": false,
@@ -197475,16 +197608,16 @@
    ],
    "decision": "accept",
    "edited": null,
-   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q152368",
-    "country": "PS",
+    "country": "IL",
     "kind": "place",
     "probability": 0.98,
     "confidence": 0.96,
     "model": "jev-1.14.0"
-   }
+   },
+   "prefilled": "jev"
   },
   {
    "op": "resolve_place",
@@ -200359,8 +200492,8 @@
     "wikidata": "Q45328",
     "country": "IT",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -201803,8 +201936,8 @@
     "wikidata": "Q34374",
     "country": "GR",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -202127,8 +202260,8 @@
     "wikidata": "Q52631",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },
@@ -202574,8 +202707,8 @@
     "wikidata": "Q5813",
     "country": "ES",
     "kind": "place",
-    "probability": 1,
-    "confidence": 1,
+    "probability": 1.0,
+    "confidence": 1.0,
     "model": "jev-1.14.0"
    }
   },

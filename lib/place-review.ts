@@ -8,16 +8,29 @@ export function placeDefaultQid(op: ResolvePlaceOp): string {
   return op.suggested?.wikidata ?? op.candidates[0]?.wikidata ?? "";
 }
 
-/** The country a place card starts with for an item: the suggestion's for the suggested item, else the candidate's. */
+/**
+ * The country a place card starts with for an item: the suggestion's for the suggested item, else the
+ * candidate's; for a candidate in several countries (Frisia), its ISO codes once each, as the card writes
+ * them ("NL, DE").
+ */
 export function placeCountryFor(op: ResolvePlaceOp, qid: string): string {
-  if (op.suggested && op.suggested.wikidata === qid) return op.suggested.country;
-  return op.candidates.find((c) => c.wikidata === qid)?.country ?? "";
+  if (op.suggested && op.suggested.wikidata === qid) return op.suggested.countries?.join(", ") ?? op.suggested.country ?? "";
+  const c = op.candidates.find((x) => x.wikidata === qid);
+  if (!c) return "";
+  // Wikidata's list can repeat a country or name one without an ISO code (a QID): only codes, once each.
+  return c.country ?? [...new Set(c.countries.filter((x) => ISO.test(x)))].join(", ");
+}
+
+/** The codes a place card's country field holds: one, or several separated by commas or spaces. */
+export function countryCodes(field: string): string[] {
+  return field.toUpperCase().split(/[\s,]+/).filter(Boolean);
 }
 
 /**
  * What taking Jev's place suggestion records; null when it cannot be applied as written
  * (no decision, a pick without a country or outside the candidates, a reject without a reason).
- * An accept is a plain accept only when the item and its country are the card's defaults.
+ * An accept is a plain accept only when the item and its country are the card's defaults. Jev picks
+ * the item, not its countries: for an item the card places in several (Jerusalem: IL, PS), it takes them.
  */
 export function placeJevRecord(op: ResolvePlaceOp): DecisionRecord | null {
   const jev = op.jev;
@@ -27,6 +40,8 @@ export function placeJevRecord(op: ResolvePlaceOp): DecisionRecord | null {
   }
   if (placeJevBlock(op)) return null;
   const qid = jev.wikidata!;
+  const several = countryCodes(placeCountryFor(op, qid));
+  if (several.length > 1) return { decision: "edit", edited: { wikidata: qid, countries: several } };
   const country = jev.country!;
   if (qid === placeDefaultQid(op) && country === placeCountryFor(op, qid)) return { decision: "accept" };
   return { decision: "edit", edited: { wikidata: qid, country } };
@@ -43,6 +58,7 @@ export function placeJevBlock(op: ResolvePlaceOp): "not_listed" | "no_country" |
   if (jev.decision === "reject") return jev.reason ? null : "no_reason";
   const qid = jev.wikidata;
   if (!qid || !QID.test(qid) || !op.candidates.some((c) => c.wikidata === qid)) return "not_listed";
+  if (countryCodes(placeCountryFor(op, qid)).length > 1) return null;
   if (!jev.country || !ISO.test(jev.country)) return "no_country";
   return null;
 }

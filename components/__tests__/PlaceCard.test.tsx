@@ -141,7 +141,7 @@ describe("PlaceCard", () => {
   });
 
   it("accept is disabled until a country is set", () => {
-    const op = makeOp({ suggested: undefined, claims: [], candidates: [candidate("Q3", "Fictaria", null)] });
+    const op = makeOp({ suggested: undefined, claims: [], candidates: [candidate("Q3", "Fictaria", null, { countries: [] })] });
     const onDecide = renderCard(op);
     const accept = screen.getByRole("button", { name: /^accept/i });
     expect(accept).toBeDisabled();
@@ -152,6 +152,39 @@ describe("PlaceCard", () => {
       decision: "edit",
       edited: { wikidata: "Q3", country: "IT" },
     });
+  });
+
+  it("a candidate in several countries starts with them and records an edit with countries", () => {
+    const op = makeOp({ suggested: undefined, candidates: [candidate("Q165111", "Frisia", null, { countries: ["NL", "DE"] })] });
+    const onDecide = renderCard(op);
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("NL, DE");
+    // The Italian's Germania is one of the place's countries: no text_says.
+    expect(screen.queryByTestId("text-says")).toBeNull();
+    const accept = screen.getByRole("button", { name: /^accept/i });
+    expect(accept).toHaveTextContent(/edited/i);
+    fireEvent.click(accept);
+    expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
+      decision: "edit",
+      edited: { wikidata: "Q165111", countries: ["NL", "DE"] },
+    });
+  });
+
+  it("typed countries: a repeated or invalid code disables accept; a claim outside them is shown", () => {
+    renderCard(makeOp());
+    const field = screen.getByLabelText(/^country$/i);
+    const accept = screen.getByRole("button", { name: /^accept/i });
+    fireEvent.change(field, { target: { value: "AT, AT" } });
+    expect(accept).toBeDisabled();
+    fireEvent.change(field, { target: { value: "AT, XYZ" } });
+    expect(accept).toBeDisabled();
+    fireEvent.change(field, { target: { value: "at, it" } });
+    expect(accept).not.toBeDisabled();
+    expect(screen.getByTestId("text-says")).toHaveTextContent(/The Italian says DE .*not AT, IT/);
+  });
+
+  it("resumes a saved edit with several countries", () => {
+    renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", countries: ["NL", "DE"] } });
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("NL, DE");
   });
 
   it("a place in no single country is accepted with no_country", () => {
@@ -322,8 +355,15 @@ describe("PlaceCard", () => {
     });
 
     it("disables Take when the pick has no country", () => {
-      renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null)], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
+      renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Nowhere", null, { countries: [] })], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
       expect(screen.getByRole("button", { name: "Take the suggestion" })).toBeDisabled();
+    });
+
+    it("takes a pick in several countries with all of them", () => {
+      const d = renderCard(makeOp({ candidates: [candidate("Q1", "Fictopolis", "AT"), candidate("Q3", "Fictaria", null, { countries: ["IL", "PS"] })], jev: jev({ decision: "edit", wikidata: "Q3" }) }));
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "edit", edited: { wikidata: "Q3", countries: ["IL", "PS"] } });
+      expect(screen.getByLabelText(/^country$/i)).toHaveValue("IL, PS");
     });
 
     it("a kind-only jev shows the kind and no Take", () => {

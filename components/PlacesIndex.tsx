@@ -8,7 +8,7 @@ import { roleLabel, roleText } from "@/lib/body-places";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { letterSlug } from "@/lib/letters";
 import { placeHeadingId, placeLetterEntries, type IndexPlace, type PlacesIndexData } from "@/lib/places-index";
-import { regionName } from "@/lib/regions";
+import { placeCountries, regionNames } from "@/lib/regions";
 
 /**
  * An edition's index of places, as at the back of a printed book: the places A–Z in the interface
@@ -34,7 +34,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
 
   /** One place's heading and lines, with an id the cross-references link to. */
   const placeBlock = (p: IndexPlace) => {
-    const c = regionName(locale, p.country);
+    const c = regionNames(locale, placeCountries(p));
     return (
       <div key={p.qid} id={placeHeadingId(p.qid)} className="mb-4">
         <h3 className="font-semibold">

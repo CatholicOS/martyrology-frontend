@@ -123,6 +123,17 @@ describe("filterEntries and facetCounts", () => {
       .toEqual(["mr:0101-almachius", "mr:0102-caecilia", "mr:0103-thomas"]);
   });
 
+  it("a place in several countries is filtered and counted under each", () => {
+    const frisia: PlacesSnapshot = {
+      places: { Q165111: { label: "Frisia", country: "", countries: ["NL", "DE"], coords: [53.2, 6.0] } },
+      eulogies: { "mr:0605-bonifatius": { typology: "dies_natalis", places: [{ place: "Q165111", la: "in Frísia", roles: [{ role: "death" }] }] } },
+    };
+    const { entries: fe } = mapEntries([cat("mr:0605-bonifatius", "Sanctus Bonifatius", "06-05")], frisia, "en");
+    expect(filterEntries(fe, { ...all, countries: new Set(["DE"]) }).map((e) => e.id)).toEqual(["mr:0605-bonifatius"]);
+    expect(filterEntries(fe, { ...all, countries: new Set(["FR"]) })).toEqual([]);
+    expect(facetCounts(fe, all).countries).toEqual([["DE", 1], ["NL", 1]]);
+  });
+
   it("counts each facet under the other filters, not its own", () => {
     const f: MapFilters = { query: "", hiddenTypologies: new Set(["depositio"]), countries: new Set(["IT"]), hiddenRoles: new Set() };
     const { typologies, countries } = facetCounts(entries, f);

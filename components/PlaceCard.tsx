@@ -6,7 +6,7 @@ import EulogyView from "@/components/EulogyView";
 import PlaceMap from "@/components/PlaceMap";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import type { DecisionRecord, ResolvePlaceOp, TextSays } from "@/lib/changeset";
-import { placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
+import { countryCodes, placeCountryFor, placeDefaultQid, placeJevBlock, placeJevRecord } from "@/lib/place-review";
 import type { Locale } from "@/lib/types";
 
 interface Props {
@@ -47,7 +47,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   // Seeded from a saved edit (resume), then from the default.
   const ed = decision?.decision === "edit" ? decision.edited : undefined;
   const seedQid = ed?.wikidata ?? defaultQid;
-  const seedCountry = ed?.country ?? countryFor(seedQid);
+  const seedCountry = ed?.countries?.join(", ") ?? ed?.country ?? countryFor(seedQid);
   const [selected, setSelected] = useState(byQid.has(seedQid) ? seedQid : defaultQid);
   const [otherQid, setOtherQid] = useState(byQid.has(seedQid) ? "" : seedQid);
   const [country, setCountry] = useState(seedCountry);
@@ -59,9 +59,14 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const [showMap, setShowMap] = useState(false);
 
   const qid = otherQid.trim() || selected;
-  const canAccept = /^Q[1-9]\d*$/.test(qid) && (noCountry || ISO.test(country));
-  const unchanged = !noCountry && qid === defaultQid && country === defaultCountry;
-  const textSays = noCountry ? [] : op.claims.filter((c) => c.country !== country);
+  // One country, or several for a region that spans them (Frisia: "NL, DE").
+  const codes = countryCodes(country);
+  const countryOk = codes.length > 0 && codes.every((c) => ISO.test(c)) && new Set(codes).size === codes.length;
+  const several = !noCountry && codes.length > 1;
+  const canAccept = /^Q[1-9]\d*$/.test(qid) && (noCountry || countryOk);
+  // A plain accept takes one country: crmedr's apply records several only from an edit.
+  const unchanged = !noCountry && !several && qid === defaultQid && country === defaultCountry;
+  const textSays = noCountry ? [] : op.claims.filter((c) => !codes.includes(c.country));
 
   const jev = op.jev;
   const jevRecord = placeJevRecord(op);
@@ -82,7 +87,11 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         ? { decision: "accept" }
         : {
             decision: "edit",
-            edited: noCountry ? { wikidata: qid, no_country: true } : { wikidata: qid, country },
+            edited: noCountry
+              ? { wikidata: qid, no_country: true }
+              : several
+                ? { wikidata: qid, countries: codes }
+                : { wikidata: qid, country: codes[0] },
           }
     );
 
@@ -138,7 +147,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
           {t.rich("suggested", {
             wikidata: suggested.wikidata,
-            country: suggested.country,
+            country: suggested.countries?.join(", ") ?? suggested.country ?? "",
             qid: (chunks) => <span className="font-mono">{chunks}</span>,
           })}
           {op.confidence ? ` · ${t("confidence", { value: op.confidence })}` : ""}
@@ -216,22 +225,23 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
         <label className="flex items-center gap-2 text-xs">
           {t("country")}
           <input
-            className="w-16 rounded border border-slate-300 px-2 py-1 font-mono dark:border-slate-700 dark:bg-slate-900"
+            className="w-28 rounded border border-slate-300 px-2 py-1 font-mono dark:border-slate-700 dark:bg-slate-900"
             value={country}
-            maxLength={3}
+            maxLength={40}
             disabled={noCountry}
-            onChange={(e) => setCountry(e.target.value.trim().toUpperCase())}
+            onChange={(e) => setCountry(e.target.value.trimStart().toUpperCase())}
           />
         </label>
+        <span className="text-xs text-slate-500 dark:text-slate-400">{t("countryHint")}</span>
         <label className="flex items-center gap-2 text-xs">
           <input type="checkbox" checked={noCountry} onChange={(e) => setNoCountry(e.target.checked)} />
           {t("noCountry")}
         </label>
-        {ISO.test(country) && textSays.length > 0 && (
+        {countryOk && !noCountry && textSays.length > 0 && (
           <ul className="text-xs text-amber-700 dark:text-amber-400" data-testid="text-says">
             {textSays.map((c) => (
               <li key={claimKey(c)}>
-                {t("italianSays", { claimed: c.country, phrase: c.it, country })}
+                {t("italianSays", { claimed: c.country, phrase: c.it, country: codes.join(", ") })}
               </li>
             ))}
           </ul>
@@ -249,7 +259,10 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
               onClick={() => {
                 if (!jevRecord) return;
                 setNoCountry(false);
-                const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
+                const pick =
+                  jevRecord.decision === "reject"
+                    ? null
+                    : { wikidata: jev.wikidata, country: jevRecord.edited?.countries?.join(", ") ?? jev.country };
                 if (pick?.wikidata && pick.country) {
                   setSelected(pick.wikidata);
                   setOtherQid("");

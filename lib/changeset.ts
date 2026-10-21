@@ -17,6 +17,8 @@ export interface EditedFields {
   country?: string;
   /** resolve_place: the place lies in no single country (a macro-area such as the Orient); no `country`. */
   no_country?: boolean;
+  /** resolve_place: the place lies in several countries (Frisia: NL, DE); no `country`. */
+  countries?: string[];
   // add_place: the item's fields; null removes an optional one
   role?: PlaceRole;
   la?: string;
@@ -173,7 +175,8 @@ export interface ResolvePlaceOp extends Base {
   claims: TextSays[];
   failed: string[];
   candidates: PlaceCandidate[];
-  suggested?: { wikidata: string; country: string } | null;
+  /** The researched item and its country, or its countries when it lies in several (Jerusalem: IL, PS). */
+  suggested?: { wikidata: string; country?: string; countries?: string[] } | null;
   jev?: PlaceJev;
   /** Set when crmedr pre-filled the decision from Jev's pick. */
   prefilled?: "jev";
