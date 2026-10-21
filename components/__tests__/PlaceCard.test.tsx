@@ -306,6 +306,13 @@ describe("PlaceCard", () => {
       expect(d).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "reject", edited: { reason: "Jev: not a place" } });
     });
 
+    it("taking a reject clears the no-single-country box", () => {
+      renderCard(makeOp({ jev: jev({ decision: "reject", reason: "Jev: not a place", kind: "not_place" }) }));
+      fireEvent.click(screen.getByLabelText(/no single country/i));
+      fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
+      expect(screen.getByLabelText(/no single country/i)).not.toBeChecked();
+    });
+
     it("explains a pick that is not among the candidates", () => {
       renderCard(makeOp({ jev: jev({ decision: "edit", wikidata: "Q9", country: "FR" }) }));
       expect(screen.getByRole("button", { name: "Take the suggestion" })).toHaveAttribute(

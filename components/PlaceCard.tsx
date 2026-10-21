@@ -248,12 +248,12 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
               className="rounded bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-40"
               onClick={() => {
                 if (!jevRecord) return;
+                setNoCountry(false);
                 const pick = jevRecord.decision === "reject" ? null : { wikidata: jev.wikidata, country: jev.country };
                 if (pick?.wikidata && pick.country) {
                   setSelected(pick.wikidata);
                   setOtherQid("");
                   setCountry(pick.country);
-                  setNoCountry(false);
                 }
                 onDecide(op.id, jevRecord);
               }}
