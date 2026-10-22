@@ -18996,6 +18996,22 @@
       "Q1640496"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q141808067",
+     "label": "Council of Carthage of 256",
+     "description": "concilio presieduto da Cipriano sul battesimo degli eretici",
+     "country": null,
+     "countries": [],
+     "la": [
+      "Concilium Carthaginiense"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q10551516"
+     ],
+     "evidence": []
     }
    ],
    "decision": null,
@@ -19008,7 +19024,12 @@
     "confidence": 0.91,
     "model": "jev-1.14.0"
    },
-   "reasoning": "Not Jev's pick (the Carthage Conference of 411): the eulogy names Cyprian's council of 256 on the baptism of heretics, which has no Wikidata item."
+   "reasoning": "Cyprian's Council of Carthage of 256 on the baptism of heretics, where Libosus spoke (not Jev's Carthage Conference of 411); item Q141808067 created 2026-10-22.",
+   "suggested": {
+    "wikidata": "Q141808067",
+    "country": "TN"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
