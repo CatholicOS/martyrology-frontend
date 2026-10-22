@@ -266,6 +266,7 @@
     "loading": "Chargement…",
     "summary": "{shown} affichés · {mapped} localisés · {unmapped} non localisés dans cette édition",
     "placeHeading": "<place>{label}</place> — {count, plural, one {# éloge} other {# éloges}}",
+    "clusterList": "{count, plural, one {# éloge ici} other {# éloges ici}}",
     "showAll": "Tout afficher",
     "noMatches": "Aucun éloge ne correspond à ces filtres.",
     "moreRows": "et {count} de plus — affinez la recherche pour les afficher.",

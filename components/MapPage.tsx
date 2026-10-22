@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -130,13 +130,23 @@ export default function MapPage({ initialEdition }: { initialEdition: string | n
     const keys = new Set(place);
     return filtered.filter((e) => keys.has(e.key));
   }, [filtered, place]);
-  const onPlace = useCallback((keys: string[]) => setPlace(keys), []);
+  // A clicked cluster's list: open the sidebar (a closed "Filters" disclosure on narrow screens)
+  // and bring the place's heading into view.
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  const onPlace = useCallback((keys: string[]) => {
+    setPlace(keys);
+    if (detailsRef.current) detailsRef.current.open = true;
+  }, []);
+  useEffect(() => {
+    if (place) detailsRef.current?.querySelector("[data-place-heading]")?.scrollIntoView?.({ block: "nearest" });
+  }, [place]);
   const onSelect = useCallback((key: string) => setSelected((s) => ({ key, n: (s?.n ?? 0) + 1 })), []);
 
   return (
     <div className="flex h-[calc(100dvh-4.5rem)] min-h-[32rem] flex-col md:flex-row">
       {/* One sidebar: a "Filters" disclosure above the map on narrow screens, a fixed column beside it from md up. */}
       <details
+        ref={detailsRef}
         open
         className="shrink-0 border-b border-slate-200 md:w-80 md:overflow-y-auto md:border-r md:border-b-0 dark:border-slate-800"
       >

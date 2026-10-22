@@ -32,6 +32,9 @@ type PlacedMarker = CircleMarker & { entryKey?: string };
 const MARKER = { color: "#7f1d1d", fillColor: "#b91c1c", radius: 6, weight: 2, fillOpacity: 0.85 };
 // How close a pick from the list brings the map when its marker is folded into a cluster.
 const REVEAL_ZOOM = 10;
+// A cluster zooming cannot split fans its markers out up to this many; a larger one (Rome holds
+// hundreds) lists its eulogies in a popup instead.
+const SPIDERFY_MAX = 15;
 
 /**
  * The popup: subject, ID, typology, the place's roles unless it is only the place of death, place as
@@ -68,6 +71,29 @@ function popupFor(e: MapEntry, edition: string, t: MapT, tRoles: RolesT, locale:
   read.href = `${getPathname({ href: dayPath(edition, e.day), locale })}#${e.id}`;
   read.dataset.read = "";
   root.append(read);
+  return root;
+}
+
+/** The popup of a cluster too large to fan out: a heading and one button per eulogy. */
+function clusterPopup(entries: MapEntry[], t: MapT, onPick: (key: string) => void): HTMLElement {
+  const root = document.createElement("div");
+  root.className = "text-sm";
+  const head = document.createElement("p");
+  head.className = "font-semibold";
+  head.textContent = t("clusterList", { count: entries.length });
+  const list = document.createElement("ul");
+  list.className = "mt-1 max-h-64 overflow-y-auto";
+  for (const e of entries) {
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "text-left text-blue-700 underline dark:text-blue-400";
+    b.textContent = e.subject;
+    b.addEventListener("click", () => onPick(e.key));
+    li.append(b);
+    list.append(li);
+  }
+  root.append(head, list);
   return root;
 }
 
@@ -125,12 +151,21 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       const group = L.markerClusterGroup({ zoomToBoundsOnClick: false, spiderfyOnMaxZoom: false });
       const mapRef = map;
       group.on("clusterclick", (ev) => {
-        const cluster = (ev as unknown as { layer: { getAllChildMarkers(): PlacedMarker[]; zoomToBounds(): void } }).layer;
+        const cluster = (ev as unknown as {
+          layer: { getAllChildMarkers(): PlacedMarker[]; zoomToBounds(): void; spiderfy(): void };
+        }).layer;
         const children = cluster.getAllChildMarkers();
         const first = children[0].getLatLng();
         const onePoint = children.every((m) => m.getLatLng().equals(first));
         if (onePoint || mapRef.getZoom() >= mapRef.getMaxZoom()) {
-          onPlaceRef.current(children.flatMap((m) => (m.entryKey ? [m.entryKey] : [])));
+          const keys = children.flatMap((m) => (m.entryKey ? [m.entryKey] : []));
+          onPlaceRef.current(keys);
+          if (children.length <= SPIDERFY_MAX) {
+            cluster.spiderfy();
+          } else {
+            const shown = keys.flatMap((k) => markers.current.get(k)?.entry ?? []);
+            L.popup().setLatLng(first).setContent(clusterPopup(shown, tRef.current, (k) => onSelectRef.current(k))).openOn(mapRef);
+          }
         } else {
           cluster.zoomToBounds();
         }

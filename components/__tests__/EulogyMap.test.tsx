@@ -122,11 +122,41 @@ describe("EulogyMap", () => {
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
     const [a, b, c] = groups[0].layers;
     const zoomToBounds = vi.fn();
-    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds, spiderfy: vi.fn() } });
     expect(onPlace).toHaveBeenCalledWith(["mr:0102-a@Q220", "mr:0102-b@Q220"]);
     expect(zoomToBounds).not.toHaveBeenCalled();
-    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, c], zoomToBounds } });
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, c], zoomToBounds, spiderfy: vi.fn() } });
     expect(zoomToBounds).toHaveBeenCalled();
+  });
+
+  it("a small cluster at one place fans out its markers, and still lists them", async () => {
+    const onPlace = vi.fn();
+    render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={onPlace} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
+    const [a, b] = groups[0].layers;
+    const spiderfy = vi.fn();
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds: vi.fn(), spiderfy } });
+    expect(spiderfy).toHaveBeenCalled();
+    expect(popups).toHaveLength(0);
+    expect(onPlace).toHaveBeenCalledWith(["mr:0102-a@Q220", "mr:0102-b@Q220"]);
+  });
+
+  it("a large cluster at one place opens a popup listing its eulogies; picking one selects it", async () => {
+    const onSelect = vi.fn();
+    const many = Array.from({ length: 16 }, (_, i) => e(`mr:0102-s${i}`, "Q220", [41.9, 12.5]));
+    render(<EulogyMap entries={many} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={vi.fn()} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(16));
+    const spiderfy = vi.fn();
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => groups[0].layers, zoomToBounds: vi.fn(), spiderfy } });
+    expect(spiderfy).not.toHaveBeenCalled();
+    expect(popups).toHaveLength(1);
+    const content = popups[0].content!;
+    expect(content.textContent).toContain("16 eulogies here");
+    const buttons = content.querySelectorAll("button");
+    expect(buttons).toHaveLength(16);
+    expect(buttons[3].textContent).toBe("Subject mr:0102-s3");
+    buttons[3].click();
+    expect(onSelect).toHaveBeenCalledWith("mr:0102-s3@Q220");
   });
 
   it("a cluster of different places at one point lists them all", async () => {
@@ -135,7 +165,7 @@ describe("EulogyMap", () => {
     render(<EulogyMap entries={twin} edition="mr_2004" selected={null} onSelect={vi.fn()} onPlace={onPlace} />);
     await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
     const [a, b] = groups[0].layers;
-    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds: vi.fn() } });
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds: vi.fn(), spiderfy: vi.fn() } });
     expect(onPlace).toHaveBeenCalledWith(["mr:0521-a@Q48338", "mr:0521-b@Q10439273"]);
   });
 
@@ -147,7 +177,7 @@ describe("EulogyMap", () => {
     zoom = 18;
     const zoomToBounds = vi.fn();
     const [a, b] = groups[0].layers;
-    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds } });
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [a, b], zoomToBounds, spiderfy: vi.fn() } });
     expect(zoomToBounds).not.toHaveBeenCalled();
     expect(onPlace).toHaveBeenCalledWith(["mr:0101-rieti@Q1", "mr:0101-sabina@Q2"]);
   });

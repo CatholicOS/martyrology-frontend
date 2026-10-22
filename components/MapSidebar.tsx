@@ -166,7 +166,7 @@ export default function MapSidebar(p: Props) {
           </p>
           {p.place && (
             <div className="flex items-baseline justify-between gap-2">
-              <h2 className="font-semibold">
+              <h2 className="font-semibold" data-place-heading>
                 {t.rich("placeHeading", {
                   label: p.place.labels.map((l) => l.label).join(" / "),
                   count: p.place.count,
