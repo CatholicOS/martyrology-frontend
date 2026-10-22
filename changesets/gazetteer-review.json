@@ -21226,6 +21226,61 @@
   },
   {
    "op": "resolve_place",
+   "id": "Pidljashja",
+   "la": "Pidljashja",
+   "it": [
+    "Pidljashja"
+   ],
+   "occurrences": [
+    "mr:0402-nicolaus-carneckyj"
+   ],
+   "claims": [],
+   "failed": [
+    "no candidates found"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q931565",
+     "label": "Podlachia",
+     "description": "historical region in eastern Poland",
+     "country": "PL",
+     "countries": [
+      "PL"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      52.4,
+      22.65
+     ],
+     "types": [
+      "Q1620908"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "suggested": {
+    "wikidata": "Q931565",
+    "country": "PL"
+   },
+   "confidence": "high",
+   "reasoning": "Two places named together are two mentions (the curator's ruling, 2026-10-22); Nicholas Charnetsky was apostolic exarch of Volhynia and Podlachia, and the exarchate has no item. Podlachia (Podlasie), in Poland.",
+   "jev": {
+    "decision": "accept",
+    "wikidata": "Q931565",
+    "country": "PL",
+    "kind": "place",
+    "probability": 0.85,
+    "confidence": 0.7,
+    "model": "jev-1.14.0"
+   }
+  },
+  {
+   "op": "resolve_place",
    "id": "Plebelánum",
    "la": "Plebelánum",
    "it": [
@@ -33864,6 +33919,193 @@
     "kind": "place",
     "probability": 0.74,
     "confidence": 0.7,
+    "model": "jev-1.14.0"
+   }
+  },
+  {
+   "op": "resolve_place",
+   "id": "Volyn’",
+   "la": "Volyn’",
+   "it": [
+    "Volyn’"
+   ],
+   "occurrences": [
+    "mr:0402-nicolaus-carneckyj"
+   ],
+   "claims": [],
+   "failed": [
+    "latin: no Latin label, alias or P9314 matches",
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in RU"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q23842700",
+     "label": "Volyn",
+     "description": "villaggio della Russia",
+     "country": "RU",
+     "countries": [
+      "RU"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      54.773333333333,
+      39.621666666667
+     ],
+     "types": [
+      "Q532"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q167859",
+     "label": "Volyn Oblast",
+     "description": "regione dell'Ucraina",
+     "country": "UA",
+     "countries": [
+      "UA"
+     ],
+     "la": [
+      "Regio Volhyniensis"
+     ],
+     "p9314": false,
+     "coords": [
+      50.741388888889,
+      25.353888888889
+     ],
+     "types": [
+      "Q3348196"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q37749098",
+     "label": "Volyn'",
+     "description": "river in Russia",
+     "country": "RU",
+     "countries": [
+      "RU"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      53.74842,
+      34.07345
+     ],
+     "types": [
+      "Q4022"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q1333965",
+     "label": "Volhynian Governorate",
+     "description": "governorate of the Russian Empire",
+     "country": null,
+     "countries": [
+      "Q15180"
+     ],
+     "la": [
+      "Gubernium Volhyniense"
+     ],
+     "p9314": false,
+     "coords": [
+      50.254444444444,
+      28.657777777778
+     ],
+     "types": [
+      "Q86622",
+      "Q47530375"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q680472",
+     "label": "Principality of Volhynia",
+     "description": "Stato storico in Europa orientale (987-1199)",
+     "country": null,
+     "countries": [],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q3024240"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q12090335",
+     "label": "Volyn Local Museum",
+     "description": "",
+     "country": "UA",
+     "countries": [
+      "UA"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      50.75045278,
+      25.33811111
+     ],
+     "types": [
+      "Q33506"
+     ],
+     "evidence": []
+    },
+    {
+     "wikidata": "Q7530",
+     "label": "Volhynia",
+     "description": "regione storica dell'Europa orientale",
+     "country": "UA",
+     "countries": [
+      "UA"
+     ],
+     "la": [
+      "Volhynia"
+     ],
+     "p9314": false,
+     "coords": [
+      50.73888888888889,
+      25.323333333333334
+     ],
+     "types": [
+      "Q368716"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "suggested": {
+    "wikidata": "Q7530",
+    "countries": [
+     "UA",
+     "PL",
+     "BY"
+    ]
+   },
+   "confidence": "high",
+   "reasoning": "Two places named together are two mentions (the curator's ruling, 2026-10-22); Nicholas Charnetsky was apostolic exarch of Volhynia and Podlachia, and the exarchate has no item. Volhynia: today mostly Ukraine, with parts in Poland and Belarus.",
+   "jev": {
+    "decision": "accept",
+    "wikidata": "Q7530",
+    "country": "UA",
+    "kind": "place",
+    "probability": 0.86,
+    "confidence": 0.84,
     "model": "jev-1.14.0"
    }
   },
