@@ -88,7 +88,11 @@ function clusterPopup(entries: MapEntry[], t: MapT, onPick: (key: string) => voi
     const b = document.createElement("button");
     b.type = "button";
     b.className = "text-left text-blue-700 underline dark:text-blue-400";
-    b.textContent = e.subject;
+    // The ID after the subject: two eulogies at one place can share a subject.
+    const id = document.createElement("span");
+    id.className = "font-mono text-xs";
+    id.textContent = e.id;
+    b.append(`${e.subject} · `, id);
     b.addEventListener("click", () => onPick(e.key));
     li.append(b);
     list.append(li);

@@ -154,7 +154,9 @@ describe("EulogyMap", () => {
     expect(content.textContent).toContain("16 eulogies here");
     const buttons = content.querySelectorAll("button");
     expect(buttons).toHaveLength(16);
-    expect(buttons[3].textContent).toBe("Subject mr:0102-s3");
+    // The ID too: two eulogies at one place can share a subject.
+    expect(buttons[3].textContent).toBe("Subject mr:0102-s3 · mr:0102-s3");
+    expect(buttons[3].querySelector(".font-mono")?.textContent).toBe("mr:0102-s3");
     buttons[3].click();
     expect(onSelect).toHaveBeenCalledWith("mr:0102-s3@Q220");
   });
