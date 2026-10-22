@@ -2593,6 +2593,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q803",
@@ -2601,8 +2602,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -2788,6 +2788,7 @@
     "wikidata": "Q26849",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q26849",
@@ -2796,8 +2797,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -3328,6 +3328,7 @@
     "wikidata": "Q87",
     "country": "EG"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q87",
@@ -3336,8 +3337,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -4263,6 +4263,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q501773",
@@ -4270,262 +4271,6 @@
     "kind": "place",
     "probability": 0.92,
     "confidence": 0.84,
-    "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
-  },
-  {
-   "op": "resolve_place",
-   "id": "Bonóniæ",
-   "la": "Bonóniæ",
-   "it": [
-    "Bologna",
-    "Vidin"
-   ],
-   "occurrences": [
-    "mr:0104-hermes-et-caius",
-    "mr:0808-dominicus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1891",
-     "label": "Bologna",
-     "description": "comune italiano, capoluogo dell'omonima città metropolitana e dell'Emilia-Romagna",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Bononia"
-     ],
-     "p9314": false,
-     "coords": [
-      44.493888888889,
-      11.342777777778
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2701785",
-     "label": "Borgo di Bologna",
-     "description": "frazione del comune italiano di Perledo",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.017397222222,
-      9.2993305555556
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18502710",
-     "label": "Bologna",
-     "description": "frazione del comune italiano di Agliano Terme, provincia di Asti",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.80098,
-      8.2688
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18438941",
-     "label": "Bologna",
-     "description": "frazione del comune italiano di Jolanda di Savoia, provincia di Ferrara",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.89688,
-      11.98523
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q530240",
-     "label": "Bologna",
-     "description": "stazione della metropolitana di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Bologna"
-     ],
-     "p9314": false,
-     "coords": [
-      41.913165,
-      12.520425
-     ],
-     "types": [
-      "Q928830",
-      "Q22808403"
-     ],
-     "evidence": [
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q178531",
-     "label": "Vidin",
-     "description": "città della Bulgaria",
-     "country": "BG",
-     "countries": [
-      "BG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.98869,
-      22.874058
-     ],
-     "types": [
-      "Q902814",
-      "Q15303838",
-      "Q15344922",
-      "Q89487741"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2012772",
-     "label": "Vidin",
-     "description": "regione bulgara",
-     "country": "BG",
-     "countries": [
-      "BG"
-     ],
-     "la": [
-      "Bidinum (provincia)"
-     ],
-     "p9314": false,
-     "coords": [
-      43.8,
-      22.683333333333
-     ],
-     "types": [
-      "Q209824"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q263709",
-     "label": "Vidin",
-     "description": "municipality in Vidin oblast, Bulgaria",
-     "country": "BG",
-     "countries": [
-      "BG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.9861,
-      22.878
-     ],
-     "types": [
-      "Q1906268"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q12093057",
-     "label": "Vidin",
-     "description": "village in Gorj County, Romania",
-     "country": "RO",
-     "countries": [
-      "RO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.926139,
-      23.51318
-     ],
-     "types": [
-      "Q532"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q262709",
-     "label": "Vidiná",
-     "description": "comune slovacco",
-     "country": "SK",
-     "countries": [
-      "SK"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      48.35972222,
-      19.65416667
-     ],
-     "types": [
-      "Q6784672"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q1891",
-    "country": "IT",
-    "kind": "place",
-    "probability": 0.66,
-    "confidence": 0.63,
     "model": "jev-1.14.0"
    }
   },
@@ -4829,6 +4574,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q29303",
@@ -4837,8 +4583,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -7622,6 +7367,7 @@
     "wikidata": "Q199979",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q199979",
@@ -7630,8 +7376,7 @@
     "probability": 0.91,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -8746,6 +8491,7 @@
     "wikidata": "Q1232116",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1232116",
@@ -8754,8 +8500,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -9619,6 +9364,7 @@
    },
    "confidence": "high",
    "reasoning": "Picts of northern Britain, evangelized by Ninian and Fergus.",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q102891",
@@ -9627,8 +9373,7 @@
     "probability": 0.9,
     "confidence": 0.87,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -11654,6 +11399,7 @@
    },
    "confidence": "medium",
    "reasoning": "No item for people of Antioch; city of Antioch, native city of Dius and John Chrysostom.",
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q80561",
@@ -11662,8 +11408,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -11710,6 +11455,7 @@
    },
    "confidence": "high",
    "reasoning": "Armenians; Armenian-born saints.",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q79797",
@@ -11718,8 +11464,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -12723,6 +12468,7 @@
    },
    "reasoning": "Cistercian abbey of Sept-Fons in Allier; English text gives Sept-Fons and Desgardin was a monk there.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1776043",
@@ -12731,8 +12477,7 @@
     "probability": 0.94,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -13500,6 +13245,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q244324",
@@ -13508,8 +13254,7 @@
     "probability": 0.91,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -14396,6 +14141,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q181269",
@@ -14404,8 +14150,7 @@
     "probability": 0.9,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -14516,6 +14261,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q212399",
@@ -14524,8 +14270,7 @@
     "probability": 0.91,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -16423,6 +16168,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q29303",
@@ -16431,8 +16177,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -17051,6 +16796,7 @@
     "wikidata": "Q1215739",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1215739",
@@ -17059,8 +16805,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -18960,6 +18705,7 @@
     "wikidata": "Q132754",
     "country": "IQ"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q132754",
@@ -18968,8 +18714,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -20336,6 +20081,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q641203",
@@ -20344,8 +20090,7 @@
     "probability": 0.93,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -21436,6 +21181,7 @@
     "wikidata": "Q156439",
     "country": "DE"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q156439",
@@ -21444,8 +21190,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -21635,6 +21380,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q6548",
@@ -21643,8 +21389,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -21735,6 +21480,7 @@
    },
    "reasoning": "Avensa/Abensa titular see in Tunisia; the item is a see, not a place.",
    "confidence": "low",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q790513",
@@ -21743,8 +21489,7 @@
     "probability": 0.92,
     "confidence": 0.84,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -22350,6 +22095,7 @@
     "wikidata": "Q234178",
     "country": "GB"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q234178",
@@ -22358,8 +22104,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -22967,6 +22712,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q980",
@@ -22975,8 +22721,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -23092,6 +22837,7 @@
    },
    "reasoning": "Bec Abbey, adjective names the monastery.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q32989",
@@ -23100,8 +22846,7 @@
     "probability": 0.92,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -24072,6 +23817,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q817825",
@@ -24080,8 +23826,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -25516,6 +25261,7 @@
     "wikidata": "Q1354285",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1354285",
@@ -25524,8 +25270,329 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
+  },
+  {
+   "op": "resolve_place",
+   "id": "Bonóniæ@mr:0104-hermes-et-caius",
+   "la": "Bonóniæ",
+   "it": [
+    "Vidin"
+   ],
+   "occurrences": [
+    "mr:0104-hermes-et-caius"
+   ],
+   "claims": [],
+   "failed": [
+    "latin: no Latin label, alias or P9314 matches",
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in BG"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q178531",
+     "label": "Vidin",
+     "description": "città della Bulgaria",
+     "country": "BG",
+     "countries": [
+      "BG"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      43.98869,
+      22.874058
+     ],
+     "types": [
+      "Q902814",
+      "Q15303838",
+      "Q15344922",
+      "Q89487741"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q2012772",
+     "label": "Vidin",
+     "description": "regione bulgara",
+     "country": "BG",
+     "countries": [
+      "BG"
+     ],
+     "la": [
+      "Bidinum (provincia)"
+     ],
+     "p9314": false,
+     "coords": [
+      43.8,
+      22.683333333333
+     ],
+     "types": [
+      "Q209824"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q263709",
+     "label": "Vidin",
+     "description": "municipality in Vidin oblast, Bulgaria",
+     "country": "BG",
+     "countries": [
+      "BG"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      43.9861,
+      22.878
+     ],
+     "types": [
+      "Q1906268"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q12093057",
+     "label": "Vidin",
+     "description": "village in Gorj County, Romania",
+     "country": "RO",
+     "countries": [
+      "RO"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      44.926139,
+      23.51318
+     ],
+     "types": [
+      "Q532"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q262709",
+     "label": "Vidiná",
+     "description": "comune slovacco",
+     "country": "SK",
+     "countries": [
+      "SK"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      48.35972222,
+      19.65416667
+     ],
+     "types": [
+      "Q6784672"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q132772446",
+     "label": "Q132772446",
+     "description": "Grand Jules Boat Hotel in Budapest",
+     "country": null,
+     "countries": [],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      47.513608,
+      19.040495
+     ],
+     "types": [
+      "Q1631162"
+     ],
+     "evidence": []
+    },
+    {
+     "wikidata": "Q291316",
+     "label": "Vidin Grad",
+     "description": "fortress in Donji Dobrić, Serbia",
+     "country": "RS",
+     "countries": [
+      "RS"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      44.6325,
+      19.3356
+     ],
+     "types": [
+      "Q811979"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "jev": {
+    "decision": "accept",
+    "wikidata": "Q178531",
+    "country": "BG",
+    "kind": "place",
+    "probability": 0.89,
+    "confidence": 0.87,
+    "model": "jev-1.14.0"
+   }
+  },
+  {
+   "op": "resolve_place",
+   "id": "Bonóniæ@mr:0808-dominicus",
+   "la": "Bonóniæ",
+   "it": [
+    "Bologna"
+   ],
+   "occurrences": [
+    "mr:0808-dominicus"
+   ],
+   "claims": [],
+   "failed": [],
+   "candidates": [
+    {
+     "wikidata": "Q1891",
+     "label": "Bologna",
+     "description": "comune italiano, capoluogo dell'omonima città metropolitana e dell'Emilia-Romagna",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Bononia"
+     ],
+     "p9314": false,
+     "coords": [
+      44.493888888889,
+      11.342777777778
+     ],
+     "types": [
+      "Q747074"
+     ],
+     "evidence": [
+      "it",
+      "la",
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q2701785",
+     "label": "Borgo di Bologna",
+     "description": "frazione del comune italiano di Perledo",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      46.017397222222,
+      9.2993305555556
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": [
+      "it",
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q18502710",
+     "label": "Bologna",
+     "description": "frazione del comune italiano di Agliano Terme, provincia di Asti",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      44.80098,
+      8.2688
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": [
+      "it",
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q18438941",
+     "label": "Bologna",
+     "description": "frazione del comune italiano di Jolanda di Savoia, provincia di Ferrara",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      44.89688,
+      11.98523
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": [
+      "it",
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q530240",
+     "label": "Bologna",
+     "description": "stazione della metropolitana di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Bologna"
+     ],
+     "p9314": false,
+     "coords": [
+      41.913165,
+      12.520425
+     ],
+     "types": [
+      "Q928830",
+      "Q22808403"
+     ],
+     "evidence": [
+      "it",
+      "country"
+     ]
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "jev": {
+    "decision": "accept",
+    "wikidata": "Q1891",
+    "country": "IT",
+    "kind": "place",
+    "probability": 1.0,
+    "confidence": 1.0,
+    "model": "jev-1.14.0"
+   }
   },
   {
    "op": "resolve_place",
@@ -26640,6 +26707,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1173",
@@ -26648,8 +26716,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -27276,6 +27343,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q609871",
@@ -27284,8 +27352,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -30379,6 +30446,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q130272",
@@ -30387,8 +30455,7 @@
     "probability": 0.92,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -31425,6 +31492,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q116592",
@@ -31433,8 +31501,7 @@
     "probability": 0.92,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -31533,6 +31600,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q5705",
@@ -31541,8 +31609,7 @@
     "probability": 0.94,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -31863,6 +31930,7 @@
    },
    "reasoning": "No people item; takes the city of Cenchreae, port of Corinth.",
    "confidence": "medium",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q111565756",
@@ -31871,8 +31939,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -32628,6 +32695,7 @@
    },
    "reasoning": "Abbot of Clairvaux means the abbey (Bernard's house), so the abbey item, not any Italian Chiaravalle.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q647070",
@@ -32636,8 +32704,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -32855,6 +32922,7 @@
    },
    "reasoning": "David was received by Bernard at Clairvaux Abbey (Aube), not Chiaravalle in Italy.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q647070",
@@ -32863,8 +32931,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -33357,6 +33424,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q173527",
@@ -33365,8 +33433,7 @@
     "probability": 0.92,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -34694,6 +34761,7 @@
    },
    "reasoning": "Adjective refers to the Constantinople council; city today is Istanbul. Meaning is a council, so low.",
    "confidence": "low",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q406",
@@ -34702,8 +34770,7 @@
     "probability": 0.92,
     "confidence": 0.84,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -34825,6 +34892,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q406",
@@ -34833,8 +34901,7 @@
     "probability": 0.9,
     "confidence": 0.87,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -36408,6 +36475,7 @@
    },
    "confidence": "medium",
    "reasoning": "Cretans, inhabitants of Crete, among whom Titus served as bishop.",
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q34374",
@@ -36416,8 +36484,7 @@
     "probability": 0.9,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -36836,6 +36903,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q69007",
@@ -36844,8 +36912,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -37583,6 +37650,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q20384",
@@ -37591,8 +37659,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -38060,6 +38127,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q319242",
@@ -38068,8 +38136,7 @@
     "probability": 0.91,
     "confidence": 0.82,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -39148,6 +39215,7 @@
     "wikidata": "Q1243780",
     "country": "GB"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1243780",
@@ -39156,8 +39224,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -42574,6 +42641,7 @@
    },
    "confidence": "medium",
    "reasoning": "No Florentines people item found; the city of Florence (13th-century Servite founder).",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q2044",
@@ -42582,8 +42650,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -44048,6 +44115,7 @@
     "wikidata": "Q283254",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q283254",
@@ -44056,8 +44124,7 @@
     "probability": 0.93,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -44129,6 +44196,7 @@
     "wikidata": "Q283254",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q283254",
@@ -44137,8 +44205,7 @@
     "probability": 0.94,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -44579,6 +44646,7 @@
    },
    "reasoning": "Forcona, ancient city and archaeological site near L'Aquila, seat of the see.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q48809429",
@@ -44587,8 +44655,7 @@
     "probability": 0.91,
     "confidence": 0.82,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -44764,6 +44831,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q47492",
@@ -44772,8 +44840,7 @@
     "probability": 0.92,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -46408,6 +46475,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q146450",
@@ -46416,8 +46484,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -47266,6 +47333,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q2999",
@@ -47274,8 +47342,7 @@
     "probability": 0.93,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -47509,6 +47576,7 @@
     "wikidata": "Q45942",
     "country": "DZ"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q45942",
@@ -47517,8 +47585,7 @@
     "probability": 0.9,
     "confidence": 0.85,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -48515,6 +48582,7 @@
     "wikidata": "Q1725740",
     "country": "ES"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1725740",
@@ -48523,8 +48591,7 @@
     "probability": 0.94,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -49037,6 +49104,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q17",
@@ -49045,8 +49113,7 @@
     "probability": 0.93,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -49091,6 +49158,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q4502340",
@@ -49099,8 +49167,7 @@
     "probability": 0.93,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -49568,6 +49635,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q2432955",
@@ -49576,8 +49644,7 @@
     "probability": 0.93,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -50663,6 +50730,7 @@
    },
    "reasoning": "Lambach Abbey founded by Adalbero, in Lambach, Upper Austria.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q315889",
@@ -50671,8 +50739,7 @@
     "probability": 0.94,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -53755,6 +53822,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q37333",
@@ -53763,8 +53831,7 @@
     "probability": 0.91,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -59947,6 +60014,7 @@
     "wikidata": "Q27174",
     "country": "SA"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q27174",
@@ -59955,8 +60023,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -60461,6 +60528,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1026298",
@@ -60469,8 +60537,7 @@
     "probability": 0.93,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -60719,6 +60786,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q217125",
@@ -60727,8 +60795,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -61641,6 +61708,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q72288",
@@ -61649,8 +61717,7 @@
     "probability": 0.91,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -62184,6 +62251,7 @@
     "wikidata": "Q1553052",
     "country": "TR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1553052",
@@ -62192,8 +62260,7 @@
     "probability": 0.92,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -62321,6 +62388,7 @@
     "wikidata": "Q1553052",
     "country": "TR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q1553052",
@@ -62329,8 +62397,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -64051,6 +64118,7 @@
     "wikidata": "Q800",
     "country": "CR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q800",
@@ -64059,8 +64127,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -67499,6 +67566,7 @@
     "wikidata": "Q958603",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q958603",
@@ -67507,8 +67575,7 @@
     "probability": 0.91,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -69160,6 +69227,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q50137",
@@ -69168,8 +69236,7 @@
     "probability": 0.93,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -69300,6 +69367,7 @@
     "wikidata": "Q334124",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q334124",
@@ -69308,8 +69376,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -70237,6 +70304,7 @@
    },
    "reasoning": "Catacombs of San Sebastiano on the Appian Way, called ad Catacumbas.",
    "confidence": "medium",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q546419",
@@ -70245,8 +70313,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -70733,6 +70800,7 @@
     "wikidata": "Q978599",
     "country": "GB"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q978599",
@@ -70741,8 +70809,7 @@
     "probability": 0.91,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -73393,6 +73460,7 @@
    },
    "reasoning": "Turibius died at Zana (Zaña), a town in Lambayeque, Peru.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q6171043",
@@ -73401,8 +73469,7 @@
     "probability": 0.94,
     "confidence": 0.94,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -74903,6 +74970,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q15684",
@@ -74911,8 +74979,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -77533,6 +77600,7 @@
     "wikidata": "Q26167",
     "country": "DK"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q26167",
@@ -77541,8 +77609,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -77898,6 +77965,7 @@
    },
    "reasoning": "Sollemniacense is Solignac (English text confirms Solignac), not Solesmes; the candidate Solesmes is wrong. Abbey of Solignac.",
    "confidence": "medium",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q22951685",
@@ -77906,8 +77974,7 @@
     "probability": 0.91,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -78472,6 +78539,7 @@
     "wikidata": "Q314520",
     "country": "BE"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q314520",
@@ -78480,8 +78548,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -78617,6 +78684,7 @@
     "wikidata": "Q314520",
     "country": "BE"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q314520",
@@ -78625,8 +78693,7 @@
     "probability": 0.9,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -79152,6 +79219,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q171353",
@@ -79160,8 +79228,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -80276,6 +80343,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q314425",
@@ -80284,8 +80352,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -81597,6 +81664,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q17151",
@@ -81605,8 +81673,7 @@
     "probability": 0.94,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -83247,6 +83314,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q501900",
@@ -83255,8 +83323,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -85006,6 +85073,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q5373099",
@@ -85014,8 +85082,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -85414,6 +85481,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q8848",
@@ -85422,8 +85490,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -88299,6 +88366,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q753029",
@@ -88307,8 +88375,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -88464,6 +88531,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q190684",
@@ -88472,8 +88540,7 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -89038,6 +89105,7 @@
     "wikidata": "Q87",
     "country": "EG"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q87",
@@ -89046,8 +89114,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -89902,6 +89969,7 @@
    },
    "reasoning": "Santi Quattro Coronati church on the Caelian hill, Rome.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1536044",
@@ -89910,8 +89978,7 @@
     "probability": 0.9,
     "confidence": 0.8,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -93075,6 +93142,7 @@
    },
    "reasoning": "The English text gives Newgate; Neoportus renders the prison at the new gate in London (Newport Wales candidate is wrong).",
    "confidence": "medium",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1822183",
@@ -93083,8 +93151,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -94887,6 +94954,7 @@
    },
    "reasoning": "Premonstratensian abbey of Tepla (Tepl), the monastery meant by the adjective.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q361388",
@@ -94895,8 +94963,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -95162,6 +95229,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1067900",
@@ -95170,8 +95238,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -95896,6 +95963,7 @@
    },
    "confidence": "high",
    "reasoning": "Galla, Symmachus's daughter, lived by St Peter's in Rome; the basilica continues on the same spot (Old St Peter's, Q810126, was its predecessor).",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q12512",
@@ -95904,8 +95972,7 @@
     "probability": 0.93,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -104879,6 +104946,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q54556",
@@ -104887,8 +104955,7 @@
     "probability": 0.91,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -105905,6 +105972,7 @@
    },
    "reasoning": "Cellanova is Celanova in Galicia, Rudesind's monastery of San Salvador; phrase names the monastery.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1517058",
@@ -105913,8 +105981,7 @@
     "probability": 0.91,
     "confidence": 0.9,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -111987,6 +112054,7 @@
     "wikidata": "Q333978",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q333978",
@@ -111995,8 +112063,7 @@
     "probability": 0.92,
     "confidence": 0.91,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -116034,6 +116101,7 @@
    },
    "reasoning": "Mount Nebo in Jordan, where Moses died.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q680161",
@@ -116042,8 +116110,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -117547,6 +117614,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q38234",
@@ -117555,8 +117623,7 @@
     "probability": 0.92,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -121686,6 +121753,7 @@
    },
    "reasoning": "Hospital of Santo Spirito in Sassia, Rome.",
    "confidence": "high",
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q3621743",
@@ -121694,8 +121762,7 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -122400,6 +122467,7 @@
     "wikidata": "Q206665",
     "country": "FR"
    },
+   "prefilled": "jev",
    "jev": {
     "decision": "edit",
     "wikidata": "Q206665",
@@ -122408,8 +122476,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -122612,6 +122679,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q631622",
@@ -122620,8 +122688,7 @@
     "probability": 0.94,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
@@ -124418,6 +124485,7 @@
    ],
    "decision": "accept",
    "edited": null,
+   "prefilled": "jev",
    "jev": {
     "decision": "accept",
     "wikidata": "Q14112",
@@ -124426,8 +124494,7 @@
     "probability": 0.9,
     "confidence": 0.89,
     "model": "jev-1.14.0"
-   },
-   "prefilled": "jev"
+   }
   },
   {
    "op": "resolve_place",
