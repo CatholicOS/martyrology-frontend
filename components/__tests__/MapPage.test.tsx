@@ -108,6 +108,18 @@ describe("MapPage", () => {
     expect(screen.getByRole("heading", { name: "Rome / London — 2 eulogies" })).toBeInTheDocument();
   });
 
+  it("a clicked cluster opens the sidebar and brings its list into view", async () => {
+    const scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+    const { container } = render(<MapPage initialEdition={null} />);
+    await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent("mr:0101-b"));
+    const details = container.querySelector("details")!;
+    details.open = false;
+    fireEvent.click(screen.getByRole("button", { name: "cluster" }));
+    expect(details.open).toBe(true);
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalled());
+  });
+
   it("switching edition clears the previous edition's markers, and keeps them cleared if the new one fails", async () => {
     render(<MapPage initialEdition={null} />);
     await waitFor(() => expect(screen.getByTestId("map")).toHaveTextContent("mr:0101-b"));

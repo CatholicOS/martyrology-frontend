@@ -266,6 +266,7 @@
     "loading": "Wird geladen…",
     "summary": "{shown} angezeigt · {mapped} verortet · {unmapped} nicht verortet in dieser Ausgabe",
     "placeHeading": "<place>{label}</place> — {count, plural, one {# Elogium} other {# Elogien}}",
+    "clusterList": "{count, plural, one {# Elogium hier} other {# Elogien hier}}",
     "showAll": "Alle anzeigen",
     "noMatches": "Kein Elogium entspricht diesen Filtern.",
     "moreRows": "und {count} weitere — grenzen Sie die Suche ein, um sie aufzulisten.",

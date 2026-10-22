@@ -266,6 +266,7 @@
     "loading": "Loading…",
     "summary": "{shown} shown · {mapped} mapped · {unmapped} not mapped in this edition",
     "placeHeading": "<place>{label}</place> — {count, plural, one {# eulogy} other {# eulogies}}",
+    "clusterList": "{count, plural, one {# eulogy here} other {# eulogies here}}",
     "showAll": "Show all",
     "noMatches": "No eulogy matches these filters.",
     "moreRows": "and {count} more — narrow the search to list them.",

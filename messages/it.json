@@ -266,6 +266,7 @@
     "loading": "Caricamento…",
     "summary": "{shown} mostrati · {mapped} localizzati · {unmapped} non localizzati in questa edizione",
     "placeHeading": "<place>{label}</place> — {count, plural, one {# elogio} other {# elogi}}",
+    "clusterList": "{count, plural, one {# elogio qui} other {# elogi qui}}",
     "showAll": "Mostra tutti",
     "noMatches": "Nessun elogio corrisponde a questi filtri.",
     "moreRows": "e altri {count} — restringi la ricerca per elencarli.",
