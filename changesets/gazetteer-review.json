@@ -6199,16 +6199,44 @@
    "failed": [
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q141806648",
+     "label": "Limina Apostolorum",
+     "description": "le tombe degli apostoli Pietro e Paolo a Roma, come meta di pellegrinaggio",
+     "country": null,
+     "countries": [
+      "VA",
+      "IT"
+     ],
+     "la": [
+      "Limina Apostolorum"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q15135589"
+     ],
+     "evidence": []
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Phrase denotes the tombs of Peter and Paul, two basilicas; not a single place.",
+   "reasoning": "The tombs of the Apostles Peter and Paul in Rome as a goal of pilgrimage (the Italian: tombe, basiliche degli Apostoli). Q141806648 Limina Apostolorum, created 2026-10-22, has as parts Saint Peter's tomb (VA) and Saint Paul's tomb (IT).",
    "jev": {
     "kind": "place",
     "probability": 0.85,
     "confidence": 0.8,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q141806648",
+    "countries": [
+     "VA",
+     "IT"
+    ]
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
