@@ -14,10 +14,10 @@ async function pixels(path: string) {
 describe("app icons", () => {
   it("each icon has its stated size", async () => {
     const sizes: Record<string, number> = {
-      "public/icons/icon-192.png": 192,
-      "public/icons/icon-512.png": 512,
-      "public/icons/maskable-192.png": 192,
-      "public/icons/maskable-512.png": 512,
+      "public/app-icons/icon-192.png": 192,
+      "public/app-icons/icon-512.png": 512,
+      "public/app-icons/maskable-192.png": 192,
+      "public/app-icons/maskable-512.png": 512,
       "app/apple-icon.png": 180,
       "app/icon.png": 32,
     };
@@ -29,14 +29,14 @@ describe("app icons", () => {
   });
 
   it("any icons have transparent corners", async () => {
-    for (const path of ["public/icons/icon-192.png", "public/icons/icon-512.png"]) {
+    for (const path of ["public/app-icons/icon-192.png", "public/app-icons/icon-512.png"]) {
       const { data, width } = await pixels(path);
       for (const [x, y] of [[0, 0], [width - 1, 0], [0, width - 1], [width - 1, width - 1]]) expect([path, x, y, data[(y * width + x) * 4 + 3]]).toEqual([path, x, y, 0]);
     }
   });
 
   it("maskable and apple icons are opaque", async () => {
-    for (const path of ["public/icons/maskable-512.png", "app/apple-icon.png"]) {
+    for (const path of ["public/app-icons/maskable-512.png", "app/apple-icon.png"]) {
       const { data } = await pixels(path);
       for (let i = 3; i < data.length; i += 4) if (data[i] !== 255) throw new Error(`${path}: alpha ${data[i]} at ${(i - 3) / 4}`);
     }
@@ -44,7 +44,7 @@ describe("app icons", () => {
 
   // Inside the safe zone (radius 0.4) with a margin, so a launcher whose mask is exactly the safe circle trims nothing.
   it("maskable statue stays inside the safe zone", async () => {
-    const { data, width } = await pixels("public/icons/maskable-512.png");
+    const { data, width } = await pixels("public/app-icons/maskable-512.png");
     const c = width / 2, r = 0.39 * width;
     for (let y = 0; y < width; y++)
       for (let x = 0; x < width; x++) {
@@ -56,7 +56,7 @@ describe("app icons", () => {
   });
 
   it("maskable icon is not just a field", async () => {
-    const { data, width } = await pixels("public/icons/maskable-512.png");
+    const { data, width } = await pixels("public/app-icons/maskable-512.png");
     const c = width / 2, r = 0.4 * width;
     let inside = 0, art = 0;
     for (let y = 0; y < width; y++)

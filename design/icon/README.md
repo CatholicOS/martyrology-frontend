@@ -7,6 +7,6 @@ on a white disc `#FFFDFE`, on a parchment field `#E8DCC3`. It was generated with
 ## Regenerating the icons
 
 The icons are generated, not drawn: replace `good-shepherd.svg` and run `npm run icons`. The script
-(`scripts/build-icons.mjs`) writes `public/icons/icon-{192,512}.png`, `public/icons/maskable-{192,512}.png`,
+(`scripts/build-icons.mjs`) writes `public/app-icons/icon-{192,512}.png`, `public/app-icons/maskable-{192,512}.png`,
 `app/apple-icon.png`, `app/icon.png` and `app/favicon.ico`; commit them. `lib/__tests__/icons.test.ts`
 checks their sizes, transparency and the maskable safe zone.

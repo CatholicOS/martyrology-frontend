@@ -23,11 +23,16 @@ describe("app manifest", () => {
 
   it("manifest lists the four icons", () => {
     expect(manifest().icons).toEqual([
-      { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-      { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/icons/maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
-      { src: "/icons/maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+      { src: "/app-icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/app-icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/app-icons/maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+      { src: "/app-icons/maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ]);
+  });
+
+  // The VPS's Apache aliases /icons/ to its own icon set on every site (Debian's alias.conf), so our icons never live there.
+  it("no icon is served under Apache's /icons/ alias", () => {
+    for (const { src } of manifest().icons ?? []) expect(src.startsWith("/icons/")).toBe(false);
   });
 
   it("every icon exists", () => {
