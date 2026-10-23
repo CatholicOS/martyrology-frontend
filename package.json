@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "sync-messages": "node scripts/sync-messages.mjs",
     "snapshot-registry": "node scripts/snapshot-registry.mjs",
-    "import-changeset": "node scripts/import-changeset.mjs"
+    "import-changeset": "node scripts/import-changeset.mjs",
+    "icons": "node scripts/build-icons.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
