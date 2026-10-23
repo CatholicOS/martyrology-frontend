@@ -1,19 +1,8 @@
 # The app icon
 
-`good-shepherd.svg` is the master of the site's icons: the Good Shepherd of the Catacombs of Domitilla
-(Vatican Museums), the young shepherd carrying the lamb across his shoulders, in four flat colours
-(field `#5e0f12`, deep stone `#a98d6c`, warm stone `#d8c2a2`, parchment `#f7f1e6`).
-
-## Source and licence
-
-It is traced from the photograph
-[“Marble statue of The Good Shepherd from the Catacombs of Domitilla, Vatican Museums”](https://commons.wikimedia.org/wiki/File:Marble_statue_of_The_Good_Shepherd_from_the_Catacombs_of_Domitilla,_Vatican_Museums.jpg)
-by Carole Raddato ([Flickr](https://www.flickr.com/photos/carolemage/32143459745)), licensed
-[CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/). The statue itself is in the public domain.
-
-Changes made: the photograph was cropped, reduced to four flat tones (the statue's outline filled solid, its
-light and shadows in the statue's own colours), traced to vectors and cleaned; the hands were redrawn from
-the photograph. This drawing and every icon generated from it are licensed **CC BY-SA 2.0**.
+`good-shepherd.svg` is the master of the site's icons: the Good Shepherd after the statue of the Catacombs of
+Domitilla (Vatican Museums), the young shepherd carrying the lamb across his shoulders, in wine red `#7A1F2B`
+on a white disc `#FFFDFE`, on a parchment field `#E8DCC3`. It was generated with Recraft from text prompts.
 
 ## Regenerating the icons
 

@@ -15,7 +15,7 @@ describe("app manifest", () => {
       start_url: "/",
       scope: "/",
       display: "standalone",
-      background_color: "#5e0f12",
+      background_color: "#E8DCC3",
       theme_color: "#ffffff",
     });
     expect("description" in m).toBe(false);

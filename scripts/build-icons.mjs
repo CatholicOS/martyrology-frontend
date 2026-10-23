@@ -6,18 +6,20 @@ import fs from "node:fs";
 import sharp from "sharp";
 
 const MASTER = "design/icon/good-shepherd.svg";
-/** The deep red the statue stands on. */
-const FIELD = "#5e0f12";
+/** The parchment field around the disc. */
+const FIELD = "#E8DCC3";
 /** Corner radius of the `any` icons, as a share of the side. */
 const CORNER = 0.22;
-/** How much of the side the statue takes in a maskable icon: inside Android's safe circle, with a margin. */
-const MASKABLE_SCALE = 0.66;
-/** The favicon's crop of the master (in its 1200 px units): the shepherd's head with the lamb whole on his shoulders, never split. */
-const FAVICON_CROP = { left: 200, top: 0, width: 1000, height: 1000 };
+/** How much of the side the emblem takes in a maskable icon: its disc already lies inside Android's safe circle. */
+const MASKABLE_SCALE = 1;
+/** The master's side, in its own units. */
+const SIDE = 1024;
+/** The favicon's crop of the master: the disc with the shepherd and the lamb, without the field. */
+const FAVICON_CROP = { left: 120, top: 120, width: 784, height: 784 };
 
 const svg = fs.readFileSync(MASTER);
 /** The master rendered as a square PNG of `size` pixels. */
-const render = (size) => sharp(svg, { density: (72 * size) / 1200 }).resize(size, size).png().toBuffer();
+const render = (size) => sharp(svg, { density: (72 * size) / SIDE }).resize(size, size).png().toBuffer();
 
 async function anyIcon(size, out) {
   const r = Math.round(size * CORNER);
@@ -36,7 +38,7 @@ async function maskableIcon(size, out) {
 }
 
 async function faviconPng(size) {
-  return sharp(await render(1200)).extract(FAVICON_CROP).resize(size, size).png().toBuffer();
+  return sharp(await render(SIDE)).extract(FAVICON_CROP).resize(size, size).png().toBuffer();
 }
 
 /** An .ico holding PNG images (allowed since Windows Vista, read by every current browser). */
