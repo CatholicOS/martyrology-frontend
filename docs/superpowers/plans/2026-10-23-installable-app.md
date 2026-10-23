@@ -15,8 +15,9 @@
 - No service worker, no install button or banner, no caching, no notifications.
 - Palette: field `#5e0f12`, deep stone `#a98d6c`, warm stone `#d8c2a2`, parchment `#f7f1e6`.
 - Manifest: `id "/"`, `name "Martyrologium Romanum"`, `short_name "Martyrologium"`, `lang "la"`, no `description`, `start_url "/"`, `scope "/"`, `display "standalone"`, `background_color "#5e0f12"`, `theme_color "#ffffff"`.
-- Icon files: `public/icons/icon-192.png`, `public/icons/icon-512.png` (purpose `any`, rounded square, corner radius 22% of the side, transparent outside); `public/icons/maskable-192.png`, `public/icons/maskable-512.png` (purpose `maskable`, full `#5e0f12` square, the statue wholly inside the centred circle of 80% diameter); `app/apple-icon.png` (180, full bleed, opaque); `app/icon.png` (32, head-and-lamb crop); `app/favicon.ico` (16 + 32, same crop).
+- Icon files: `public/app-icons/icon-192.png`, `public/app-icons/icon-512.png` (purpose `any`, rounded square, corner radius 22% of the side, transparent outside); `public/app-icons/maskable-192.png`, `public/app-icons/maskable-512.png` (purpose `maskable`, full `#5e0f12` square, the statue wholly inside the centred circle of 80% diameter); `app/apple-icon.png` (180, full bleed, opaque); `app/icon.png` (32, head-and-lamb crop); `app/favicon.ico` (16 + 32, same crop).
 - Credit: photo "Marble statue of The Good Shepherd from the Catacombs of Domitilla, Vatican Museums" by Carole Raddato, CC BY-SA 2.0, https://www.flickr.com/photos/carolemage/32143459745 and https://commons.wikimedia.org/wiki/File:Marble_statue_of_The_Good_Shepherd_from_the_Catacombs_of_Domitilla,_Vatican_Museums.jpg. The icon artwork is CC BY-SA 2.0.
+- The manifest icons live in `public/app-icons/`, never `public/icons/`: on the VPS, Apache's global `Alias /icons/` answers every `/icons/…` URL itself (found after the first deploy, PR #183).
 - `design/` and `scripts/build-icons.mjs` stay out of the Docker image. No test imports `scripts/build-icons.mjs` (the build type-checks tests, and `.dockerignore` excludes it).
 - Tests that use `sharp` or `fs` start with `// @vitest-environment node` (the suite's default environment is jsdom).
 
@@ -24,7 +25,7 @@
 
 1. **A transparent or off-colour pixel at the maskable edge.** Anti-aliasing at the scaled statue's edge could leave a non-field ring outside the safe circle. Task 1's safe-zone test checks every pixel outside radius 0.4 × 512 against `#5e0f12`, within a tolerance of 8 per channel.
 2. **The apple icon with an alpha channel.** iOS renders transparency as black. Task 1 asserts that `apple-icon.png` has no transparent pixel.
-3. **`/manifest.webmanifest` or `/icons/*` caught by the locale proxy.** The proxy matcher skips paths with a dot. Task 2 adds a proxy test that `/manifest.webmanifest` and `/icons/icon-192.png` are not redirected.
+3. **`/manifest.webmanifest` or `/app-icons/*` caught by the locale proxy.** The proxy matcher skips paths with a dot. Task 2 adds a proxy test that `/manifest.webmanifest` and `/app-icons/icon-192.png` are not redirected.
 4. **The credit missing in a language.** Task 3 checks all six `data.mdx` files.
 5. **Icon paths in the manifest drifting from the files.** Task 2 checks that every manifest `src` exists under `public/`.
 
@@ -40,7 +41,7 @@
 - Test: `lib/__tests__/icons.test.ts`
 
 **Interfaces:**
-- Produces: the files at the exact paths above. Task 2 references `/icons/icon-192.png`, `/icons/icon-512.png`, `/icons/maskable-192.png` and `/icons/maskable-512.png`.
+- Produces: the files at the exact paths above. Task 2 references `/app-icons/icon-192.png`, `/app-icons/icon-512.png`, `/app-icons/maskable-192.png` and `/app-icons/maskable-512.png`.
 
 - [ ] **Step 1: Write the failing test** `lib/__tests__/icons.test.ts` (node environment). It reads each file with `sharp(path).raw().ensureAlpha().toBuffer({ resolveWithObject: true })`:
   - `"each icon has its stated size"`: icon-192 → 192×192, icon-512 → 512, maskable-192 → 192, maskable-512 → 512, app/apple-icon.png → 180, app/icon.png → 32. Also `fs.existsSync("app/favicon.ico")`.
@@ -55,8 +56,8 @@
   - `apple-icon`: resize to 180 and `flatten({ background: FIELD })`.
   - `icon.png`: extract `FAVICON_CROP` from a 1200 px render and resize to 32.
   - `favicon.ico`: write the ICO container by hand (6-byte header plus a 16-byte directory entry per image, each image stored as PNG data, which ICO allows) holding the crop at 16 and 32. No new dependency.
-- [ ] **Step 4: Generate the icons, then run the tests.** `npm run icons && npx vitest run lib/__tests__/icons.test.ts`. Expected: PASS. Then view `public/icons/maskable-512.png`, `app/icon.png` scaled up, and `public/icons/icon-512.png` with the Read tool, to check by eye that the crop frames the head and the lamb's head.
-- [ ] **Step 5: Commit.** `git add design/icon scripts/build-icons.mjs package.json public/icons app/icon.png app/apple-icon.png app/favicon.ico lib/__tests__/icons.test.ts && git commit -m "icons: Good Shepherd icon set from one master"`
+- [ ] **Step 4: Generate the icons, then run the tests.** `npm run icons && npx vitest run lib/__tests__/icons.test.ts`. Expected: PASS. Then view `public/app-icons/maskable-512.png`, `app/icon.png` scaled up, and `public/app-icons/icon-512.png` with the Read tool, to check by eye that the crop frames the head and the lamb's head.
+- [ ] **Step 5: Commit.** `git add design/icon scripts/build-icons.mjs package.json public/app-icons app/icon.png app/apple-icon.png app/favicon.ico lib/__tests__/icons.test.ts && git commit -m "icons: Good Shepherd icon set from one master"`
 
 ### Task 2: The manifest and the app metadata
 
@@ -66,7 +67,7 @@
 - Test: `lib/__tests__/manifest.test.ts`, `__tests__/proxy.test.ts` (extend)
 
 **Interfaces:**
-- Consumes: the four `public/icons` paths from Task 1.
+- Consumes: the four `public/app-icons` paths from Task 1.
 - Produces: `export default function manifest(): MetadataRoute.Manifest` and `export const viewport: Viewport`.
 
 - [ ] **Step 1: Write the failing tests.**
@@ -74,7 +75,7 @@
     - `"manifest has the Latin app identity"`: `manifest()` matches every Global Constraints manifest value, and `"description" in m` is false.
     - `"manifest lists the four icons"`: four entries, with `sizes` "192x192"/"512x512", `type: "image/png"`, `purpose` "any" ×2 and "maskable" ×2.
     - `"every icon exists"`: `fs.existsSync("public" + src)` for each.
-  - `__tests__/proxy.test.ts`: `"leaves the manifest and icons alone"`. The exported `config.matcher` regex (built the way the existing tests use it) does not match `/manifest.webmanifest` or `/icons/icon-192.png`. If the existing tests call `proxy()` instead, assert that no redirect is returned for those paths.
+  - `__tests__/proxy.test.ts`: `"leaves the manifest and icons alone"`. The exported `config.matcher` regex (built the way the existing tests use it) does not match `/manifest.webmanifest` or `/app-icons/icon-192.png`. If the existing tests call `proxy()` instead, assert that no redirect is returned for those paths.
   - The layout: in the existing layout or metadata tests, if there are any, or in `lib/__tests__/manifest.test.ts`, import `{ viewport }` from `@/app/[locale]/layout` and assert `themeColor` equals `[{ media: "(prefers-color-scheme: light)", color: "#ffffff" }, { media: "(prefers-color-scheme: dark)", color: "#020617" }]`. If importing the layout pulls in fonts that vitest cannot load, move `viewport` and the `appleWebApp` object into `lib/app-metadata.ts` (`export const appViewport: Viewport`, `export const appleWebApp`), re-export from the layout, and test that module instead. Record a ruling if you do.
 - [ ] **Step 2: Run them.** `npx vitest run lib/__tests__/manifest.test.ts __tests__/proxy.test.ts`. Expected: FAIL on the missing module and the missing export. The proxy test may pass immediately, because the matcher already skips dotted paths; that's acceptable, since it pins existing behaviour (note it in the report).
 - [ ] **Step 3: Implement.**
