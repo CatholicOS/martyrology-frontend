@@ -41,6 +41,15 @@ async function faviconPng(size) {
   return sharp(await render(SIDE)).extract(FAVICON_CROP).resize(size, size).png().toBuffer();
 }
 
+/** The header's emblem: the master's disc alone, as SVG, without the field (the master's first path). */
+function emblem() {
+  const master = svg.toString("utf8").replace(/^<\?xml[^>]*>\s*/, "");
+  const [, field] = master.match(/(<path fill="#E8DCC3"[^>]*\/>)/i) ?? [];
+  if (!field) throw new Error("the master's field path was not found");
+  const { left, top, width, height } = FAVICON_CROP;
+  return master.replace(field, "").replace(/viewBox="[^"]*"/, `viewBox="${left} ${top} ${width} ${height}"`).replace(/ width="\d+" height="\d+"/, "");
+}
+
 /** An .ico holding PNG images (allowed since Windows Vista, read by every current browser). */
 function ico(pngs) {
   const header = Buffer.alloc(6);
@@ -70,4 +79,5 @@ await maskableIcon(512, "public/app-icons/maskable-512.png");
 await sharp(await render(180)).flatten({ background: FIELD }).png().toFile("app/apple-icon.png");
 await sharp(await faviconPng(32)).toFile("app/icon.png");
 fs.writeFileSync("app/favicon.ico", ico([{ size: 16, data: await faviconPng(16) }, { size: 32, data: await faviconPng(32) }]));
+fs.writeFileSync("public/app-icons/emblem.svg", emblem());
 console.log("icons written");
