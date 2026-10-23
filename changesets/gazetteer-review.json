@@ -924,9 +924,9 @@
      "wikidata": "Q4819648",
      "label": "Cilicia",
      "description": "provincia romana",
-     "country": null,
+     "country": "TR",
      "countries": [
-      "Q1747689"
+      "TR"
      ],
      "la": [
       "Cilicia"
@@ -1074,9 +1074,9 @@
      "wikidata": "Q4819648",
      "label": "Cilicia",
      "description": "provincia romana",
-     "country": null,
+     "country": "TR",
      "countries": [
-      "Q1747689"
+      "TR"
      ],
      "la": [
       "Cilicia"
@@ -1796,8 +1796,10 @@
      "wikidata": "Q184332",
      "label": "First Council of Ephesus",
      "description": "III concilio ecumenico del cristianesimo, tenutosi a Efeso nel 431",
-     "country": null,
-     "countries": [],
+     "country": "TR",
+     "countries": [
+      "TR"
+     ],
      "la": [
       "Concilium Ephesinum",
       "Concilium Oecumenicum Ephesinum"
@@ -1847,9 +1849,9 @@
      "wikidata": "Q133331",
      "label": "First Council of Nicaea",
      "description": "I concilio ecumenico del cristianesimo, tenutosi a Nicea nel 325",
-     "country": null,
+     "country": "TR",
      "countries": [
-      "Q2277"
+      "TR"
      ],
      "la": [
       "Concilium Nicaenum Primum",
@@ -2304,7 +2306,8 @@
      "description": "Stato che governò la penisola di Corea (1392-1897)",
      "country": null,
      "countries": [
-      "Q28179"
+      "KP",
+      "KR"
      ],
      "la": [
       "Regnum Tiosoniense"
@@ -2472,7 +2475,8 @@
      "description": "Stato che governò la penisola di Corea (1392-1897)",
      "country": null,
      "countries": [
-      "Q28179"
+      "KP",
+      "KR"
      ],
      "la": [
       "Regnum Tiosoniense"
@@ -5567,8 +5571,10 @@
      "wikidata": "Q184332",
      "label": "First Council of Ephesus",
      "description": "III concilio ecumenico del cristianesimo, tenutosi a Efeso nel 431",
-     "country": null,
-     "countries": [],
+     "country": "TR",
+     "countries": [
+      "TR"
+     ],
      "la": [
       "Concilium Ephesinum",
       "Concilium Oecumenicum Ephesinum"
@@ -5998,7 +6004,10 @@
      "label": "Epirus",
      "description": "antico Stato greco (331-167 a.C.)",
      "country": null,
-     "countries": [],
+     "countries": [
+      "GR",
+      "AL"
+     ],
      "la": [],
      "p9314": false,
      "coords": null,
@@ -10643,25 +10652,6 @@
       "Q1288568"
      ],
      "evidence": []
-    },
-    {
-     "wikidata": "Q1472152",
-     "label": "Italia",
-     "description": "dirigibile semirigido italiano",
-     "country": null,
-     "countries": [
-      "Q172579"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      81.23333333,
-      28.23333333
-     ],
-     "types": [
-      "Q1570591"
-     ],
-     "evidence": []
     }
    ],
    "decision": "accept",
@@ -10724,7 +10714,8 @@
      "description": "provincia romana",
      "country": null,
      "countries": [
-      "Q2277"
+      "PS",
+      "IL"
      ],
      "la": [
       "Iudaea"
@@ -11629,7 +11620,16 @@
      "label": "Grand Duchy of Lithuania",
      "description": "Stato dell'Europa orientale esistito dal 1263 al 1569",
      "country": null,
-     "countries": [],
+     "countries": [
+      "BY",
+      "UA",
+      "LT",
+      "RU",
+      "PL",
+      "LV",
+      "EE",
+      "MD"
+     ],
      "la": [
       "Magnus Ducatus Lituania",
       "Magnus Ducatus Lituaniae"
@@ -11725,7 +11725,11 @@
      "label": "Livonia",
      "description": "regione storica situata tra Estonia e Lettonia",
      "country": null,
-     "countries": [],
+     "countries": [
+      "LV",
+      "EE",
+      "LT"
+     ],
      "la": [
       "Livonia"
      ],
@@ -12450,8 +12454,10 @@
      "wikidata": "Q45670",
      "label": "Kingdom of Portugal",
      "description": "antico Stato europeo (1139-1815, 1825-1910)",
-     "country": null,
-     "countries": [],
+     "country": "PT",
+     "countries": [
+      "PT"
+     ],
      "la": [
       "Regnum Portugalliae"
      ],
@@ -17252,9 +17258,9 @@
      "wikidata": "Q133331",
      "label": "First Council of Nicaea",
      "description": "I concilio ecumenico del cristianesimo, tenutosi a Nicea nel 325",
-     "country": null,
+     "country": "TR",
      "countries": [
-      "Q2277"
+      "TR"
      ],
      "la": [
       "Concilium Nicaenum Primum",
@@ -21516,7 +21522,8 @@
      "description": "Pomerania svedese (1630-1815)",
      "country": null,
      "countries": [
-      "Q682318"
+      "DE",
+      "PL"
      ],
      "la": [],
      "p9314": false,
@@ -22162,7 +22169,11 @@
      "label": "Qajar Iran",
      "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
      "country": null,
-     "countries": [],
+     "countries": [
+      "IR",
+      "AZ",
+      "AM"
+     ],
      "la": [],
      "p9314": false,
      "coords": [
@@ -22182,9 +22193,9 @@
      "wikidata": "Q3746183",
      "label": "Persis",
      "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": null,
+     "country": "IR",
      "countries": [
-      "Q389688"
+      "IR"
      ],
      "la": [],
      "p9314": false,
@@ -22386,7 +22397,11 @@
      "label": "Qajar Iran",
      "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
      "country": null,
-     "countries": [],
+     "countries": [
+      "IR",
+      "AZ",
+      "AM"
+     ],
      "la": [],
      "p9314": false,
      "coords": [
@@ -22406,9 +22421,9 @@
      "wikidata": "Q3746183",
      "label": "Persis",
      "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": null,
+     "country": "IR",
      "countries": [
-      "Q389688"
+      "IR"
      ],
      "la": [],
      "p9314": false,
@@ -22610,7 +22625,11 @@
      "label": "Qajar Iran",
      "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
      "country": null,
-     "countries": [],
+     "countries": [
+      "IR",
+      "AZ",
+      "AM"
+     ],
      "la": [],
      "p9314": false,
      "coords": [
@@ -22630,9 +22649,9 @@
      "wikidata": "Q3746183",
      "label": "Persis",
      "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": null,
+     "country": "IR",
      "countries": [
-      "Q389688"
+      "IR"
      ],
      "la": [],
      "p9314": false,
@@ -24087,8 +24106,10 @@
      "wikidata": "Q1472816",
      "label": "Roma",
      "description": "nave da battaglia italiana del 1940",
-     "country": null,
-     "countries": [],
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
      "la": [],
      "p9314": false,
      "coords": [
@@ -26774,11 +26795,9 @@
      "wikidata": "Q7447929",
      "label": "Seleucia",
      "description": "ancient town in modern Iraq",
-     "country": null,
+     "country": "IQ",
      "countries": [
-      "Q93180",
-      "Q1986139",
-      "Q83891"
+      "IQ"
      ],
      "la": [],
      "p9314": false,
@@ -26985,11 +27004,9 @@
      "wikidata": "Q7447929",
      "label": "Seleucia",
      "description": "ancient town in modern Iraq",
-     "country": null,
+     "country": "IQ",
      "countries": [
-      "Q93180",
-      "Q1986139",
-      "Q83891"
+      "IQ"
      ],
      "la": [],
      "p9314": false,
@@ -27051,9 +27068,9 @@
      "wikidata": "Q3746183",
      "label": "Persis",
      "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": null,
+     "country": "IR",
      "countries": [
-      "Q389688"
+      "IR"
      ],
      "la": [],
      "p9314": false,
@@ -27092,15 +27109,9 @@
      "wikidata": "Q1378794",
      "label": "Seleucia-Ctesiphon",
      "description": "human settlement",
-     "country": null,
+     "country": "IQ",
      "countries": [
-      "Q1986139",
-      "Q83891",
-      "Q8575586",
-      "Q12490507",
-      "Q12536",
-      "Q273874",
-      "Q3708094"
+      "IQ"
      ],
      "la": [],
      "p9314": false,
@@ -27706,7 +27717,9 @@
      "description": "stato asiatico esistito dal 1912 al 1949",
      "country": null,
      "countries": [
-      "Q13426199"
+      "CN",
+      "TW",
+      "MN"
      ],
      "la": [],
      "p9314": false,
@@ -29307,8 +29320,10 @@
      "wikidata": "Q1414811",
      "label": "Cadaver Synod",
      "description": "episodio storico dell'897",
-     "country": null,
-     "countries": [],
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
      "la": [
       "Synodus Horrenda"
      ],
@@ -29390,8 +29405,10 @@
      "wikidata": "Q1258045",
      "label": "Second Council of Ephesus",
      "description": "sinodo cristiano, tenutosi a Efeso nel 449",
-     "country": null,
-     "countries": [],
+     "country": "TR",
+     "countries": [
+      "TR"
+     ],
      "la": [
       "Concilium Ephesinum Secundum",
       "Latrocinium Ephesinum",
@@ -29492,7 +29509,9 @@
      "description": "provincia romana",
      "country": null,
      "countries": [
-      "Q1747689"
+      "LB",
+      "SY",
+      "TR"
      ],
      "la": [
       "Provincia Syria",
@@ -29564,8 +29583,10 @@
      "description": "amministrazione militare in Medio Oriente (1917-1920)",
      "country": null,
      "countries": [
-      "Q174193",
-      "Q70802"
+      "IL",
+      "SY",
+      "LB",
+      "JO"
      ],
      "la": [],
      "p9314": false,
@@ -30478,7 +30499,9 @@
      "description": "provincia romana",
      "country": null,
      "countries": [
-      "Q1747689"
+      "BG",
+      "GR",
+      "TR"
      ],
      "la": [
       "Thracia"
@@ -31407,7 +31430,9 @@
      "description": "provincia romana",
      "country": null,
      "countries": [
-      "Q1747689"
+      "BG",
+      "GR",
+      "TR"
      ],
      "la": [
       "Thracia"
@@ -32830,9 +32855,9 @@
      "wikidata": "Q5485281",
      "label": "Q5485281",
      "description": "ancient city of Spain",
-     "country": null,
+     "country": "ES",
      "countries": [
-      "Q2277"
+      "ES"
      ],
      "la": [],
      "p9314": false,
@@ -39692,25 +39717,6 @@
       "Q1288568"
      ],
      "evidence": []
-    },
-    {
-     "wikidata": "Q1472152",
-     "label": "Italia",
-     "description": "dirigibile semirigido italiano",
-     "country": null,
-     "countries": [
-      "Q172579"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      81.23333333,
-      28.23333333
-     ],
-     "types": [
-      "Q1570591"
-     ],
-     "evidence": []
     }
    ],
    "decision": null,
@@ -41420,25 +41426,6 @@
      "types": [
       "Q33742",
       "Q1288568"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q1472152",
-     "label": "Italia",
-     "description": "dirigibile semirigido italiano",
-     "country": null,
-     "countries": [
-      "Q172579"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      81.23333333,
-      28.23333333
-     ],
-     "types": [
-      "Q1570591"
      ],
      "evidence": []
     }
@@ -56232,25 +56219,6 @@
       "Q1288568"
      ],
      "evidence": []
-    },
-    {
-     "wikidata": "Q1472152",
-     "label": "Italia",
-     "description": "dirigibile semirigido italiano",
-     "country": null,
-     "countries": [
-      "Q172579"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      81.23333333,
-      28.23333333
-     ],
-     "types": [
-      "Q1570591"
-     ],
-     "evidence": []
     }
    ],
    "decision": "accept",
@@ -58971,27 +58939,6 @@
      ],
      "evidence": [
       "type"
-     ]
-    },
-    {
-     "wikidata": "Q1472152",
-     "label": "Italia",
-     "description": "dirigibile semirigido italiano",
-     "country": null,
-     "countries": [
-      "Q172579"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      81.23333333,
-      28.23333333
-     ],
-     "types": [
-      "Q1570591"
-     ],
-     "evidence": [
-      "it"
      ]
     },
     {
