@@ -33,8 +33,8 @@ This is **install only**. The app is the live site in its own window. It has no 
 
 | File | Size | Use | Shape |
 |---|---|---|---|
-| `public/icons/icon-192.png`, `icon-512.png` | 192, 512 | manifest, `purpose: "any"` | the master in a rounded square (corner radius 22% of the side), transparent outside |
-| `public/icons/maskable-192.png`, `maskable-512.png` | 192, 512 | manifest, `purpose: "maskable"` (Android adaptive icons) | the master scaled down and centred on a full deep-red square, so the whole statue lies inside the safe zone (the centred circle of 80% diameter) |
+| `public/app-icons/icon-192.png`, `icon-512.png` | 192, 512 | manifest, `purpose: "any"` | the master in a rounded square (corner radius 22% of the side), transparent outside |
+| `public/app-icons/maskable-192.png`, `maskable-512.png` | 192, 512 | manifest, `purpose: "maskable"` (Android adaptive icons) | the master scaled down and centred on a full deep-red square, so the whole statue lies inside the safe zone (the centred circle of 80% diameter) |
 | `app/apple-icon.png` | 180 | iOS and iPadOS home screen, via Next's file convention | the master full-bleed, square, no transparency (iOS rounds it itself) |
 | `app/icon.png` | 32 | browser tab favicon, via Next's file convention | the master cropped to its disc, without the field |
 | `app/favicon.ico` | 16 + 32 | legacy `/favicon.ico` requests | the same crop |
@@ -63,7 +63,7 @@ Why: Chromium treats every manifest with the same `id` as one installed app and 
 | `display` | `standalone` |
 | `background_color` | `#E8DCC3` (the splash screen shows the icon on its own field) |
 | `theme_color` | `#ffffff` (the window's title bar matches the site's white header) |
-| `icons` | the four `public/icons` files above, with `sizes`, `type: "image/png"` and their `purpose` |
+| `icons` | the four `public/app-icons` files above, with `sizes`, `type: "image/png"` and their `purpose` |
 
 **Theme colour in the page:** the layout exports `viewport.themeColor` with two entries, white for `(prefers-color-scheme: light)` and `#020617` (slate-950, the site's dark background) for `(prefers-color-scheme: dark)`. The title bar then follows the reader's theme, where the browser supports it.
 

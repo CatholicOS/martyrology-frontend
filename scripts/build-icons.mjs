@@ -62,11 +62,11 @@ function ico(pngs) {
   return Buffer.concat([header, ...entries, ...pngs.map((p) => p.data)]);
 }
 
-fs.mkdirSync("public/icons", { recursive: true });
-await anyIcon(192, "public/icons/icon-192.png");
-await anyIcon(512, "public/icons/icon-512.png");
-await maskableIcon(192, "public/icons/maskable-192.png");
-await maskableIcon(512, "public/icons/maskable-512.png");
+fs.mkdirSync("public/app-icons", { recursive: true });
+await anyIcon(192, "public/app-icons/icon-192.png");
+await anyIcon(512, "public/app-icons/icon-512.png");
+await maskableIcon(192, "public/app-icons/maskable-192.png");
+await maskableIcon(512, "public/app-icons/maskable-512.png");
 await sharp(await render(180)).flatten({ background: FIELD }).png().toFile("app/apple-icon.png");
 await sharp(await faviconPng(32)).toFile("app/icon.png");
 fs.writeFileSync("app/favicon.ico", ico([{ size: 16, data: await faviconPng(16) }, { size: 32, data: await faviconPng(32) }]));
