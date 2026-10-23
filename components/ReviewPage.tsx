@@ -34,6 +34,12 @@ function stripExt(name: string): string {
   return name.replace(/\.json$/i, "");
 }
 
+/** The "ID contains" filter: a card's own ID, or a eulogy it occurs in (a place card's ID is its Latin phrase). */
+function matchesId(op: Op, text: string): boolean {
+  const occurrences = "occurrences" in op && Array.isArray(op.occurrences) ? (op.occurrences as string[]) : [];
+  return opId(op).includes(text) || occurrences.some((id) => id.includes(text));
+}
+
 export default function ReviewPage() {
   const t = useTranslations("Review");
   const [bundled, setBundled] = useState<string[]>([]);
@@ -140,7 +146,7 @@ export default function ReviewPage() {
       if (classFilter && op.class !== classFilter) return false;
       if (confidenceFilter && op.confidence !== confidenceFilter) return false;
       if (opFilter && opKind(op) !== opFilter) return false;
-      if (idFilter && !opId(op).includes(idFilter.trim())) return false;
+      if (idFilter && !matchesId(op, idFilter.trim())) return false;
       if (undecidedOnly && decisions[opId(op)]) return false;
       if (prefilledOnly && hasPrefilled && !isPrefilled(op)) return false;
       return true;
