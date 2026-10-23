@@ -282,6 +282,23 @@ describe("ReviewPage pre-filled only filter", () => {
     expect(screen.getByLabelText("Pre-filled only")).not.toBeChecked();
   });
 
+  it("finds a card by a eulogy it occurs in, beyond the first page", async () => {
+    const many = Array.from({ length: 80 }, (_, i) => place(`Fictopoli ${i}`, { occurrences: [`mr:0101-x${i}`] }));
+    many.push(place("monastérii Dalmátii nuncupáti", { occurrences: ["mr:0606-hilarion"] }));
+    await load(many, "many.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(50));
+    fireEvent.change(screen.getByLabelText("ID contains"), { target: { value: "mr:0606-hilarion" } });
+    expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid")))
+      .toEqual(["op-card-monastérii Dalmátii nuncupáti"]);
+  });
+
+  it("still finds a card by its own ID", async () => {
+    await load([place("Fictopolis", { occurrences: ["mr:0101-x"] }), place("Utopia")], "own.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    fireEvent.change(screen.getByLabelText("ID contains"), { target: { value: "Utop" } });
+    expect(screen.getAllByTestId(/^op-card-/).map((el) => el.getAttribute("data-testid"))).toEqual(["op-card-Utopia"]);
+  });
+
   it("offers no box when no card is pre-filled", async () => {
     await load([place("Fictopolis"), place("Utopia")], "plain.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
