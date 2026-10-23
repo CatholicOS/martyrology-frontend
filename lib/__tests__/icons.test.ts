@@ -68,4 +68,11 @@ describe("app icons", () => {
       }
     expect(art / inside).toBeGreaterThan(0.2);
   });
+
+  it("the header emblem is the disc alone, without the field", () => {
+    const svg = fs.readFileSync("public/app-icons/emblem.svg", "utf8");
+    expect(svg).toMatch(/viewBox="120 120 784 784"/);
+    expect(svg).not.toMatch(/#E8DCC3/i);
+    expect(svg).not.toMatch(/c2pa/i);
+  });
 });

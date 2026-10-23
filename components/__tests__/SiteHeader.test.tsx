@@ -21,6 +21,15 @@ describe("SiteHeader", () => {
     expect(screen.queryByRole("link", { name: "Review" })).not.toBeInTheDocument();
   });
 
+  it("shows the emblem beside the title, without changing the link's name", async () => {
+    viewerMock.mockResolvedValue({ signedIn: false, curator: false });
+    render(await SiteHeader());
+    const home = screen.getByRole("link", { name: "Martyrology" });
+    const img = home.querySelector("img");
+    expect(img).toHaveAttribute("src", "/app-icons/emblem.svg");
+    expect(img).toHaveAttribute("alt", "");
+  });
+
   it("shows Review to curators", async () => {
     viewerMock.mockResolvedValue({ signedIn: true, curator: true });
     render(await SiteHeader());
