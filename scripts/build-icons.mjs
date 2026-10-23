@@ -10,8 +10,8 @@ const MASTER = "design/icon/good-shepherd.svg";
 const FIELD = "#5e0f12";
 /** Corner radius of the `any` icons, as a share of the side. */
 const CORNER = 0.22;
-/** How much of the side the statue takes in a maskable icon: the largest that keeps it inside Android's safe circle. */
-const MASKABLE_SCALE = 0.68;
+/** How much of the side the statue takes in a maskable icon: inside Android's safe circle, with a margin. */
+const MASKABLE_SCALE = 0.66;
 /** The favicon's crop of the master (in its 1200 px units): the shepherd's head with the lamb whole on his shoulders, never split. */
 const FAVICON_CROP = { left: 200, top: 0, width: 1000, height: 1000 };
 

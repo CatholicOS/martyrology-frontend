@@ -30,8 +30,8 @@ describe("app icons", () => {
 
   it("any icons have transparent corners", async () => {
     for (const path of ["public/icons/icon-192.png", "public/icons/icon-512.png"]) {
-      const { data } = await pixels(path);
-      expect(data[3]).toBe(0);
+      const { data, width } = await pixels(path);
+      for (const [x, y] of [[0, 0], [width - 1, 0], [0, width - 1], [width - 1, width - 1]]) expect([path, x, y, data[(y * width + x) * 4 + 3]]).toEqual([path, x, y, 0]);
     }
   });
 
@@ -42,9 +42,10 @@ describe("app icons", () => {
     }
   });
 
+  // Inside the safe zone (radius 0.4) with a margin, so a launcher whose mask is exactly the safe circle trims nothing.
   it("maskable statue stays inside the safe zone", async () => {
     const { data, width } = await pixels("public/icons/maskable-512.png");
-    const c = width / 2, r = 0.4 * width;
+    const c = width / 2, r = 0.39 * width;
     for (let y = 0; y < width; y++)
       for (let x = 0; x < width; x++) {
         if (Math.hypot(x + 0.5 - c, y + 0.5 - c) <= r) continue;
