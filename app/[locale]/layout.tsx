@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { appleWebApp, appViewport } from "@/lib/app-metadata";
 import { getDataVersions } from "@/lib/data-versions";
 import { routing } from "@/i18n/routing";
 
@@ -20,6 +21,8 @@ const textFont = localFont({
   fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
+export const viewport = appViewport;
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -28,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { title: t("bookTitle"), description: t("siteDescription") };
+  return { title: t("bookTitle"), description: t("siteDescription"), appleWebApp };
 }
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
