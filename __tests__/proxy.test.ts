@@ -45,7 +45,7 @@ describe("proxy", () => {
   });
 
   it("does not run on route handlers and assets", () => {
-    for (const url of ["/api/mr/editions", "/api/auth/session", "/scalar/openapi.json", "/scalar/proxy", "/_next/static/x.js", "/favicon.ico"])
+    for (const url of ["/api/mr/editions", "/api/auth/session", "/scalar/openapi.json", "/scalar/proxy", "/_next/static/x.js", "/favicon.ico", "/manifest.webmanifest", "/icons/icon-192.png", "/icon.png", "/apple-icon.png"])
       expect([url, unstable_doesProxyMatch({ config, nextConfig, url })]).toEqual([url, false]);
     for (const url of ["/", "/map", "/it/docs", "/scalar"]) expect([url, unstable_doesProxyMatch({ config, nextConfig, url })]).toEqual([url, true]);
   });
