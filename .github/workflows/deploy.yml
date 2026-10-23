@@ -273,6 +273,10 @@ jobs:
           # problem: it holds the API answers the server fetched (the catalog, revalidated hourly),
           # so after an API release with renamed IDs a new build would read the old catalog for up
           # to an hour (the names index left the renamed eulogies out). It is cleared on every deploy.
+          # So is the route cache (.next/server/route-cache), where Next 16.4 keeps the responses of
+          # static route handlers it has served: it outlives the build that wrote it, so after the
+          # deploy of #183 the server kept answering /manifest.webmanifest with the previous build's
+          # icon paths.
           for attempt in 1 2 3; do
             echo "SSH attempt $attempt..."
             if ssh -i ~/.ssh/deploy_key \
@@ -282,6 +286,7 @@ jobs:
               "set -e; \
                tar -xzf /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz -C ${REMOTE_APP_DIR} && \
                rm -rf ${REMOTE_APP_DIR}/.next/cache/fetch-cache && \
+               rm -rf ${REMOTE_APP_DIR}/.next/server/route-cache && \
                mkdir -p ${REMOTE_APP_DIR}/tmp && \
                touch ${REMOTE_APP_DIR}/tmp/restart.txt && \
                rm -f /tmp/nextjs-bundle-${BUNDLE_TAG}.tar.gz"; then
