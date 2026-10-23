@@ -12,8 +12,8 @@ const FIELD = "#5e0f12";
 const CORNER = 0.22;
 /** How much of the side the statue takes in a maskable icon: the largest that keeps it inside Android's safe circle. */
 const MASKABLE_SCALE = 0.68;
-/** The favicon's crop of the master (in its 1200 px units): the shepherd's head and the lamb's raised head. */
-const FAVICON_CROP = { left: 360, top: 40, width: 820, height: 820 };
+/** The favicon's crop of the master (in its 1200 px units): the shepherd's head with the lamb whole on his shoulders, never split. */
+const FAVICON_CROP = { left: 200, top: 0, width: 1000, height: 1000 };
 
 const svg = fs.readFileSync(MASTER);
 /** The master rendered as a square PNG of `size` pixels. */
