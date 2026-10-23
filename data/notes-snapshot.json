@@ -308,6 +308,11 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"prayer\" where the Latin \"oratiónibus\" here means discourses."
     }
   },
+  "mr:0129-gilda-sapiens": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Possible translation error: \"scrisse sullo sterminio della Bretagna\" where the Latin has \"de excídio Británniæ scripsit\". The Latin names Gildas's work De excidio Britanniae, on the ruin of Britain, the island of Great Britain (\"Britannia\" in Italian); \"Bretagna\" usually means Brittany, the \"Británnia Minor\" where the eulogy places him. The curator's query (2026-10-22)."
+    }
+  },
   "mr:0129-sulpicius-severus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"formerly a senator\" where the Latin has \"e senatóribus Galliárum\" (of a Gallic senatorial family)."
@@ -1796,6 +1801,11 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"at the Arenae\" where the Latin has \"ad Arcas\" (at the Arches)."
     }
   },
+  "mr:0609-robertus-salt": {
+    "editions": {
+      "martyrologium_romanum_2004_it_IT": "Translation error: \"nel carcere di Newport\" where the Latin has \"in cárcere Neopórtus\" (Newgate Prison, London)."
+    }
+  },
   "mr:0609-iosephus-anchieta": {
     "note": "José de Anchieta, blessed in the 2004 editions, was canonized on 3 April 2014."
   },
@@ -3207,6 +3217,7 @@
   },
   "mr:0920-thomas-johnson": {
     "editions": {
+      "martyrologium_romanum_2004_it_IT": "Translation error: \"nel carcere di Newport\" where the Latin has \"in cárcere Neopórtus\" (Newgate Prison, London).",
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"with some of his fellow brothers\" where the Latin has \"nonus ex número confrátrum\" (the ninth of his confreres to die)."
     }
   },
