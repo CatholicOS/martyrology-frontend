@@ -21,16 +21,40 @@
    "failed": [
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q27779387",
+     "label": "Vicariate Apostolic of Western Oceania",
+     "description": "(Vicariate Apostolic); Historical",
+     "country": "NZ",
+     "countries": [
+      "NZ"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q123696317"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research (no single country): Q27779387. Western Oceania, Chanel's mission field: the Vicariate Apostolic of Western Oceania; a macro-area, no single country.",
+   "reasoning": "Research (2026-10-24): the Vicariate Apostolic of Western Oceania (1836-1845), Chanel's mission field; it spanned several island states, so no single country.",
    "jev": {
     "kind": "place",
     "probability": 0.99,
     "confidence": 0.99,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q27779387",
+    "no_country": true
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -46,16 +70,42 @@
    "failed": [
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q141833410",
+     "label": "Monastery of Tábanos",
+     "description": "monastero doppio mozarabico scomparso sulle colline a nord di Cordova, distrutto nell'852",
+     "country": "ES",
+     "countries": [
+      "ES"
+     ],
+     "la": [
+      "Coenobium Tabanense"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q44613"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Monastery of Tabanos near Cordoba (Isaac's); no item found; a new item would be warranted.",
+   "reasoning": "Research (2026-10-24): the Mozarabic double monastery of Tábanos in the hills north of Córdoba, Isaac's; item created 2026-10-24 (site not known exactly, so no coordinates).",
    "jev": {
     "kind": "place",
     "probability": 0.88,
     "confidence": 0.84,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q141833410",
+    "country": "ES"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -183,11 +233,33 @@
      "evidence": [
       "type"
      ]
+    },
+    {
+     "wikidata": "Q141833401",
+     "label": "Trung Linh",
+     "description": "parrocchia cattolica e villaggio a Xuân Trường, in Vietnam, nella diocesi di Bùi Chu",
+     "country": "VN",
+     "countries": [
+      "VN"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      20.2977165,
+      106.3349216
+     ],
+     "types": [
+      "Q102496"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Vietnamese mission village near Nam Dinh; no item found; probably too minor.",
+   "reasoning": "Research (2026-10-24): the Dominican mission parish and village of Trung Linh (Xuân Trường, diocese of Bùi Chu), where Thomas Toán was arrested; item created 2026-10-24 with the church's OSM coordinates.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -195,7 +267,12 @@
     "probability": 0.93,
     "confidence": 0.92,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q141833401",
+    "country": "VN"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -406,7 +483,7 @@
     },
     {
      "wikidata": "Q5485281",
-     "label": "Q5485281",
+     "label": "Urci",
      "description": "ancient city of Spain",
      "country": "ES",
      "countries": [
@@ -456,7 +533,13 @@
     "probability": 0.62,
     "confidence": 0.58,
     "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): ancient Urci in Hispania (Almería); its exact site is disputed (Villaricos, which the Italian names, or El Chuche). Not the titular see Q1424477.",
+   "suggested": {
+    "wikidata": "Q5485281",
+    "country": "ES"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -521,16 +604,32 @@
       "it",
       "type"
      ]
+    },
+    {
+     "wikidata": "Q20571496",
+     "label": "Eparchy of Velika",
+     "description": "",
+     "country": null,
+     "countries": [],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q285181"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Velika/Velitsa see of Clement of Ohrid; the Italian renders it Drama and Drama is not verified. Identification of Velika is uncertain.",
+   "reasoning": "Research (2026-10-24): the eparchy of Velika, Clement of Ohrid's see; its site is disputed (near Strumica, Veles, Bitola, or in the western Rhodopes), so no single country. The Italian \"Drama\" is unsupported.",
    "suggested": {
-    "wikidata": "Q212841",
-    "country": "GR"
+    "wikidata": "Q20571496",
+    "no_country": true
    },
-   "confidence": "low",
+   "confidence": "medium",
    "jev": {
     "decision": "accept",
     "wikidata": "Q212841",
@@ -580,8 +679,8 @@
     "wikidata": "Q849967",
     "country": "GB"
    },
-   "confidence": "low",
-   "reasoning": "Congar in England; Briton by birth, likely a Celtic Briton (Welsh/West Country), but could be Breton Q309197.",
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24): Congar of Congresbury was a Briton (a Celtic Briton of Dumnonia), not a Breton; alternative Bretons Q309197.",
    "jev": {
     "decision": "accept",
     "wikidata": "Q849967",
@@ -782,8 +881,8 @@
     "wikidata": "Q38",
     "country": "IT"
    },
-   "confidence": "low",
-   "reasoning": "Various regions of Italy: Italy generally (alternative geographic region Q3155864).",
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24): various regions of Italy: Italy as a whole.",
    "jev": {
     "decision": "edit",
     "wikidata": "Q3155864",
@@ -972,7 +1071,7 @@
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Columbanus' hermitage near Bregenz; the hermitage has no item and Bregenz (Q1737) is only the locator.",
+   "reasoning": "Research (2026-10-24): Columbanus's hermitage near Bregenz has no item; Bregenz locates it.",
    "jev": {
     "decision": "accept",
     "wikidata": "Q1737",
@@ -981,7 +1080,12 @@
     "probability": 0.41,
     "confidence": 0.33,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q1737",
+    "country": "AT"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -1090,16 +1194,40 @@
       "Q39614"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q979091",
+     "label": "Qinnasrin",
+     "description": "sito archeologico della Siria",
+     "country": "SY",
+     "countries": [
+      "SY"
+     ],
+     "la": [
+      "Chalcis ad Belum"
+     ],
+     "p9314": false,
+     "coords": [
+      35.99861111,
+      36.99805556
+     ],
+     "types": [
+      "Q839954",
+      "Q15661340"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
    "suggested": {
-    "wikidata": "Q932886",
-    "country": "TR"
+    "wikidata": "Q979091",
+    "country": "SY"
    },
-   "confidence": "low",
-   "reasoning": "As printed, Chalcedon (Kadıköy); but Marcian from Cyrrhus is known in the desert of Chalcis (Qinnasrin Q979091, Syria): curator to check.",
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24): Marcian of Cyrrhus lived in the desert of Chalcis in Syria (Qinnasrin); the printed \"Chalcedonensem\" is probably an error for \"Chalcidensem\". If the printed reading stands: Chalcedon Q337381 (TR).",
    "jev": {
     "decision": "accept",
     "wikidata": "Q932886",
@@ -1157,7 +1285,13 @@
     "probability": 0.93,
     "confidence": 0.86,
     "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): the vicus Pallacinae in ancient Rome, where Pope Mark founded his titulus.",
+   "suggested": {
+    "wikidata": "Q127673896",
+    "country": "IT"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -1347,12 +1481,12 @@
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Gerald of Braga died at Bornes (Vila Pouca de Aguiar) per English Wikipedia; Spanish Bornos (Cadiz) is implausible.",
+   "reasoning": "Research (2026-10-24): Gerald of Braga died at Bornes de Aguiar (Vila Pouca de Aguiar) per Portuguese Wikipedia; not Bornos in Cádiz.",
    "suggested": {
     "wikidata": "Q2652880",
     "country": "PT"
    },
-   "confidence": "low",
+   "confidence": "medium",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -1376,16 +1510,44 @@
    "failed": [
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q26720921",
+     "label": "Brain-sur-Vilaine",
+     "description": "former commune in France",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      47.696847,
+      -1.891494
+     ],
+     "types": [
+      "Q484170",
+      "Q666943"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Plaz on the Vilaine, church built by Melanius of Rennes: no item found.",
+   "reasoning": "Research (2026-10-24): Plaz on the Vilaine is the present Brain-sur-Vilaine (French Wikipedia), where Melanius was born.",
    "jev": {
     "kind": "place",
     "probability": 0.97,
     "confidence": 0.96,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q26720921",
+    "country": "FR"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -1570,6 +1732,33 @@
       "Q1288568"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q207989",
+     "label": "Southern Italy",
+     "description": "macro-regione italiana",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Italia inferior",
+      "Italia meridiana",
+      "Italia meridionalis"
+     ],
+     "p9314": false,
+     "coords": [
+      41.194189,
+      15.242417
+     ],
+     "types": [
+      "Q82794",
+      "Q3434769"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
     }
    ],
    "decision": null,
@@ -1581,209 +1770,13 @@
     "probability": 0.83,
     "confidence": 0.81,
     "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "monastérii Abgári",
-   "la": "monastérii Abgári",
-   "it": [
-    "monastero di Abgar"
-   ],
-   "occurrences": [
-    "mr:0109-eustratius-thaumaturgus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q18494447",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Berbenno di Valtellina, provincia di Sondrio",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.18249,
-      9.70987
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q113586078",
-     "label": "Monastero",
-     "description": "frazione di Dronero",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.47027777777778,
-      7.4222222222222225
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18442812",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Bardi, provincia di Parma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.59472,
-      9.76545
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18508960",
-     "label": "Monastero",
-     "description": "human settlement in San Benedetto Belbo, Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.48782,
-      8.05641
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18494832",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Montecchio, provincia di Terni",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.65126,
-      12.30152
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18501850",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Pozzol Groppo, provincia di Alessandria",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.8675,
-      9.04316
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q6372946",
-     "label": "Abgara",
-     "description": "",
-     "country": null,
-     "countries": [
-      "GE",
-      "Q31354462"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.2028132,
-      40.6167144
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q345467",
-     "label": "Ad Deir",
-     "description": "edificio monumentale a Petra, Giordania",
-     "country": "JO",
-     "countries": [
-      "JO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      30.338228,
-      35.430927
-     ],
-     "types": [
-      "Q381885"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q6372946",
-    "kind": "place",
-    "probability": 0.61,
-    "confidence": 0.56,
-    "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): the regions of southern Italy: Southern Italy (the Mezzogiorno).",
+   "suggested": {
+    "wikidata": "Q207989",
+    "country": "IT"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -1892,16 +1885,37 @@
       "Q327333"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q141833406",
+     "label": "Monastery of Dol",
+     "description": "monastero altomedievale di Dol in Bretagna, fondato da san Sansone, poi sede episcopale",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Monasterium Dolense"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q44613"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
    "suggested": {
-    "wikidata": "Q318432",
+    "wikidata": "Q141833406",
     "country": "FR"
    },
-   "confidence": "low",
-   "reasoning": "Monastery of Dol in Brittany, whose abbot-bishop was Turiavus; no monastery item, so the town (the cathedral is Q1425162).",
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24): Samson's monastery at Dol, of which Turiavus was abbot-bishop; item created 2026-10-24 (L'Abbaye-sous-Dol Q3201359 is a later priory of Saint-Florent).",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -1948,11 +1962,32 @@
       "country",
       "type"
      ]
+    },
+    {
+     "wikidata": "Q141833408",
+     "label": "Nantus Abbey",
+     "description": "abbazia fondata nel VI secolo da san Marcolfo a Saint-Marcouf (Manica, Francia), distrutta nel X secolo",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Monasterium Nantolii"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q160742"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Marculf's monastery of Nanteuil/Nantus (Cotentin); no item found.",
+   "reasoning": "Research (2026-10-24): Marculf's abbey of Nantus at Saint-Marcouf (Manche), per French Wikipedia; item created 2026-10-24. Not Nanteuil.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -1960,264 +1995,12 @@
     "probability": 0.54,
     "confidence": 0.08,
     "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "monastérii Sancti Petri de Silva",
-   "la": "monastérii Sancti Petri de Silva",
-   "it": [
-    "monastero di San Pietro della Foresta"
-   ],
-   "occurrences": [
-    "mr:0330-clinius"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q91152",
-     "label": "Castiglione d'Orcia",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Petra"
-     ],
-     "p9314": false,
-     "coords": [
-      43.016666666667,
-      11.616666666667
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q56209",
-     "label": "Pietraperzia",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Petra"
-     ],
-     "p9314": false,
-     "coords": [
-      37.4,
-      14.133333333333
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q499129",
-     "label": "Sëlva",
-     "description": "comune dell'Alto Adige, Italia",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Silva"
-     ],
-     "p9314": false,
-     "coords": [
-      46.555751,
-      11.760564
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18494447",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Berbenno di Valtellina, provincia di Sondrio",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.18249,
-      9.70987
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q113586078",
-     "label": "Monastero",
-     "description": "frazione di Dronero",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.47027777777778,
-      7.4222222222222225
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18442812",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Bardi, provincia di Parma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.59472,
-      9.76545
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18508960",
-     "label": "Monastero",
-     "description": "human settlement in San Benedetto Belbo, Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.48782,
-      8.05641
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18494832",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Montecchio, provincia di Terni",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.65126,
-      12.30152
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18501850",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Pozzol Groppo, provincia di Alessandria",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.8675,
-      9.04316
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2322594",
-     "label": "St. Peter",
-     "description": "frazione di Laion in Alto Adige",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.602575,
-      11.611176
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research: no item. Monastery of St Peter in the Forest near Aquino; no item found.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.76,
-    "confidence": 0.74,
-    "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q141833408",
+    "country": "FR"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -2583,11 +2366,32 @@
       "country",
       "type"
      ]
+    },
+    {
+     "wikidata": "Q16600386",
+     "label": "Santa Maria nel Bosco Sanctuary",
+     "description": "chiesa nel comune italiano di Serra San Bruno",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      38.553787,
+      16.312505
+     ],
+     "types": [
+      "Q697295"
+     ],
+     "evidence": [
+      "country"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Hermitage of La Torre near Serra San Bruno; no item found (Q1775991 is the later Certosa).",
+   "reasoning": "Research (2026-10-24): Bruno founded the hermitage of Santa Maria at \"Torre\" (Serra San Bruno) and died there in 1101 (Italian Wikipedia); the Certosa Q1775991, 2 km below, was the lay brothers' house of Santo Stefano.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -2595,7 +2399,12 @@
     "probability": 0.69,
     "confidence": 0.67,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q16600386",
+    "country": "IT"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -2611,16 +2420,44 @@
    "failed": [
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q3949877",
+     "label": "Santuario di Fonte Colombo",
+     "description": "edificio religioso di Rieti",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      42.379288888889,
+      12.828388888889
+     ],
+     "types": [
+      "Q21850178"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Monte Carnerio near Verucchio (Gregory Cellus died with the Friars Minor); no item found. A new item possibly warranted for the convent.",
+   "reasoning": "Research (2026-10-24): the hermitage of Monte Carnerio lay by the Franciscan sanctuary of Fonte Colombo near Rieti (Italian Wikipedia, Gregorio Celli); the mountain has no item, the sanctuary only locates it.",
    "jev": {
     "kind": "place",
     "probability": 0.98,
     "confidence": 0.97,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q3949877",
+    "country": "IT"
+   },
+   "confidence": "low"
   },
   {
    "op": "resolve_place",
@@ -2654,11 +2491,30 @@
       "Q55818"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q3855082",
+     "label": "Mercurion",
+     "description": "",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q183366"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Mount Mercurion on the Calabria-Lucania border: only an Italian valley item (Q3554079) exists; no mountain item.",
+   "reasoning": "Research (2026-10-24): the Mercurion, the Byzantine monastic district on the Calabria-Basilicata border.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -2666,7 +2522,12 @@
     "probability": 0.94,
     "confidence": 0.88,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q3855082",
+    "country": "IT"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -2932,11 +2793,29 @@
      "evidence": [
       "country"
      ]
+    },
+    {
+     "wikidata": "Q141833402",
+     "label": "Bầu Nọ parish",
+     "description": "parrocchia cattolica a Thụy Vân, Việt Trì, in Vietnam, nella diocesi di Hưng Hóa (oggi Nỗ Lực)",
+     "country": "VN",
+     "countries": [
+      "VN"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q102496"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Bau No parish in Tonkin (Vietnam); no Wikidata item found; new item could be warranted.",
+   "reasoning": "Research (2026-10-24): the mission parish of Bầu Nọ, today Nỗ Lực (Thụy Vân, Việt Trì, diocese of Hưng Hóa); item created 2026-10-24.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -2944,7 +2823,12 @@
     "probability": 0.98,
     "confidence": 0.98,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q141833402",
+    "country": "VN"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -2959,16 +2843,62 @@
     "no Italian phrase",
     "no candidates found"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q90",
+     "label": "Paris",
+     "description": "capitale della Francia",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Lutetia",
+      "Parisius"
+     ],
+     "p9314": true,
+     "coords": [
+      48.85666666666667,
+      2.352222222222222
+     ],
+     "types": [
+      "Q484170",
+      "Q22923920",
+      "Q200250",
+      "Q1200957",
+      "Q208511",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q1422929",
+      "Q108178728",
+      "Q1066984",
+      "Q11418818",
+      "Q134445478",
+      "Q2240381",
+      "Q174844"
+     ],
+     "evidence": [
+      "country",
+      "type",
+      "p9314"
+     ]
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. 'Near Lutetia': not Paris itself (convention 1); the martyrdom site is traditionally Montmartre (Q186115) but the text does not say so.",
+   "reasoning": "Research (2026-10-24): \"near Lutetia\": Paris locates it; tradition places the martyrdom at Montmartre (Q186115), which the text does not name.",
    "jev": {
     "kind": "place",
     "probability": 0.97,
     "confidence": 0.96,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q90",
+    "country": "FR"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -3032,11 +2962,33 @@
       "country",
       "type"
      ]
+    },
+    {
+     "wikidata": "Q2542264",
+     "label": "Le Ferriere",
+     "description": "frazione del comune italiano di Latina",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.51609,
+      12.7579
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. The spot of Maria Goretti's attack is unnamed; Nettuno (Q243116) only locates it.",
+   "reasoning": "Research (2026-10-24): Maria Goretti was attacked at Le Ferriere di Conca, near Nettuno (now in Latina); Nettuno Q243116 if the locator is preferred.",
    "jev": {
     "decision": "accept",
     "wikidata": "Q243116",
@@ -3045,7 +2997,12 @@
     "probability": 0.47,
     "confidence": 0.2,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q2542264",
+    "country": "IT"
+   },
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -3137,8 +3094,8 @@
     "wikidata": "Q51188",
     "country": "IT"
    },
-   "confidence": "low",
-   "reasoning": "Camillus de Lellis born at Bucchianico near Chieti (Teate); 'near' does not name Chieti (Q13138), which Jev chose.",
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24): Camillus de Lellis was born at Bucchianico, near Chieti (Teate); Chieti Q13138 if the locator is preferred.",
    "jev": {
     "decision": "edit",
     "wikidata": "Q13138",
@@ -3236,7 +3193,13 @@
     "probability": 0.95,
     "confidence": 0.93,
     "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): the East in general.",
+   "suggested": {
+    "wikidata": "Q205653",
+    "no_country": true
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -3506,7 +3469,13 @@
     "probability": 0.98,
     "confidence": 0.98,
     "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): the kingdoms of Europe: Europe.",
+   "suggested": {
+    "wikidata": "Q46",
+    "no_country": true
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -3796,7 +3765,13 @@
     "probability": 0.97,
     "confidence": 0.97,
     "model": "jev-1.14.0"
-   }
+   },
+   "reasoning": "Research (2026-10-24): the Kingdom of England, the medieval state of Becket's time.",
+   "suggested": {
+    "wikidata": "Q179876",
+    "country": "GB"
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -4018,11 +3993,30 @@
       "Q3918"
      ],
      "evidence": []
+    },
+    {
+     "wikidata": "Q108317077",
+     "label": "Our Lady of the Martyrs of Thailand Shrine",
+     "description": "catholic church in Mukdahan Province, Thailand",
+     "country": "TH",
+     "countries": [
+      "TH"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      16.775113120109882,
+      104.73821911791758
+     ],
+     "types": [
+      "Q697295"
+     ],
+     "evidence": []
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Small stream near Mukdahan, Thailand where Philip Siphong was killed; no item found.",
+   "reasoning": "Research (2026-10-24): the stream near Song Khon where Philip Siphong was killed has no item; the shrine of the Martyrs of Thailand at Song Khon locates it.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -4030,7 +4024,12 @@
     "probability": 1.0,
     "confidence": 1.0,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q108317077",
+    "country": "TH"
+   },
+   "confidence": "low"
   },
   {
    "op": "resolve_place",
@@ -4112,16 +4111,38 @@
      "evidence": [
       "type"
      ]
+    },
+    {
+     "wikidata": "Q924045",
+     "label": "Paimpont forest",
+     "description": "ampia area boschiva situata nella regione della Bretagna",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      48.01666667,
+      -2.16666667
+     ],
+     "types": [
+      "Q4421",
+      "Q15069452"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
    "suggested": {
-    "wikidata": "Q641203",
+    "wikidata": "Q924045",
     "country": "FR"
    },
-   "confidence": "low",
-   "reasoning": "Interior Armorica (Brittany) where Mevennus withdrew; forest itself not identified.",
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24): Mevennus withdrew to the forest of inner Brittany, Brocéliande (Paimpont forest), founding his abbey at Gaël (Q216544).",
    "jev": {
     "decision": "accept",
     "wikidata": "Q641203",
@@ -4129,242 +4150,6 @@
     "kind": "place",
     "probability": 0.49,
     "confidence": 0.32,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "templi Fortúnæ",
-   "la": "templi Fortúnæ",
-   "it": [
-    "Tempio della Fortuna"
-   ],
-   "occurrences": [
-    "mr:1223-theodulus-et-socii"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q2552044",
-     "label": "Sacred Area of Sant'Omobono",
-     "description": "area archeologica di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.89062,
-      12.48126
-     ],
-     "types": [
-      "Q839954"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q849241",
-     "label": "Temple of Portunus",
-     "description": "tempio della Roma antica",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.88926,
-      12.480908
-     ],
-     "types": [
-      "Q839954",
-      "Q867143",
-      "Q44539",
-      "Q14752696"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1541068",
-     "label": "largo di Torre Argentina",
-     "description": "piazza e sito archeologico di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.89528,
-      12.47694
-     ],
-     "types": [
-      "Q174782"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3949669",
-     "label": "Sanctuary of Fortuna Primigenia",
-     "description": "antico complesso sacro dell'antica città di Praeneste",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.8404,
-      12.8925
-     ],
-     "types": [
-      "Q839954",
-      "Q29553",
-      "Q867143",
-      "Q217123"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2210179",
-     "label": "Temple of Fortuna Equestris",
-     "description": "tempio scomparso della Roma antica",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.894391,
-      12.474408
-     ],
-     "types": [
-      "Q867143",
-      "Q14752696",
-      "Q44539"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3983204",
-     "label": "Temple of Fortuna Augusta",
-     "description": "antico tempio romano del sito archeologico di Pompei, Italia",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      40.750682,
-      14.484351
-     ],
-     "types": [
-      "Q839954",
-      "Q109607",
-      "Q44539"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q21208533",
-     "label": "Temple of Fortuna Respiciens",
-     "description": "tempio scomparso della Roma antica",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "vicus Fortunae Respicientis"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q839954",
-      "Q44539"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3983205",
-     "label": "Temple of Fortuna Muliebris",
-     "description": "tempio scomparso della Roma antica",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.87361111,
-      12.5
-     ],
-     "types": [
-      "Q867143",
-      "Q14752696",
-      "Q44539"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3983206",
-     "label": "Temple of Fortuna Primigenia, Rome",
-     "description": "tempio scomparso della Roma antica",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q867143"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research: no item. Temple of Fortune at Gortyn, Crete; no item found.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: not a place",
-    "kind": "not_place",
-    "probability": 0.6,
-    "confidence": 0.47,
     "model": "jev-1.14.0"
    }
   },
@@ -4497,11 +4282,28 @@
      "evidence": [
       "type"
      ]
+    },
+    {
+     "wikidata": "Q1967878",
+     "label": "Land of Uz",
+     "description": "location mentioned in the Hebrew Bible; the abode of Job",
+     "country": null,
+     "countries": [],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q3024240",
+      "Q12404340"
+     ],
+     "evidence": [
+      "type"
+     ]
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research (no single country): Q1967878. Land of Uz, Job's homeland; location uncertain, no single country.",
+   "reasoning": "Research (2026-10-24): the Land of Uz, Job's homeland; its location is unknown.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -4509,7 +4311,12 @@
     "probability": 0.74,
     "confidence": 0.69,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q1967878",
+    "no_country": true
+   },
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -4682,8 +4489,8 @@
      "PT"
     ]
    },
-   "confidence": "low",
-   "reasoning": "Spain in Braulio's time (7th c.): Visigothic Kingdom. Alternatives: Hispania Q186513 or Iberian Peninsula.",
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24): Spain in Braulio's time, the 7th-century Visigothic Kingdom; alternative the Iberian Peninsula Q12837.",
    "jev": {
     "decision": "edit",
     "wikidata": "Q186513",
@@ -4976,11 +4783,30 @@
      "evidence": [
       "type"
      ]
+    },
+    {
+     "wikidata": "Q108317077",
+     "label": "Our Lady of the Martyrs of Thailand Shrine",
+     "description": "catholic church in Mukdahan Province, Thailand",
+     "country": "TH",
+     "countries": [
+      "TH"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      16.775113120109882,
+      104.73821911791758
+     ],
+     "types": [
+      "Q697295"
+     ],
+     "evidence": []
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. Village of Song Khon near Mukdahan, Thailand; candidates are unrelated subdistricts. No item.",
+   "reasoning": "Research (2026-10-24): the village of Song Khon (Wan Yai, Mukdahan) has no item; the shrine of Our Lady of the Martyrs of Thailand stands there, where the martyrs were killed.",
    "jev": {
     "decision": "reject",
     "reason": "Jev: none of the candidates is this place",
@@ -4988,7 +4814,12 @@
     "probability": 0.64,
     "confidence": 0.61,
     "model": "jev-1.14.0"
-   }
+   },
+   "suggested": {
+    "wikidata": "Q108317077",
+    "country": "TH"
+   },
+   "confidence": "medium"
   }
  ]
 }
