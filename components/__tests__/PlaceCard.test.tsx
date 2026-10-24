@@ -202,6 +202,19 @@ describe("PlaceCard", () => {
     });
   });
 
+  it("a suggestion in no single country starts with no country, ready to accept", () => {
+    // Western Oceania: the candidate's own P17 (NZ) is not the place's country.
+    const op = makeOp({ suggested: { wikidata: "Q27779387", no_country: true }, claims: [],
+      candidates: [candidate("Q27779387", "Vicariate Apostolic of Western Oceania", "NZ")] });
+    const onDecide = renderCard(op);
+    expect(screen.getByLabelText(/no single country/i)).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
+    expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", {
+      decision: "edit",
+      edited: { wikidata: "Q27779387", no_country: true },
+    });
+  });
+
   it("no single country hides the Italian's country claims and resumes from a saved edit", () => {
     renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", no_country: true } });
     expect(screen.getByLabelText(/no single country/i)).toBeChecked();
