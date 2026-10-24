@@ -9,3278 +9,136 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "Oceániam occidentálem",
-   "la": "Oceániam occidentálem",
+   "id": "Romæ in cœmetério Callísti via Appia",
+   "la": "Romæ in cœmetério Callísti via Appia",
    "it": [
-    "Oceania occidentale"
+    "A Roma nel cimitero di Callisto sulla via Appia",
+    "nel cimitero di Callisto sulla via Appia"
    ],
    "occurrences": [
-    "mr:0428-petrus-chanel"
+    "mr:0103-antherus",
+    "mr:0110-miltiades",
+    "mr:0422-caius",
+    "mr:0519-parthenius-et-calogerus",
+    "mr:0519-urbanus-i",
+    "mr:0815-tarsicius",
+    "mr:1122-caecilia",
+    "mr:1208-eutychianus",
+    "mr:1226-dionysius",
+    "mr:1230-felix-i"
    ],
    "claims": [],
    "failed": [
-    "no candidates found"
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
    ],
    "candidates": [
     {
-     "wikidata": "Q27779387",
-     "label": "Vicariate Apostolic of Western Oceania",
-     "description": "(Vicariate Apostolic); Historical",
-     "country": "NZ",
-     "countries": [
-      "NZ"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q123696317"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the Vicariate Apostolic of Western Oceania (1836-1845), Chanel's mission field; it spanned several island states, so no single country.",
-   "jev": {
-    "kind": "place",
-    "probability": 0.99,
-    "confidence": 0.99,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q27779387",
-    "no_country": true
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "Tabanénsi cœnóbio",
-   "la": "Tabanénsi cœnóbio",
-   "it": [
-    "cenobio di Tábanos"
-   ],
-   "occurrences": [
-    "mr:0603-isaac"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q141833410",
-     "label": "Monastery of Tábanos",
-     "description": "monastero doppio mozarabico scomparso sulle colline a nord di Cordova, distrutto nell'852",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [
-      "Coenobium Tabanense"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q44613"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the Mozarabic double monastery of Tábanos in the hills north of Córdoba, Isaac's; item created 2026-10-24 (site not known exactly, so no coordinates).",
-   "jev": {
-    "kind": "place",
-    "probability": 0.88,
-    "confidence": 0.84,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q141833410",
-    "country": "ES"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "Trung Linh",
-   "la": "Trung Linh",
-   "it": [
-    "Trung Linh"
-   ],
-   "occurrences": [
-    "mr:0627-thomas-toan"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1755402",
-     "label": "Linhares",
-     "description": "municipality of Espírito Santo state, Brazil",
-     "country": "BR",
-     "countries": [
-      "BR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -19.39866,
-      -40.06506
-     ],
-     "types": [
-      "Q3184121",
-      "Q1549591"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q201827",
-     "label": "Lignan-de-Bordeaux",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Lignan-de-Bordeaux"
-     ],
-     "p9314": false,
-     "coords": [
-      44.796111111111,
-      -0.42777777777778
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q529915",
-     "label": "Lignerolles",
-     "description": "comune francese nel dipartimento dell'Allier",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Lignerolles"
-     ],
-     "p9314": false,
-     "coords": [
-      46.28,
-      2.5666666666667
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q713317",
-     "label": "Linhai",
-     "description": "city of Zhejiang province, China, included in Taizhou municipality.",
-     "country": "CN",
-     "countries": [
-      "CN"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      28.85229,
-      121.14087
-     ],
-     "types": [
-      "Q1070990"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q210221",
-     "label": "Trungy",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Trungy"
-     ],
-     "p9314": false,
-     "coords": [
-      49.196944444444,
-      -0.72361111111111
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q141833401",
-     "label": "Trung Linh",
-     "description": "parrocchia cattolica e villaggio a Xuân Trường, in Vietnam, nella diocesi di Bùi Chu",
-     "country": "VN",
-     "countries": [
-      "VN"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      20.2977165,
-      106.3349216
-     ],
-     "types": [
-      "Q102496"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the Dominican mission parish and village of Trung Linh (Xuân Trường, diocese of Bùi Chu), where Thomas Toán was arrested; item created 2026-10-24 with the church's OSM coordinates.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.93,
-    "confidence": 0.92,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q141833401",
-    "country": "VN"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "Urci",
-   "la": "Urci",
-   "it": [
-    "Torre de Villaricos"
-   ],
-   "occurrences": [
-    "mr:0501-torquatus-et-socii"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q207443",
-     "label": "Orciano di Pesaro",
-     "description": "municipio del comune di Terre Roveresche",
+     "wikidata": "Q1027069",
+     "label": "Catacomb of Callixtus",
+     "description": "catacomba di Roma",
      "country": "IT",
      "countries": [
       "IT"
      ],
-     "la": [
-      "Urcianum Pisaurense"
-     ],
-     "p9314": false,
-     "coords": [
-      43.688869444444,
-      12.9655
-     ],
-     "types": [
-      "Q3685476",
-      "Q115740682"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q671820",
-     "label": "Orcia",
-     "description": "fiume italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Urcia"
-     ],
-     "p9314": false,
-     "coords": [
-      42.9709,
-      11.350121
-     ],
-     "types": [
-      "Q4022"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1898482",
-     "label": "Urca",
-     "description": "quartiere di Rio de Janeiro",
-     "country": "BR",
-     "countries": [
-      "BR"
-     ],
      "la": [],
      "p9314": false,
      "coords": [
-      -22.9489,
-      -43.1656
-     ],
-     "types": [
-      "Q20683285",
-      "Q1081138"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q755666",
-     "label": "Urca",
-     "description": "villaggio della Romania nel distretto di Cluj",
-     "country": "RO",
-     "countries": [
-      "RO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.548852,
-      23.961872
-     ],
-     "types": [
-      "Q532"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q657628",
-     "label": "Urçay",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Urçay"
-     ],
-     "p9314": false,
-     "coords": [
-      46.624722222222,
-      2.5891666666667
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1218",
-     "label": "Jerusalem",
-     "description": "città del Vicino Oriente, sacra per le tre religioni abramitiche",
-     "country": null,
-     "countries": [
-      "IL",
-      "PS"
-     ],
-     "la": [
-      "Hierosolyma"
-     ],
-     "p9314": false,
-     "coords": [
-      31.776679,
-      35.234156
-     ],
-     "types": [
-      "Q515",
-      "Q116291627",
-      "Q1200957",
-      "Q1549591",
-      "Q2202509",
-      "Q15661340",
-      "Q15239622",
-      "Q108178728",
-      "Q1135201",
-      "Q3505887",
-      "Q51929311"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2669136",
-     "label": "Urtsadzor",
-     "description": "comune armeno",
-     "country": "AM",
-     "countries": [
-      "AM"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      39.9125,
-      44.8175
-     ],
-     "types": [
-      "Q28328984"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3552255",
-     "label": "Urca de Lima",
-     "description": "archaeological site in St. Lucie County, United States of America",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      27.505278,
-      -80.299167
+      41.85887778,
+      12.51105833
      ],
      "types": [
       "Q839954",
-      "Q852190"
+      "Q39614",
+      "Q172896"
      ],
      "evidence": [
+      "country",
       "type"
      ]
     },
     {
-     "wikidata": "Q5485281",
-     "label": "Urci",
-     "description": "ancient city of Spain",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q2202509",
-      "Q15661340"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1136452",
-     "label": "Urciers",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Urciers"
-     ],
-     "p9314": false,
-     "coords": [
-      46.535277777778,
-      2.1308333333333
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q5485281",
-    "kind": "place",
-    "probability": 0.62,
-    "confidence": 0.58,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): ancient Urci in Hispania (Almería); its exact site is disputed (Villaricos, which the Italian names, or El Chuche). Not the titular see Q1424477.",
-   "suggested": {
-    "wikidata": "Q5485281",
-    "country": "ES"
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "Velicénsis",
-   "la": "Velicénsis",
-   "it": [
-    "Drama"
-   ],
-   "occurrences": [
-    "mr:0727-clemens"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in GR"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q212841",
-     "label": "Drama",
-     "description": "comune della Grecia",
-     "country": "GR",
-     "countries": [
-      "GR"
-     ],
-     "la": [
-      "Drama"
-     ],
-     "p9314": false,
-     "coords": [
-      41.151388888889,
-      24.139166666667
-     ],
-     "types": [
-      "Q515"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q208606",
-     "label": "Drama Regional Unit",
-     "description": "unità periferica greca",
-     "country": "GR",
-     "countries": [
-      "GR"
-     ],
-     "la": [
-      "Drama"
-     ],
-     "p9314": false,
-     "coords": [
-      41.25,
-      24.16666667
-     ],
-     "types": [
-      "Q1234255"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q20571496",
-     "label": "Eparchy of Velika",
-     "description": "",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q285181"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the eparchy of Velika, Clement of Ohrid's see; its site is disputed (near Strumica, Veles, Bitola, or in the western Rhodopes), so no single country. The Italian \"Drama\" is unsupported.",
-   "suggested": {
-    "wikidata": "Q20571496",
-    "no_country": true
-   },
-   "confidence": "medium",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q212841",
-    "country": "GR",
-    "kind": "place",
-    "probability": 0.49,
-    "confidence": 0.23,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "britónis",
-   "la": "britónis",
-   "it": [
-    "bretone"
-   ],
-   "occurrences": [
-    "mr:1107-cungarus"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q849967",
-     "label": "Celtic Britons",
-     "description": "popolazione celtica delle Isole britanniche",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Britanni",
-      "Brittones"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q4204501"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q849967",
-    "country": "GB"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-24): Congar of Congresbury was a Briton (a Celtic Briton of Dumnonia), not a Breton; alternative Bretons Q309197.",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q849967",
-    "kind": "people",
-    "probability": 0.67,
-    "confidence": 0.34,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "divérsas Itáliæ regiónes",
-   "la": "divérsas Itáliæ regiónes",
-   "it": [
-    "diverse regioni d’Italia"
-   ],
-   "occurrences": [
-    "mr:0331-bonaventura-de-foro-livii"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q38",
-     "label": "Italy",
-     "description": "stato dell'Europa meridionale, membro dell'Unione Europea",
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
      "country": "IT",
      "countries": [
       "IT"
      ],
      "la": [
-      "Italia"
-     ],
-     "p9314": false,
-     "coords": [
-      42.5,
-      12.5
-     ],
-     "types": [
-      "Q6256",
-      "Q3624078",
-      "Q619610",
-      "Q179164",
-      "Q7270",
-      "Q51576574"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q244207",
-     "label": "Italiae Campilionum",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Italiae Campilionum"
-     ],
-     "p9314": false,
-     "coords": [
-      45.970833333333,
-      8.9708333333333
-     ],
-     "types": [
-      "Q747074",
-      "Q933394",
-      "Q171441"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q913582",
-     "label": "Roman Italy",
-     "description": "Italia durante l'antichità romana, dall'VIII secolo a.C. al V secolo d.C",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Regiones Italicae Augustae"
-     ],
-     "p9314": false,
-     "coords": [
-      42,
-      12.5
-     ],
-     "types": [
-      "Q1620908"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q172579",
-     "label": "Kingdom of Italy",
-     "description": "Italia tra il 1861 e il 1946",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Regnum Italiae"
-     ],
-     "p9314": false,
-     "coords": [
-      41.9,
-      12.5
-     ],
-     "types": [
-      "Q3624078",
-      "Q3024240",
-      "Q20181813"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3155864",
-     "label": "Geographical region of Italy",
-     "description": "regione geografica europea",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43,
-      12
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3804114",
-     "label": "Italia",
-     "description": "stazione della metropolitana di Catania",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      37.515972222222,
-      15.097222222222
-     ],
-     "types": [
-      "Q928830",
-      "Q22808403"
-     ],
-     "evidence": [
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q652",
-     "label": "Italian",
-     "description": "lingua romanza",
-     "country": null,
-     "countries": [
-      "IT",
-      "SM",
-      "CH",
-      "VA"
-     ],
-     "la": [
-      "Italiane",
-      "lingua Italiana"
-     ],
-     "p9314": false,
-     "coords": [
-      43,
-      13
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q38",
-    "country": "IT"
-   },
-   "confidence": "high",
-   "reasoning": "Research (2026-10-24): various regions of Italy: Italy as a whole.",
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q3155864",
-    "kind": "place",
-    "probability": 0.55,
-    "confidence": 0.49,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "erémo prope Brigántium",
-   "la": "erémo prope Brigántium",
-   "it": [
-    "eremo vicino a Bregenz"
-   ],
-   "occurrences": [
-    "mr:0906-cagnoaldus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1737",
-     "label": "Bregenz",
-     "description": "città austriaca",
-     "country": "AT",
-     "countries": [
-      "AT"
-     ],
-     "la": [
-      "Brigantium"
-     ],
-     "p9314": false,
-     "coords": [
-      47.505,
-      9.7491666666667
-     ],
-     "types": [
-      "Q667509",
-      "Q13539802"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q203298",
-     "label": "Briançon",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Briançon",
-      "Brigantium"
-     ],
-     "p9314": false,
-     "coords": [
-      44.895833333333,
-      6.635
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q105703440",
-     "label": "Brigantium",
-     "description": "città antica, corrispondente all'attuale La Coruña",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [
-      "Brigantia",
-      "Brigantium"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q15661340",
-      "Q2202509"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q13452589",
-     "label": "Brigantium (Bregenz)",
-     "description": "archaeological site in Vorarlberg, Austria",
-     "country": "AT",
-     "countries": [
-      "AT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      47.505,
-      9.74917
-     ],
-     "types": [
-      "Q839954"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q131755572",
-     "label": "Brigantio",
-     "description": "Ancient Roman settlement",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.896886,
-      6.633951
-     ],
-     "types": [
-      "Q2202509"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q8757",
-     "label": "A Coruña",
-     "description": "città della Galizia",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [
-      "Corunium"
-     ],
-     "p9314": false,
-     "coords": [
-      43.37111111111111,
-      -8.39611111111111
-     ],
-     "types": [
-      "Q2276925"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q671341",
-     "label": "Betanzos",
-     "description": "comune spagnolo",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.2791691,
-      -8.2106329
-     ],
-     "types": [
-      "Q2276925"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Columbanus's hermitage near Bregenz has no item; Bregenz locates it.",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q1737",
-    "country": "AT",
-    "kind": "place",
-    "probability": 0.41,
-    "confidence": 0.33,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q1737",
-    "country": "AT"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "erémum Chalcedonénsem",
-   "la": "erémum Chalcedonénsem",
-   "it": [
-    "Calcedonia"
-   ],
-   "occurrences": [
-    "mr:1102-marcianus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in TR"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q337381",
-     "label": "Chalcedon",
-     "description": "ancient city of Bithynia in modern-day Turkey",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Chalcedon"
-     ],
-     "p9314": false,
-     "coords": [
-      40.983333333333,
-      29.033333333333
-     ],
-     "types": [
-      "Q15661340",
-      "Q148837"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q932886",
-     "label": "Kadıköy",
-     "description": "comune turco",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Chalcedon",
-      "Kadıköy"
-     ],
-     "p9314": false,
-     "coords": [
-      40.986944444444,
-      29.036666666667
-     ],
-     "types": [
-      "Q2460358",
-      "Q3957",
-      "Q1147395",
-      "Q515"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q170531",
-     "label": "Council of Chalcedon",
-     "description": "IV concilio ecumenico del cristianesimo, tenutosi a Calcedonia nel 451",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Concilium Chalcedonense"
-     ],
-     "p9314": false,
-     "coords": [
-      40.98,
-      29.03
-     ],
-     "types": [
-      "Q51645"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q117547303",
-     "label": "Cowan Cemetery",
-     "description": "cemetery in Red River County, Texas, United States",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      33.85807,
-      -95.16638
-     ],
-     "types": [
-      "Q39614"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q979091",
-     "label": "Qinnasrin",
-     "description": "sito archeologico della Siria",
-     "country": "SY",
-     "countries": [
-      "SY"
-     ],
-     "la": [
-      "Chalcis ad Belum"
-     ],
-     "p9314": false,
-     "coords": [
-      35.99861111,
-      36.99805556
-     ],
-     "types": [
-      "Q839954",
-      "Q15661340"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q979091",
-    "country": "SY"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-24): Marcian of Cyrrhus lived in the desert of Chalcis in Syria (Qinnasrin); the printed \"Chalcedonensem\" is probably an error for \"Chalcidensem\". If the printed reading stands: Chalcedon Q337381 (TR).",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q932886",
-    "country": "TR",
-    "kind": "place",
-    "probability": 0.41,
-    "confidence": 0.26,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "in Pallacínis",
-   "la": "in Pallacínis",
-   "it": [
-    "in Pallacinis"
-   ],
-   "occurrences": [
-    "mr:1007-marcus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q127673896",
-     "label": "Pallacinae",
-     "description": "vicus and baths where Sextus Roscius was killed",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Balneae Pallacinae",
-      "Pallacinae"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q763590"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q127673896",
-    "kind": "place",
-    "probability": 0.93,
-    "confidence": 0.86,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): the vicus Pallacinae in ancient Rome, where Pope Mark founded his titulus.",
-   "suggested": {
-    "wikidata": "Q127673896",
-    "country": "IT"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "loco Bornos",
-   "la": "loco Bornos",
-   "it": [
-    "località chiamata Bornos"
-   ],
-   "occurrences": [
-    "mr:1205-geraldus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1451570",
-     "label": "Bornos",
-     "description": "comune spagnolo",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      36.8212339,
-      -5.7434906
-     ],
-     "types": [
-      "Q2074737"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q24011949",
-     "label": "Bornos",
-     "description": "municipal capital of Bornos, Cádiz, Andalusia, Spain",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      36.84274,
-      -5.71145
-     ],
-     "types": [
-      "Q486972",
-      "Q121289819"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q112190486",
-     "label": "Bornos",
-     "description": "",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      37.69363870348471,
-      -3.538200470909912
-     ],
-     "types": [
-      "Q11939023"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q196132",
-     "label": "Bournos",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Bournos"
-     ],
-     "p9314": false,
-     "coords": [
-      43.439444444444,
-      -0.38722222222222
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q5369434",
-     "label": "Bornos Reservoir",
-     "description": "body of water",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      36.81248546789671,
-      -5.721369289242329
-     ],
-     "types": [
-      "Q131681"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q35736151",
-     "label": "Bornoso",
-     "description": "",
-     "country": "NO",
-     "countries": [
-      "NO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      61.12606,
-      12.13308
-     ],
-     "types": [
-      "Q30198"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q10688725",
-     "label": "Bornöstenen",
-     "description": "Swedish runic inscription",
-     "country": "SE",
-     "countries": [
-      "SE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      59.24638889,
-      17.72888889
-     ],
-     "types": [
-      "Q24566025",
-      "Q7379880"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q2652880",
-     "label": "Bornes de Aguiar",
-     "description": "civil parish in Vila Pouca de Aguiar",
-     "country": "PT",
-     "countries": [
-      "PT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.533333333333,
-      -7.6
-     ],
-     "types": [
-      "Q1131296"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Gerald of Braga died at Bornes de Aguiar (Vila Pouca de Aguiar) per Portuguese Wikipedia; not Bornos in Cádiz.",
-   "suggested": {
-    "wikidata": "Q2652880",
-    "country": "PT"
-   },
-   "confidence": "medium",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.4,
-    "confidence": 0.33,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "loco «Plácium» ad Vicenóniam flumen",
-   "la": "loco «Plácium» ad Vicenóniam flumen",
-   "it": [
-    "luogo chiamato Plaz lungo il fiume Vilaine"
-   ],
-   "occurrences": [
-    "mr:1106-melanius"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q26720921",
-     "label": "Brain-sur-Vilaine",
-     "description": "former commune in France",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      47.696847,
-      -1.891494
-     ],
-     "types": [
-      "Q484170",
-      "Q666943"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Plaz on the Vilaine is the present Brain-sur-Vilaine (French Wikipedia), where Melanius was born.",
-   "jev": {
-    "kind": "place",
-    "probability": 0.97,
-    "confidence": 0.96,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q26720921",
-    "country": "FR"
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "meridiánis Itáliæ regiónibus",
-   "la": "meridiánis Itáliæ regiónibus",
-   "it": [
-    "regioni dell’Italia meridionale"
-   ],
-   "occurrences": [
-    "mr:0625-gulielmus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q38",
-     "label": "Italy",
-     "description": "stato dell'Europa meridionale, membro dell'Unione Europea",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Italia"
-     ],
-     "p9314": false,
-     "coords": [
-      42.5,
-      12.5
-     ],
-     "types": [
-      "Q6256",
-      "Q3624078",
-      "Q619610",
-      "Q179164",
-      "Q7270",
-      "Q51576574"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q244207",
-     "label": "Italiae Campilionum",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Italiae Campilionum"
-     ],
-     "p9314": false,
-     "coords": [
-      45.970833333333,
-      8.9708333333333
-     ],
-     "types": [
-      "Q747074",
-      "Q933394",
-      "Q171441"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q913582",
-     "label": "Roman Italy",
-     "description": "Italia durante l'antichità romana, dall'VIII secolo a.C. al V secolo d.C",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Regiones Italicae Augustae"
-     ],
-     "p9314": false,
-     "coords": [
-      42,
-      12.5
-     ],
-     "types": [
-      "Q1620908"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q172579",
-     "label": "Kingdom of Italy",
-     "description": "Italia tra il 1861 e il 1946",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Regnum Italiae"
-     ],
-     "p9314": false,
-     "coords": [
-      41.9,
-      12.5
-     ],
-     "types": [
-      "Q3624078",
-      "Q3024240",
-      "Q20181813"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3155864",
-     "label": "Geographical region of Italy",
-     "description": "regione geografica europea",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43,
-      12
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3804114",
-     "label": "Italia",
-     "description": "stazione della metropolitana di Catania",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      37.515972222222,
-      15.097222222222
-     ],
-     "types": [
-      "Q928830",
-      "Q22808403"
-     ],
-     "evidence": [
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q652",
-     "label": "Italian",
-     "description": "lingua romanza",
-     "country": null,
-     "countries": [
-      "IT",
-      "SM",
-      "CH",
-      "VA"
-     ],
-     "la": [
-      "Italiane",
-      "lingua Italiana"
-     ],
-     "p9314": false,
-     "coords": [
-      43,
-      13
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q207989",
-     "label": "Southern Italy",
-     "description": "macro-regione italiana",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Italia inferior",
-      "Italia meridiana",
-      "Italia meridionalis"
-     ],
-     "p9314": false,
-     "coords": [
-      41.194189,
-      15.242417
-     ],
-     "types": [
-      "Q82794",
-      "Q3434769"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q3155864",
-    "kind": "place",
-    "probability": 0.83,
-    "confidence": 0.81,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): the regions of southern Italy: Southern Italy (the Mezzogiorno).",
-   "suggested": {
-    "wikidata": "Q207989",
-    "country": "IT"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "monastérii Dolénsis",
-   "la": "monastérii Dolénsis",
-   "it": [
-    "monastero di Dol"
-   ],
-   "occurrences": [
-    "mr:0713-turiavus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in FR"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q318432",
-     "label": "Dol-de-Bretagne",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Dol Britanniae",
-      "Dol-de-Bretagne",
-      "Dola Britonum"
-     ],
-     "p9314": false,
-     "coords": [
-      48.549722222222,
-      -1.7508333333333
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1235263",
-     "label": "Dol",
-     "description": "settlement in the Town of Stari Grad, Split-Dalmatia County, Croatia",
-     "country": "HR",
-     "countries": [
-      "HR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.168825,
-      16.62380833
-     ],
-     "types": [
-      "Q4845841"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q846812",
-     "label": "Dol, Babušnica",
-     "description": "human settlement",
-     "country": "RS",
-     "countries": [
-      "RS"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.0325,
-      22.32444444
-     ],
-     "types": [
-      "Q486972",
-      "Q28822032"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q628807",
-     "label": "United States Department of Labor",
-     "description": "dipartimento esecutivo del governo federale statunitense",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      38.893055555555556,
-      -77.01444444444445
-     ],
-     "types": [
-      "Q12813215",
-      "Q910252",
-      "Q327333"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q141833406",
-     "label": "Monastery of Dol",
-     "description": "monastero altomedievale di Dol in Bretagna, fondato da san Sansone, poi sede episcopale",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Monasterium Dolense"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q44613"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q141833406",
-    "country": "FR"
-   },
-   "confidence": "high",
-   "reasoning": "Research (2026-10-24): Samson's monastery at Dol, of which Turiavus was abbot-bishop; item created 2026-10-24 (L'Abbaye-sous-Dol Q3201359 is a later priory of Saint-Florent).",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.52,
-    "confidence": 0.4,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "monastérii Nantólii",
-   "la": "monastérii Nantólii",
-   "it": [],
-   "occurrences": [
-    "mr:0501-marculphus"
-   ],
-   "claims": [],
-   "failed": [
-    "no Italian phrase"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1180209",
-     "label": "Nanteuil",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Nantolium"
-     ],
-     "p9314": false,
-     "coords": [
-      46.411666666667,
-      -0.17333333333333
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q141833408",
-     "label": "Nantus Abbey",
-     "description": "abbazia fondata nel VI secolo da san Marcolfo a Saint-Marcouf (Manica, Francia), distrutta nel X secolo",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Monasterium Nantolii"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q160742"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Marculf's abbey of Nantus at Saint-Marcouf (Manche), per French Wikipedia; item created 2026-10-24. Not Nanteuil.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.54,
-    "confidence": 0.08,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q141833408",
-    "country": "FR"
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "monastérium Turris in Calábria",
-   "la": "monastérium Turris in Calábria",
-   "it": [
-    "monastero di La Torre in Calabria"
-   ],
-   "occurrences": [
-    "mr:1006-bruno"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q18498505",
-     "label": "La Torre",
-     "description": "località abitata in Italia (prov. PU)",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.74129,
-      12.70141
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18487022",
-     "label": "La Torre",
-     "description": "centro abitato situato presso Montespertoli, città metropolitana di Firenze",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.63191,
-      11.09567
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q39054",
-     "label": "Leaning Tower of Pisa",
-     "description": "campanile della Cattedrale di Pisa",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Turris incumbens"
-     ],
-     "p9314": false,
-     "coords": [
-      43.72301,
-      10.396624
-     ],
-     "types": [
-      "Q570116",
-      "Q33506",
-      "Q72926449",
-      "Q797765",
-      "Q92755865",
-      "Q127038589"
-     ],
-     "evidence": [
-      "it",
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q1018268",
-     "label": "La Tour",
-     "description": "comune francese",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "La Tour",
-      "Turris Nicaeensium"
-     ],
-     "p9314": false,
-     "coords": [
-      43.946944444444,
-      7.1841666666667
-     ],
-     "types": [
-      "Q484170"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1752857",
-     "label": "La Torre",
-     "description": "comune spagnolo",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      40.589166666667,
-      -4.9652777777778
-     ],
-     "types": [
-      "Q2074737"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q288392",
-     "label": "Turri",
-     "description": "comune italiano in Sardegna",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Turris"
-     ],
-     "p9314": false,
-     "coords": [
-      39.7047104,
-      8.9163494
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q51409",
-     "label": "Turrivalignani",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Turris"
-     ],
-     "p9314": false,
-     "coords": [
-      42.266666666667,
-      14.033333333333
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18494447",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Berbenno di Valtellina, provincia di Sondrio",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.18249,
-      9.70987
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q113586078",
-     "label": "Monastero",
-     "description": "frazione di Dronero",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.47027777777778,
-      7.4222222222222225
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18442812",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Bardi, provincia di Parma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.59472,
-      9.76545
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18508960",
-     "label": "Monastero",
-     "description": "human settlement in San Benedetto Belbo, Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.48782,
-      8.05641
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18494832",
-     "label": "Monastero",
-     "description": "centro abitato situato presso Montecchio, provincia di Terni",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.65126,
-      12.30152
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18501850",
-     "label": "Monastero",
-     "description": "frazione del comune italiano di Pozzol Groppo, provincia di Alessandria",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.8675,
-      9.04316
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18499025",
-     "label": "Turra",
-     "description": "human settlement in Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      45.19111,
-      11.67435
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q81733",
-     "label": "Torraca",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Turraca"
-     ],
-     "p9314": false,
-     "coords": [
-      40.116666666667,
-      15.633333333333
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q16600386",
-     "label": "Santa Maria nel Bosco Sanctuary",
-     "description": "chiesa nel comune italiano di Serra San Bruno",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      38.553787,
-      16.312505
-     ],
-     "types": [
-      "Q697295"
-     ],
-     "evidence": [
-      "country"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Bruno founded the hermitage of Santa Maria at \"Torre\" (Serra San Bruno) and died there in 1101 (Italian Wikipedia); the Certosa Q1775991, 2 km below, was the lay brothers' house of Santo Stefano.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.69,
-    "confidence": 0.67,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q16600386",
-    "country": "IT"
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "monte Carnério",
-   "la": "monte Carnério",
-   "it": [
-    "monte Carnerio"
-   ],
-   "occurrences": [
-    "mr:0511-gregorius-celli"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q3949877",
-     "label": "Santuario di Fonte Colombo",
-     "description": "edificio religioso di Rieti",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.379288888889,
-      12.828388888889
-     ],
-     "types": [
-      "Q21850178"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the hermitage of Monte Carnerio lay by the Franciscan sanctuary of Fonte Colombo near Rieti (Italian Wikipedia, Gregorio Celli); the mountain has no item, the sanctuary only locates it.",
-   "jev": {
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.97,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q3949877",
-    "country": "IT"
-   },
-   "confidence": "low"
-  },
-  {
-   "op": "resolve_place",
-   "id": "montis Mercúrii",
-   "la": "montis Mercúrii",
-   "it": [
-    "Mercurio"
-   ],
-   "occurrences": [
-    "mr:1216-macarius-de-collesano"
-   ],
-   "claims": [],
-   "failed": [
-    "country: the item has no single current country ()",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1534044",
-     "label": "Mercurius",
-     "description": "cratere lunare",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.66,
-      66.07
-     ],
-     "types": [
-      "Q55818"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q3855082",
-     "label": "Mercurion",
-     "description": "",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q183366"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the Mercurion, the Byzantine monastic district on the Calabria-Basilicata border.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.94,
-    "confidence": 0.88,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q3855082",
-    "country": "IT"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "parœciæ Bầu Nọ",
-   "la": "parœciæ Bầu Nọ",
-   "it": [
-    "parrocchia di Bầu Nọ"
-   ],
-   "occurrences": [
-    "mr:0525-petrus-doan-van-van"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q6526",
-     "label": "Bolzano",
-     "description": "comune italiano, capoluogo dell'omonima provincia autonoma in Trentino-Alto Adige",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Bauzanum"
-     ],
-     "p9314": false,
-     "coords": [
-      46.498113,
-      11.35478
-     ],
-     "types": [
-      "Q747074",
-      "Q1549591",
-      "Q1392581"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q25677",
-     "label": "Bau",
-     "description": "villaggio di Figi",
-     "country": "FJ",
-     "countries": [
-      "FJ"
-     ],
-     "la": [
-      "Bau"
-     ],
-     "p9314": false,
-     "coords": [
-      -17.97256111111111,
-      178.615375
-     ],
-     "types": [
-      "Q532"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q20",
-     "label": "Norway",
-     "description": "stato dell'Europa settentrionale",
-     "country": "NO",
-     "countries": [
-      "NO"
-     ],
-     "la": [
-      "Norvegia"
-     ],
-     "p9314": false,
-     "coords": [
-      59.93333333333333,
-      10.683333333333334
-     ],
-     "types": [
-      "Q3624078",
-      "Q6256"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q16216",
-     "label": "Province of Novara",
-     "description": "provincia italiana",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Provincia Novariensis"
-     ],
-     "p9314": false,
-     "coords": [
-      45.45,
-      8.6166666666667
-     ],
-     "types": [
-      "Q15089"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q664",
-     "label": "New Zealand",
-     "description": "stato insulare dell'Oceania",
-     "country": "NZ",
-     "countries": [
-      "NZ"
-     ],
-     "la": [
-      "Nova Zelandia",
-      "Zeelandia Nova"
-     ],
-     "p9314": false,
-     "coords": [
-      -41.2,
-      174
-     ],
-     "types": [
-      "Q202686",
-      "Q223832",
-      "Q3624078",
-      "Q6256",
-      "Q112099",
-      "Q1351282",
-      "Q140892892"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2103",
-     "label": "Bochum",
-     "description": "città della Renania Settentrionale-Vestfalia",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [
-      "Baucum",
-      "Bochemia",
-      "Bochumia"
-     ],
-     "p9314": false,
-     "coords": [
-      51.483333333333,
-      7.2166666666667
-     ],
-     "types": [
-      "Q253030",
-      "Q1187811",
-      "Q1549591",
-      "Q707813",
-      "Q42744322",
-      "Q85635630"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2353856",
-     "label": "Bau",
-     "description": "isola delle Fiji",
-     "country": "FJ",
-     "countries": [
-      "FJ"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -17.97241,
-      178.61544
-     ],
-     "types": [
-      "Q23442",
-      "Q139595932"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3268524",
-     "label": "Bau",
-     "description": "human settlement in Malaysia",
-     "country": "MY",
-     "countries": [
-      "MY"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      1.41667,
-      110.15
-     ],
-     "types": [
-      "Q3957",
-      "Q1994931"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q14835",
-     "label": "Bautzen",
-     "description": "città tedesca",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [
-      "Budissa"
-     ],
-     "p9314": false,
-     "coords": [
-      51.181388888889,
-      14.423888888889
-     ],
-     "types": [
-      "Q448801",
-      "Q42744322",
-      "Q134626"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q113169414",
-     "label": "Biblioteca di Area umanistica Francesco Ernesto Fagiani. BAU. Università degli studi della Calabria",
-     "description": "biblioteca dell'Università della Calabria",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      39.3587461,
-      16.2163983
-     ],
-     "types": [
-      "Q1622062"
-     ],
-     "evidence": [
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q141833402",
-     "label": "Bầu Nọ parish",
-     "description": "parrocchia cattolica a Thụy Vân, Việt Trì, in Vietnam, nella diocesi di Hưng Hóa (oggi Nỗ Lực)",
-     "country": "VN",
-     "countries": [
-      "VN"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q102496"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the mission parish of Bầu Nọ, today Nỗ Lực (Thụy Vân, Việt Trì, diocese of Hưng Hóa); item created 2026-10-24.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.98,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q141833402",
-    "country": "VN"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "prope Lutétiam",
-   "la": "prope Lutétiam",
-   "it": [],
-   "occurrences": [
-    "mr:1009-dionysius-et-socii"
-   ],
-   "claims": [],
-   "failed": [
-    "no Italian phrase",
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q90",
-     "label": "Paris",
-     "description": "capitale della Francia",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Lutetia",
-      "Parisius"
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
      ],
      "p9314": true,
      "coords": [
-      48.85666666666667,
-      2.352222222222222
+      41.893055555556,
+      12.482777777778
      ],
      "types": [
-      "Q484170",
-      "Q22923920",
-      "Q200250",
+      "Q902814",
+      "Q3685476",
       "Q1200957",
-      "Q208511",
+      "Q200250",
       "Q51929311",
       "Q1187811",
       "Q1549591",
-      "Q1422929",
+      "Q747074",
       "Q108178728",
-      "Q1066984",
-      "Q11418818",
-      "Q134445478",
-      "Q2240381",
-      "Q174844"
+      "Q5119"
      ],
-     "evidence": [
-      "country",
-      "type",
-      "p9314"
-     ]
+     "evidence": []
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research (2026-10-24): \"near Lutetia\": Paris locates it; tradition places the martyrdom at Montmartre (Q186115), which the text does not name.",
-   "jev": {
-    "kind": "place",
-    "probability": 0.97,
-    "confidence": 0.96,
-    "model": "jev-1.14.0"
-   },
+   "redecide": true,
    "suggested": {
-    "wikidata": "Q90",
-    "country": "FR"
-   },
-   "confidence": "medium"
-  },
-  {
-   "op": "resolve_place",
-   "id": "prope Neptúnum in Látio Itáliæ",
-   "la": "prope Neptúnum in Látio Itáliæ",
-   "it": [
-    "vicino a Nettuno nel Lazio"
-   ],
-   "occurrences": [
-    "mr:0706-maria-goretti"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q243116",
-     "label": "Nettuno",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Neptunus"
-     ],
-     "p9314": false,
-     "coords": [
-      41.466667,
-      12.666667
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q30028181",
-     "label": "Nettuno",
-     "description": "capoluogo dell'omonimo comune",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.45794,
-      12.66393
-     ],
-     "types": [
-      "Q15303838"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q2542264",
-     "label": "Le Ferriere",
-     "description": "frazione del comune italiano di Latina",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.51609,
-      12.7579
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): Maria Goretti was attacked at Le Ferriere di Conca, near Nettuno (now in Latina); Nettuno Q243116 if the locator is preferred.",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q243116",
-    "country": "IT",
-    "kind": "place",
-    "probability": 0.47,
-    "confidence": 0.2,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q2542264",
+    "wikidata": "Q1027069",
     "country": "IT"
    },
-   "confidence": "medium"
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
   },
   {
    "op": "resolve_place",
-   "id": "prope Theánum in Aprútio",
-   "la": "prope Theánum in Aprútio",
+   "id": "Romæ in cœmetério Pontiáni via Portuénsi",
+   "la": "Romæ in cœmetério Pontiáni via Portuénsi",
    "it": [
-    "vicino a Chieti in Abruzzo"
+    "A Roma nel cimitero di Ponziano sulla via Portuense",
+    "a Roma nel cimitero di Ponziano sulla via Portuense"
    ],
    "occurrences": [
-    "mr:0714-camillus-de-lellis"
+    "mr:0325-quirinus",
+    "mr:0730-abdon-et-sennen",
+    "mr:1003-candida",
+    "mr:1202-pimenius",
+    "mr:1219-anastasius-i"
    ],
    "claims": [],
    "failed": [
-    "latin: no Latin label, alias or P9314 matches"
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
    ],
    "candidates": [
     {
-     "wikidata": "Q13138",
-     "label": "Chieti",
-     "description": "comune italiano, capoluogo dell'omonima provincia in Abruzzo",
+     "wikidata": "Q3663171",
+     "label": "Catacomb of Pontian",
+     "description": "catacomba di Roma",
      "country": "IT",
      "countries": [
       "IT"
      ],
      "la": [
-      "Teate"
+      "ad ursum pileatum"
      ],
      "p9314": false,
      "coords": [
-      42.351113888889,
-      14.167427777778
+      41.877506,
+      12.463049
      ],
      "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q136671488",
-     "label": "Chieti",
-     "description": "",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      45.072917,
-      7.713274
-     ],
-     "types": [
-      "Q2175765"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q51188",
-     "label": "Bucchianico",
-     "description": "comune italiano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Bucclanicum"
-     ],
-     "p9314": false,
-     "coords": [
-      42.304361111111,
-      14.180561111111
-     ],
-     "types": [
-      "Q747074"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q51188",
-    "country": "IT"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-24): Camillus de Lellis was born at Bucchianico, near Chieti (Teate); Chieti Q13138 if the locator is preferred.",
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q13138",
-    "country": "IT",
-    "kind": "place",
-    "probability": 0.37,
-    "confidence": 0.16,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "pártibus Oriéntis",
-   "la": "pártibus Oriéntis",
-   "it": [
-    "Oriente"
-   ],
-   "occurrences": [
-    "mr:1021-severinus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q205653",
-     "label": "Orient",
-     "description": "regione del mondo",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3434769"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q677348",
-     "label": "Oriente",
-     "description": "comune brasiliano",
-     "country": "BR",
-     "countries": [
-      "BR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -22.153913888889,
-      -50.093847222222
-     ],
-     "types": [
-      "Q3184121"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1471099",
-     "label": "Oriente",
-     "description": "comarca of Asturias",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.3436,
-      -4.98389
-     ],
-     "types": [
-      "Q12254339"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q205653",
-    "kind": "place",
-    "probability": 0.95,
-    "confidence": 0.93,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): the East in general.",
-   "suggested": {
-    "wikidata": "Q205653",
-    "no_country": true
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "regna Európæ",
-   "la": "regna Európæ",
-   "it": [
-    "regni di Europa"
-   ],
-   "occurrences": [
-    "mr:0310-ioannes-ogilvie"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q46",
-     "label": "Europe",
-     "description": "continente della Terra",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Europa"
-     ],
-     "p9314": false,
-     "coords": [
-      48.690959,
-      9.14062
-     ],
-     "types": [
-      "Q2418896",
-      "Q5107",
-      "Q82794",
-      "Q2221906"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q5412023",
-     "label": "Europa",
-     "description": "Roman province",
-     "country": null,
-     "countries": [
-      "Q2277"
-     ],
-     "la": [
-      "Europa"
-     ],
-     "p9314": false,
-     "coords": [
-      41.25,
-      27.86666667
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3734793",
-     "label": "Europa",
-     "description": "32º quartiere di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.8312868,
-      12.4696746
-     ],
-     "types": [
-      "Q1074955"
+      "Q839954",
+      "Q172896"
      ],
      "evidence": [
       "country",
@@ -3288,1538 +146,2781 @@
      ]
     },
     {
-     "wikidata": "Q55096296",
-     "label": "Europa",
-     "description": "sculpture by May Claerhout in Brussels, Belgium",
-     "country": "BE",
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
      "countries": [
-      "BE"
+      "IT"
      ],
      "la": [
-      "Europa"
-     ],
-     "p9314": false,
-     "coords": [
-      50.838719,
-      4.375575
-     ],
-     "types": [
-      "Q860861"
-     ],
-     "evidence": [
-      "la"
-     ]
-    },
-    {
-     "wikidata": "Q458",
-     "label": "European Union",
-     "description": "entità politica di carattere sovranazionale e intergovernativo che riunisce 27 Stati europei",
-     "country": null,
-     "countries": [
-      "Q1072012"
-     ],
-     "la": [
-      "Unio Europaea"
-     ],
-     "p9314": false,
-     "coords": [
-      50.116944444444,
-      9.2477777777778
-     ],
-     "types": [
-      "Q4120211",
-      "Q120121699",
-      "Q1335818",
-      "Q170156"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q193089",
-     "label": "Europa Island",
-     "description": "isola nel Canale del Mozambico",
-     "country": null,
-     "countries": [
-      "FR",
-      "MG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -22.368333333333,
-      40.363333333333
-     ],
-     "types": [
-      "Q23442",
-      "Q6617741",
-      "Q15239622",
-      "Q7285116"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q47545",
-     "label": "Norwegian Sea",
-     "description": "parte dell'Oceano Atlantico Settentrionale",
-     "country": "NO",
-     "countries": [
-      "NO"
-     ],
-     "la": [
-      "Mare Norvegicum"
-     ],
-     "p9314": false,
-     "coords": [
-      69,
-      0
-     ],
-     "types": [
-      "Q204894"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1286",
-     "label": "Alps",
-     "description": "catena montuosa europea",
-     "country": null,
-     "countries": [
-      "DE",
-      "AT",
-      "CH",
-      "FR",
-      "IT",
-      "SI",
-      "MC",
-      "LI",
-      "HU"
-     ],
-     "la": [
-      "Alpes"
-     ],
-     "p9314": false,
-     "coords": [
-      46.57805555555556,
-      8.615
-     ],
-     "types": [
-      "Q46831"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q192247",
-     "label": "European Investment Bank",
-     "description": "body of the European Union providing funding for projects fostering EU aims, both within and outside the EU",
-     "country": "LU",
-     "countries": [
-      "LU"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      49.6202892,
-      6.1352313
-     ],
-     "types": [
-      "Q1345691",
-      "Q4936585"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q42944",
-     "label": "CERN",
-     "description": "organizzazione internazionale che gestisce il più grande laboratorio di fisica delle particelle al mondo",
-     "country": null,
-     "countries": [
-      "CH",
-      "FR"
-     ],
-     "la": [
-      "CERN",
-      "Organizatio Europaea pro Recircationem Nuclearem"
-     ],
-     "p9314": false,
-     "coords": [
-      46.234493,
-      6.049129
-     ],
-     "types": [
-      "Q484652",
-      "Q109909183"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q46",
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.98,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): the kingdoms of Europe: Europe.",
-   "suggested": {
-    "wikidata": "Q46",
-    "no_country": true
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "regno Angliæ",
-   "la": "regno Angliæ",
-   "it": [
-    "regno stesso d’Inghilterra"
-   ],
-   "occurrences": [
-    "mr:1229-thomas-becket"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q21",
-     "label": "England",
-     "description": "nazione costitutiva del Regno Unito",
-     "country": "GB",
-     "countries": [
-      "GB"
-     ],
-     "la": [
-      "Anglia"
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
      ],
      "p9314": true,
      "coords": [
-      53,
-      -1
+      41.893055555556,
+      12.482777777778
      ],
      "types": [
-      "Q3336843",
-      "Q518261",
-      "Q6266",
-      "Q6256"
-     ],
-     "evidence": [
-      "la",
-      "type",
-      "p9314"
-     ]
-    },
-    {
-     "wikidata": "Q179876",
-     "label": "Kingdom of England",
-     "description": "Stato storico nelle isole britanniche (927–1707)",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Anglia"
-     ],
-     "p9314": true,
-     "coords": [
-      52.066666666667,
-      -1.3166666666667
-     ],
-     "types": [
-      "Q3624078",
-      "Q3024240"
-     ],
-     "evidence": [
-      "la",
-      "type",
-      "p9314"
-     ]
-    },
-    {
-     "wikidata": "Q48015",
-     "label": "South East England",
-     "description": "Regione dell'Inghilterra, nel Regno Unito di Gran Bretagna e Irlanda del Nord",
-     "country": "GB",
-     "countries": [
-      "GB"
-     ],
-     "la": [
-      "Anglia meridio-orientalis"
-     ],
-     "p9314": false,
-     "coords": [
-      51.3,
-      -0.8
-     ],
-     "types": [
-      "Q48091",
-      "Q6955655"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q580631",
-     "label": "East Anglia",
-     "description": "Regione dell'Inghilterra",
-     "country": "GB",
-     "countries": [
-      "GB"
-     ],
-     "la": [
-      "Anglia Orientalis"
-     ],
-     "p9314": false,
-     "coords": [
-      52.5,
-      1
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q506043",
-     "label": "Angeln",
-     "description": "peninsula in Schleswig-Holstein",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      54.666666666667,
-      9.6666666666667
-     ],
-     "types": [
-      "Q34763",
-      "Q1970725"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q540751",
-     "label": "Anglia Ruskin University",
-     "description": "university in East Anglia, UK",
-     "country": "GB",
-     "countries": [
-      "GB"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      52.203083333333,
-      0.13369444444444
-     ],
-     "types": [
-      "Q875538",
-      "Q38723",
-      "Q5341295"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q1860",
-     "label": "English",
-     "description": "lingua germanica occidentale",
-     "country": null,
-     "countries": [
-      "AS",
-      "AI",
-      "AG",
-      "AW",
-      "AU",
-      "BS",
-      "BH",
-      "BB",
-      "BZ",
-      "BM",
-      "BT",
-      "BW",
-      "IO",
-      "VG",
-      "BN",
-      "KH",
-      "CM",
-      "CA",
-      "KY",
-      "CK",
-      "DM",
-      "ER",
-      "ET",
-      "FK",
-      "FJ",
-      "GM",
-      "GH",
-      "GI",
-      "GD",
-      "US",
-      "GG",
-      "GY",
-      "IN",
-      "IE",
-      "IM",
-      "IL",
-      "JM",
-      "JE",
-      "KE",
-      "KI",
-      "LB",
-      "LS",
-      "LR",
-      "MG",
-      "MW",
-      "MY",
-      "MV",
-      "MT",
-      "MH",
-      "MU",
-      "FM",
-      "MS",
-      "NA",
-      "NR",
-      "NZ",
-      "NG",
-      "NU",
-      "OM",
-      "PK",
-      "PW",
-      "PG",
-      "PH",
-      "PN",
-      "RW",
-      "SH",
-      "KN",
-      "LC",
-      "MF",
-      "VC",
-      "WS",
-      "SC",
-      "SL",
-      "SG",
-      "SX",
-      "SB",
-      "ZA",
-      "SS",
-      "LK",
-      "SD",
-      "SZ",
-      "TZ",
-      "TK",
-      "TO",
-      "TT",
-      "TC",
-      "TV",
-      "VI",
-      "UG",
-      "AE",
-      "GB",
-      "VU",
-      "ZM",
-      "ZW",
-      "ID"
-     ],
-     "la": [
-      "Anglice",
-      "lingua Anglica"
-     ],
-     "p9314": false,
-     "coords": [
-      51,
-      0
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568",
-      "Q34770",
-      "Q152559",
-      "Q399495",
-      "Q1097949",
-      "Q20162172"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q179876",
-    "kind": "place",
-    "probability": 0.97,
-    "confidence": 0.97,
-    "model": "jev-1.14.0"
-   },
-   "reasoning": "Research (2026-10-24): the Kingdom of England, the medieval state of Becket's time.",
-   "suggested": {
-    "wikidata": "Q179876",
-    "country": "GB"
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "rivum Tum Nok",
-   "la": "rivum Tum Nok",
-   "it": [
-    "fiume Tum Nok"
-   ],
-   "occurrences": [
-    "mr:1216-philippus-siphong-onphitak"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q94749510",
-     "label": "Nok",
-     "description": "ward in Kaduna State, Nigeria",
-     "country": "NG",
-     "countries": [
-      "NG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      9.51555555555556,
-      8.01111111111111
-     ],
-     "types": [
-      "Q60169073"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q7047825",
-     "label": "Nok",
-     "description": "village in Nigeria",
-     "country": "NG",
-     "countries": [
-      "NG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      9.490283333333334,
-      8.0204
-     ],
-     "types": [
-      "Q532"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q192870",
-     "label": "Nokia",
-     "description": "città finlandese",
-     "country": "FI",
-     "countries": [
-      "FI"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      61.47666666666667,
-      23.505277777777778
-     ],
-     "types": [
-      "Q3957",
-      "Q856076",
-      "Q515"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q5815",
-     "label": "Tyumen",
-     "description": "città russa",
-     "country": "RU",
-     "countries": [
-      "RU"
-     ],
-     "la": [
-      "Tumenum"
-     ],
-     "p9314": false,
-     "coords": [
-      57.15,
-      65.533333333333
-     ],
-     "types": [
-      "Q106389302"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q13379",
-     "label": "Kurgan",
-     "description": "città della Russia",
-     "country": "RU",
-     "countries": [
-      "RU"
-     ],
-     "la": [
-      "Tumulus"
-     ],
-     "p9314": false,
-     "coords": [
-      55.440833333333,
-      65.341111111111
-     ],
-     "types": [
-      "Q7930989",
-      "Q1549591"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q209597",
-     "label": "Tumbes Department",
-     "description": "regione peruviana",
-     "country": "PE",
-     "countries": [
-      "PE"
-     ],
-     "la": [
-      "Regio Tumbense",
-      "Regio Tumbensis",
-      "Tumbes Regio"
-     ],
-     "p9314": false,
-     "coords": [
-      -3.88,
-      -80.59
-     ],
-     "types": [
-      "Q861184"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q157808",
-     "label": "Technical University of Munich",
-     "description": "Politecnico di Monaco",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [
-      "Universitas Technica Monacensis"
-     ],
-     "p9314": false,
-     "coords": [
-      48.14805555555556,
-      11.568055555555556
-     ],
-     "types": [
-      "Q1371037",
-      "Q62078547",
-      "Q641347",
-      "Q115427560"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q34138",
-     "label": "Tumbuka",
-     "description": "lingua appartenente al ceppo delle lingue bantu",
-     "country": null,
-     "countries": [
-      "MW",
-      "ZM",
-      "TZ",
-      "ZW"
-     ],
-     "la": [
-      "Tumbuka"
-     ],
-     "p9314": false,
-     "coords": [
-      -13,
-      34
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q1098106",
-     "label": "Technical University of Moldova",
-     "description": "university",
-     "country": "MD",
-     "countries": [
-      "MD"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      47.03072,
-      28.82399
-     ],
-     "types": [
-      "Q1371037",
-      "Q3918"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q108317077",
-     "label": "Our Lady of the Martyrs of Thailand Shrine",
-     "description": "catholic church in Mukdahan Province, Thailand",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      16.775113120109882,
-      104.73821911791758
-     ],
-     "types": [
-      "Q697295"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the stream near Song Khon where Philip Siphong was killed has no item; the shrine of the Martyrs of Thailand at Song Khon locates it.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 1.0,
-    "confidence": 1.0,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q108317077",
-    "country": "TH"
-   },
-   "confidence": "low"
-  },
-  {
-   "op": "resolve_place",
-   "id": "silvam Armóricæ interióris",
-   "la": "silvam Armóricæ interióris",
-   "it": [
-    "selva nell’interno della Bretagna"
-   ],
-   "occurrences": [
-    "mr:0621-mevennus"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q641203",
-     "label": "Armorica",
-     "description": "part of Gaul between the Seine and Loire rivers",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Armorica",
-      "Bretagne"
-     ],
-     "p9314": false,
-     "coords": [
-      48.16666667,
-      -1
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q688887",
-     "label": "Armorica",
-     "description": "continent",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q2094611",
-      "Q2284298"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1980627",
-     "label": "Armorican Massif",
-     "description": "geologic massif that covers a large area in the northwest of France",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [
-      "Massivum Armoricanum"
-     ],
-     "p9314": false,
-     "coords": [
-      48,
-      -3
-     ],
-     "types": [
-      "Q1437459",
-      "Q55075651"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q924045",
-     "label": "Paimpont forest",
-     "description": "ampia area boschiva situata nella regione della Bretagna",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      48.01666667,
-      -2.16666667
-     ],
-     "types": [
-      "Q4421",
-      "Q15069452"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q924045",
-    "country": "FR"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-24): Mevennus withdrew to the forest of inner Brittany, Brocéliande (Paimpont forest), founding his abbey at Gaël (Q216544).",
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q641203",
-    "country": "FR",
-    "kind": "place",
-    "probability": 0.49,
-    "confidence": 0.32,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "terra Hus",
-   "la": "terra Hus",
-   "it": [
-    "terra di Hus"
-   ],
-   "occurrences": [
-    "mr:0510-iob"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q16555",
-     "label": "Houston",
-     "description": "città dello stato del Texas (Stati Uniti)",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [
-      "Hustonia"
-     ],
-     "p9314": false,
-     "coords": [
-      29.762777777778,
-      -95.383055555556
-     ],
-     "types": [
-      "Q1093829",
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
       "Q1549591",
-      "Q62049",
-      "Q2264924"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q21159",
-     "label": "Husum",
-     "description": "cittadina della Germania",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      54.476944444444,
-      9.0511111111111
-     ],
-     "types": [
-      "Q3957",
-      "Q42744322",
-      "Q134626"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1023875",
-     "label": "Hustopeče",
-     "description": "comune ceco",
-     "country": "CZ",
-     "countries": [
-      "CZ"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      48.940871942774,
-      16.73762221643
-     ],
-     "types": [
-      "Q15978299",
-      "Q7819319",
-      "Q5153359",
-      "Q7841907"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q146469",
-     "label": "Khust",
-     "description": "città in Ucraina",
-     "country": "UA",
-     "countries": [
-      "UA"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      48.181388888889,
-      23.297777777778
-     ],
-     "types": [
-      "Q5123999"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q60777023",
-     "label": "Hustadvika Municipality",
-     "description": "Comune della Norvegia",
-     "country": "NO",
-     "countries": [
-      "NO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      62.916796,
-      7.22763
-     ],
-     "types": [
-      "Q755707"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1967878",
-     "label": "Land of Uz",
-     "description": "location mentioned in the Hebrew Bible; the abode of Job",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3024240",
-      "Q12404340"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research (2026-10-24): the Land of Uz, Job's homeland; its location is unknown.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.74,
-    "confidence": 0.69,
-    "model": "jev-1.14.0"
-   },
-   "suggested": {
-    "wikidata": "Q1967878",
-    "no_country": true
-   },
-   "confidence": "high"
-  },
-  {
-   "op": "resolve_place",
-   "id": "tota Hispánia",
-   "la": "tota Hispánia",
-   "it": [
-    "tutta la Spagna"
-   ],
-   "occurrences": [
-    "mr:0318-braulio"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q29",
-     "label": "Spain",
-     "description": "stato dell'Europa sud-occidentale, membro dell'Unione europea",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [
-      "Hispania"
-     ],
-     "p9314": false,
-     "coords": [
-      40.2,
-      -3.5
-     ],
-     "types": [
-      "Q3624078",
-      "Q1250464",
-      "Q6256",
-      "Q51576574",
-      "Q179671"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q186513",
-     "label": "Hispania",
-     "description": "storia dell'Hispania sotto il governo romano (206 a.C. - 472 d.C.)",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Hispania"
-     ],
-     "p9314": true,
-     "coords": [
-      40.21,
-      -4.35
-     ],
-     "types": [
-      "Q1620908",
-      "Q2221906",
-      "Q24457356",
-      "Q11514315",
-      "Q182547"
-     ],
-     "evidence": [
-      "la",
-      "type",
-      "p9314"
-     ]
-    },
-    {
-     "wikidata": "Q1241701",
-     "label": "Spagna",
-     "description": "stazione della metropolitana di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Hispania",
-      "Spagna"
-     ],
-     "p9314": false,
-     "coords": [
-      41.906456,
-      12.482916
-     ],
-     "types": [
-      "Q928830",
-      "Q22808403"
-     ],
-     "evidence": [
-      "la",
-      "country"
-     ]
-    },
-    {
-     "wikidata": "Q1654573",
-     "label": "Hispania",
-     "description": "comune colombiano del dipartimento di Antioquia",
-     "country": "CO",
-     "countries": [
-      "CO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      5.803,
-      -75.912
-     ],
-     "types": [
-      "Q2555896"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q126936",
-     "label": "Visigothic Kingdom",
-     "description": "regno romano-germanico (418–721)",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Hispania Visigothica",
-      "Regnum Visigothorum"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3024240",
-      "Q1250464",
-      "Q3446291"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3028519",
-     "label": "diocese of Hispania",
-     "description": "suddivisione amministrativa del tardo Impero romano",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Diócesis Hispaniarum"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q1235532"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q126936",
-    "countries": [
-     "ES",
-     "PT"
-    ]
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-24): Spain in Braulio's time, the 7th-century Visigothic Kingdom; alternative the Iberian Peninsula Q12837.",
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q186513",
-    "kind": "place",
-    "probability": 0.49,
-    "confidence": 0.4,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "vici Song-Khon",
-   "la": "vici Song-Khon",
-   "it": [
-    "villaggio di Song-Khon"
-   ],
-   "occurrences": [
-    "mr:1216-philippus-siphong-onphitak"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q7561012",
-     "label": "Song Khon",
-     "description": "subdistrict in Fak Tha district, Uttaradit province, Thailand",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q1077097"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q16734586",
-     "label": "Song Khon",
-     "description": "subdistrict in Kaeng Khoi district, Saraburi province, Thailand",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      14.5975,
-      100.9834
-     ],
-     "types": [
-      "Q1077097"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q54397620",
-     "label": "Song Khon",
-     "description": "subdistrict in Pho Sai district, Ubon Ratchathani province, Thailand",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      15.8211,
-      105.3382
-     ],
-     "types": [
-      "Q1077097"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18483773",
-     "label": "Villaggio",
-     "description": "frazione del comune di Valfloriana",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.24716,
-      11.3467
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q18426280",
-     "label": "Villaggio",
-     "description": "centro abitato situato presso Schiavi di Abruzzo, provincia di Chieti",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.79132,
-      14.4878
-     ],
-     "types": [
-      "Q486972"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q7462",
-     "label": "Song dynasty",
-     "description": "dinastia imperiale cinese (960–1279)",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Song",
-      "domus Song",
-      "familia Song"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q12857432",
-      "Q50068795"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q751708",
-     "label": "village in the United States",
-     "description": "administrative division at the local government level in the United States",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q21484471",
-      "Q91615393",
-      "Q852446"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q11098661",
-     "label": "villaggio",
-     "description": "sinonimo per villaggio (cinese)",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q56061",
-      "Q98966309"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q35467728",
-     "label": "Khon",
-     "description": "",
-     "country": "RU",
-     "countries": [
-      "RU"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      52.666666666667,
-      94.766666666667
-     ],
-     "types": [
-      "Q47521"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q35467714",
-     "label": "Khon",
-     "description": "river in Russia - Geonames ID = 2022338",
-     "country": "RU",
-     "countries": [
-      "RU"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      63.283333333333,
-      107.18333333333
-     ],
-     "types": [
-      "Q4022"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q876526",
-     "label": "Khon Kaen",
-     "description": "città maggiore in Thailandia",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      16.433333333333,
-      102.83333333333
-     ],
-     "types": [
-      "Q15141632",
-      "Q1549591"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1011011",
-     "label": "Khoni",
-     "description": "town in the region (mkhare) of Imereti, Georgia",
-     "country": "GE",
-     "countries": [
-      "GE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.326388888888886,
-      42.422777777777775
-     ],
-     "types": [
-      "Q515"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q720695",
-     "label": "Khonj",
-     "description": "Città in Iran",
-     "country": "IR",
-     "countries": [
-      "IR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      27.883333333333,
-      53.433333333333
-     ],
-     "types": [
-      "Q56557504"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q108317077",
-     "label": "Our Lady of the Martyrs of Thailand Shrine",
-     "description": "catholic church in Mukdahan Province, Thailand",
-     "country": "TH",
-     "countries": [
-      "TH"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      16.775113120109882,
-      104.73821911791758
-     ],
-     "types": [
-      "Q697295"
+      "Q747074",
+      "Q108178728",
+      "Q5119"
      ],
      "evidence": []
     }
    ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research (2026-10-24): the village of Song Khon (Wan Yai, Mukdahan) has no item; the shrine of Our Lady of the Martyrs of Thailand stands there, where the martyrs were killed.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: none of the candidates is this place",
-    "kind": "place",
-    "probability": 0.64,
-    "confidence": 0.61,
-    "model": "jev-1.14.0"
-   },
+   "redecide": true,
    "suggested": {
-    "wikidata": "Q108317077",
-    "country": "TH"
+    "wikidata": "Q3663171",
+    "country": "IT"
    },
-   "confidence": "medium"
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Priscíllæ via Salária Nova",
+   "la": "Romæ in cœmetério Priscíllæ via Salária Nova",
+   "it": [
+    "A Roma nel cimitero di Priscilla sulla via Salaria Nuova",
+    "A Roma nel cimitero di Priscilla sulla via Salaria nuova",
+    "a Roma nel cimitero di Priscilla sulla via Salaria Nuova"
+   ],
+   "occurrences": [
+    "mr:0116-marcellus-i",
+    "mr:0526-simetrius",
+    "mr:1126-siricius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q2462868",
+     "label": "Catacomb of Priscilla",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.9297,
+      12.5087
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q2462868",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Prætextáti via Appia",
+   "la": "Romæ in cœmetério Prætextáti via Appia",
+   "it": [
+    "A Roma nel cimitero di Pretestato sulla via Appia"
+   ],
+   "occurrences": [
+    "mr:0214-zeno",
+    "mr:0414-tiburtius-et-socii",
+    "mr:0430-quirinus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663197",
+     "label": "Catacomb of Praetextatus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.8588,
+      12.5153
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663197",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Appia in cœmetério Callísti",
+   "la": "Romæ via Appia in cœmetério Callísti",
+   "it": [
+    "A Roma sulla via Appia nel cimitero di Callisto",
+    "Roma sulla via Appia nel cimitero di Callisto"
+   ],
+   "occurrences": [
+    "mr:0120-fabianus",
+    "mr:0305-lucius",
+    "mr:0806-xystus-ii"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1027069",
+     "label": "Catacomb of Callixtus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.85887778,
+      12.51105833
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1027069",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério",
+   "la": "Romæ in cœmetério",
+   "it": [
+    "A Roma nel cimitero di san Lorenzo sulla via Tiburtina"
+   ],
+   "occurrences": [
+    "mr:0809-romanus",
+    "mr:0823-abundius-et-irenaeus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663177",
+     "label": "Catacomb of San Lorenzo",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.902817654282856,
+      12.521067579034208
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663177",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): both eulogies say \"in the cemetery of Saint Lawrence on the Via Tiburtina\": the Catacomb of San Lorenzo. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Basíllæ via Salária Vétere",
+   "la": "Romæ in cœmetério Basíllæ via Salária Vétere",
+   "it": [
+    "A Roma nel cimitero di Basilla sulla via Salaria antica",
+    "A Roma sulla via Salaria antica nel cimitero di Basilla"
+   ],
+   "occurrences": [
+    "mr:0826-maximilianus",
+    "mr:0911-protus-et-hyacinthus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663181",
+     "label": "Catacomb of Saint Hermes",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.923024866448145,
+      12.488319405764967
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663181",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Basilla's cemetery is the catacomb of Saint Hermes. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Commodíllæ via Ostiénsi",
+   "la": "Romæ in cœmetério Commodíllæ via Ostiénsi",
+   "it": [
+    "A Roma nel cimitero di Commodilla sulla via Ostiense"
+   ],
+   "occurrences": [
+    "mr:0830-felix-et-adauctus",
+    "mr:0922-emerita"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663192",
+     "label": "Catacomb of Commodilla",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.861167,
+      12.483472
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663192",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Trasónis via Salária Nova",
+   "la": "Romæ in cœmetério Trasónis via Salária Nova",
+   "it": [
+    "A Roma nel cimitero di Trasone sulla via Salaria nuova",
+    "A Roma nel cimitero di Trasóne sulla via Salaria nuova"
+   ],
+   "occurrences": [
+    "mr:1129-saturninus-carthaginensis",
+    "mr:1210-maurus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663190",
+     "label": "Catacomb of Thraso",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.920258,
+      12.49901
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663190",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério ad duas lauros via Labicána miliário tértio",
+   "la": "Romæ in cœmetério ad duas lauros via Labicána miliário tértio",
+   "it": [
+    "A Roma al terzo miglio della via Labicana nel cimitero ad Duas Lauros"
+   ],
+   "occurrences": [
+    "mr:0811-susanna",
+    "mr:0811-tiburtius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1055805",
+     "label": "Catacombs of Marcellinus and Peter",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.87902778,
+      12.54908333
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1055805",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Labicána in cœmetério ad Duas Lauros",
+   "la": "Romæ via Labicána in cœmetério ad Duas Lauros",
+   "it": [
+    "A Roma sulla via Labicana nel cimitero ad Duas Lauros",
+    "Roma sulla via Labicana nel cimitero ad Duas Lauros"
+   ],
+   "occurrences": [
+    "mr:0602-marcellinus-et-petrus",
+    "mr:1222-triginta-martyres-romae"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1055805",
+     "label": "Catacombs of Marcellinus and Peter",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.87902778,
+      12.54908333
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1055805",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Nomentána in cœmetério Maióre",
+   "la": "Romæ via Nomentána in cœmetério Maióre",
+   "it": [
+    "A Roma sulla via Nomentana nel cimitero Maggiore"
+   ],
+   "occurrences": [
+    "mr:0123-emerentiana",
+    "mr:0129-papias-et-maurus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663191",
+     "label": "Coemeterium Maius",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.922780555555555,
+      12.518611111111111
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663191",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Ibídem in cœmetério Generósæ",
+   "la": "Ibídem in cœmetério Generósæ",
+   "it": [
+    "a Roma nel cimitero di Generosa"
+   ],
+   "occurrences": [
+    "mr:0729-simplicius-et-socii"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663195",
+     "label": "Catacombs of Generosa",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.836122,
+      12.432818
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663195",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Aproniáni via Latína",
+   "la": "Romæ in cœmetério Aproniáni via Latína",
+   "it": [
+    "a Roma nel cimitero di Aproniano sulla via Latina"
+   ],
+   "occurrences": [
+    "mr:1225-eugenia"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663168",
+     "label": "Catacomb of Apronianus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.8727,
+      12.5163
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663168",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Balbínæ via Ardeatína",
+   "la": "Romæ in cœmetério Balbínæ via Ardeatína",
+   "it": [
+    "A Roma nel cimitero di Balbina sulla via Ardeatina"
+   ],
+   "occurrences": [
+    "mr:0618-marcus-et-marcellianus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663169",
+     "label": "Catacomb of Balbina",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.861395,
+      12.506242
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663169",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Basíllæ via Salária Vetere",
+   "la": "Romæ in cœmetério Basíllæ via Salária Vetere",
+   "it": [
+    "A Roma nel cimitero di Basilla sulla via Salaria antica"
+   ],
+   "occurrences": [
+    "mr:0828-hermes"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663181",
+     "label": "Catacomb of Saint Hermes",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.923024866448145,
+      12.488319405764967
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663181",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Basilla's cemetery is the catacomb of Saint Hermes. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Calepódii via Aurélia tértio miliário",
+   "la": "Romæ in cœmetério Calepódii via Aurélia tértio miliário",
+   "it": [
+    "A Roma nel cimitero di Calepodio al terzo miglio della via Aurelia"
+   ],
+   "occurrences": [
+    "mr:0412-iulius-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663173",
+     "label": "Catacomb of Calepodius",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.89258,
+      12.4324
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663173",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Callísti",
+   "la": "Romæ in cœmetério Callísti",
+   "it": [
+    "A Roma nel cimitero di Callisto"
+   ],
+   "occurrences": [
+    "mr:0802-stephanus-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1027069",
+     "label": "Catacomb of Callixtus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.85887778,
+      12.51105833
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1027069",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Domitíllæ via Ardeatína",
+   "la": "Romæ in cœmetério Domitíllæ via Ardeatína",
+   "it": [
+    "A Roma nel cimitero di Domitilla sulla via Ardeatina"
+   ],
+   "occurrences": [
+    "mr:0531-petronilla"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q287041",
+     "label": "Catacombs of Domitilla",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.85891389,
+      12.50552778
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q287041",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Dámasi via Aurélia miliário secúndo",
+   "la": "Romæ in cœmetério Dámasi via Aurélia miliário secúndo",
+   "it": [
+    "A Roma nel cimitero di Damaso al secondo miglio della via Aurelia"
+   ],
+   "occurrences": [
+    "mr:0702-processus-et-martinianus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663166",
+     "label": "Catacomb of Saints Processus and Martinian",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.886742,
+      12.456312
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663166",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery where Processus and Martinian were buried, on the Via Aurelia, has the item of their catacomb; Italian Wikipedia calls its exact site unidentified. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Iordanórum via Salária Nova",
+   "la": "Romæ in cœmetério Iordanórum via Salária Nova",
+   "it": [
+    "a Roma nel cimitero dei Giordani sulla via Salaria nuova"
+   ],
+   "occurrences": [
+    "mr:1231-donata-et-socii"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663162",
+     "label": "Giordani catacombs",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.924277777778,
+      12.503611111111
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663162",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Máximi via Salária",
+   "la": "Romæ in cœmetério Máximi via Salária",
+   "it": [
+    "A Roma nel cimitero di Massimo sulla via Salaria"
+   ],
+   "occurrences": [
+    "mr:0904-bonifatius-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663210",
+     "label": "Catacombs of Santa Felicita",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.917869,
+      12.497285
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663210",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. The cemetery of Maximus is the catacomb of Santa Felicita. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Máximi via Salária Nova",
+   "la": "Romæ in cœmetério Máximi via Salária Nova",
+   "it": [
+    "A Roma nel cimitero di Massimo sulla via Salaria nuova"
+   ],
+   "occurrences": [
+    "mr:1123-felicitas"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663210",
+     "label": "Catacombs of Santa Felicita",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.917869,
+      12.497285
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663210",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. The cemetery of Maximus is the catacomb of Santa Felicita. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Pontiáni ad Ursum pileátum",
+   "la": "Romæ in cœmetério Pontiáni ad Ursum pileátum",
+   "it": [
+    "A Roma nel cimitero di Ponziano"
+   ],
+   "occurrences": [
+    "mr:0312-innocentius-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663171",
+     "label": "Catacomb of Pontian",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "ad ursum pileatum"
+     ],
+     "p9314": false,
+     "coords": [
+      41.877506,
+      12.463049
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663171",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Priscíllæ",
+   "la": "Romæ in cœmetério Priscíllæ",
+   "it": [
+    "Roma nel cimitero di Priscilla"
+   ],
+   "occurrences": [
+    "mr:1231-silvester-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q2462868",
+     "label": "Catacomb of Priscilla",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.9297,
+      12.5087
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q2462868",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Priscíllæ via Salária",
+   "la": "Romæ in cœmetério Priscíllæ via Salária",
+   "it": [
+    "A Roma nel cimitero di Priscilla sulla via Salaria"
+   ],
+   "occurrences": [
+    "mr:0727-caelestinus-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q2462868",
+     "label": "Catacomb of Priscilla",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.9297,
+      12.5087
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q2462868",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério Thrasónis via Salária Nova",
+   "la": "Romæ in cœmetério Thrasónis via Salária Nova",
+   "it": [
+    "A Roma nel cimitero di Trasóne sulla via Salaria nuova"
+   ],
+   "occurrences": [
+    "mr:1025-chrysanthus-et-daria"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663190",
+     "label": "Catacomb of Thraso",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.920258,
+      12.49901
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663190",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério ad Duas Lauros via Labicána",
+   "la": "Romæ in cœmetério ad Duas Lauros via Labicána",
+   "it": [
+    "A Roma nel cimitero ad Duas Lauros sulla via Labicana"
+   ],
+   "occurrences": [
+    "mr:0909-gorgonius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1055805",
+     "label": "Catacombs of Marcellinus and Peter",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.87902778,
+      12.54908333
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1055805",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério in agro Veráno",
+   "la": "Romæ in cœmetério in agro Veráno",
+   "it": [
+    "Roma nel cimitero del Verano"
+   ],
+   "occurrences": [
+    "mr:0810-laurentius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663177",
+     "label": "Catacomb of San Lorenzo",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.902817654282856,
+      12.521067579034208
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663177",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. The alternative is the Campo Verano cemetery itself (Q27426). Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ iuxta cœmetérium Callísti via Appia",
+   "la": "Romæ iuxta cœmetérium Callísti via Appia",
+   "it": [
+    "A Roma accanto al cimitero di Callisto sulla via Appia"
+   ],
+   "occurrences": [
+    "mr:1220-zephyrinus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1027069",
+     "label": "Catacomb of Callixtus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.85887778,
+      12.51105833
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1027069",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. \"Near\" the cemetery of Callixtus: Zephyrinus's own cemetery there has no item. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Appia in crypta Lucínæ cœmetérii Callísti",
+   "la": "Romæ via Appia in crypta Lucínæ cœmetérii Callísti",
+   "it": [
+    "A Roma sulla via Appia nella cripta di Lucina nel cimitero di Callisto"
+   ],
+   "occurrences": [
+    "mr:0914-cornelius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1027069",
+     "label": "Catacomb of Callixtus",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.85887778,
+      12.51105833
+     ],
+     "types": [
+      "Q839954",
+      "Q39614",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q1027069",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. The crypt of Lucina is part of the catacomb of Callixtus and has no item of its own. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Aurélia in cœmetério Calepódii",
+   "la": "Romæ via Aurélia in cœmetério Calepódii",
+   "it": [
+    "cimitero di Calepodio a Roma sulla via Aurelia"
+   ],
+   "occurrences": [
+    "mr:1014-callistus-i"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663173",
+     "label": "Catacomb of Calepodius",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.89258,
+      12.4324
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663173",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Nomentána ad Cápream in cœmetério maióre",
+   "la": "Romæ via Nomentána ad Cápream in cœmetério maióre",
+   "it": [
+    "A Roma sulla via Nomentana ad Capream nel cimitero Maggiore"
+   ],
+   "occurrences": [
+    "mr:0916-victor-et-socii"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663191",
+     "label": "Coemeterium Maius",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.922780555555555,
+      12.518611111111111
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663191",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Salária Vétere in cœmetério Basíllæ",
+   "la": "Romæ via Salária Vétere in cœmetério Basíllæ",
+   "it": [
+    "A Roma sulla via Salaria Antica nel cimitero di Basilla"
+   ],
+   "occurrences": [
+    "mr:0517-victor"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663181",
+     "label": "Catacomb of Saint Hermes",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.923024866448145,
+      12.488319405764967
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663181",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Basilla's cemetery is the catacomb of Saint Hermes. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ via Salária Vétere in cœmetério ad Septem Palúmbas",
+   "la": "Romæ via Salária Vétere in cœmetério ad Septem Palúmbas",
+   "it": [
+    "a Roma sulla via Salaria antica nel cimitero ad Septem Palumbas"
+   ],
+   "occurrences": [
+    "mr:1220-liberalis"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663159",
+     "label": "Catacomb ad clivum Cucumeris",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.926844,
+      12.482553
+     ],
+     "types": [
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663159",
+    "country": "IT"
+   },
+   "confidence": "low",
+   "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Italian Wikipedia identifies ad Septem Palumbas with the catacomb ad clivum Cucumeris, calling the identification uncertain. Currently Rome; Rome stays until this card is decided."
   }
  ]
 }
