@@ -137,6 +137,27 @@ describe("EulogyMap", () => {
     expect(onPlace).toHaveBeenCalledWith(["mr:0925-cleopha@Q165887"]);
   });
 
+  it("selecting a disputed place from one of its sites reveals that site, not the first", async () => {
+    const emmaus: MapEntry = {
+      ...e("mr:0925-cleopha", "Q165887", [31.84, 34.99]),
+      sites: [
+        { qid: "Q847246", label: "Emmaus Nicopolis", labelLang: "en", coords: [31.84, 34.99] },
+        { qid: "Q335023", label: "Abu Ghosh", labelLang: "en", coords: [31.8, 35.11] },
+      ],
+    };
+    const onSelect = vi.fn();
+    const onPlace = vi.fn();
+    // One array, as MapPage's memo hands it: new entries would rebuild the markers.
+    const shown = [emmaus];
+    const { rerender } = render(<EulogyMap entries={shown} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={onPlace} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(2));
+    const [nicopolis, abuGhosh] = groups[0].layers;
+    abuGhosh.handlers.click();
+    rerender(<EulogyMap entries={shown} edition="mr_2004" selected={{ key: "mr:0925-cleopha@Q165887", n: 1 }} onSelect={onSelect} onPlace={onPlace} />);
+    await waitFor(() => expect(abuGhosh.opened).toBe(1));
+    expect(nicopolis.opened).toBe(0);
+  });
+
   it("clicking a marker selects its eulogy", async () => {
     const onSelect = vi.fn();
     render(<EulogyMap entries={entries} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={vi.fn()} />);

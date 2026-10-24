@@ -211,11 +211,15 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
       const at = (coords: [number, number], style: typeof MARKER, site?: Site) => {
         const m: PlacedMarker = L.circleMarker(coords, style)
           .bindPopup(() => popupFor(e, edition, tRef.current, tRolesRef.current, localeRef.current, site))
-          .on("click", () => onSelectRef.current(e.key));
+          .on("click", () => {
+            // The reveal opens this marker: a disputed place's other sites share its key.
+            markers.current.set(e.key, { marker: m, entry: e });
+            onSelectRef.current(e.key);
+          });
         m.entryKey = e.key;
         return m;
       };
-      // A disputed place (Emmaus) has a marker at each possible site; a pick reveals the first.
+      // A disputed place (Emmaus) has a marker at each possible site; a pick from the list reveals the first.
       const ms = e.sites ? e.sites.map((s) => at(s.coords, SITE, s)) : [at(e.coords, MARKER)];
       markers.current.set(e.key, { marker: ms[0], entry: e });
       return ms;
