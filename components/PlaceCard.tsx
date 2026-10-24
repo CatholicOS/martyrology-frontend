@@ -182,7 +182,7 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
             </a>
             <span className="text-xs text-slate-500 dark:text-slate-400">
               {c.la.length > 0 ? `la: ${c.la.slice(0, 4).join(", ")} · ` : ""}
-              {(c.evidence ?? []).join(", ")}
+              {c.evidence.join(", ")}
             </span>
           </div>
         ))}

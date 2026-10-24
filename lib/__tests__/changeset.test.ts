@@ -27,6 +27,15 @@ describe("changeset", () => {
     expect(opId(op as Op)).toBe("mr:0711-benedictus#birth#Núrsiæ in Umbria");
   });
 
+  it("parseChangeset gives a place candidate without evidence an empty list", () => {
+    // A hand-built crmedr card once shipped candidates without `evidence`, and the whole review page crashed.
+    const place = { op: "resolve_place", id: "X", la: "X", it: [], occurrences: [], claims: [], failed: [], decision: null, edited: null,
+      candidates: [{ wikidata: "Q1", label: "A" }, { wikidata: "Q2", label: "B", evidence: ["type"] }] };
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" }, operations: [place] }));
+    const op = cs.operations[0] as Extract<Op, { op: "resolve_place" }>;
+    expect(op.candidates.map((c) => c.evidence)).toEqual([[], ["type"]]);
+  });
+
   it("parseChangeset rejects wrong schema", () => {
     expect(() => parseChangeset(JSON.stringify({ schema: "nope", operations: [] }))).toThrow();
   });

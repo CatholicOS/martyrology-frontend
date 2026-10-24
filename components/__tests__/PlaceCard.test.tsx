@@ -393,10 +393,4 @@ describe("PlaceCard", () => {
     });
   });
 
-  it("renders a candidate whose change-set entry lacks evidence", () => {
-    // A hand-built crmedr card once shipped candidates without `evidence`, and the whole review page crashed.
-    const bare = { ...candidate("Q3", "Fictopolis Vetus", "IT"), evidence: undefined } as unknown as PlaceCandidate;
-    renderCard(makeOp({ candidates: [bare] }));
-    expect(screen.getByText("Q3")).toBeInTheDocument();
-  });
 });
