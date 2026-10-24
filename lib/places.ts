@@ -12,6 +12,16 @@ export interface PlaceInfo {
   labels?: Partial<Record<Locale, string>>;
   /** The names the Latin prints for the place, "Oświęcim seu Auschwitz" (crmedr's places_variants_curated). */
   also?: string[];
+  /** A place whose site is disputed (Emmaus): its proposed sites with coordinates (crmedr's `sites`), which the map shows instead of its own point. */
+  sites?: PlaceSite[];
+}
+
+/** One proposed site of a disputed place: its Wikidata item, English label, labels in the interface languages and [lat, lon]. */
+export interface PlaceSite {
+  place: string;
+  label: string;
+  labels?: Partial<Record<Locale, string>>;
+  coords: [number, number];
 }
 
 /**

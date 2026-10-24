@@ -4,7 +4,7 @@ import EulogyMap from "@/components/EulogyMap";
 import type { MapEntry } from "@/lib/map-data";
 
 type Fn = (...a: unknown[]) => void;
-interface FakeMarker { latlng: [number, number]; popup?: HTMLElement | (() => HTMLElement); handlers: Record<string, Fn>; opened: number }
+interface FakeMarker { latlng: [number, number]; opts?: Record<string, unknown>; popup?: HTMLElement | (() => HTMLElement); handlers: Record<string, Fn>; opened: number; entryKey?: string }
 const popupOf = (m: FakeMarker) => (typeof m.popup === "function" ? m.popup() : m.popup!);
 const groups: { layers: FakeMarker[]; handlers: Record<string, Fn>; opts: Record<string, unknown> }[] = [];
 const fitBounds = vi.fn();
@@ -27,9 +27,9 @@ vi.mock("leaflet", () => {
     return p;
   };
   const tileLayer = () => ({ addTo: () => undefined });
-  const circleMarker = (latlng: [number, number]) => {
+  const circleMarker = (latlng: [number, number], opts?: Record<string, unknown>) => {
     const m: FakeMarker & Record<string, unknown> = {
-      latlng, handlers: {}, opened: 0,
+      latlng, opts, handlers: {}, opened: 0,
       bindPopup(el: HTMLElement | (() => HTMLElement)) { m.popup = el; return m; },
       on(ev: string, fn: Fn) { m.handlers[ev] = fn; return m; },
       openPopup() { m.opened++; return m; },
@@ -106,6 +106,35 @@ describe("EulogyMap", () => {
     const popup = popupOf(groups[0].layers[0]);
     expect(popup.querySelector('[lang="la"]')!.textContent).toBe("Romæ");
     expect(popup.querySelector('a[href^="https://www.wikidata.org/"]')!.getAttribute("lang")).toBe("en");
+  });
+
+  it("a place whose site is disputed gets a hollow marker at each possible site, named in its popup", async () => {
+    const onSelect = vi.fn();
+    const onPlace = vi.fn();
+    const emmaus: MapEntry = {
+      ...e("mr:0925-cleopha", "Q165887", [31.84, 34.99]), la: "castéllo Emmaus", label: "Emmaus", labelEn: "Emmaus",
+      sites: [
+        { qid: "Q847246", label: "Emmaus Nicopolis", labelLang: "en", coords: [31.84, 34.99] },
+        { qid: "Q335023", label: "Abu Ghosh", labelLang: "en", coords: [31.8, 35.11] },
+      ],
+    };
+    render(<EulogyMap entries={[emmaus, entries[2]]} edition="mr_2004" selected={null} onSelect={onSelect} onPlace={onPlace} />);
+    await waitFor(() => expect(groups[0]?.layers).toHaveLength(3));
+    const [nicopolis, abuGhosh, london] = groups[0].layers;
+    expect([nicopolis.latlng, abuGhosh.latlng]).toEqual([[31.84, 34.99], [31.8, 35.11]]);
+    expect(nicopolis.opts?.fillOpacity).toBeLessThan(london.opts!.fillOpacity as number);
+    expect(nicopolis.opts?.dashArray).toBeTruthy();
+    const popup = popupOf(abuGhosh);
+    expect(popup.textContent).toContain("Possible site: Abu Ghosh");
+    expect(popup.querySelector('a[href="https://www.wikidata.org/wiki/Q335023"]')!.textContent).toBe("Abu Ghosh");
+    abuGhosh.handlers.click();
+    expect(onSelect).toHaveBeenCalledWith("mr:0925-cleopha@Q165887");
+    // Two of its sites in one cluster list the eulogy once.
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [nicopolis, abuGhosh], zoomToBounds: vi.fn(), spiderfy: vi.fn() } });
+    expect(onPlace).not.toHaveBeenCalled(); // two points: the cluster zooms
+    zoom = 18;
+    groups[0].handlers.clusterclick({ layer: { getAllChildMarkers: () => [nicopolis, abuGhosh], zoomToBounds: vi.fn(), spiderfy: vi.fn() } });
+    expect(onPlace).toHaveBeenCalledWith(["mr:0925-cleopha@Q165887"]);
   });
 
   it("clicking a marker selects its eulogy", async () => {

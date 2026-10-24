@@ -94,6 +94,24 @@ describe("buildPlaces", () => {
     expect(places.Q205653).not.toHaveProperty("countries");
   });
 
+  it("gives a place whose site is disputed its possible sites, with their coordinates and labels", () => {
+    // Emmaus: the biblical place's item, and the curated items of its proposed sites.
+    const docs = { places: { "mr:0925-cleopha": [{ role: "residence", la: "castéllo Emmaus", source: "curated" }] } };
+    const gaz = { places: {
+      "castéllo Emmaus": { wikidata: "Q165887", label: "Emmaus", country: null, countries: ["IL", "PS"], sites: ["Q847246", "Q335023", "Q9"], status: "reviewed" },
+    } };
+    const coords = { Q165887: [31.84, 34.99] as [number, number], Q847246: [31.84, 34.99] as [number, number], Q335023: [31.80, 35.11] as [number, number] };
+    const labels = { Q847246: { en: "Emmaus Nicopolis" }, Q335023: { en: "Abu Ghosh", it: "Abu Gosh" } };
+    const { places } = buildPlaces(docs, gaz, { typology: {} }, coords, labels);
+    // A site without coordinates (Q9) is left out: it could not be shown.
+    expect(places.Q165887.sites).toEqual([
+      { place: "Q847246", label: "Emmaus Nicopolis", labels: { en: "Emmaus Nicopolis" }, coords: [31.84, 34.99] },
+      { place: "Q335023", label: "Abu Ghosh", labels: { en: "Abu Ghosh", it: "Abu Gosh" }, coords: [31.80, 35.11] },
+    ]);
+    expect(resolvedQids(docs, gaz)).toEqual(["Q9", "Q165887", "Q335023", "Q847246"]);
+    expect(buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords).places.Q220).not.toHaveProperty("sites");
+  });
+
   it("resolves a phrase per eulogy when the gazetteer keys it so", () => {
     const docs = { places: {
       "mr:0406-galla": [{ role: "death", la: "ecclésiam Sancti Petri", source: "body" }],

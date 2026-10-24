@@ -284,6 +284,7 @@
     "mapLoadFailed": "Não foi possível carregar o mapa.",
     "reload": "Recarregar",
     "read": "Ler",
+    "possibleSite": "Local possível",
     "noCoordinates": "Nenhum candidato tem coordenadas.",
     "eulogy": {
       "loading": "Carregando o elogio…",

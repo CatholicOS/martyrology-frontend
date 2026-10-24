@@ -49,6 +49,38 @@ describe("mapEntries", () => {
     });
   });
 
+  it("puts a place whose site is disputed at its possible sites, as one entry", () => {
+    // Emmaus has its own point and six proposed sites; Salem has no point of its own.
+    const disputed: PlacesSnapshot = {
+      places: {
+        Q165887: { label: "Emmaus", country: "", countries: ["IL", "PS"], coords: [31.84, 34.99], sites: [
+          { place: "Q847246", label: "Emmaus Nicopolis", coords: [31.84, 34.99] },
+          { place: "Q335023", label: "Abu Ghosh", labels: { en: "Abu Ghosh", it: "Abu Gosh" }, coords: [31.8, 35.11] },
+        ] },
+        Q4377375: { label: "Salem", country: "", countries: ["IL", "PS"], coords: null, sites: [
+          { place: "Q1218", label: "Jerusalem", coords: [31.78, 35.22] },
+          { place: "Q20395636", label: "Salim, Nablus", coords: [32.21, 35.34] },
+        ] },
+      },
+      eulogies: {
+        "mr:0925-cleopha": { typology: "commemoratio", places: [{ place: "Q165887", la: "castéllo Emmaus", roles: [{ role: "residence" }] }] },
+        "mr:0826-melchisedech": { typology: "commemoratio", places: [{ place: "Q4377375", la: "Salem", roles: [{ role: "ministry" }] }] },
+      },
+    };
+    const { entries, mapped, unmapped } = mapEntries(
+      [cat("mr:0826-melchisedech", "Sanctus Melchisedech", "08-26"), cat("mr:0925-cleopha", "Sanctus Cleophas", "09-25")], disputed, "it");
+    expect([mapped, unmapped, entries.length]).toEqual([2, 0, 2]);
+    const emmaus = entries.find((e) => e.qid === "Q165887")!;
+    // At its first site, not at its own point: the sites are where it is shown.
+    expect(emmaus.coords).toEqual([31.84, 34.99]);
+    expect(emmaus.sites).toEqual([
+      { qid: "Q847246", label: "Emmaus Nicopolis", labelLang: "en", coords: [31.84, 34.99] },
+      { qid: "Q335023", label: "Abu Gosh", labelLang: "it", coords: [31.8, 35.11] },
+    ]);
+    expect(entries.find((e) => e.qid === "Q4377375")!.coords).toEqual([31.78, 35.22]);
+    expect(mapEntries(catalog, snap, "en").entries[0]).not.toHaveProperty("sites");
+  });
+
   it("names a place in the interface language, else in English, and says which", () => {
     const it_ = mapEntries(catalog, snap, "it").entries;
     expect(it_.find((e) => e.qid === "Q220")).toMatchObject({ label: "Roma", labelLang: "it", labelEn: "Rome" });
