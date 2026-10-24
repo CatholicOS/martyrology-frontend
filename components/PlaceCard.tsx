@@ -51,17 +51,16 @@ export default function PlaceCard({ op, decision, onDecide, locale, baseEdition 
   const [selected, setSelected] = useState(byQid.has(seedQid) ? seedQid : defaultQid);
   const [otherQid, setOtherQid] = useState(byQid.has(seedQid) ? "" : seedQid);
   const [country, setCountry] = useState(seedCountry);
-  // A macro-area (the Orient, Africa) lies in no single country: crmedr records country null. A suggestion
-  // that says so starts the card that way.
-  const [noCountry, setNoCountry] = useState(
-    ed ? ed.no_country === true : suggested?.no_country === true && seedQid === suggested.wikidata
-  );
+  // A macro-area (the Orient, Africa) lies in no single country: crmedr records country null. Set by hand
+  // or by a saved edit; null while untouched, when a suggestion that says so holds for its own item only.
+  const [noCountryChoice, setNoCountry] = useState<boolean | null>(ed ? ed.no_country === true : null);
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState(decision?.decision === "reject" ? (decision.edited?.reason ?? "") : "");
   const [openEulogy, setOpenEulogy] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
 
   const qid = otherQid.trim() || selected;
+  const noCountry = noCountryChoice ?? (suggested?.no_country === true && qid === suggested.wikidata);
   // One country, or several for a region that spans them (Frisia: "NL, DE").
   const codes = countryCodes(country);
   const countryOk = codes.length > 0 && codes.every((c) => ISO.test(c)) && new Set(codes).size === codes.length;

@@ -215,6 +215,25 @@ describe("PlaceCard", () => {
     });
   });
 
+  it("the suggestion's no country follows its item: another candidate takes its own country", () => {
+    const op = makeOp({ suggested: { wikidata: "Q27779387", no_country: true }, claims: [],
+      candidates: [candidate("Q27779387", "Vicariate Apostolic of Western Oceania", "NZ"), candidate("Q2", "Fictopolis Nova", "FR")] });
+    const onDecide = renderCard(op);
+    fireEvent.click(screen.getByLabelText(/Fictopolis Nova —/));
+    expect(screen.getByLabelText(/no single country/i)).not.toBeChecked();
+    expect(screen.getByLabelText(/^country$/i)).toHaveValue("FR");
+    fireEvent.click(screen.getByLabelText(/Western Oceania —/));
+    expect(screen.getByLabelText(/no single country/i)).toBeChecked();
+    // A tick or untick by hand stays, whichever item is chosen.
+    fireEvent.click(screen.getByLabelText(/no single country/i));
+    fireEvent.click(screen.getByLabelText(/Fictopolis Nova —/));
+    fireEvent.click(screen.getByLabelText(/Western Oceania —/));
+    expect(screen.getByLabelText(/no single country/i)).not.toBeChecked();
+    fireEvent.click(screen.getByLabelText(/Fictopolis Nova —/));
+    fireEvent.click(screen.getByRole("button", { name: /^accept/i }));
+    expect(onDecide).toHaveBeenCalledWith("Fictópoli in Fíctia", { decision: "edit", edited: { wikidata: "Q2", country: "FR" } });
+  });
+
   it("no single country hides the Italian's country claims and resumes from a saved edit", () => {
     renderCard(makeOp(), vi.fn(), { decision: "edit", edited: { wikidata: "Q2", no_country: true } });
     expect(screen.getByLabelText(/no single country/i)).toBeChecked();
