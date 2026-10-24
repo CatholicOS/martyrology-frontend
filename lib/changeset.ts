@@ -437,7 +437,13 @@ export function parseChangeset(text: string): Changeset {
   if (!Array.isArray(cs.operations)) {
     throw new Error("change-set has no operations[]");
   }
-  return cs as Changeset;
+  // A place candidate without evidence (a hand-built crmedr card) would crash every PlaceCard.
+  const operations = (cs.operations as Op[]).map((op) => {
+    if (op.op !== "resolve_place" || !Array.isArray(op.candidates)) return op;
+    const place = op as ResolvePlaceOp;
+    return { ...place, candidates: place.candidates.map((c) => ({ ...c, evidence: c.evidence ?? [] })) };
+  });
+  return { ...cs, operations } as Changeset;
 }
 
 export function isAdjudicable(op: Op): boolean {

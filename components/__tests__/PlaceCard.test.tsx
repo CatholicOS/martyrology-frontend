@@ -392,4 +392,5 @@ describe("PlaceCard", () => {
       expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
     });
   });
+
 });

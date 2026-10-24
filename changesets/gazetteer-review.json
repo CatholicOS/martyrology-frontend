@@ -287,31 +287,18 @@
      "wikidata": "Q862086",
      "label": "Indians",
      "description": "cittadini o residenti in India",
-     "names_it": [
-      "indiani"
+     "country": "IN",
+     "countries": [
+      "IN"
      ],
      "la": [],
      "p9314": false,
-     "p9314_names": [],
-     "country_qids": [
-      "Q668"
-     ],
-     "admin_qids": [
-      "Q668"
-     ],
-     "present_qids": [],
-     "location_qids": [],
-     "iso_self": null,
      "coords": null,
      "types": [
       "Q33829",
       "Q231002"
      ],
-     "countries": [
-      "IN"
-     ],
-     "country": "IN",
-     "place_type": false
+     "evidence": []
     }
    ],
    "decision": null,
@@ -2357,25 +2344,16 @@
      "wikidata": "Q6501380",
      "label": "Chinese people",
      "description": "gruppo di popoli facenti parte degli abitanti della Cina",
-     "names_it": [
-      "cinesi"
-     ],
+     "country": null,
+     "countries": [],
      "la": [],
      "p9314": false,
-     "p9314_names": [],
-     "country_qids": [],
-     "admin_qids": [],
-     "present_qids": [],
-     "location_qids": [],
-     "iso_self": null,
      "coords": null,
      "types": [
       "Q33829",
       "Q41710"
      ],
-     "countries": [],
-     "country": null,
-     "place_type": false
+     "evidence": []
     }
    ],
    "decision": null,
@@ -2948,39 +2926,21 @@
      "wikidata": "Q41975",
      "label": "Mongols",
      "description": "popolazione originaria della Mongolia",
-     "names_it": [
-      "mongoli"
-     ],
-     "la": [
-      "Mongoli"
-     ],
-     "p9314": false,
-     "p9314_names": [],
-     "country_qids": [
-      "Q148",
-      "Q711",
-      "Q159"
-     ],
-     "admin_qids": [
-      "Q6809",
-      "Q3953",
-      "Q6585",
-      "Q6838"
-     ],
-     "present_qids": [],
-     "location_qids": [],
-     "iso_self": null,
-     "coords": null,
-     "types": [
-      "Q41710"
-     ],
+     "country": null,
      "countries": [
       "CN",
       "MN",
       "RU"
      ],
-     "country": null,
-     "place_type": false
+     "la": [
+      "Mongoli"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q41710"
+     ],
+     "evidence": []
     }
    ],
    "decision": null,
