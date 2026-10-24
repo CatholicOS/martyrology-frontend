@@ -102,6 +102,9 @@
   "mr:0109-felanus": {
     "note": "The monastery of Saint Andrew of which Fillan was abbot is not securely identified."
   },
+  "mr:0109-eustratius-thaumaturgus": {
+    "note": "The site of the monastery of Abgar (Agauros) on the Mysian Olympus near Prusa (Bursa), of which Eustratius was abbot, is not identified."
+  },
   "mr:0109-agatha-yi-et-teresia-kim": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"beheaded\" where the Latin has \"iugulátæ\" (their throats cut)."
@@ -1126,6 +1129,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Autun\" where the Latin has \"Augustómagi\" (Senlis)."
     }
+  },
+  "mr:0330-clinius": {
+    "note": "The site of the monastery of Saint Peter of the Wood (San Pietro della Foresta) near Aquino, of which Clinius was abbot, is not identified; a local tradition places it between Pontecorvo and Esperia."
   },
   "mr:0330-petrus-regalado": {
     "editions": {
@@ -4257,6 +4263,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"scourged\" where the Latin has \"raptátus\" (dragged)."
     }
+  },
+  "mr:1223-theodulus-et-socii": {
+    "note": "The temple of Fortune at Gortyn, at whose dedication the ten martyrs refused to sacrifice, is not identified."
   },
   "mr:1223-antonius-galvao-de-franca": {
     "note": "Anthony of St Anne Galvão, blessed in the 2004 editions, was canonized on 11 May 2007."
