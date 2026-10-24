@@ -99,6 +99,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the wisdom of reform and doctrine\" where the Latin has \"doctrína ætérnæ sapiéntiæ\" (the teaching of eternal wisdom)."
     }
   },
+  "mr:0109-felanus": {
+    "note": "The monastery of Saint Andrew of which Fillan was abbot is not securely identified."
+  },
   "mr:0109-agatha-yi-et-teresia-kim": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"beheaded\" where the Latin has \"iugulátæ\" (their throats cut)."
@@ -272,6 +275,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Amando\" where the Latin has \"Amándulæ\" (Amandola)."
     }
+  },
+  "mr:0125-eleonora-girlani": {
+    "note": "The Carmelite convent of Parma of which Archangela Girlani was prioress is not named, and its site is unknown."
   },
   "mr:0126-albericus": {
     "editions": {
@@ -808,6 +814,7 @@
     }
   },
   "mr:0301-leo-lucas": {
+    "note": "The site of the monastery of Mula, of which Leo-Luke was abbot, is not securely identified.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Leo of Lucca\" where the Latin has \"Leónis Lucæ\" (Leo Luca, known as Leoluca)."
     }
@@ -842,6 +849,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Daron\" where the Latin has \"Dariórigi\" (Vannes)."
     }
+  },
+  "mr:0304-appianus": {
+    "note": "Which monastery of Pavia sent Appian to Comacchio is not known."
   },
   "mr:0304-humbertus": {
     "editions": {
@@ -1434,6 +1444,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Vence\" where the Latin has \"Vapínci\" (Gap)."
     }
+  },
+  "mr:0501-augustinus-schoeffler": {
+    "note": "The exact site of the “Five Acres” field near Sơn Tây, where Augustine Schoeffler was beheaded, is unknown."
   },
   "mr:0502-boleslaus-strzelecki": {
     "editions": {
@@ -2107,6 +2120,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"stirring up the Society\" where the Latin has \"in societátem excitándam\" (the betterment of society)."
     }
   },
+  "mr:0705-dometius-medicus": {
+    "note": "Mount Quros in Armenia, where Dometius lived as a hermit, is not identified."
+  },
   "mr:0705-georgius-nichols-et-richardus-yaxley": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"condemned to death by beheading\" where the Latin has \"cápite damnáti\" (condemned to death); they were hanged."
@@ -2394,6 +2410,7 @@
     }
   },
   "mr:0721-simeon-salus": {
+    "note": "The hermitage by the Dead Sea (Lake Asphaltites) where Simeon and John lived is unnamed, and its site is unknown.",
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"presso il lago di Mareotide in Egitto\" where the Latin has \"apud Asphaltitem lacum\" (the Dead Sea)."
     }
@@ -2412,6 +2429,7 @@
     "note": "By decree of 3 June 2016 the celebration of Mary Magdalene in the General Roman Calendar was raised from an obligatory memorial to a feast."
   },
   "mr:0722-martyres-massilitani": {
+    "note": "The African home of the Massylitan martyrs (Massilitani), on whom Augustine preached, is unknown; it is not Marseille.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"of Massilia\" (Marseilles) where the Latin \"Massilitanórum\" denotes the African Massylitan martyrs."
     }
@@ -2430,6 +2448,9 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"sul fiume Don\" where the Latin has \"ad Altam flumen\" (the river Alta). Translation error: \"principi di Rostov\" where the Latin has \"principes Rutheni\" (princes of the Rus')."
     }
+  },
+  "mr:0724-balduinus": {
+    "note": "The original abbey of San Matteo, on the hill of Monticchio in the plain of Rieti, is not identified; the map shows San Pastore near Contigliano, where its community moved in 1234, after Baldwin's time."
   },
   "mr:0724-maria-a-mercede-prat": {
     "editions": {
@@ -2771,6 +2792,9 @@
   "mr:0818-albertus-hurtado-cruchaga": {
     "note": "Alberto Hurtado Cruchaga, blessed in the 2004 editions, was canonized on 23 October 2005."
   },
+  "mr:0819-bartholomaeus-de-simero": {
+    "note": "The monastery of Greeks that Bartholomew of Simeri founded in Calabria is not named, and its site is unknown."
+  },
   "mr:0819-guerricus": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"spiritual words, humility, and frequent charity\" where the Latin has \"sermónibus humilitáte et caritáte crebris\" (sermons full of humility and charity)."
@@ -2795,6 +2819,7 @@
     }
   },
   "mr:0821-bassa-et-socii": {
+    "note": "The island of Halona near Cyzicus, where Bassa is said to have been martyred, is not identified; it may be one of the Marmara islands.",
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"a Edessa nell’antica Siria\" where the Latin has \"Edessae in Hellade\" (Edessa in Greece, in Macedonia)."
     }
@@ -2847,6 +2872,9 @@
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Septfontaines\" where the Latin has \"Septem Fontium\" (the Cistercian abbey of Sept-Fons)."
     }
+  },
+  "mr:0826-melchisedech-rex-et-sacerdos": {
+    "note": "The site of Salem is disputed: it is traditionally identified with Jerusalem, or with Salim near Nablus."
   },
   "mr:0826-victor": {
     "editions": {
@@ -3032,6 +3060,7 @@
     }
   },
   "mr:0905-ioannes-bonus-de-siponto": {
+    "note": "The site of the monastery of Saint Michael on the Dalmatian coast that John Bonus rebuilt is not identified; the island of Palagruža has been suggested.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"rebuilt\" where the Latin has \"ædificávit\" (built)."
     }
@@ -3200,6 +3229,9 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Sisteron\" (a town in Provence) for the monastery the Latin places \"apud Língones\" (near Langres); this is Segestre, now Saint-Seine-l'Abbaye."
     }
   },
+  "mr:0919-pomposa": {
+    "note": "The site of the monastery of Peñamelaria near Córdoba, which Pomposa left for her martyrdom, is uncertain."
+  },
   "mr:0919-arnulphus": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"si adoperò molto\" (he worked hard) where the Latin has \"multa sustínuit\" (he endured much)."
@@ -3265,6 +3297,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Marieville\" where the Latin has \"Marianópoli\" (Montreal)."
     }
   },
+  "mr:0925-cleopha": {
+    "note": "The site of Emmaus is disputed. Three places keep its memory with a shrine: Amwas (Nicopolis), Abu Ghosh (ancient Kiriath-Jearim) and el-Qubeibeh; Motza (Colonia, Khirbet Mizza), Horvat ʿEqed and Kiryat Anavim have also been proposed."
+  },
   "mr:0925-paulus-et-tatta": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Tatia\" where the Latin has \"Tattæ\" (Tatta)."
@@ -3290,12 +3325,16 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Capuchin Sisters\" where the Latin has \"Capulatórum\" (the Capuchin Tertiaries, a men's order)."
     }
   },
+  "mr:0927-bonfilius": {
+    "note": "The site of the monastery of Storace (Storaco), where Bonfilius was abbot and monk, is not identified."
+  },
   "mr:0928-venceslaus": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"dalla zia paterna Ludmilla\" (his paternal aunt) where the Latin has \"ab ávia sancta Ludmílla\" (his grandmother, Saint Ludmila)."
     }
   },
   "mr:0929-michael-gabriel-et-raphael-archangeli": {
+    "note": "The remains of the basilica of Saint Michael on the Via Salaria were found at Castel Giubileo, Rome, at the seventh mile of the road; the Martyrology says the sixth.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"long ago rebuilt\" where the Latin has \"antíquitus ædificátæ\" (built long ago)."
     }
@@ -3304,6 +3343,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Reichenau\" where the Latin has \"ínsula Augia lacus Turicénsis\" (Ufnau in Lake Zurich)."
     }
+  },
+  "mr:0930-gregorius-illuminator": {
+    "note": "The cave near the confluence of the branches of the Euphrates where Gregory died is unnamed, and its site is unknown."
   },
   "mr:1001-teresia-a-iesu-infante": {
     "editions": {
@@ -3503,6 +3545,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Sévigny\" where the Latin has \"Saviníaci\" (Savigny)."
     }
   },
+  "mr:1021-malchus": {
+    "note": "The site of Maronia near Antioch, where Malchus lived as a monk, is not identified; it is not the Thracian Maroneia."
+  },
   "mr:1021-wendelinus": {
     "editions": {
       "martyrologium_romanum_2004": "Asterisked here (entry 8*); the Italian (CEI) edition prints the entry without an asterisk.",
@@ -3526,6 +3571,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the region around Lyon\" where the Latin has \"Gállia Lugdunénsi\" (the Roman province of Lugdunensis, not the area of Lyon)."
     }
+  },
+  "mr:1022-lupentius": {
+    "note": "The site of the basilica of Saint Privatus of the Gabali, of which Lupentius was abbot, is uncertain (Mende or Javols)."
   },
   "mr:1022-benedictus": {
     "editions": {
@@ -3973,6 +4021,7 @@
     }
   },
   "mr:1128-papinianus-vitensis-et-mansuetus-urusitanus": {
+    "note": "The sites of Midila and Teudala, the African sees of two of the bishops commemorated here, are not identified.",
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Sufetula\" where the Latin has \"Sufetánus\" (of Sufes)."
     }
@@ -4044,6 +4093,9 @@
       "martyrologium_romanum_2004": "Printed here without an asterisk (entry 5.); the Italian (CEI) edition marks the entry with one.",
       "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (5.)."
     }
+  },
+  "mr:1204-adrehildis": {
+    "note": "The monastery of Saint Mary at Le Mans of which Adrehild was abbess is not identified."
   },
   "mr:1205-ioannes-almond": {
     "editions": {
@@ -4173,6 +4225,7 @@
     }
   },
   "mr:1218-gatianus": {
+    "note": "The site of the Christian cemetery at Tours where Gatian was buried is not identified.",
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Misprints: 'Gratian' for Gatianus and 'Fabrian' for Fabianus."
     }
