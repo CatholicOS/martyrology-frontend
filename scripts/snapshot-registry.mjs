@@ -86,7 +86,7 @@ export function buildNotes(registry) {
 
 /**
  * @typedef {{role: string, la: string, it?: string, source?: string, person?: string, n?: number}} StatedPlace
- * @typedef {{wikidata?: string|null, label?: string, country?: string|null, countries?: string[], status: string}} GazetteerPlace
+ * @typedef {{wikidata?: string|null, label?: string, country?: string|null, countries?: string[], sites?: string[], status: string}} GazetteerPlace
  */
 
 /**
@@ -125,7 +125,11 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
   /** @type {Set<string>} */
   const qids = new Set();
   for (const [id, stated] of Object.entries(placesDoc.places)) {
-    for (const hit of resolvedPlaces(stated, gazetteerDoc.places, id)) qids.add(hit.place);
+    for (const hit of resolvedPlaces(stated, gazetteerDoc.places, id)) {
+      qids.add(hit.place);
+      // A disputed place's possible sites: the map shows them, so their coordinates and labels are queried too.
+      for (const site of hit.g.sites ?? []) qids.add(site);
+    }
   }
   return [...qids].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
 }
@@ -144,8 +148,15 @@ export function resolvedQids(placesDoc, gazetteerDoc) {
  * @param {Record<string, string[] | string>} [variants] crmedr data/places_variants_curated.json: a place's printed names by QID ("$" keys are comments)
  */
 export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels = {}, variants = {}) {
-  /** @type {Record<string, {label: string, country: string, countries?: string[], coords: [number, number] | null, labels?: Record<string, string>, also?: string[]}>} */
+  /** @type {Record<string, {label: string, country: string, countries?: string[], coords: [number, number] | null, labels?: Record<string, string>, also?: string[], sites?: {place: string, label: string, labels?: Record<string, string>, coords: [number, number]}[]}>} */
   const places = {};
+  // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
+  // A language without a label of its own takes the item's multilingual ("mul") one, as on Wikidata.
+  /** @param {string} qid */
+  const labelsOf = (qid) => (labels[qid] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => {
+    const label = labels[qid][l] ?? labels[qid].mul;
+    return label ? [[l, label]] : [];
+  })) } : {});
   /** @type {Record<string, {typology: string|null, places: {place: string, la: string, it?: string, roles: {role: string, name?: string, n?: number}[]}[]}>} */
   const eulogies = {};
   for (const [id, stated] of Object.entries(placesDoc.places)) {
@@ -158,12 +169,14 @@ export function buildPlaces(placesDoc, gazetteerDoc, typologyDoc, coords, labels
         // A place in several countries (Frisia): country is "" and these are its countries.
         ...(hit.g.countries?.length ? { countries: hit.g.countries } : {}),
         coords: coords[hit.place] ?? null,
-        // In LABEL_LANGS order: Wikidata answers in any order, which would reorder the snapshot on every run.
-        // A language without a label of its own takes the item's multilingual ("mul") one, as on Wikidata.
-        ...(labels[hit.place] ? { labels: Object.fromEntries(LABEL_LANGS.flatMap((l) => {
-          const label = labels[hit.place][l] ?? labels[hit.place].mul;
-          return label ? [[l, label]] : [];
-        })) } : {}),
+        ...labelsOf(hit.place),
+        // A place whose site is disputed (Emmaus): its proposed sites that have coordinates, for the map.
+        ...(hit.g.sites?.length ? { sites: hit.g.sites.flatMap((q) => (coords[q] ? [{
+          place: q,
+          label: labels[q]?.en ?? labels[q]?.mul ?? q,
+          ...labelsOf(q),
+          coords: coords[q],
+        }] : [])) } : {}),
       };
     }
     eulogies[id] = {

@@ -30,7 +30,10 @@ export interface MapEntry {
   country: string;
   /** A place in several countries (PlaceInfo.countries): the entry counts and filters under each. */
   countries?: string[];
+  /** Where the entry is shown: the place's point, or its first possible site's. */
   coords: [number, number];
+  /** A place whose site is disputed (Emmaus): a marker at each possible site, named as the place is. */
+  sites?: { qid: string; label: string; labelLang: Locale | null; coords: [number, number] }[];
   typology: string | null;
   /** What the place is to the eulogy (crmedr roles), in crmedr's order. */
   roles: MentionRole[];
@@ -77,7 +80,9 @@ export function mapEntries(
     const ep = snap.eulogies[c.id];
     const onMap = (ep?.places ?? []).flatMap((pa) => {
       const place = snap.places[pa.place];
-      return place?.coords ? [{ pa, place, coords: place.coords }] : [];
+      // A disputed place is shown at its possible sites, not at its own point (Emmaus's is one of them).
+      const coords = place?.sites?.length ? place.sites[0].coords : place?.coords;
+      return place && coords ? [{ pa, place, coords }] : [];
     });
     if (!ep || onMap.length === 0) {
       unmapped++;
@@ -100,6 +105,9 @@ export function mapEntries(
         country: place.country,
         ...(place.countries ? { countries: place.countries } : {}),
         coords,
+        ...(place.sites?.length ? { sites: place.sites.map((s) => ({
+          qid: s.place, label: placeLabel(s, s.place, locale), labelLang: placeLabelLang(s, locale), coords: s.coords,
+        })) } : {}),
         typology: ep.typology,
         roles: pa.roles,
       });

@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import type { Day } from "@/lib/calendar";
-import type { PlaceInfo, PlacesSnapshot } from "@/lib/places";
+import type { PlaceInfo, PlaceSite, PlacesSnapshot } from "@/lib/places";
 import { PLACE_ROLES } from "@/lib/body-places";
 import type { CatalogEntryOut, MentionRole } from "@/lib/types";
 
@@ -90,12 +90,12 @@ const PRINTED_FORM: Record<string, "la" | "it"> = {
 };
 
 /** A place's heading: its label in the interface language, else in English, else the gazetteer's, else its QID. */
-export function placeLabel(place: PlaceInfo, qid: string, locale: Locale): string {
+export function placeLabel(place: PlaceInfo | PlaceSite, qid: string, locale: Locale): string {
   return place.labels?.[locale] || place.labels?.en || place.label || qid;
 }
 
 /** The language of `placeLabel`'s heading: the gazetteer's own label is English; a QID has none. */
-export function placeLabelLang(place: PlaceInfo, locale: Locale): Locale | null {
+export function placeLabelLang(place: PlaceInfo | PlaceSite, locale: Locale): Locale | null {
   if (place.labels?.[locale]) return locale;
   return place.labels?.en || place.label ? "en" : null;
 }

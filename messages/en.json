@@ -284,6 +284,7 @@
     "mapLoadFailed": "The map could not load.",
     "reload": "Reload",
     "read": "Read",
+    "possibleSite": "Possible site",
     "noCoordinates": "No candidate has coordinates.",
     "eulogy": {
       "loading": "Loading eulogy…",

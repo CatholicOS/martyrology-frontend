@@ -30,18 +30,22 @@ type Leaflet = typeof import("leaflet");
 type PlacedMarker = CircleMarker & { entryKey?: string };
 
 const MARKER = { color: "#7f1d1d", fillColor: "#b91c1c", radius: 6, weight: 2, fillOpacity: 0.85 };
+// A possible site of a place whose site is disputed (Emmaus): hollow and dashed, the same red.
+const SITE = { ...MARKER, fillOpacity: 0.2, dashArray: "3 3" };
 // How close a pick from the list brings the map when its marker is folded into a cluster.
 const REVEAL_ZOOM = 10;
 // A cluster zooming cannot split fans its markers out up to this many; a larger one (Rome holds
 // hundreds) lists its eulogies in a popup instead.
 const SPIDERFY_MAX = 15;
 
+type Site = NonNullable<MapEntry["sites"]>[number];
+
 /**
  * The popup: subject, ID, typology, the place's roles unless it is only the place of death, place as
- * printed and on Wikidata, and a link into the reader.
+ * printed and on Wikidata, the possible site the marker stands at (a disputed place), and a link into the reader.
  * Built as DOM, not HTML, so no text is parsed as markup.
  */
-function popupFor(e: MapEntry, edition: string, t: MapT, tRoles: RolesT, locale: Locale): HTMLElement {
+function popupFor(e: MapEntry, edition: string, t: MapT, tRoles: RolesT, locale: Locale, site?: Site): HTMLElement {
   const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, cls?: string) => {
     const n = document.createElement(tag);
     if (text) n.textContent = text;
@@ -67,6 +71,17 @@ function popupFor(e: MapEntry, edition: string, t: MapT, tRoles: RolesT, locale:
   wd.rel = "noreferrer";
   place.append(wd);
   root.append(place);
+  if (site) {
+    const at = el("p", `${t("possibleSite")}: `);
+    const link = el("a", site.label);
+    const siteLang = langOn(site.labelLang, locale);
+    if (siteLang) link.lang = siteLang;
+    link.href = `https://www.wikidata.org/wiki/${site.qid}`;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    at.append(link);
+    root.append(at);
+  }
   const read = el("a", t("read"));
   read.href = `${getPathname({ href: dayPath(edition, e.day), locale })}#${e.id}`;
   read.dataset.read = "";
@@ -162,7 +177,8 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
         const first = children[0].getLatLng();
         const onePoint = children.every((m) => m.getLatLng().equals(first));
         if (onePoint || mapRef.getZoom() >= mapRef.getMaxZoom()) {
-          const keys = children.flatMap((m) => (m.entryKey ? [m.entryKey] : []));
+          // A disputed place's sites are several markers of one entry: it is listed once.
+          const keys = [...new Set(children.flatMap((m) => (m.entryKey ? [m.entryKey] : [])))];
           onPlaceRef.current(keys);
           if (children.length <= SPIDERFY_MAX) {
             cluster.spiderfy();
@@ -190,17 +206,27 @@ export default function EulogyMap({ entries, edition, selected, onSelect, onPlac
     editionRef.current = edition;
     group.clearLayers();
     markers.current.clear();
-    const layers = entries.map((e) => {
+    const layers = entries.flatMap((e) => {
       // The popup is built when opened: thousands of markers are rebuilt as the filters change.
-      const m: PlacedMarker = L.circleMarker(e.coords, MARKER)
-        .bindPopup(() => popupFor(e, edition, tRef.current, tRolesRef.current, localeRef.current))
-        .on("click", () => onSelectRef.current(e.key));
-      m.entryKey = e.key;
-      markers.current.set(e.key, { marker: m, entry: e });
-      return m;
+      const at = (coords: [number, number], style: typeof MARKER, site?: Site) => {
+        const m: PlacedMarker = L.circleMarker(coords, style)
+          .bindPopup(() => popupFor(e, edition, tRef.current, tRolesRef.current, localeRef.current, site))
+          .on("click", () => {
+            // The reveal opens this marker: a disputed place's other sites share its key.
+            markers.current.set(e.key, { marker: m, entry: e });
+            onSelectRef.current(e.key);
+          });
+        m.entryKey = e.key;
+        return m;
+      };
+      // A disputed place (Emmaus) has a marker at each possible site; a pick from the list reveals the first.
+      const ms = e.sites ? e.sites.map((s) => at(s.coords, SITE, s)) : [at(e.coords, MARKER)];
+      markers.current.set(e.key, { marker: ms[0], entry: e });
+      return ms;
     });
     group.addLayers(layers);
-    if (entries.length > 0) map.fitBounds(entries.map((e) => e.coords), { padding: [24, 24], maxZoom: 9 });
+    const points = entries.flatMap((e) => (e.sites ? e.sites.map((s) => s.coords) : [e.coords]));
+    if (points.length > 0) map.fitBounds(points, { padding: [24, 24], maxZoom: 9 });
   }, [ready, entries, edition]);
 
   // Reveal the picked eulogy. A marker on show opens its own popup; one folded into a cluster

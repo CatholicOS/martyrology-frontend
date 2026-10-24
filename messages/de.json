@@ -284,6 +284,7 @@
     "mapLoadFailed": "Die Karte konnte nicht geladen werden.",
     "reload": "Neu laden",
     "read": "Lesen",
+    "possibleSite": "Möglicher Ort",
     "noCoordinates": "Kein Kandidat hat Koordinaten.",
     "eulogy": {
       "loading": "Elogium wird geladen…",

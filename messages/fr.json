@@ -284,6 +284,7 @@
     "mapLoadFailed": "La carte n’a pas pu se charger.",
     "reload": "Recharger",
     "read": "Lire",
+    "possibleSite": "Site possible",
     "noCoordinates": "Aucun candidat n’a de coordonnées.",
     "eulogy": {
       "loading": "Chargement de l’éloge…",
