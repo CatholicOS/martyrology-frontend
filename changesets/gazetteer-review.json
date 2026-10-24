@@ -448,89 +448,6 @@
   },
   {
    "op": "resolve_place",
-   "id": "Romæ in cœmetério",
-   "la": "Romæ in cœmetério",
-   "it": [
-    "A Roma nel cimitero di san Lorenzo sulla via Tiburtina"
-   ],
-   "occurrences": [
-    "mr:0809-romanus",
-    "mr:0823-abundius-et-irenaeus"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q3663177",
-     "label": "Catacomb of San Lorenzo",
-     "description": "catacomba di Roma",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.902817654282856,
-      12.521067579034208
-     ],
-     "types": [
-      "Q839954",
-      "Q172896"
-     ],
-     "evidence": [
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q220",
-     "label": "Rome",
-     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [
-      "Caput Mundi",
-      "Roma",
-      "Urbs Aeterna",
-      "Urbs Marmorea"
-     ],
-     "p9314": true,
-     "coords": [
-      41.893055555556,
-      12.482777777778
-     ],
-     "types": [
-      "Q902814",
-      "Q3685476",
-      "Q1200957",
-      "Q200250",
-      "Q51929311",
-      "Q1187811",
-      "Q1549591",
-      "Q747074",
-      "Q108178728",
-      "Q5119"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q3663177",
-    "country": "IT"
-   },
-   "confidence": "high",
-   "reasoning": "Research (2026-10-24, catacombs round): both eulogies say \"in the cemetery of Saint Lawrence on the Via Tiburtina\": the Catacomb of San Lorenzo. Currently Rome; Rome stays until this card is decided."
-  },
-  {
-   "op": "resolve_place",
    "id": "Romæ in cœmetério Basíllæ via Salária Vétere",
    "la": "Romæ in cœmetério Basíllæ via Salária Vétere",
    "it": [
@@ -862,6 +779,89 @@
    },
    "confidence": "high",
    "reasoning": "Research (2026-10-24, catacombs round): the cemetery the phrase names has its own item, instead of the city. Currently Rome; Rome stays until this card is decided."
+  },
+  {
+   "op": "resolve_place",
+   "id": "Romæ in cœmetério sancti Lauréntii via Tiburtína",
+   "la": "Romæ in cœmetério sancti Lauréntii via Tiburtína",
+   "it": [
+    "A Roma nel cimitero di san Lorenzo sulla via Tiburtina"
+   ],
+   "occurrences": [
+    "mr:0809-romanus",
+    "mr:0823-abundius-et-irenaeus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: resolved to Rome (Q220); the cemetery it names has a finer item"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3663177",
+     "label": "Catacomb of San Lorenzo",
+     "description": "catacomba di Roma",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.902817654282856,
+      12.521067579034208
+     ],
+     "types": [
+      "Q839954",
+      "Q172896"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q220",
+     "label": "Rome",
+     "description": "capitale d'Italia, capoluogo dell'omonima città metropolitana e della regione Lazio",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [
+      "Caput Mundi",
+      "Roma",
+      "Urbs Aeterna",
+      "Urbs Marmorea"
+     ],
+     "p9314": true,
+     "coords": [
+      41.893055555556,
+      12.482777777778
+     ],
+     "types": [
+      "Q902814",
+      "Q3685476",
+      "Q1200957",
+      "Q200250",
+      "Q51929311",
+      "Q1187811",
+      "Q1549591",
+      "Q747074",
+      "Q108178728",
+      "Q5119"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3663177",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-24, catacombs round): both eulogies say \"in the cemetery of Saint Lawrence on the Via Tiburtina\": the Catacomb of San Lorenzo. Currently Rome; Rome stays until this card is decided."
   },
   {
    "op": "resolve_place",
