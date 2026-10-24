@@ -175,8 +175,8 @@ export interface ResolvePlaceOp extends Base {
   claims: TextSays[];
   failed: string[];
   candidates: PlaceCandidate[];
-  /** The researched item and its country, or its countries when it lies in several (Jerusalem: IL, PS). */
-  suggested?: { wikidata: string; country?: string; countries?: string[] } | null;
+  /** The researched item and its country, or its countries when it lies in several (Jerusalem: IL, PS), or no_country for one in none (the Orient). */
+  suggested?: { wikidata: string; country?: string; countries?: string[]; no_country?: boolean } | null;
   jev?: PlaceJev;
   /** Set when crmedr pre-filled the decision from Jev's pick. */
   prefilled?: "jev";
