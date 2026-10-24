@@ -9,6 +9,322 @@
  "operations": [
   {
    "op": "resolve_place",
+   "id": "Ararem",
+   "la": "Ararem",
+   "it": [
+    "Saône"
+   ],
+   "occurrences": [
+    "mr:0911-patiens"
+   ],
+   "claims": [],
+   "failed": [
+    "latin: no Latin label, alias or P9314 matches"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3950167",
+     "label": "Saone",
+     "description": "frazione del comune italiano di Tione di Trento",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      46.04288,
+      10.76669
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": [
+      "it",
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q948345",
+     "label": "Saône",
+     "description": "comune francese",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Saône"
+     ],
+     "p9314": false,
+     "coords": [
+      47.224722222222,
+      6.1177777777778
+     ],
+     "types": [
+      "Q484170"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q187834",
+     "label": "Saône",
+     "description": "fiume francese",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Arar",
+      "Sauconna"
+     ],
+     "p9314": false,
+     "coords": [
+      45.72833333,
+      4.81861111
+     ],
+     "types": [
+      "Q4022"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q12736",
+     "label": "Saône-et-Loire",
+     "description": "dipartimento francese",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [
+      "Arar et Liger"
+     ],
+     "p9314": false,
+     "coords": [
+      46.666666666667,
+      4.7
+     ],
+     "types": [
+      "Q6465"
+     ],
+     "evidence": [
+      "type"
+     ]
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "suggested": {
+    "wikidata": "Q187834",
+    "country": "FR"
+   },
+   "reasoning": "The river Saône (Arar), along which, with the Rhône, Patiens sent grain to the famished towns. Split from \"Rhódanum et Ararem flúmina\" at the curator's request (2026-10-24); \"Rhódanum\" is the Rhône, already decided (Q602).",
+   "confidence": "high"
+  },
+  {
+   "op": "resolve_place",
+   "id": "Indórum",
+   "la": "Indórum",
+   "it": [
+    "Indi"
+   ],
+   "occurrences": [
+    "mr:0114-odoricus-de-portu-naonis"
+   ],
+   "claims": [],
+   "failed": [
+    "latin: no Latin label, alias or P9314 matches",
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in IN"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q1629848",
+     "label": "Indi",
+     "description": "città dell'India",
+     "country": "IN",
+     "countries": [
+      "IN"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      17.168,
+      75.967
+     ],
+     "types": [
+      "Q486972"
+     ],
+     "evidence": [
+      "it",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q668",
+     "label": "India",
+     "description": "stato dell'Asia meridionale",
+     "country": "IN",
+     "countries": [
+      "IN"
+     ],
+     "la": [
+      "India"
+     ],
+     "p9314": false,
+     "coords": [
+      22.8,
+      83
+     ],
+     "types": [
+      "Q6256",
+      "Q3624078",
+      "Q223832"
+     ],
+     "evidence": [
+      "country",
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q1415",
+     "label": "Indiana",
+     "description": "stato federato degli Stati Uniti d'America",
+     "country": "US",
+     "countries": [
+      "US"
+     ],
+     "la": [
+      "Indiana"
+     ],
+     "p9314": false,
+     "coords": [
+      39.933333333333,
+      -86.216666666667
+     ],
+     "types": [
+      "Q35657"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q6346",
+     "label": "Indianapolis",
+     "description": "città statunitense (Indiana)",
+     "country": "US",
+     "countries": [
+      "US"
+     ],
+     "la": [
+      "Indianapolis"
+     ],
+     "p9314": false,
+     "coords": [
+      39.768611111111,
+      -86.158055555556
+     ],
+     "types": [
+      "Q62049",
+      "Q1093829",
+      "Q1074523",
+      "Q1549591",
+      "Q3301053"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q129286",
+     "label": "British Raj",
+     "description": "dominio britannico sul subcontinente indiano (1858-1947)",
+     "country": null,
+     "countries": [
+      "Q8680"
+     ],
+     "la": [
+      "India Britannica"
+     ],
+     "p9314": false,
+     "coords": [
+      22.541111111111,
+      88.337777777778
+     ],
+     "types": [
+      "Q133156",
+      "Q3024240",
+      "Q1351282"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q6828",
+     "label": "UTC+05:30",
+     "description": "fuso orario in anticipo sull'UTC di 5 ore e 30 minuti",
+     "country": null,
+     "countries": [],
+     "la": [
+      "UTC+5:30"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q17272482"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q862086",
+     "label": "Indians",
+     "description": "cittadini o residenti in India",
+     "names_it": [
+      "indiani"
+     ],
+     "la": [],
+     "p9314": false,
+     "p9314_names": [],
+     "country_qids": [
+      "Q668"
+     ],
+     "admin_qids": [
+      "Q668"
+     ],
+     "present_qids": [],
+     "location_qids": [],
+     "iso_self": null,
+     "coords": null,
+     "types": [
+      "Q33829",
+      "Q231002"
+     ],
+     "countries": [
+      "IN"
+     ],
+     "country": "IN",
+     "place_type": false
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "suggested": {
+    "wikidata": "Q862086",
+    "country": "IN"
+   },
+   "reasoning": "Split from \"Tartarórum, Indórum Sinensiúmque regiónes\" (mr:0114-odoricus-de-portu-naonis) at the curator's request (2026-10-24). The Indians, as \"Indos\" is decided (Q862086).",
+   "confidence": "high"
+  },
+  {
+   "op": "resolve_place",
    "id": "Lindíssi",
    "la": "Lindíssi",
    "it": [
@@ -434,101 +750,6 @@
     "kind": "place",
     "probability": 0.49,
     "confidence": 0.32,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Mauretánia",
-   "la": "Mauretánia",
-   "it": [
-    "Mauritania"
-   ],
-   "occurrences": [
-    "mr:0712-nabor-et-felix"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q1025",
-     "label": "Mauritania",
-     "description": "stato dell'Africa Occidentale",
-     "country": "MR",
-     "countries": [
-      "MR"
-     ],
-     "la": [
-      "Mauritania"
-     ],
-     "p9314": false,
-     "coords": [
-      21,
-      -11
-     ],
-     "types": [
-      "Q672729",
-      "Q3624078",
-      "Q6256"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q309272",
-     "label": "Mauretania",
-     "description": "regione storica del Nord Africa",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      32.06,
-      -6.59179688
-     ],
-     "types": [
-      "Q3024240"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q103779220",
-     "label": "Mauritania",
-     "description": "shipwreck off the Scottish coast",
-     "country": "GB",
-     "countries": [
-      "GB"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      55.87813098118736,
-      -2.084685723500805
-     ],
-     "types": [
-      "Q12859788",
-      "Q852190"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q309272",
-    "kind": "place",
-    "probability": 0.93,
-    "confidence": 0.91,
     "model": "jev-1.14.0"
    }
   },
@@ -971,59 +1192,6 @@
   },
   {
    "op": "resolve_place",
-   "id": "Nicǽna Sýnodus",
-   "la": "Nicǽna Sýnodus",
-   "it": [
-    "Concilio di Nicea"
-   ],
-   "occurrences": [
-    "mr:1231-silvester-i"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q2277)",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q133331",
-     "label": "First Council of Nicaea",
-     "description": "I concilio ecumenico del cristianesimo, tenutosi a Nicea nel 325",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Concilium Nicaenum Primum",
-      "Concilium Oecumenicum Nicaenum"
-     ],
-     "p9314": false,
-     "coords": [
-      40.43,
-      29.72
-     ],
-     "types": [
-      "Q51645"
-     ],
-     "evidence": [
-      "it"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q133331",
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.96,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
    "id": "Novemfontánis",
    "la": "Novemfontánis",
    "it": [
@@ -1044,105 +1212,6 @@
     "kind": "place",
     "probability": 0.98,
     "confidence": 0.97,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Numídia",
-   "la": "Numídia",
-   "it": [
-    "Numidia"
-   ],
-   "occurrences": [
-    "mr:0211-plurimi-martyres-numidiae"
-   ],
-   "claims": [],
-   "failed": [
-    "country: the item has no single current country ()"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q102679",
-     "label": "Kingdom of Numidia",
-     "description": "antica regione nordafricana abitata da popolazioni berbere, in seguito anche regno (202-25 a.C.)",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Numidia"
-     ],
-     "p9314": false,
-     "coords": [
-      35.5,
-      7.3
-     ],
-     "types": [
-      "Q3024240",
-      "Q417175"
-     ],
-     "evidence": [
-      "it",
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q12901244",
-     "label": "Numidia",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Numidia"
-     ],
-     "p9314": false,
-     "coords": [
-      36,
-      6.5
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "it",
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1184302",
-     "label": "Numidia",
-     "description": "census-designated place statunitense della Pennsylvania",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      40.878333333333,
-      -76.405
-     ],
-     "types": [
-      "Q498162",
-      "Q17343829"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q12901244",
-    "kind": "place",
-    "probability": 0.9,
-    "confidence": 0.87,
     "model": "jev-1.14.0"
    }
   },
@@ -1266,228 +1335,6 @@
     "kind": "place",
     "probability": 0.97,
     "confidence": 0.96,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Occidénte",
-   "la": "Occidénte",
-   "it": [
-    "Occidente"
-   ],
-   "occurrences": [
-    "mr:0806-hormisda"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q160381",
-     "label": "Western world",
-     "description": "insieme degli Stati del mondo che condividono un retaggio culturale originariamente europeo",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Civilizatio Occidentalis",
-      "Mundus occidentalis"
-     ],
-     "p9314": false,
-     "coords": [
-      47,
-      -33
-     ],
-     "types": [
-      "Q3622002",
-      "Q16887380"
-     ],
-     "evidence": [
-      "it"
-     ]
-    },
-    {
-     "wikidata": "Q20228264",
-     "label": "Occidente",
-     "description": "town in Paraíso Municipality, State of Tabasco, Mexico",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      18.3313,
-      -93.25238
-     ],
-     "types": [
-      "Q20202352"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q110162910",
-     "label": "CEFERESO No. 2",
-     "description": "Mexican prison",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      20.555194444444446,
-      -103.1938611111111
-     ],
-     "types": [
-      "Q40357"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q109691039",
-     "label": "Federal Social Readaptation Center No. 2",
-     "description": "Mexican prison",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      20.555305555555556,
-      -103.19461111111112
-     ],
-     "types": [
-      "Q40357"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q160381",
-    "kind": "place",
-    "probability": 0.9,
-    "confidence": 0.87,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Occidéntis",
-   "la": "Occidéntis",
-   "it": [
-    "Occidente"
-   ],
-   "occurrences": [
-    "mr:0405-vincentius-ferrer"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q160381",
-     "label": "Western world",
-     "description": "insieme degli Stati del mondo che condividono un retaggio culturale originariamente europeo",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Civilizatio Occidentalis",
-      "Mundus occidentalis"
-     ],
-     "p9314": false,
-     "coords": [
-      47,
-      -33
-     ],
-     "types": [
-      "Q3622002",
-      "Q16887380"
-     ],
-     "evidence": [
-      "it"
-     ]
-    },
-    {
-     "wikidata": "Q20228264",
-     "label": "Occidente",
-     "description": "town in Paraíso Municipality, State of Tabasco, Mexico",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      18.3313,
-      -93.25238
-     ],
-     "types": [
-      "Q20202352"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q110162910",
-     "label": "CEFERESO No. 2",
-     "description": "Mexican prison",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      20.555194444444446,
-      -103.1938611111111
-     ],
-     "types": [
-      "Q40357"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q109691039",
-     "label": "Federal Social Readaptation Center No. 2",
-     "description": "Mexican prison",
-     "country": "MX",
-     "countries": [
-      "MX"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      20.555305555555556,
-      -103.19461111111112
-     ],
-     "types": [
-      "Q40357"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q160381",
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.97,
     "model": "jev-1.14.0"
    }
   },
@@ -1785,276 +1632,6 @@
   },
   {
    "op": "resolve_place",
-   "id": "Oriéntis",
-   "la": "Oriéntis",
-   "it": [
-    "Oriente"
-   ],
-   "occurrences": [
-    "mr:0707-pantaenus-alexandrinus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q205653",
-     "label": "Orient",
-     "description": "regione del mondo",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3434769"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q677348",
-     "label": "Oriente",
-     "description": "comune brasiliano",
-     "country": "BR",
-     "countries": [
-      "BR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -22.153913888889,
-      -50.093847222222
-     ],
-     "types": [
-      "Q3184121"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1471099",
-     "label": "Oriente",
-     "description": "comarca of Asturias",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.3436,
-      -4.98389
-     ],
-     "types": [
-      "Q12254339"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q205653",
-    "kind": "place",
-    "probability": 0.96,
-    "confidence": 0.95,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Oriéntis pártibus",
-   "la": "Oriéntis pártibus",
-   "it": [
-    "Oriente"
-   ],
-   "occurrences": [
-    "mr:0916-rogellus-et-servusdei"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country ()"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q205653",
-     "label": "Orient",
-     "description": "regione del mondo",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3434769"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q677348",
-     "label": "Oriente",
-     "description": "comune brasiliano",
-     "country": "BR",
-     "countries": [
-      "BR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -22.153913888889,
-      -50.093847222222
-     ],
-     "types": [
-      "Q3184121"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1471099",
-     "label": "Oriente",
-     "description": "comarca of Asturias",
-     "country": "ES",
-     "countries": [
-      "ES"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.3436,
-      -4.98389
-     ],
-     "types": [
-      "Q12254339"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q205653",
-    "kind": "place",
-    "probability": 0.95,
-    "confidence": 0.93,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Pannóniam",
-   "la": "Pannóniam",
-   "it": [
-    "Pannonia"
-   ],
-   "occurrences": [
-    "mr:0214-cyrillus-et-methodius"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q2277)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q170062",
-     "label": "Pannonia",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [
-      "Q2277"
-     ],
-     "la": [
-      "Pannonia"
-     ],
-     "p9314": false,
-     "coords": [
-      44.9,
-      19.02
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q28914708",
-     "label": "Pannonia",
-     "description": "antica regione compresa tra i fiumi Danubio e Sava",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      44.9,
-      19.02
-     ],
-     "types": [
-      "Q1620908"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1564752",
-     "label": "Pannonia",
-     "description": "province of the Byzantine Empire",
-     "country": null,
-     "countries": [
-      "Q12544"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q34876"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q170062",
-    "kind": "place",
-    "probability": 0.64,
-    "confidence": 0.52,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
    "id": "Pradénse",
    "la": "Pradénse",
    "it": [
@@ -2215,829 +1792,6 @@
     "kind": "place",
     "probability": 0.92,
     "confidence": 0.91,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Pérside",
-   "la": "Pérside",
-   "it": [
-    "Persia"
-   ],
-   "occurrences": [
-    "mr:0422-maryahb"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q18488550",
-     "label": "Persia",
-     "description": "frazione di Casaletto Ceredano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      45.29625,
-      9.62254
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q83311",
-     "label": "Persian Empire",
-     "description": "regione storica dell'Asia corrispondente all'attuale Iran",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Historia Persiae",
-      "Historia Persidis",
-      "Imperium Persarum",
-      "Regnum Persarum"
-     ],
-     "p9314": false,
-     "coords": [
-      33,
-      53
-     ],
-     "types": [
-      "Q48349",
-      "Q11514315",
-      "Q7269",
-      "Q2221906",
-      "Q7275",
-      "Q3024240"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1913014",
-     "label": "Persia",
-     "description": "city in state of Iowa, USA",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.5789,
-      -95.5706
-     ],
-     "types": [
-      "Q1093829"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3708349",
-     "label": "Persia",
-     "description": "comune statunitense di New York",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.385277777778,
-      -78.936111111111
-     ],
-     "types": [
-      "Q15127012",
-      "Q106071004"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q63158027",
-     "label": "Qajar Iran",
-     "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
-     "country": null,
-     "countries": [
-      "IR",
-      "AZ",
-      "AM"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      35.7,
-      51.416666944444
-     ],
-     "types": [
-      "Q816829",
-      "Q3024240",
-      "Q3624078"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3746183",
-     "label": "Persis",
-     "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": "IR",
-     "countries": [
-      "IR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      30,
-      52
-     ],
-     "types": [
-      "Q82794",
-      "Q3950801"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q6779",
-     "label": "UTC+04:00",
-     "description": "fuso orario in anticipo sull'UTC di 4 ore",
-     "country": null,
-     "countries": [],
-     "la": [
-      "UTC+04:00"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q17272482"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q9168",
-     "label": "Persian",
-     "description": "lingua indoeuropea",
-     "country": null,
-     "countries": [
-      "IR",
-      "BH",
-      "KW",
-      "AF",
-      "PK",
-      "TJ",
-      "UZ",
-      "RU",
-      "AE",
-      "IQ"
-     ],
-     "la": [
-      "lingua Persica"
-     ],
-     "p9314": false,
-     "coords": [
-      31,
-      56
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568",
-      "Q152559",
-      "Q1047113",
-      "Q2267705",
-      "Q215844",
-      "Q34770",
-      "Q25295",
-      "Q1208380"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q3746183",
-    "kind": "place",
-    "probability": 0.76,
-    "confidence": 0.73,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Pérsidem",
-   "la": "Pérsidem",
-   "it": [
-    "Persia"
-   ],
-   "occurrences": [
-    "mr:1005-mamlacha"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q18488550",
-     "label": "Persia",
-     "description": "frazione di Casaletto Ceredano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      45.29625,
-      9.62254
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q83311",
-     "label": "Persian Empire",
-     "description": "regione storica dell'Asia corrispondente all'attuale Iran",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Historia Persiae",
-      "Historia Persidis",
-      "Imperium Persarum",
-      "Regnum Persarum"
-     ],
-     "p9314": false,
-     "coords": [
-      33,
-      53
-     ],
-     "types": [
-      "Q48349",
-      "Q11514315",
-      "Q7269",
-      "Q2221906",
-      "Q7275",
-      "Q3024240"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1913014",
-     "label": "Persia",
-     "description": "city in state of Iowa, USA",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.5789,
-      -95.5706
-     ],
-     "types": [
-      "Q1093829"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3708349",
-     "label": "Persia",
-     "description": "comune statunitense di New York",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.385277777778,
-      -78.936111111111
-     ],
-     "types": [
-      "Q15127012",
-      "Q106071004"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q63158027",
-     "label": "Qajar Iran",
-     "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
-     "country": null,
-     "countries": [
-      "IR",
-      "AZ",
-      "AM"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      35.7,
-      51.416666944444
-     ],
-     "types": [
-      "Q816829",
-      "Q3024240",
-      "Q3624078"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3746183",
-     "label": "Persis",
-     "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": "IR",
-     "countries": [
-      "IR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      30,
-      52
-     ],
-     "types": [
-      "Q82794",
-      "Q3950801"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q6779",
-     "label": "UTC+04:00",
-     "description": "fuso orario in anticipo sull'UTC di 4 ore",
-     "country": null,
-     "countries": [],
-     "la": [
-      "UTC+04:00"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q17272482"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q9168",
-     "label": "Persian",
-     "description": "lingua indoeuropea",
-     "country": null,
-     "countries": [
-      "IR",
-      "BH",
-      "KW",
-      "AF",
-      "PK",
-      "TJ",
-      "UZ",
-      "RU",
-      "AE",
-      "IQ"
-     ],
-     "la": [
-      "lingua Persica"
-     ],
-     "p9314": false,
-     "coords": [
-      31,
-      56
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568",
-      "Q152559",
-      "Q1047113",
-      "Q2267705",
-      "Q215844",
-      "Q34770",
-      "Q25295",
-      "Q1208380"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q83311",
-    "kind": "place",
-    "probability": 0.76,
-    "confidence": 0.73,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Pérsidis",
-   "la": "Pérsidis",
-   "it": [
-    "Persia"
-   ],
-   "occurrences": [
-    "mr:0417-symeon"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q18488550",
-     "label": "Persia",
-     "description": "frazione di Casaletto Ceredano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      45.29625,
-      9.62254
-     ],
-     "types": [
-      "Q1134686"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q83311",
-     "label": "Persian Empire",
-     "description": "regione storica dell'Asia corrispondente all'attuale Iran",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Historia Persiae",
-      "Historia Persidis",
-      "Imperium Persarum",
-      "Regnum Persarum"
-     ],
-     "p9314": false,
-     "coords": [
-      33,
-      53
-     ],
-     "types": [
-      "Q48349",
-      "Q11514315",
-      "Q7269",
-      "Q2221906",
-      "Q7275",
-      "Q3024240"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1913014",
-     "label": "Persia",
-     "description": "city in state of Iowa, USA",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      41.5789,
-      -95.5706
-     ],
-     "types": [
-      "Q1093829"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3708349",
-     "label": "Persia",
-     "description": "comune statunitense di New York",
-     "country": "US",
-     "countries": [
-      "US"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      42.385277777778,
-      -78.936111111111
-     ],
-     "types": [
-      "Q15127012",
-      "Q106071004"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q63158027",
-     "label": "Qajar Iran",
-     "description": "Storia dell'Iran sotto la dinastia Qajar (1789-1925)",
-     "country": null,
-     "countries": [
-      "IR",
-      "AZ",
-      "AM"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      35.7,
-      51.416666944444
-     ],
-     "types": [
-      "Q816829",
-      "Q3024240",
-      "Q3624078"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3746183",
-     "label": "Persis",
-     "description": "regione storica, nucleo più antico della Persia, corrispondente all'attuale provincia di Fars in Iran",
-     "country": "IR",
-     "countries": [
-      "IR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      30,
-      52
-     ],
-     "types": [
-      "Q82794",
-      "Q3950801"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q6779",
-     "label": "UTC+04:00",
-     "description": "fuso orario in anticipo sull'UTC di 4 ore",
-     "country": null,
-     "countries": [],
-     "la": [
-      "UTC+04:00"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q17272482"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q9168",
-     "label": "Persian",
-     "description": "lingua indoeuropea",
-     "country": null,
-     "countries": [
-      "IR",
-      "BH",
-      "KW",
-      "AF",
-      "PK",
-      "TJ",
-      "UZ",
-      "RU",
-      "AE",
-      "IQ"
-     ],
-     "la": [
-      "lingua Persica"
-     ],
-     "p9314": false,
-     "coords": [
-      31,
-      56
-     ],
-     "types": [
-      "Q33742",
-      "Q1288568",
-      "Q152559",
-      "Q1047113",
-      "Q2267705",
-      "Q215844",
-      "Q34770",
-      "Q25295",
-      "Q1208380"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q83311",
-    "kind": "place",
-    "probability": 0.59,
-    "confidence": 0.54,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Rhódanum et Ararem flúmina",
-   "la": "Rhódanum et Ararem flúmina",
-   "it": [
-    "Rodano e la Saône"
-   ],
-   "occurrences": [
-    "mr:0911-patiens"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Research: no item. Two rivers, the Rhone (Q602) and the Saone (Q187834); no single item covers both, so cannot be one place. Split into two cards if wanted.",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: not a place",
-    "kind": "not_place",
-    "probability": 0.51,
-    "confidence": 0.35,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Rǽtiæ",
-   "la": "Rǽtiæ",
-   "it": [
-    "Rezia"
-   ],
-   "occurrences": [
-    "mr:0107-valentinus"
-   ],
-   "claims": [],
-   "failed": [
-    "country: the item has no single current country (Q1747689)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q156789",
-     "label": "Raetia",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [
-      "Raetia",
-      "Rhaetia"
-     ],
-     "p9314": false,
-     "coords": [
-      47.36,
-      8.56
-     ],
-     "types": [
-      "Q1620908",
-      "Q182547"
-     ],
-     "evidence": [
-      "it",
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3934036",
-     "label": "Raetia Prima",
-     "description": "regione geografica alpina abitata dal popolo dei Reti",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Raetia I",
-      "Raetia prima"
-     ],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q134498251",
-     "label": "Raetia",
-     "description": "",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q1620908"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q111413187",
-     "label": "Rezia",
-     "description": "hotel in Bormio, Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.46736,
-      10.3718
-     ],
-     "types": [
-      "Q27686"
-     ],
-     "evidence": [
-      "country"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q156789",
-    "kind": "place",
-    "probability": 0.91,
-    "confidence": 0.89,
     "model": "jev-1.14.0"
    }
   },
@@ -3584,221 +2338,54 @@
   },
   {
    "op": "resolve_place",
-   "id": "Sinárum",
-   "la": "Sinárum",
+   "id": "Sinensiúm",
+   "la": "Sinensiúm",
    "it": [
-    "Cina"
+    "Cinesi"
    ],
    "occurrences": [
-    "mr:0709-augustinus-zhao-rong-et-socii"
+    "mr:0114-odoricus-de-portu-naonis"
    ],
    "claims": [],
    "failed": [
-    "latin: no Latin label, alias or P9314 matches"
+    "latin: no Latin label, alias or P9314 matches",
+    "country: the Italian names no region or country (in the CEI edition: Italy); the item is in CN",
+    "type: the item is not a place"
    ],
    "candidates": [
     {
-     "wikidata": "Q148",
-     "label": "People's Republic of China",
-     "description": "stato dell'Asia orientale",
-     "country": "CN",
-     "countries": [
-      "CN"
-     ],
-     "la": [
-      "Res publica popularis Sinarum",
-      "Serica",
-      "Sinae"
-     ],
-     "p9314": false,
-     "coords": [
-      35.844722222222224,
-      103.45194444444445
-     ],
-     "types": [
-      "Q3624078",
-      "Q842112",
-      "Q859563",
-      "Q1520223",
-      "Q465613",
-      "Q118365",
-      "Q849866",
-      "Q6256",
-      "Q185145",
-      "Q10711424"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q865",
-     "label": "Taiwan",
-     "description": "stato a riconoscimento limitato dell'Asia orientale",
-     "country": "TW",
-     "countries": [
-      "TW"
-     ],
-     "la": [
-      "Res publica Sinarum",
-      "Taevania",
-      "Taivania"
-     ],
-     "p9314": false,
-     "coords": [
-      24,
-      121
-     ],
-     "types": [
-      "Q112099",
-      "Q6501447",
-      "Q3624078",
-      "Q10711424",
-      "Q1084",
-      "Q16562419",
-      "Q25449457"
-     ],
-     "evidence": [
-      "it",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q29520",
-     "label": "China",
-     "description": "regione culturale, civiltà antica e nazione in Asia orientale",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Sinae"
-     ],
-     "p9314": false,
-     "coords": [
-      35,
-      105
-     ],
-     "types": [
-      "Q3502482",
-      "Q5284036",
-      "Q28171280",
-      "Q130533870",
-      "Q2221906",
-      "Q6256",
-      "Q7275"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q13426199",
-     "label": "Republic of China",
-     "description": "stato asiatico esistito dal 1912 al 1949",
-     "country": null,
-     "countries": [
-      "CN",
-      "TW",
-      "MN"
+     "wikidata": "Q6501380",
+     "label": "Chinese people",
+     "description": "gruppo di popoli facenti parte degli abitanti della Cina",
+     "names_it": [
+      "cinesi"
      ],
      "la": [],
      "p9314": false,
-     "coords": [
-      40,
-      110
-     ],
-     "types": [
-      "Q3024240",
-      "Q11514315",
-      "Q6256"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q4194872",
-     "label": "Cina",
-     "description": "distretto indonesiano",
-     "country": "ID",
-     "countries": [
-      "ID"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -4.68724770022734,
-      120.28864879986263
-     ],
-     "types": [
-      "Q3700011"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q19188",
-     "label": "mainland China",
-     "description": "termine politico-geografico, che indica il territorio della Repubblica Popolare Cinese",
-     "country": "CN",
-     "countries": [
-      "CN"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      36,
-      106
-     ],
-     "types": [
-      "Q82794",
-      "Q3502482",
-      "Q1048835",
-      "Q1140140"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q216923",
-     "label": "Chinese Taipei",
-     "description": "nome utilizzato da Taiwan nelle competizioni sportive internazionali",
-     "country": "TW",
-     "countries": [
-      "TW"
-     ],
-     "la": [
-      "TPE"
-     ],
-     "p9314": false,
+     "p9314_names": [],
+     "country_qids": [],
+     "admin_qids": [],
+     "present_qids": [],
+     "location_qids": [],
+     "iso_self": null,
      "coords": null,
      "types": [
-      "Q82799",
-      "Q3337001",
-      "Q26213387"
+      "Q33829",
+      "Q41710"
      ],
-     "evidence": [
-      "type"
-     ]
+     "countries": [],
+     "country": null,
+     "place_type": false
     }
    ],
    "decision": null,
    "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q29520",
-    "kind": "place",
-    "probability": 0.74,
-    "confidence": 0.7,
-    "model": "jev-1.14.0"
-   }
+   "suggested": {
+    "wikidata": "Q6501380",
+    "country": "CN"
+   },
+   "reasoning": "Split from \"Tartarórum, Indórum Sinensiúmque regiónes\" (mr:0114-odoricus-de-portu-naonis) at the curator's request (2026-10-24). The Chinese people (Q6501380); Odoric reached Khanbaliq (Beijing).",
+   "confidence": "high"
   },
   {
    "op": "resolve_place",
@@ -4231,377 +2818,6 @@
   },
   {
    "op": "resolve_place",
-   "id": "Suebórum",
-   "la": "Suebórum",
-   "it": [
-    "Svevi"
-   ],
-   "occurrences": [
-    "mr:0213-gosbertus"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q1048918)",
-    "type: the item is not a place"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q155085",
-     "label": "Suebi",
-     "description": "antico popolo germanico",
-     "country": null,
-     "countries": [
-      "Q1048918"
-     ],
-     "la": [
-      "Suebi",
-      "Suevi"
-     ],
-     "p9314": false,
-     "coords": [
-      53.5,
-      11.5
-     ],
-     "types": [
-      "Q4204501"
-     ],
-     "evidence": [
-      "it"
-     ]
-    },
-    {
-     "wikidata": "Q11812551",
-     "label": "Swabia",
-     "description": "regione geografica",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [
-      "Suebia"
-     ],
-     "p9314": false,
-     "coords": [
-      48.4,
-      10
-     ],
-     "types": [
-      "Q1620908"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q4981059",
-     "label": "Mittelschwaben",
-     "description": "regione geografica della Germania",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1411800",
-     "label": "Austrian Swabia",
-     "description": "",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q3024240"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q10557",
-     "label": "Swabia",
-     "description": "distretto governativo del Land tedesco della Baviera",
-     "country": "DE",
-     "countries": [
-      "DE"
-     ],
-     "la": [
-      "Suebia"
-     ],
-     "p9314": false,
-     "coords": [
-      48.5,
-      10.5
-     ],
-     "types": [
-      "Q22721",
-      "Q464235"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q165192",
-     "label": "Swedes",
-     "description": "gruppo etnico",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q41710"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "suggested": {
-    "wikidata": "Q165192",
-    "country": "SE"
-   },
-   "confidence": "low",
-   "reasoning": "Held back: Jev picks the Suebi, but the research (approved by the curator) has the Swedes, Gosbertus being a missionary bishop in Sweden. Gosbert of Osnabruck was a missionary bishop in Sweden (11th c.), so Swedes rather than Swabians (Q155085 Suebi).",
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q155085",
-    "kind": "people",
-    "probability": 0.97,
-    "confidence": 0.96,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Sýriæ",
-   "la": "Sýriæ",
-   "it": [
-    "siriana"
-   ],
-   "occurrences": [
-    "mr:0411-isaac"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q858",
-     "label": "Syria",
-     "description": "stato del Vicino Oriente",
-     "country": "SY",
-     "countries": [
-      "SY"
-     ],
-     "la": [
-      "Syria"
-     ],
-     "p9314": false,
-     "coords": [
-      35.216667,
-      38.583333
-     ],
-     "types": [
-      "Q6256",
-      "Q3624078",
-      "Q51576574"
-     ],
-     "evidence": [
-      "la",
-      "country",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q207118",
-     "label": "Roman Syria",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [
-      "LB",
-      "SY",
-      "TR"
-     ],
-     "la": [
-      "Provincia Syria",
-      "Syria"
-     ],
-     "p9314": false,
-     "coords": [
-      36.2,
-      36.15
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q13415123",
-     "label": "Syria",
-     "description": "regione storica",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Syria"
-     ],
-     "p9314": false,
-     "coords": [
-      34,
-      36
-     ],
-     "types": [
-      "Q82794",
-      "Q1620908"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3076765",
-     "label": "Ottoman Syria",
-     "description": "dominio ottomano sulla Siria (1516-1918)",
-     "country": null,
-     "countries": [
-      "Q12560"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      34,
-      37
-     ],
-     "types": [
-      "Q1620908",
-      "Q161243",
-      "Q11514315",
-      "Q1993723"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q7075820",
-     "label": "Occupied Enemy Territory Administration",
-     "description": "amministrazione militare in Medio Oriente (1917-1920)",
-     "country": null,
-     "countries": [
-      "IL",
-      "SY",
-      "LB",
-      "JO"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      33.833333333333336,
-      35.833333333333336
-     ],
-     "types": [
-      "Q19953632",
-      "Q2577883"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3934822",
-     "label": "Damascus eyalet",
-     "description": "provincia dell'Impero ottomano (1516-1865)",
-     "country": null,
-     "countries": [
-      "Q12560"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      33.51305555555555,
-      36.29194444444445
-     ],
-     "types": [
-      "Q44565"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q33538",
-     "label": "Syriac",
-     "description": "lingua aramaica",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Syriace",
-      "lingua Syriaca"
-     ],
-     "p9314": false,
-     "coords": [
-      37.05,
-      41.25
-     ],
-     "types": [
-      "Q33742",
-      "Q839470",
-      "Q2315359"
-     ],
-     "evidence": []
-    },
-    {
-     "wikidata": "Q24064304",
-     "label": "Syria",
-     "description": "albedo marziano",
-     "country": null,
-     "countries": [],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      -19.78,
-      260
-     ],
-     "types": [
-      "Q1051581"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q13415123",
-    "kind": "place",
-    "probability": 0.69,
-    "confidence": 0.65,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
    "id": "Tabanénsi cœnóbio",
    "la": "Tabanénsi cœnóbio",
    "it": [
@@ -4627,28 +2843,153 @@
   },
   {
    "op": "resolve_place",
-   "id": "Tartarórum, Indórum Sinensiúmque regiónes",
-   "la": "Tartarórum, Indórum Sinensiúmque regiónes",
+   "id": "Tartarórum",
+   "la": "Tartarórum",
    "it": [
-    "regioni dei Tartari, degli Indi e dei Cinesi"
+    "Tartari"
    ],
    "occurrences": [
     "mr:0114-odoricus-de-portu-naonis"
    ],
    "claims": [],
    "failed": [
-    "no candidates found"
+    "latin: no Latin label, alias or P9314 matches",
+    "country: the item has no single current country ()",
+    "type: the item is not a place"
    ],
-   "candidates": [],
+   "candidates": [
+    {
+     "wikidata": "Q83971",
+     "label": "Tartary",
+     "description": "regione storica del centro e nord Asia nel Medioevo",
+     "country": null,
+     "countries": [],
+     "la": [
+      "Tartaria"
+     ],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q1620908"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q788",
+     "label": "Arctic Ocean",
+     "description": "mare situato attorno al Polo Nord, circondato dalle regioni settentrionali dell'Europa, dell'Asia e dell'America",
+     "country": null,
+     "countries": [],
+     "la": [
+      "Mare Arcticum",
+      "Mare Tartaricum",
+      "Oceanus Arcticus"
+     ],
+     "p9314": false,
+     "coords": [
+      79.13864,
+      -3.23897
+     ],
+     "types": [
+      "Q9430",
+      "Q1973404"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q3642086",
+     "label": "Tărtăria",
+     "description": "villaggio della Romania nel distretto di Alba",
+     "country": "RO",
+     "countries": [
+      "RO"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      45.934105,
+      23.414085
+     ],
+     "types": [
+      "Q532"
+     ],
+     "evidence": [
+      "type"
+     ]
+    },
+    {
+     "wikidata": "Q25285",
+     "label": "Tatar",
+     "description": "lingua turcica",
+     "country": "RU",
+     "countries": [
+      "RU"
+     ],
+     "la": [
+      "Tatarice",
+      "lingua Tatarica"
+     ],
+     "p9314": false,
+     "coords": [
+      55.8,
+      49.11666666666667
+     ],
+     "types": [
+      "Q1288568",
+      "Q33742"
+     ],
+     "evidence": []
+    },
+    {
+     "wikidata": "Q41975",
+     "label": "Mongols",
+     "description": "popolazione originaria della Mongolia",
+     "names_it": [
+      "mongoli"
+     ],
+     "la": [
+      "Mongoli"
+     ],
+     "p9314": false,
+     "p9314_names": [],
+     "country_qids": [
+      "Q148",
+      "Q711",
+      "Q159"
+     ],
+     "admin_qids": [
+      "Q6809",
+      "Q3953",
+      "Q6585",
+      "Q6838"
+     ],
+     "present_qids": [],
+     "location_qids": [],
+     "iso_self": null,
+     "coords": null,
+     "types": [
+      "Q41710"
+     ],
+     "countries": [
+      "CN",
+      "MN",
+      "RU"
+     ],
+     "country": null,
+     "place_type": false
+    }
+   ],
    "decision": null,
    "edited": null,
-   "reasoning": "Research: no item. A vague set of regions (Tartars, Indians, Chinese) traversed by Odoric; not one place. No item; new item not warranted.",
-   "jev": {
-    "kind": "place",
-    "probability": 0.91,
-    "confidence": 0.88,
-    "model": "jev-1.14.0"
-   }
+   "suggested": {
+    "wikidata": "Q83971"
+   },
+   "reasoning": "Split from \"Tartarórum, Indórum Sinensiúmque regiónes\" (mr:0114-odoricus-de-portu-naonis) at the curator's request (2026-10-24). \"The regions of the Tartars\": Tartary (Q83971), the medieval name for the Mongol lands of Central and North Asia Odoric crossed; no single present-day country. The people, the Mongols (Q41975), is the alternative; not the Tatars of Tatarstan.",
+   "confidence": "medium"
   },
   {
    "op": "resolve_place",
@@ -4672,407 +3013,6 @@
     "kind": "place",
     "probability": 0.92,
     "confidence": 0.89,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Thebáide Ægýpti",
-   "la": "Thebáide Ægýpti",
-   "it": [
-    "Tebaide in Egitto"
-   ],
-   "occurrences": [
-    "mr:0728-martyres-thebaidis"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q11768)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q768515",
-     "label": "Thebaid",
-     "description": "regione dell'antico Egitto con capitale Tebe",
-     "country": null,
-     "countries": [
-      "Q11768"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      23.936209,
-      32.954304
-     ],
-     "types": [
-      "Q3455524"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3982379",
-     "label": "Thebaid",
-     "description": "affresco di Buonamico Buffalmacco",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.7242,
-      10.3941
-     ],
-     "types": [
-      "Q3305213"
-     ],
-     "evidence": [
-      "it"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q768515",
-    "kind": "place",
-    "probability": 0.99,
-    "confidence": 0.98,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Thebáidem",
-   "la": "Thebáidem",
-   "it": [
-    "Tebaide"
-   ],
-   "occurrences": [
-    "mr:0802-eusebius"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q11768)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q768515",
-     "label": "Thebaid",
-     "description": "regione dell'antico Egitto con capitale Tebe",
-     "country": null,
-     "countries": [
-      "Q11768"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      23.936209,
-      32.954304
-     ],
-     "types": [
-      "Q3455524"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3982379",
-     "label": "Thebaid",
-     "description": "affresco di Buonamico Buffalmacco",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.7242,
-      10.3941
-     ],
-     "types": [
-      "Q3305213"
-     ],
-     "evidence": [
-      "it",
-      "country"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q768515",
-    "kind": "place",
-    "probability": 0.98,
-    "confidence": 0.97,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Thebáidem in Ægýpto",
-   "la": "Thebáidem in Ægýpto",
-   "it": [
-    "Tebaide in Egitto"
-   ],
-   "occurrences": [
-    "mr:0117-antonius"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (Q11768)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q768515",
-     "label": "Thebaid",
-     "description": "regione dell'antico Egitto con capitale Tebe",
-     "country": null,
-     "countries": [
-      "Q11768"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      23.936209,
-      32.954304
-     ],
-     "types": [
-      "Q3455524"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q3982379",
-     "label": "Thebaid",
-     "description": "affresco di Buonamico Buffalmacco",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.7242,
-      10.3941
-     ],
-     "types": [
-      "Q3305213"
-     ],
-     "evidence": [
-      "it"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "accept",
-    "wikidata": "Q768515",
-    "kind": "place",
-    "probability": 0.99,
-    "confidence": 0.98,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Thráciam",
-   "la": "Thráciam",
-   "it": [
-    "Tracia"
-   ],
-   "occurrences": [
-    "mr:0622-eusebius"
-   ],
-   "claims": [],
-   "failed": [
-    "latin: no Latin label, alias or P9314 matches",
-    "country: the item has no single current country (BG, GR, TR)"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q41741",
-     "label": "Thrace",
-     "description": "regione storico-geografica",
-     "country": null,
-     "countries": [
-      "BG",
-      "GR",
-      "TR"
-     ],
-     "la": [
-      "Thrace",
-      "Thracia"
-     ],
-     "p9314": false,
-     "coords": [
-      42,
-      26
-     ],
-     "types": [
-      "Q1620908",
-      "Q28171280"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q635058",
-     "label": "Thracia",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [
-      "BG",
-      "GR",
-      "TR"
-     ],
-     "la": [
-      "Thracia"
-     ],
-     "p9314": false,
-     "coords": [
-      42.5,
-      22.5
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "it",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q171323",
-     "label": "East Thrace",
-     "description": "portion of Turkey that is located in South-eastern Europe",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [
-      "Thracia orientalis"
-     ],
-     "p9314": false,
-     "coords": [
-      41.15361111,
-      27.36666667
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q1192701",
-     "label": "Thrace",
-     "description": "regione della Grecia",
-     "country": "GR",
-     "countries": [
-      "GR"
-     ],
-     "la": [
-      "Thrace"
-     ],
-     "p9314": false,
-     "coords": [
-      41.1,
-      25.41666667
-     ],
-     "types": [
-      "Q82794",
-      "Q1620908",
-      "Q1048163"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q658289",
-     "label": "Diocese of Thrace",
-     "description": "suddivisione amministrativa del tardo Impero romano",
-     "country": null,
-     "countries": [
-      "Q1747689"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q1235532"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q14211207",
-     "label": "Tracia settentrionale",
-     "description": "",
-     "country": "BG",
-     "countries": [
-      "BG"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q5626895",
-     "label": "Gümüşler",
-     "description": "town in Niğde, Turkey",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      37.9925,
-      34.77
-     ],
-     "types": [
-      "Q815324"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q635058",
-    "kind": "place",
-    "probability": 0.59,
-    "confidence": 0.53,
     "model": "jev-1.14.0"
    }
   },
@@ -5213,150 +3153,6 @@
     "kind": "place",
     "probability": 0.93,
     "confidence": 0.92,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "Tunquinénsi, Annamiénsi et Cocinchinénsi Asiæ regiónibus",
-   "la": "Tunquinénsi, Annamiénsi et Cocinchinénsi Asiæ regiónibus",
-   "it": [
-    "varie regioni del Viet Nam"
-   ],
-   "occurrences": [
-    "mr:1124-andreas-dung-lac-et-socii"
-   ],
-   "claims": [],
-   "failed": [
-    "no item has the Italian name of every variant"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q48",
-     "label": "Asia",
-     "description": "continente della Terra",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Asia"
-     ],
-     "p9314": false,
-     "coords": [
-      43.681111111111115,
-      87.33111111111111
-     ],
-     "types": [
-      "Q5107",
-      "Q2418896",
-      "Q82794"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q210718",
-     "label": "Asia",
-     "description": "provincia romana",
-     "country": null,
-     "countries": [],
-     "la": [
-      "Asia"
-     ],
-     "p9314": false,
-     "coords": [
-      38.4,
-      28.3
-     ],
-     "types": [
-      "Q182547"
-     ],
-     "evidence": [
-      "la",
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q11708",
-     "label": "Southeast Asia",
-     "description": "regione geografica dell'Asia",
-     "country": null,
-     "countries": [
-      "VN",
-      "LA",
-      "KH",
-      "TH",
-      "MM",
-      "MY",
-      "SG",
-      "PH",
-      "ID",
-      "TL",
-      "PG",
-      "TW",
-      "CN",
-      "IN",
-      "LK",
-      "AU",
-      "PW",
-      "US",
-      "BD"
-     ],
-     "la": [
-      "Asia Meridiorientalis"
-     ],
-     "p9314": false,
-     "coords": [
-      12,
-      105.1
-     ],
-     "types": [
-      "Q82794"
-     ],
-     "evidence": [
-      "type"
-     ]
-    },
-    {
-     "wikidata": "Q27275",
-     "label": "Central Asia",
-     "description": "regione dell'Asia",
-     "country": null,
-     "countries": [
-      "KZ",
-      "KG",
-      "UZ",
-      "TJ",
-      "TM",
-      "AF",
-      "CN"
-     ],
-     "la": [
-      "Media Asia"
-     ],
-     "p9314": false,
-     "coords": [
-      45.3,
-      63.9
-     ],
-     "types": [
-      "Q82794",
-      "Q3502482"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "jev": {
-    "decision": "edit",
-    "wikidata": "Q11708",
-    "kind": "place",
-    "probability": 0.64,
-    "confidence": 0.55,
     "model": "jev-1.14.0"
    }
   },
@@ -5845,60 +3641,6 @@
     "kind": "place",
     "probability": 0.49,
     "confidence": 0.23,
-    "model": "jev-1.14.0"
-   }
-  },
-  {
-   "op": "resolve_place",
-   "id": "basílicam sancti Symphoriáni mártyris",
-   "la": "basílicam sancti Symphoriáni mártyris",
-   "it": [
-    "basilica di san Sinforiano martire"
-   ],
-   "occurrences": [
-    "mr:0803-euphronius"
-   ],
-   "claims": [],
-   "failed": [
-    "no candidates found"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q14627585",
-     "label": "Abbey of St. Symphorian, Autun",
-     "description": "abbey located in Saône-et-Loire, in France",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      46.96805556,
-      4.315
-     ],
-     "types": [
-      "Q160742"
-     ],
-     "evidence": [
-      "type"
-     ]
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "reasoning": "Basilica of St Symphorian built by Euphronius at Autun; the Abbey of St Symphorian grew on the martyr's tomb, but the identity is not certain.",
-   "suggested": {
-    "wikidata": "Q14627585",
-    "country": "FR"
-   },
-   "confidence": "low",
-   "jev": {
-    "decision": "reject",
-    "reason": "Jev: not a place",
-    "kind": "not_place",
-    "probability": 0.64,
-    "confidence": 0.52,
     "model": "jev-1.14.0"
    }
   },
