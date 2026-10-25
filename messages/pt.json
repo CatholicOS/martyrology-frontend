@@ -629,6 +629,25 @@
       "acceptSelected": "Aceitar a seleção",
       "labels": "rótulos"
     },
+    "relabel": {
+      "current": "Sujeitos atuais:",
+      "candidates": "Sujeitos para escolher",
+      "currentSet": "os sujeitos atuais",
+      "from": "de {id}",
+      "score": "pontuação {score}",
+      "proposed": "os sujeitos propostos",
+      "keepWhat": "manter os sujeitos atuais",
+      "suggests": "Jev sugere: {what} ({confidence}%)",
+      "take": "Seguir a sugestão",
+      "acceptSelected": "Aceitar a seleção",
+      "keep": "Manter os sujeitos atuais",
+      "prefilled": "preenchido pelo Jev",
+      "lang": {
+        "la": "Latim",
+        "en": "Inglês",
+        "it": "Italiano"
+      }
+    },
     "eulogyGroup": "Elogio {eulogy}"
   },
   "Docs": {

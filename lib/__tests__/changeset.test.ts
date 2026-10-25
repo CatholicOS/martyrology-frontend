@@ -36,6 +36,32 @@ describe("changeset", () => {
     expect(op.candidates.map((c) => c.evidence)).toEqual([[], ["type"]]);
   });
 
+  it("parses a relabel op", () => {
+    const relabel = { op: "relabel", id: "mr:0101-x", uid: "labels:mr:0101-x",
+      current: { la: "Sanctus X", en: "Saint X", it: "San X" },
+      labels: { la: "Sanctus X Romanus", en: "Saint X of Rome", it: "San X di Roma" },
+      candidates: [
+        { labels: { la: "Sanctus X Romanus", en: "Saint X of Rome", it: "San X di Roma" }, from_id: "mr:0101-x-romae" },
+        { labels: { la: "Sanctus X", en: "Saint X", it: "San X" }, from_id: null },
+      ],
+      jev: { decision: "accept", probability: 0.93, confidence: 0.9, model: "jev", flags: [], scores: [2.6, 0.4] },
+      prefilled: "jev", decision: "accept" };
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" }, operations: [relabel] }));
+    const op = cs.operations[0] as Extract<Op, { op: "relabel" }>;
+    expect(op.candidates.map((c) => c.from_id)).toEqual(["mr:0101-x-romae", null]);
+    expect(op.jev?.scores).toEqual([2.6, 0.4]);
+    expect(isAdjudicable(op)).toBe(true);
+    expect(opId(op)).toBe("labels:mr:0101-x");
+    const edited = { labels: { la: "Sanctus X Ostiensis", en: "Saint X of Ostia", it: "San X di Ostia" } };
+    expect(exportChangeset(cs, { "labels:mr:0101-x": { decision: "edit", edited } }).operations[0]).toMatchObject({ decision: "edit", edited });
+  });
+
+  it("parses an old change-set without a relabel op", () => {
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" },
+      operations: [{ op: "rename", id: "mr:0101-x", new_id: "mr:0101-x-romae", decision: null }] }));
+    expect(cs.operations.map((o) => o.op)).toEqual(["rename"]);
+  });
+
   it("parseChangeset rejects wrong schema", () => {
     expect(() => parseChangeset(JSON.stringify({ schema: "nope", operations: [] }))).toThrow();
   });

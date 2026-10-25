@@ -43,6 +43,8 @@ export interface EditedFields {
   start?: number;
   end?: number;
   form?: string;
+  /** relabel: the eulogy's subjects in three languages (null leaves one empty). */
+  labels?: SubjectLabels;
 }
 
 export interface DecisionRecord {
@@ -121,6 +123,44 @@ export interface RenameOp extends Base {
   subject_la?: string;
   candidates?: RenameCandidate[];
   jev?: RenameJev | null;
+}
+
+/** A eulogy's subjects in Latin, English and Italian; null where a language has none. */
+export interface SubjectLabels {
+  la: string | null;
+  en: string | null;
+  it: string | null;
+}
+
+/** One subjects set a relabel may take: a candidate rename's labels, or the current set (`from_id` null, always last). */
+export interface RelabelCandidate {
+  labels: SubjectLabels;
+  from_id: string | null;
+}
+
+/** Jev's pick on a relabel card: never a decision by itself. `reject` keeps the current subjects. */
+export interface RelabelJev {
+  decision?: "accept" | "edit" | "reject";
+  /** An edit's chosen labels. */
+  labels?: SubjectLabels;
+  probability?: number;
+  confidence?: number;
+  model: string;
+  flags?: string[];
+  /** One score per candidate, in candidate order. */
+  scores?: number[];
+}
+
+/** The subjects shown for a eulogy (crmedr subject identity, the rename card): current, proposed, the choices. */
+export interface RelabelOp extends Base {
+  op: "relabel";
+  id: string;
+  current: SubjectLabels;
+  labels: SubjectLabels;
+  candidates: RelabelCandidate[];
+  jev?: RelabelJev | null;
+  /** Set when crmedr pre-filled the decision from Jev's pick. */
+  prefilled?: "jev";
 }
 
 export interface DeleteOp extends Base {
@@ -414,6 +454,7 @@ export interface UnknownOp extends Base {
 
 export type Op =
   | RenameOp
+  | RelabelOp
   | DeleteOp
   | MergeOp
   | ResolvePlaceOp
@@ -445,6 +486,8 @@ export function parseChangeset(text: string): Changeset {
   }
   // A place candidate without evidence (a hand-built crmedr card) would crash every PlaceCard.
   const operations = (cs.operations as Op[]).map((op) => {
+    // A relabel without candidates (a hand-built card) gets an empty list, as a place without evidence does.
+    if (op.op === "relabel" && !Array.isArray((op as RelabelOp).candidates)) return { ...op, candidates: [] } as RelabelOp;
     if (op.op !== "resolve_place" || !Array.isArray(op.candidates)) return op;
     const place = op as ResolvePlaceOp;
     return { ...place, candidates: place.candidates.map((c) => ({ ...c, evidence: c.evidence ?? [] })) };
@@ -455,6 +498,7 @@ export function parseChangeset(text: string): Changeset {
 export function isAdjudicable(op: Op): boolean {
   return (
     op.op === "rename" ||
+    op.op === "relabel" ||
     op.op === "delete" ||
     op.op === "merge" ||
     op.op === "resolve_place" ||

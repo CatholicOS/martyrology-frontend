@@ -629,6 +629,25 @@
       "acceptSelected": "Auswahl annehmen",
       "labels": "Bezeichnungen"
     },
+    "relabel": {
+      "current": "Aktuelle Subjekte:",
+      "candidates": "Subjekte zur Auswahl",
+      "currentSet": "die aktuellen Subjekte",
+      "from": "aus {id}",
+      "score": "Wert {score}",
+      "proposed": "die vorgeschlagenen Subjekte",
+      "keepWhat": "die aktuellen Subjekte behalten",
+      "suggests": "Jev schlägt vor: {what} ({confidence} %)",
+      "take": "Vorschlag übernehmen",
+      "acceptSelected": "Auswahl annehmen",
+      "keep": "Aktuelle Subjekte behalten",
+      "prefilled": "von Jev vorausgefüllt",
+      "lang": {
+        "la": "Latein",
+        "en": "Englisch",
+        "it": "Italienisch"
+      }
+    },
     "eulogyGroup": "Elogium {eulogy}"
   },
   "Docs": {

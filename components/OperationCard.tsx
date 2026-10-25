@@ -10,6 +10,7 @@ import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PersonCard from "@/components/PersonCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
+import RelabelCard from "@/components/RelabelCard";
 import RenameCard from "@/components/RenameCard";
 import { decisionClass as cardClass, decisionLabel } from "@/components/decisionClass";
 import {
@@ -18,6 +19,7 @@ import {
   opId,
   type Op,
   type RenameOp,
+  type RelabelOp,
   type DeleteOp,
   type MergeOp,
   type DecisionRecord,
@@ -78,6 +80,10 @@ export default function OperationCard(props: Props) {
   // A subject-identity rename with ranked candidates (crmedr subject identity).
   if (props.op.op === "rename" && (props.op as RenameOp).candidates?.length) {
     return <RenameCard {...props} op={props.op as RenameOp} />;
+  }
+  // A eulogy's subjects in three languages (crmedr subject identity, the rename card).
+  if (props.op.op === "relabel") {
+    return <RelabelCard {...props} op={props.op as RelabelOp} />;
   }
   return <IdOperationCard {...props} />;
 }

@@ -66,6 +66,8 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   // Names of the two sites, and a format made only of arguments and a dash; "c." for circa in Spanish and Portuguese too.
   // "record: {field}": Italian says "record" too.
   "Review.rename.flag.record": ["it"],
+  // The relabel card's language fields: French Latin.
+  "Review.relabel.lang.la": ["fr"],
   "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.circa": ["es", "pt"],
 };
 

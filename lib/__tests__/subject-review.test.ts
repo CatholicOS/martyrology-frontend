@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { opId, type Op, type RenameOp, type ResolvePersonOp, type PersonCandidate } from "@/lib/changeset";
+import { opId, type Op, type RelabelOp, type RenameOp, type ResolvePersonOp, type PersonCandidate } from "@/lib/changeset";
 import {
   companionProp, groupByEulogy, personAppliable, personDefaultQid, personJevRecord,
-  renameChoiceRecord, renameJevRecord, resolvedTarget, sourceKey,
+  relabelChoiceRecord, relabelJevRecord, renameChoiceRecord, renameJevRecord, resolvedTarget, sourceKey,
 } from "@/lib/subject-review";
 
 const rename = (id: string, newId: string): RenameOp => ({
@@ -32,6 +32,14 @@ const person = (eulogy: string, id: string): ResolvePersonOp => ({
   candidates: [cand("Q1", ["human", "status"], "search"), cand("Q2", ["human", "status"], "companion:P3373"), cand("Q3", [], "title")],
 });
 const POP = person("mr:0101-a", "mr:0101-a|A");
+
+const CURRENT = { la: "Sanctus A", en: "Saint A", it: "Sant'A" };
+const PROPOSED = { la: "Sanctus A Romanus", en: "Saint A of Rome", it: "Sant'A di Roma" };
+const OTHER = { la: "Sanctus A Ostiensis", en: "Saint A of Ostia", it: "Sant'A di Ostia" };
+const relabel = (id: string): RelabelOp => ({
+  op: "relabel", id, uid: `labels:${id}`, current: CURRENT, labels: PROPOSED, decision: null,
+  candidates: [{ labels: PROPOSED, from_id: `${id}-romae` }, { labels: OTHER, from_id: `${id}-ostiae` }, { labels: CURRENT, from_id: null }],
+});
 
 describe("subject review", () => {
   it("a rename choice accepts the proposed ID or edits to another candidate", () => {
@@ -97,6 +105,37 @@ describe("subject review", () => {
     expect(companionProp("companion:P3373")).toBe("P3373");
     expect(companionProp("search")).toBeNull();
     expect(companionProp(undefined)).toBeNull();
+  });
+
+  it("groups rename, relabel, persons", () => {
+    const ops: Op[] = [person("mr:0101-a", "mr:0101-a|A"), relabel("mr:0101-a"), rename("mr:0101-a", "mr:0101-aa"), relabel("mr:0102-b")];
+    const groups = groupByEulogy(ops);
+    expect(groups.map((g) => g.ops.map(opId))).toEqual([
+      ["subject:mr:0101-a", "labels:mr:0101-a", "mr:0101-a|A"], ["labels:mr:0102-b"],
+    ]);
+    expect(groups.map((g) => g.eulogy)).toEqual(["mr:0101-a", "mr:0102-b"]);
+  });
+
+  it("renders a eulogy with no relabel op", () => {
+    const groups = groupByEulogy([person("mr:0101-a", "mr:0101-a|A"), rename("mr:0101-a", "mr:0101-aa")]);
+    expect(groups.map((g) => g.ops.map(opId))).toEqual([["subject:mr:0101-a", "mr:0101-a|A"]]);
+  });
+
+  it("a relabel choice: the proposal accepts, the current set rejects, another candidate edits", () => {
+    const op = relabel("mr:0101-a");
+    expect(relabelChoiceRecord(op, 0)).toEqual({ decision: "accept" });
+    expect(relabelChoiceRecord(op, 2)).toEqual({ decision: "reject" });
+    expect(relabelChoiceRecord(op, 1)).toEqual({ decision: "edit", edited: { labels: OTHER } });
+  });
+
+  it("Jev's relabel pick: accept, reject, or an edit to its labels", () => {
+    const op = relabel("mr:0101-a");
+    const jev = { probability: 0.9, confidence: 0.9, model: "jev", flags: [], scores: [] };
+    expect(relabelJevRecord(op)).toBeNull();
+    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "accept" } })).toEqual({ decision: "accept" });
+    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "reject" } })).toEqual({ decision: "reject" });
+    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "edit", labels: OTHER } })).toEqual({ decision: "edit", edited: { labels: OTHER } });
+    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "edit" } })).toBeNull();
   });
 
   it("groups a eulogy's ops with the rename first", () => {

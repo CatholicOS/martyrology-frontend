@@ -1,4 +1,4 @@
-import type { DecisionRecord, Op, PersonCandidate, RenameOp, ResolvePersonOp } from "@/lib/changeset";
+import type { DecisionRecord, Op, PersonCandidate, RelabelOp, RenameOp, ResolvePersonOp, SubjectLabels } from "@/lib/changeset";
 
 /** What a plain accept on this op applies (a person card's default item, a rename's proposed ID); null for other ops. */
 export function resolvedTarget(op: Op): string | null {
@@ -23,6 +23,37 @@ export function renameJevRecord(op: RenameOp): DecisionRecord | null {
   const id = jev.new_id;
   if (!id || !op.candidates?.some((c) => c.new_id === id)) return null;
   return renameChoiceRecord(op, id);
+}
+
+const sameLabels = (a: SubjectLabels, b: SubjectLabels) => a.la === b.la && a.en === b.en && a.it === b.it;
+
+/** Where a relabel record sits among the candidates: the proposal (accept), the current set (reject), or edited labels; -1 when none. */
+export function relabelChoiceIndex(op: RelabelOp, d?: DecisionRecord | null): number {
+  const target =
+    !d || d.decision === "accept" ? op.labels : d.decision === "reject" ? op.current : (d.edited?.labels ?? null);
+  if (!target) return -1;
+  if (d?.decision === "reject") {
+    const current = op.candidates.findIndex((c) => c.from_id === null);
+    if (current >= 0) return current;
+  }
+  return op.candidates.findIndex((c) => sameLabels(c.labels, target));
+}
+
+/** The relabel choice a click records: the proposed labels accept, the current set rejects, another candidate edits. */
+export function relabelChoiceRecord(op: RelabelOp, index: number): DecisionRecord {
+  const c = op.candidates[index];
+  if (!c || sameLabels(c.labels, op.labels)) return { decision: "accept" };
+  if (c.from_id === null) return { decision: "reject" };
+  return { decision: "edit", edited: { labels: c.labels } };
+}
+
+/** What taking Jev's relabel pick records; null when Jev gave none, or an edit without labels. */
+export function relabelJevRecord(op: RelabelOp): DecisionRecord | null {
+  const jev = op.jev;
+  if (jev?.decision === "accept") return { decision: "accept" };
+  if (jev?.decision === "reject") return { decision: "reject" };
+  if (jev?.decision === "edit" && jev.labels) return { decision: "edit", edited: { labels: jev.labels } };
+  return null;
 }
 
 /** What a person card's accept means (crmedr `_resolve`). */
@@ -66,11 +97,16 @@ export function companionProp(source?: string): string | null {
 
 export function opEulogy(op: Op): string | null {
   if (op.op === "rename") return (op as RenameOp).id;
+  if (op.op === "relabel") return (op as RelabelOp).id;
   if (op.op === "resolve_person") return (op as ResolvePersonOp).eulogy;
   return null;
 }
 
-/** Ops grouped by eulogy in first-appearance order, the rename first in each group; ops with no eulogy stay single, in place. */
+// Within a eulogy: the rename, the relabel (its subjects), then the persons, each in file order.
+const GROUP_RANK: Record<string, number> = { rename: 0, relabel: 1 };
+const groupRank = (op: Op) => GROUP_RANK[op.op] ?? 2;
+
+/** Ops grouped by eulogy in first-appearance order: rename, relabel, then the rest; ops with no eulogy stay single, in place. */
 export function groupByEulogy(ops: Op[]): { eulogy: string | null; ops: Op[] }[] {
   const groups: { eulogy: string | null; ops: Op[] }[] = [];
   const byEulogy = new Map<string, { eulogy: string | null; ops: Op[] }>();
@@ -86,8 +122,10 @@ export function groupByEulogy(ops: Op[]): { eulogy: string | null; ops: Op[] }[]
       byEulogy.set(eulogy, group);
       groups.push(group);
     }
-    if (op.op === "rename") group.ops.unshift(op);
-    else group.ops.push(op);
+    const rank = groupRank(op);
+    const at = group.ops.findIndex((o) => groupRank(o) > rank);
+    if (at < 0) group.ops.push(op);
+    else group.ops.splice(at, 0, op);
   }
   return groups;
 }

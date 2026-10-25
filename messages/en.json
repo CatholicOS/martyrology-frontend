@@ -629,6 +629,25 @@
       "acceptSelected": "Accept selected",
       "labels": "labels"
     },
+    "relabel": {
+      "current": "Current subjects:",
+      "candidates": "Subjects to choose from",
+      "currentSet": "the current subjects",
+      "from": "from {id}",
+      "score": "score {score}",
+      "proposed": "the proposed subjects",
+      "keepWhat": "keep the current subjects",
+      "suggests": "Jev suggests: {what} ({confidence}%)",
+      "take": "Take the suggestion",
+      "acceptSelected": "Accept selected",
+      "keep": "Keep the current subjects",
+      "prefilled": "pre-filled by Jev",
+      "lang": {
+        "la": "Latin",
+        "en": "English",
+        "it": "Italian"
+      }
+    },
     "eulogyGroup": "Eulogy {eulogy}"
   },
   "Docs": {

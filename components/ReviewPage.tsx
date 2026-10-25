@@ -153,9 +153,9 @@ export default function ReviewPage() {
     });
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, prefilledOnly, hasPrefilled, idFilter, decisions]);
 
-  // A change-set with rename candidates (crmedr's subject month) shows a eulogy's cards together.
+  // A change-set with rename candidates or relabels (crmedr's subject month) shows a eulogy's cards together.
   const grouped = useMemo(
-    () => !!cs && cs.operations.some((op) => op.op === "rename" && !!(op as RenameOp).candidates?.length),
+    () => !!cs && cs.operations.some((op) => op.op === "relabel" || (op.op === "rename" && !!(op as RenameOp).candidates?.length)),
     [cs]
   );
   // Paging counts cards; a group may be cut by "show more".

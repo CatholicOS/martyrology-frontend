@@ -629,6 +629,25 @@
       "acceptSelected": "Accepter la sélection",
       "labels": "étiquettes"
     },
+    "relabel": {
+      "current": "Sujets actuels :",
+      "candidates": "Sujets au choix",
+      "currentSet": "les sujets actuels",
+      "from": "de {id}",
+      "score": "note {score}",
+      "proposed": "les sujets proposés",
+      "keepWhat": "garder les sujets actuels",
+      "suggests": "Jev suggère : {what} ({confidence} %)",
+      "take": "Suivre la suggestion",
+      "acceptSelected": "Accepter la sélection",
+      "keep": "Garder les sujets actuels",
+      "prefilled": "prérempli par Jev",
+      "lang": {
+        "la": "Latin",
+        "en": "Anglais",
+        "it": "Italien"
+      }
+    },
     "eulogyGroup": "Éloge {eulogy}"
   },
   "Docs": {
