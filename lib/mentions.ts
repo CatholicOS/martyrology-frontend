@@ -32,9 +32,12 @@ export function mentionKey(edition: string, eulogy: string, m: Mention): string 
 /**
  * The marks tinted together with this one: a person's, by their name and n in one eulogy, which is who they are
  * (crmedr's persons), in its text and its footnotes and in every edition printed beside it (the Italian marks carry
- * the Latin name and n); a place's mark alone. Never by the Wikidata item, which most persons do not have.
+ * the Latin name and n); a place's, by its Wikidata item in one eulogy (crmedr's gazetteer gives the Latin and
+ * Italian marks the same item). A person is never grouped by the item, which most persons do not have; a mark
+ * with neither stays alone.
  */
 export function mentionGroup(edition: string, eulogy: string, m: Mention): string {
+  if (m.kind === "place" && m.qid) return `${eulogy}|place|${m.qid}`;
   if (m.kind !== "person" || !m.name) return mentionKey(edition, eulogy, m);
   return `${eulogy}|person|${m.name}#${m.n ?? 1}`;
 }

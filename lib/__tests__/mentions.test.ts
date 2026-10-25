@@ -105,8 +105,18 @@ describe("mentionGroup", () => {
     expect(g(piece(20, 25, "Felix"))).not.toBe(g(piece(40, 45, "Felix", 2)));
   });
 
-  it("keeps a place's mark alone", () => {
-    const place = { kind: "place" as const, where: "text" as const, start: 0, end: 4, form: "Romæ", qid: "Q220", name: null };
+  it("joins a place's marks by its item, in both columns of a spread", () => {
+    // The Latin and Italian marks of a place carry the same item (crmedr's gazetteer).
+    const at = (start: number, qid: string | null) =>
+      ({ kind: "place" as const, where: "text" as const, start, end: start + 4, form: "x", qid, name: null });
+    expect(mentionGroup("la", "mr:x", at(0, "Q36"))).toBe(mentionGroup("it", "mr:x", at(9, "Q36")));
+    expect(mentionGroup("la", "mr:x", at(0, "Q36"))).not.toBe(mentionGroup("la", "mr:x", at(30, "Q181376")));
+    expect(mentionGroup("la", "mr:x", at(0, "Q36"))).not.toBe(mentionGroup("la", "mr:y", at(0, "Q36")));
+    expect(mentionGroup("la", "mr:x", at(0, "Q36"))).not.toBe(mentionGroup("la", "mr:x", piece(0, 4, "Q36")));
+  });
+
+  it("keeps the mark of a place with no item alone", () => {
+    const place = { kind: "place" as const, where: "text" as const, start: 0, end: 4, form: "Romæ", qid: null, name: null };
     expect(mentionGroup("ed", "mr:x", place)).toBe(mentionKey("ed", "mr:x", place));
   });
 
