@@ -200,6 +200,47 @@ describe("ReviewPage groups a eulogy's cards", () => {
     expect(screen.queryByLabelText("subject_la")).not.toBeInTheDocument();
   });
 
+  describe("a stale relabel accept blocks the export", () => {
+    const current = { la: "Fictinus", en: "Fictinus", it: "Fictino" };
+    const ren = () => ({
+      ...rename("mr:0101-a"),
+      candidates: [{ new_id: "mr:0101-a-abbas", category: "role", weak: false, labels: { la: "Fictinus Abbas", en: "Fictinus the abbot", it: "Fictino abate" }, basis: "b" }],
+    });
+    const rel = (decision: string | null = null) => ({
+      op: "relabel", id: "mr:0101-a", uid: "labels:mr:0101-a", current, labels: ren().candidates[0].labels, decision, edited: null,
+      candidates: [{ labels: ren().candidates[0].labels, from_id: "mr:0101-a-abbas" }, { labels: current, from_id: null }],
+    });
+    const BLOCKED = "1 subject card needs deciding again before the export";
+    beforeEach(() => localStorage.clear());
+
+    it("follow, then a typed ID: the warning, and the export blocked until the subject is decided again", async () => {
+      await load([ren(), rel()], "stale.json");
+      await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+      fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+      fireEvent.click(screen.getByRole("button", { name: "Follow the ID" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+      fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+      fireEvent.change(screen.getByLabelText("new_id"), { target: { value: "mr:0101-a-typed" } });
+      fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+      expect(screen.getByText("Accepted, but the ID it follows changed: decide again")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeDisabled();
+      expect(screen.getByText(BLOCKED)).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Keep the current subject" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+      expect(screen.queryByText(BLOCKED)).not.toBeInTheDocument();
+    });
+
+    it("an old change-set with a relabel accepted beside an undecided rename starts blocked", async () => {
+      await load([ren(), rel("accept")], "old-stale.json");
+      await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeDisabled();
+      expect(screen.getByText(BLOCKED)).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+      fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+    });
+  });
+
   it("keeps file order and shows no heading without rename candidates", async () => {
     await load([person("mr:0102-b", "Ficta"), person("mr:0101-a", "Fictinus")], "people.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));

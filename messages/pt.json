@@ -392,7 +392,8 @@
       "rejected": "{count} rejeitadas",
       "edited": "{count} editadas",
       "undecided": "{count} pendentes",
-      "export": "Exportar decisões"
+      "export": "Exportar decisões",
+      "blocked": "{count, plural, one {# cartão de nomes precisa ser decidido} other {# cartões de nomes precisam ser decididos}} novamente antes da exportação"
     },
     "decision": {
       "accept": "aceitar",
@@ -640,6 +641,7 @@
       "editWording": "Editar a redação",
       "keep": "Manter os nomes atuais",
       "edited": "editado: {labels}",
+      "staleAccept": "Aceito, mas o ID que segue mudou: decida novamente",
       "hint": "Wikidata: {labels}",
       "hintNote": "uma referência para a redação, não uma escolha",
       "lang": {

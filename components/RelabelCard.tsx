@@ -51,6 +51,9 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
           ? t("undecidedId") // crmedr rejects an accepted relabel with no decided rename
           : null;
 
+  // An accept recorded while the ID gave a subject, which no longer does: crmedr's apply would reject it.
+  const stale = decision?.decision === "accept" && reason !== null;
+
   const startEdit = () => {
     const seed = savedEdit ?? followed.labels ?? op.current;
     setFields({ la: seed.la ?? "", en: seed.en ?? "", it: seed.it ?? "" });
@@ -63,8 +66,14 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
         <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
           {op.op} · {uid}
         </span>
-        {decision && (
-          <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">{decisionLabel(r, decision)}</span>
+        {stale ? (
+          <span role="alert" className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+            {t("staleAccept")}
+          </span>
+        ) : (
+          decision && (
+            <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">{decisionLabel(r, decision)}</span>
+          )
         )}
       </div>
 

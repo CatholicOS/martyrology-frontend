@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RelabelOp, type RenameOp } from "@/lib/changeset";
-import { groupByEulogy, resolvedTarget } from "@/lib/subject-review";
+import { groupByEulogy, relabelConflicts, resolvedTarget } from "@/lib/subject-review";
 import {
   decisionsFromChangeset,
   decisionsKey,
@@ -205,8 +205,11 @@ export default function ReviewPage() {
 
   const summary = useMemo(() => (cs ? summarize(cs, decisions) : { accepted: 0, rejected: 0, edited: 0, undecided: 0 }), [cs, decisions]);
 
+  // A subject accepted while its ID changed since: crmedr's apply would reject it, so the export waits.
+  const conflicts = useMemo(() => (cs ? relabelConflicts(cs.operations, decisions) : []), [cs, decisions]);
+
   const onExport = () => {
-    if (!cs) return;
+    if (!cs || conflicts.length > 0) return;
     const out = exportChangeset(cs, decisions);
     const blob = new Blob([JSON.stringify(out, null, 1)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -380,7 +383,7 @@ export default function ReviewPage() {
           </div>
 
           <div className="mt-4">
-            <ReviewSummary summary={summary} onExport={onExport} />
+            <ReviewSummary summary={summary} onExport={onExport} blocked={conflicts.length} />
           </div>
 
           <div className="mt-4">

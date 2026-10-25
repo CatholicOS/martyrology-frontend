@@ -392,7 +392,8 @@
       "rejected": "{count} rejected",
       "edited": "{count} edited",
       "undecided": "{count} undecided",
-      "export": "Export decisions"
+      "export": "Export decisions",
+      "blocked": "{count, plural, one {# subject card needs} other {# subject cards need}} deciding again before the export"
     },
     "decision": {
       "accept": "accept",
@@ -640,6 +641,7 @@
       "editWording": "Edit the wording",
       "keep": "Keep the current subject",
       "edited": "edited: {labels}",
+      "staleAccept": "Accepted, but the ID it follows changed: decide again",
       "hint": "Wikidata: {labels}",
       "hintNote": "a reference for the wording, not a choice",
       "lang": {

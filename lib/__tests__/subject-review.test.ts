@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { opId, type Op, type RelabelOp, type RenameOp, type ResolvePersonOp, type PersonCandidate } from "@/lib/changeset";
 import {
   companionProp, groupByEulogy, personAppliable, personDefaultQid, personJevRecord,
-  followedSubject, renameChoiceRecord, renameDecidedId, renameJevRecord, resolvedTarget, sourceKey,
+  followedSubject, relabelConflicts, renameChoiceRecord, renameDecidedId, renameJevRecord, resolvedTarget, sourceKey,
 } from "@/lib/subject-review";
 
 const rename = (id: string, newId: string): RenameOp => ({
@@ -169,6 +169,23 @@ describe("subject review", () => {
       expect(followedSubject(op, ren, { decision: "reject" })).toEqual({ id: null, labels: null, undecided: false });
       expect(followedSubject(op, undefined, undefined)).toEqual({ id: null, labels: null, undecided: false });
     });
+  });
+
+  it("relabel conflicts: an accepted relabel whose ID gives no subject to follow (crmedr relabel_errors)", () => {
+    const ren = { ...rename("mr:0101-a", "mr:0101-a-romae"), candidates: [] };
+    const rel = relabel("mr:0101-a");
+    const ops: Op[] = [ren, rel];
+    const acc = { decision: "accept" as const };
+    expect(relabelConflicts(ops, { "subject:mr:0101-a": acc, "labels:mr:0101-a": acc })).toEqual([]);
+    expect(relabelConflicts(ops, { "labels:mr:0101-a": acc })).toEqual(["mr:0101-a"]);
+    expect(relabelConflicts(ops, { "subject:mr:0101-a": { decision: "reject" }, "labels:mr:0101-a": acc })).toEqual(["mr:0101-a"]);
+    expect(relabelConflicts(ops, { "subject:mr:0101-a": { decision: "edit", edited: { new_id: "mr:0101-a-typed" } }, "labels:mr:0101-a": acc }))
+      .toEqual(["mr:0101-a"]);
+    expect(relabelConflicts([rel], { "labels:mr:0101-a": acc })).toEqual(["mr:0101-a"]);
+    // Edit and keep never conflict; neither does an undecided relabel.
+    expect(relabelConflicts(ops, { "labels:mr:0101-a": { decision: "reject" } })).toEqual([]);
+    expect(relabelConflicts(ops, { "labels:mr:0101-a": { decision: "edit", edited: { labels: OTHER } } })).toEqual([]);
+    expect(relabelConflicts(ops, {})).toEqual([]);
   });
 
   it("groups a eulogy's ops with the rename first", () => {

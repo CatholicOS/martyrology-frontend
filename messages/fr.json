@@ -392,7 +392,8 @@
       "rejected": "{count} rejetées",
       "edited": "{count} modifiées",
       "undecided": "{count} en attente",
-      "export": "Exporter les décisions"
+      "export": "Exporter les décisions",
+      "blocked": "{count, plural, one {# carte de noms doit être décidée} other {# cartes de noms doivent être décidées}} à nouveau avant l’export"
     },
     "decision": {
       "accept": "accepter",
@@ -631,15 +632,16 @@
     },
     "relabel": {
       "current": "Noms actuels :",
-      "follows": "Suit l'ID {id} :",
+      "follows": "Suit l’ID {id} :",
       "followsUndecided": "Suit un ID encore indécis, {id} :",
-      "typedId": "L'ID {id} est saisi à la main, ce n'est pas un candidat : il n'implique aucun nom. Modifiez plutôt la formulation.",
-      "noId": "L'ID n'est pas renommé : il n'y a aucun ID à suivre.",
-      "undecidedId": "Décidez d'abord l'ID : les noms le suivent.",
-      "follow": "Suivre l'ID",
+      "typedId": "L’ID {id} est saisi à la main, ce n’est pas un candidat : il n’implique aucun nom. Modifiez plutôt la formulation.",
+      "noId": "L’ID n’est pas renommé : il n’y a aucun ID à suivre.",
+      "undecidedId": "Décidez d’abord l’ID : les noms le suivent.",
+      "follow": "Suivre l’ID",
       "editWording": "Modifier la formulation",
       "keep": "Garder les noms actuels",
       "edited": "modifié : {labels}",
+      "staleAccept": "Accepté, mais l’ID qu’il suit a changé : décidez à nouveau",
       "hint": "Wikidata : {labels}",
       "hintNote": "une référence pour la formulation, pas un choix",
       "lang": {

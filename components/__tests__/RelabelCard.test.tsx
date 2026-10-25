@@ -99,6 +99,21 @@ describe("RelabelCard: the subject follows the ID", () => {
     expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
   });
 
+  it("an accept whose ID changed to a typed ID: a warning instead of the badge, the other actions still there", () => {
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-typed" } }, {}, { decision: "accept" }));
+    expect(screen.getByText("Accepted, but the ID it follows changed: decide again")).toBeInTheDocument();
+    expect(screen.queryByText("accept")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Edit the wording" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Keep the current subject" })).toBeEnabled();
+  });
+
+  it("an accept that still follows its ID keeps the plain badge", () => {
+    render(card({ decision: "accept" }, {}, { decision: "accept" }));
+    expect(screen.getByText("accept")).toBeInTheDocument();
+    expect(screen.queryByText("Accepted, but the ID it follows changed: decide again")).not.toBeInTheDocument();
+  });
+
   it("edit the wording: three fields prefilled with the followed subject", () => {
     const onDecide = vi.fn();
     render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-nolae" } }, {}, undefined, onDecide));

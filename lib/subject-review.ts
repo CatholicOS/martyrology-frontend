@@ -1,4 +1,4 @@
-import type { DecisionRecord, Op, PersonCandidate, RelabelOp, RenameOp, ResolvePersonOp, SubjectLabels } from "@/lib/changeset";
+import { opId, type DecisionRecord, type Op, type PersonCandidate, type RelabelOp, type RenameOp, type ResolvePersonOp, type SubjectLabels } from "@/lib/changeset";
 
 /** What a plain accept on this op applies (a person card's default item, a rename's proposed ID); null for other ops. */
 export function resolvedTarget(op: Op): string | null {
@@ -58,6 +58,28 @@ export function followedSubject(op: RelabelOp, rename?: RenameOp | null, decisio
   if (!cand) return { id, labels: null, undecided };
   const labels = Object.fromEntries(LANGS.map((k) => [k, cand.labels[k] ?? op.current[k] ?? null])) as unknown as SubjectLabels;
   return { id, labels, undecided };
+}
+
+/** Whether Follow the ID can be recorded: a decided ID that implies a subject (else crmedr `relabel_errors` rejects it). */
+export function canFollow(f: FollowedSubject): boolean {
+  return f.id !== null && f.labels !== null && !f.undecided;
+}
+
+/**
+ * The eulogies whose relabel is recorded as accept while its ID gives no subject to follow (the
+ * rename undecided, rejected, typed, or missing): crmedr's apply rejects them (`relabel_errors`).
+ */
+export function relabelConflicts(ops: Op[], decisions: Record<string, DecisionRecord | undefined>): string[] {
+  const renames = new Map<string, RenameOp>();
+  for (const op of ops) if (op.op === "rename" && !renames.has((op as RenameOp).id)) renames.set((op as RenameOp).id, op as RenameOp);
+  const out: string[] = [];
+  for (const op of ops) {
+    if (op.op !== "relabel" || decisions[opId(op)]?.decision !== "accept") continue;
+    const relabel = op as RelabelOp;
+    const rename = renames.get(relabel.id);
+    if (!canFollow(followedSubject(relabel, rename, rename ? decisions[opId(rename)] : undefined))) out.push(relabel.id);
+  }
+  return out;
 }
 
 /** What a person card's accept means (crmedr `_resolve`). */
