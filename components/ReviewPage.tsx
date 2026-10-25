@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RenameOp } from "@/lib/changeset";
-import { groupByEulogy, resolvedTarget } from "@/lib/subject-review";
+import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RelabelOp, type RenameOp } from "@/lib/changeset";
+import { groupByEulogy, relabelConflicts, resolvedTarget } from "@/lib/subject-review";
 import {
   decisionsFromChangeset,
   decisionsKey,
@@ -153,9 +153,9 @@ export default function ReviewPage() {
     });
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, prefilledOnly, hasPrefilled, idFilter, decisions]);
 
-  // A change-set with rename candidates (crmedr's subject month) shows a eulogy's cards together.
+  // A change-set with rename candidates or relabels (crmedr's subject month) shows a eulogy's cards together.
   const grouped = useMemo(
-    () => !!cs && cs.operations.some((op) => op.op === "rename" && !!(op as RenameOp).candidates?.length),
+    () => !!cs && cs.operations.some((op) => op.op === "relabel" || (op.op === "rename" && !!(op as RenameOp).candidates?.length)),
     [cs]
   );
   // Paging counts cards; a group may be cut by "show more".
@@ -205,8 +205,11 @@ export default function ReviewPage() {
 
   const summary = useMemo(() => (cs ? summarize(cs, decisions) : { accepted: 0, rejected: 0, edited: 0, undecided: 0 }), [cs, decisions]);
 
+  // A subject accepted while its ID changed since: crmedr's apply would reject it, so the export waits.
+  const conflicts = useMemo(() => (cs ? relabelConflicts(cs.operations, decisions) : []), [cs, decisions]);
+
   const onExport = () => {
-    if (!cs) return;
+    if (!cs || conflicts.length > 0) return;
     const out = exportChangeset(cs, decisions);
     const blob = new Blob([JSON.stringify(out, null, 1)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -217,16 +220,33 @@ export default function ReviewPage() {
     URL.revokeObjectURL(url);
   };
 
-  const renderCard = (op: Op) => (
-    <OperationCard
-      key={opId(op)}
-      op={op}
-      decision={decisions[opId(op)]}
-      onDecide={onDecide}
-      locale={locale}
-      baseEdition={cs?.base.edition ?? ""}
-    />
-  );
+  // The subject follows the ID: a relabel reads its eulogy's rename and that rename's current decision.
+  const subjectLinks = useMemo(() => {
+    const renames = new Map<string, RenameOp>();
+    const relabelled = new Set<string>();
+    for (const op of cs?.operations ?? []) {
+      if (op.op === "rename" && !renames.has((op as RenameOp).id)) renames.set((op as RenameOp).id, op as RenameOp);
+      if (op.op === "relabel") relabelled.add((op as RelabelOp).id);
+    }
+    return { renames, relabelled };
+  }, [cs]);
+
+  const renderCard = (op: Op) => {
+    const rename = op.op === "relabel" ? subjectLinks.renames.get((op as RelabelOp).id) : undefined;
+    return (
+      <OperationCard
+        key={opId(op)}
+        op={op}
+        rename={rename}
+        renameDecision={rename ? decisions[opId(rename)] : undefined}
+        hasRelabel={op.op === "rename" && subjectLinks.relabelled.has((op as RenameOp).id)}
+        decision={decisions[opId(op)]}
+        onDecide={onDecide}
+        locale={locale}
+        baseEdition={cs?.base.edition ?? ""}
+      />
+    );
+  };
 
   return (
     <main className="mx-auto max-w-5xl p-8">
@@ -363,7 +383,7 @@ export default function ReviewPage() {
           </div>
 
           <div className="mt-4">
-            <ReviewSummary summary={summary} onExport={onExport} />
+            <ReviewSummary summary={summary} onExport={onExport} blocked={conflicts.length} />
           </div>
 
           <div className="mt-4">

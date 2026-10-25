@@ -392,7 +392,8 @@
       "rejected": "{count} rifiutate",
       "edited": "{count} modificate",
       "undecided": "{count} da decidere",
-      "export": "Esporta le decisioni"
+      "export": "Esporta le decisioni",
+      "blocked": "{count, plural, one {# scheda del soggetto va decisa} other {# schede del soggetto vanno decise}} di nuovo prima dell’esportazione"
     },
     "decision": {
       "accept": "accetta",
@@ -488,7 +489,8 @@
         "sparql": "morto in questo giorno",
         "title": "titolo o festa",
         "curated": "titolo curato",
-        "group": "trovato tramite un gruppo ({prop})"
+        "group": "trovato tramite un gruppo ({prop})",
+        "place": "trovato tramite un luogo"
       },
       "jevSuggests": "Jev suggerisce: {what} ({confidence}%)",
       "jevNone": "nessuna voce",
@@ -518,6 +520,19 @@
         "celebration_or_title": "una festa o un titolo",
         "anonymous_group": "un gruppo anonimo",
         "not_identifiable": "non identificabile"
+      },
+      "evidence": {
+        "human": "essere umano",
+        "status": "santo o beato",
+        "name": "il nome corrisponde",
+        "death": "la data di morte corrisponde",
+        "place": "il luogo corrisponde"
+      },
+      "agrees": {
+        "P19": "nato a {place}",
+        "P20": "morto a {place}",
+        "P119": "sepolto a {place}",
+        "P937": "ha operato a {place}"
       }
     },
     "mention": {
@@ -614,6 +629,26 @@
       },
       "acceptSelected": "Accetta la selezione",
       "labels": "etichette"
+    },
+    "relabel": {
+      "current": "Soggetto attuale:",
+      "follows": "Segue l’ID {id}:",
+      "followsUndecided": "Segue un ID non ancora deciso, {id}:",
+      "typedId": "L’ID {id} è digitato, non è un candidato: non implica alcun soggetto. Modifica invece la formulazione.",
+      "noId": "L’ID non viene rinominato: non c’è alcun ID da seguire.",
+      "undecidedId": "Decidi prima l’ID: il soggetto lo segue.",
+      "follow": "Segui l’ID",
+      "editWording": "Modifica la formulazione",
+      "keep": "Mantieni il soggetto attuale",
+      "edited": "modificato: {labels}",
+      "staleAccept": "Accettato, ma l’ID che segue è cambiato: decidi di nuovo",
+      "hint": "Wikidata: {labels}",
+      "hintNote": "un riferimento per la formulazione, non una scelta",
+      "lang": {
+        "la": "Latino",
+        "en": "Inglese",
+        "it": "Italiano"
+      }
     },
     "eulogyGroup": "Elogio {eulogy}"
   },

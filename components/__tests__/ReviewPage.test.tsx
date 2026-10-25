@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@/test/intl";
+import { render, screen, fireEvent, waitFor, within } from "@/test/intl";
 import ReviewPage from "@/components/ReviewPage";
 
 vi.mock("@/lib/api", () => ({
@@ -172,6 +172,75 @@ describe("ReviewPage groups a eulogy's cards", () => {
     ]);
   });
 
+  it("the subject card follows the ID picked on the rename card", async () => {
+    const two = {
+      ...rename("mr:0101-a"),
+      candidates: [
+        { new_id: "mr:0101-a-abbas", category: "role", weak: false, labels: { la: "Fictinus Abbas", en: "Fictinus the abbot", it: "Fictino abate" }, basis: "b" },
+        { new_id: "mr:0101-a-romae", category: "place-genitive", weak: false, labels: { la: "Fictinus Romae", en: "Fictinus of Rome", it: "Fictino di Roma" }, basis: "b" },
+      ],
+    };
+    const current = { la: "Fictinus", en: "Fictinus", it: "Fictino" };
+    const relabel = {
+      op: "relabel", id: "mr:0101-a", uid: "labels:mr:0101-a", current, labels: two.candidates[0].labels, decision: null, edited: null,
+      candidates: [...two.candidates.map((c) => ({ labels: c.labels, from_id: c.new_id })), { labels: current, from_id: null }],
+    };
+    await load([two, relabel], "follow.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    expect(screen.getByText("Follows an undecided ID, mr:0101-a-abbas:")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+    fireEvent.click(screen.getByLabelText(/mr:0101-a-romae/));
+    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+    expect(screen.getByText("Follows the ID mr:0101-a-romae:")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeEnabled();
+    expect(screen.queryByText("Decide the ID first: the subject follows it.")).not.toBeInTheDocument();
+    expect(within(screen.getByTestId("op-card-labels:mr:0101-a")).getByText("Fictinus Romae · Fictinus of Rome · Fictino di Roma")).toBeInTheDocument();
+    // The rename card's edit form leaves the subject to the subject card.
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.queryByLabelText("subject_la")).not.toBeInTheDocument();
+  });
+
+  describe("a stale relabel accept blocks the export", () => {
+    const current = { la: "Fictinus", en: "Fictinus", it: "Fictino" };
+    const ren = () => ({
+      ...rename("mr:0101-a"),
+      candidates: [{ new_id: "mr:0101-a-abbas", category: "role", weak: false, labels: { la: "Fictinus Abbas", en: "Fictinus the abbot", it: "Fictino abate" }, basis: "b" }],
+    });
+    const rel = (decision: string | null = null) => ({
+      op: "relabel", id: "mr:0101-a", uid: "labels:mr:0101-a", current, labels: ren().candidates[0].labels, decision, edited: null,
+      candidates: [{ labels: ren().candidates[0].labels, from_id: "mr:0101-a-abbas" }, { labels: current, from_id: null }],
+    });
+    const BLOCKED = "1 subject card needs deciding again before the export";
+    beforeEach(() => localStorage.clear());
+
+    it("follow, then a typed ID: the warning, and the export blocked until the subject is decided again", async () => {
+      await load([ren(), rel()], "stale.json");
+      await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+      fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+      fireEvent.click(screen.getByRole("button", { name: "Follow the ID" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+      fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+      fireEvent.change(screen.getByLabelText("new_id"), { target: { value: "mr:0101-a-typed" } });
+      fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+      expect(screen.getByText("Accepted, but the ID it follows changed: decide again")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeDisabled();
+      expect(screen.getByText(BLOCKED)).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Keep the current subject" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+      expect(screen.queryByText(BLOCKED)).not.toBeInTheDocument();
+    });
+
+    it("an old change-set with a relabel accepted beside an undecided rename starts blocked", async () => {
+      await load([ren(), rel("accept")], "old-stale.json");
+      await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeDisabled();
+      expect(screen.getByText(BLOCKED)).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+      fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+      expect(screen.getByRole("button", { name: "Export decisions" })).toBeEnabled();
+    });
+  });
+
   it("keeps file order and shows no heading without rename candidates", async () => {
     await load([person("mr:0102-b", "Ficta"), person("mr:0101-a", "Fictinus")], "people.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
@@ -303,5 +372,30 @@ describe("ReviewPage pre-filled only filter", () => {
     await load([place("Fictopolis"), place("Utopia")], "plain.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
     expect(screen.queryByLabelText("Pre-filled only")).not.toBeInTheDocument();
+  });
+});
+
+describe("ReviewPage with a bundle missing from the index", () => {
+  const key = "mrf:decisions:martyrologium_romanum_2004:data/test.json:1";
+  beforeEach(() => {
+    window.localStorage.clear();
+    window.localStorage.setItem(key, JSON.stringify({ "p|A": { decision: "accept", target: "Q1" } }));
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ changesets: ["persons-review-02.json"] }),
+      text: () => Promise.resolve("{}"),
+      url,
+    })));
+  });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    window.localStorage.clear();
+  });
+
+  it("missing bundle with stored decisions: renders the picker with the bundles that are listed", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "persons-review-02.json" })).toBeInTheDocument());
+    expect(screen.getByLabelText(/bundled change-set/i)).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "persons-review-01.json" })).not.toBeInTheDocument();
   });
 });

@@ -392,7 +392,8 @@
       "rejected": "{count} rejeitadas",
       "edited": "{count} editadas",
       "undecided": "{count} pendentes",
-      "export": "Exportar decisões"
+      "export": "Exportar decisões",
+      "blocked": "{count, plural, one {# cartão de nomes precisa ser decidido} other {# cartões de nomes precisam ser decididos}} novamente antes da exportação"
     },
     "decision": {
       "accept": "aceitar",
@@ -488,7 +489,8 @@
         "sparql": "morreu neste dia",
         "title": "título ou festa",
         "curated": "título curado",
-        "group": "encontrado por meio de um grupo ({prop})"
+        "group": "encontrado por meio de um grupo ({prop})",
+        "place": "encontrado por meio de um lugar"
       },
       "jevSuggests": "Jev sugere: {what} ({confidence}%)",
       "jevNone": "nenhum item",
@@ -518,6 +520,19 @@
         "celebration_or_title": "uma festa ou um título",
         "anonymous_group": "um grupo anônimo",
         "not_identifiable": "não identificável"
+      },
+      "evidence": {
+        "human": "ser humano",
+        "status": "santo ou beato",
+        "name": "o nome coincide",
+        "death": "a data da morte coincide",
+        "place": "o lugar coincide"
+      },
+      "agrees": {
+        "P19": "nascido em {place}",
+        "P20": "morto em {place}",
+        "P119": "sepultado em {place}",
+        "P937": "ativo em {place}"
       }
     },
     "mention": {
@@ -614,6 +629,26 @@
       },
       "acceptSelected": "Aceitar a seleção",
       "labels": "rótulos"
+    },
+    "relabel": {
+      "current": "Nomes atuais:",
+      "follows": "Segue o ID {id}:",
+      "followsUndecided": "Segue um ID ainda não decidido, {id}:",
+      "typedId": "O ID {id} foi digitado, não é um candidato: não implica nenhum nome. Edite a redação em vez disso.",
+      "noId": "O ID não é renomeado: não há nenhum ID a seguir.",
+      "undecidedId": "Decida primeiro o ID: os nomes o seguem.",
+      "follow": "Seguir o ID",
+      "editWording": "Editar a redação",
+      "keep": "Manter os nomes atuais",
+      "edited": "editado: {labels}",
+      "staleAccept": "Aceito, mas o ID que segue mudou: decida novamente",
+      "hint": "Wikidata: {labels}",
+      "hintNote": "uma referência para a redação, não uma escolha",
+      "lang": {
+        "la": "Latim",
+        "en": "Inglês",
+        "it": "Italiano"
+      }
     },
     "eulogyGroup": "Elogio {eulogy}"
   },

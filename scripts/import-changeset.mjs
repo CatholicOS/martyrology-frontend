@@ -101,16 +101,29 @@ function realish(p) {
 }
 
 /**
+ * Refuse anything but two-digit months 01-12 (the --except-months list), before anything is written.
+ * @param {string[]} months
+ */
+function checkMonths(months) {
+  const bad = months.filter((m) => !/^(0[1-9]|1[0-2])$/.test(m));
+  if (bad.length) throw new Error(`--except-months takes two-digit months 01-12, comma-separated (got ${bad.map((m) => JSON.stringify(m)).join(", ")})`);
+}
+
+/**
  * Write a change-set into `dir`, whole or one file per month. The repo's changesets/ (`isPublic`) gets
  * its index regenerated; CHANGESETS_DIR needs none (every *.json there is listed). A change-set that
  * quotes the text is refused for the repo before anything is written, and so is a private `dir`
  * that is the repository itself or inside it (a mistyped or relative CHANGESETS_DIR). Returns the paths written.
  * @param {import("../lib/changeset.ts").Changeset} cs
  * @param {string} name
- * @param {{byMonth: boolean, dir: string, isPublic: boolean}} options
+ * @param {{byMonth: boolean, dir: string, isPublic: boolean, exceptMonths?: string[]}} options
+ *   `exceptMonths` (two-digit "01"–"12"): those months' parts are not written and an earlier copy is
+ *   removed, so a month can be kept off /review (the index then no longer lists it).
  * @returns {string[]}
  */
-export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
+export function writeBundle(cs, name, { byMonth, dir, isPublic, exceptMonths = [] }) {
+  checkMonths(exceptMonths);
+  if (exceptMonths.length && !byMonth) throw new Error("--except-months needs --by-month: it leaves months out of the per-month parts");
   if (isPublic && quotesText(cs)) {
     throw new Error(`${name} quotes the text (its operations carry context): bundle it with --private into CHANGESETS_DIR, never into this public repo`);
   }
@@ -127,6 +140,7 @@ export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
     // A month now without operations must not keep its earlier part.
     for (const f of readdirSync(dir)) if (f.startsWith(`${name}-`) && /^\d{2}\.json$/.test(f.slice(name.length + 1))) unlinkSync(join(dir, f));
     for (const part of splitByMonth(cs, name)) {
+      if (exceptMonths.includes(part.name.slice(name.length + 1))) continue;
       const dest = join(dir, `${part.name}.json`);
       writeFileSync(dest, JSON.stringify(part.changeset) + "\n"); // compact: these are large
       written.push(dest);
@@ -146,8 +160,17 @@ export function writeBundle(cs, name, { byMonth, dir, isPublic }) {
  */
 export function main(argv = process.argv.slice(2), env = process.env) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const flags = new Set(argv.filter((a) => a.startsWith("--")));
-  const args = argv.filter((a) => !a.startsWith("--"));
+  // `--except-months 01,02` takes a value; take it out before the positional arguments are read.
+  if (argv.some((a) => a.startsWith("--except-months="))) throw new Error("--except-months takes its list as the next argument, e.g. --except-months 01,02 (not --except-months=01,02)");
+  if (argv.filter((a) => a === "--except-months").length > 1) throw new Error("--except-months may be given once only: join the months with commas, e.g. --except-months 01,02");
+  const at = argv.indexOf("--except-months");
+  if (at >= 0 && (argv[at + 1] === undefined || argv[at + 1].startsWith("--"))) throw new Error("--except-months takes a comma-separated list of months, e.g. 01,02");
+  if (at >= 0 && !argv.includes("--by-month")) throw new Error("--except-months needs --by-month: it leaves months out of the per-month parts");
+  const exceptMonths = at >= 0 ? argv[at + 1].split(",") : [];
+  checkMonths(exceptMonths);
+  const rest = at >= 0 ? argv.filter((_, i) => i !== at && i !== at + 1) : argv;
+  const flags = new Set(rest.filter((a) => a.startsWith("--")));
+  const args = rest.filter((a) => !a.startsWith("--"));
   const src = args[0] ?? join(here, "..", "..", "crmedr", "data", "deprecated_id_corrections.json");
   const name = args[1] ?? "deprecated-id-normalization";
   const edition = args[2] ?? "martyrologium_romanum_1749";
@@ -155,7 +178,7 @@ export function main(argv = process.argv.slice(2), env = process.env) {
   const dir = isPublic ? join(here, "..", "changesets") : env.CHANGESETS_DIR;
   if (!dir) throw new Error("--private writes into CHANGESETS_DIR, which is not set");
   const cs = toBundledChangeset(JSON.parse(readFileSync(src, "utf8")), { edition, registry: "crmedr@local" });
-  for (const f of writeBundle(cs, name, { byMonth: flags.has("--by-month"), dir, isPublic })) console.log(`wrote ${f}`);
+  for (const f of writeBundle(cs, name, { byMonth: flags.has("--by-month"), dir, isPublic, exceptMonths })) console.log(`wrote ${f}`);
   console.log(`${cs.operations.length} operations (${basename(src)})`);
 }
 

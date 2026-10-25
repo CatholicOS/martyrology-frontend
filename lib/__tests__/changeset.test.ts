@@ -36,6 +36,49 @@ describe("changeset", () => {
     expect(op.candidates.map((c) => c.evidence)).toEqual([[], ["type"]]);
   });
 
+  it("parses a relabel op", () => {
+    const relabel = { op: "relabel", id: "mr:0101-x", uid: "labels:mr:0101-x",
+      current: { la: "Sanctus X", en: "Saint X", it: "San X" },
+      labels: { la: "Sanctus X Romanus", en: "Saint X of Rome", it: "San X di Roma" },
+      candidates: [
+        { labels: { la: "Sanctus X Romanus", en: "Saint X of Rome", it: "San X di Roma" }, from_id: "mr:0101-x-romae" },
+        { labels: { la: "Sanctus X", en: "Saint X", it: "San X" }, from_id: null },
+      ],
+      jev: { decision: "accept", probability: 0.93, confidence: 0.9, model: "jev", flags: [], scores: [2.6, 0.4] },
+      prefilled: "jev", decision: "accept" };
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" }, operations: [relabel] }));
+    const op = cs.operations[0] as Extract<Op, { op: "relabel" }>;
+    expect(op.candidates.map((c) => c.from_id)).toEqual(["mr:0101-x-romae", null]);
+    expect(op.jev?.scores).toEqual([2.6, 0.4]);
+    expect(isAdjudicable(op)).toBe(true);
+    expect(opId(op)).toBe("labels:mr:0101-x");
+    const edited = { labels: { la: "Sanctus X Ostiensis", en: "Saint X of Ostia", it: "San X di Ostia" } };
+    expect(exportChangeset(cs, { "labels:mr:0101-x": { decision: "edit", edited } }).operations[0]).toMatchObject({ decision: "edit", edited });
+  });
+
+  it("opId: a relabel without a uid does not collide with a rename of the same id", () => {
+    const rel = { op: "relabel", id: "mr:0101-x", current: {}, labels: {}, candidates: [] } as unknown as Op;
+    const ren = { op: "rename", id: "mr:0101-x", new_id: "mr:0101-y" } as unknown as Op;
+    expect(opId(rel)).toBe("relabel:mr:0101-x");
+    expect(opId(ren)).toBe("mr:0101-x");
+  });
+
+  it("parseChangeset gives a relabel missing current, labels or candidate labels empty defaults", () => {
+    const none = { la: null, en: null, it: null };
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" },
+      operations: [{ op: "relabel", id: "mr:0101-x", candidates: [{ from_id: null }] }] }));
+    const op = cs.operations[0] as Extract<Op, { op: "relabel" }>;
+    expect(op.current).toEqual(none);
+    expect(op.labels).toEqual(none);
+    expect(op.candidates[0].labels).toEqual(none);
+  });
+
+  it("parses an old change-set without a relabel op", () => {
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" },
+      operations: [{ op: "rename", id: "mr:0101-x", new_id: "mr:0101-x-romae", decision: null }] }));
+    expect(cs.operations.map((o) => o.op)).toEqual(["rename"]);
+  });
+
   it("parseChangeset rejects wrong schema", () => {
     expect(() => parseChangeset(JSON.stringify({ schema: "nope", operations: [] }))).toThrow();
   });
@@ -176,6 +219,75 @@ describe("bundling the mentions review", () => {
     const places = { ...cs, operations: [{ op: "resolve_place", id: "Fictópoli", decision: null, edited: null }] };
     writeBundle(places, "gazetteer-review", { byMonth: false, dir, isPublic: true });
     expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["gazetteer-review.json"] });
+  });
+
+  describe("--except-months", () => {
+    const persons = (months: string[]) => ({
+      ...cs, operations: months.map((m) => ({ op: "resolve_person", id: `mr:${m}15-x|0`, eulogy: `mr:${m}15-x`, decision: null, edited: null })),
+    });
+
+    it("skips the excepted months, removes an earlier copy, and leaves them out of the index", () => {
+      const dir = mkdtempSync(join(tmpdir(), "cs-"));
+      writeFileSync(join(dir, "x-01.json"), "{}");
+      const written = writeBundle(persons(["01", "02"]), "x", { byMonth: true, dir, isPublic: true, exceptMonths: ["01"] });
+      expect(written.map((f) => f.split(/[\\/]/).pop())).toEqual(["x-02.json", "index.json"]);
+      expect(readdirSync(dir).sort()).toEqual(["index.json", "x-02.json"]);
+      expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["x-02.json"] });
+    });
+
+    it("refuses a malformed month list, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01"])));
+      const dir = join(work, "out");
+      for (const bad of ["13", "1", "ab", "01,", "01,13"]) {
+        expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", bad], { CHANGESETS_DIR: dir })).toThrow(/--except-months/);
+        expect(() => writeBundle(persons(["01"]), "x", { byMonth: true, dir, isPublic: false, exceptMonths: bad.split(",") })).toThrow(/--except-months/);
+      }
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
+    it("refuses the equals form and a missing --by-month, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01"])));
+      const dir = join(work, "out");
+      const env = { CHANGESETS_DIR: dir };
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months=01"], env)).toThrow(/--except-months 01,02/);
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--private", "--except-months", "01"], env)).toThrow(/--by-month/);
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
+    it("refuses an exceptMonths list without byMonth, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const dir = join(work, "out");
+      expect(() => writeBundle(persons(["01"]), "x", { byMonth: false, dir, isPublic: false, exceptMonths: ["01"] })).toThrow(/--by-month/);
+      expect(readdirSync(work)).toEqual([]);
+    });
+
+    it("refuses a repeated --except-months, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01", "02"])));
+      const dir = join(work, "out");
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", "01", "--except-months", "02"], { CHANGESETS_DIR: dir })).toThrow(/once only/);
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
+    it("takes the month list from the command line", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      const dir = join(work, "out");
+      writeFileSync(src, JSON.stringify(persons(["01", "02", "03"])));
+      main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", "01,03"], { CHANGESETS_DIR: dir });
+      expect(readdirSync(dir)).toEqual(["x-02.json"]);
+    });
+
+    it("ignores a month with no operations", () => {
+      const dir = mkdtempSync(join(tmpdir(), "cs-"));
+      writeBundle(persons(["02"]), "x", { byMonth: true, dir, isPublic: false, exceptMonths: ["05"] });
+      expect(readdirSync(dir)).toEqual(["x-02.json"]);
+    });
   });
 
   it("refuses --private without CHANGESETS_DIR, and writes nothing", () => {

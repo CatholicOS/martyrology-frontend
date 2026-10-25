@@ -392,7 +392,8 @@
       "rejected": "{count} rejected",
       "edited": "{count} edited",
       "undecided": "{count} undecided",
-      "export": "Export decisions"
+      "export": "Export decisions",
+      "blocked": "{count, plural, one {# subject card needs} other {# subject cards need}} deciding again before the export"
     },
     "decision": {
       "accept": "accept",
@@ -488,7 +489,8 @@
         "sparql": "died on this day",
         "title": "title or feast",
         "curated": "curated title",
-        "group": "found through a group ({prop})"
+        "group": "found through a group ({prop})",
+        "place": "found through a place"
       },
       "jevSuggests": "Jev suggests: {what} ({confidence}%)",
       "jevNone": "no item",
@@ -518,6 +520,19 @@
         "celebration_or_title": "a feast or title",
         "anonymous_group": "an anonymous group",
         "not_identifiable": "not identifiable"
+      },
+      "evidence": {
+        "human": "human",
+        "status": "saint or blessed",
+        "name": "name matches",
+        "death": "death date matches",
+        "place": "place matches"
+      },
+      "agrees": {
+        "P19": "born in {place}",
+        "P20": "died in {place}",
+        "P119": "buried in {place}",
+        "P937": "worked in {place}"
       }
     },
     "mention": {
@@ -614,6 +629,26 @@
       },
       "acceptSelected": "Accept selected",
       "labels": "labels"
+    },
+    "relabel": {
+      "current": "Current subject:",
+      "follows": "Follows the ID {id}:",
+      "followsUndecided": "Follows an undecided ID, {id}:",
+      "typedId": "The ID {id} is typed, not a candidate: it implies no subject. Edit the wording instead.",
+      "noId": "The ID is not renamed: there is no ID to follow.",
+      "undecidedId": "Decide the ID first: the subject follows it.",
+      "follow": "Follow the ID",
+      "editWording": "Edit the wording",
+      "keep": "Keep the current subject",
+      "edited": "edited: {labels}",
+      "staleAccept": "Accepted, but the ID it follows changed: decide again",
+      "hint": "Wikidata: {labels}",
+      "hintNote": "a reference for the wording, not a choice",
+      "lang": {
+        "la": "Latin",
+        "en": "English",
+        "it": "Italian"
+      }
     },
     "eulogyGroup": "Eulogy {eulogy}"
   },

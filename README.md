@@ -87,7 +87,11 @@ npm run import-changeset -- ../crmedr/data/gazetteer_review.json gazetteer-revie
 # `build_person_items.py propose`: earlier month files are replaced, and a month
 # with nothing left to review disappears. It quotes no text: names and
 # Wikidata candidates only.
+# `--except-months 01,02` (two-digit months, comma-separated) keeps those months'
+# bundles off /review: they are not written, an earlier copy is removed, and the
+# index no longer lists them.
 npm run import-changeset -- ../crmedr/data/person_items_review.json persons-review --by-month
+npm run import-changeset -- ../crmedr/data/person_items_review.json persons-review --by-month --except-months 01,02
 
 # Bundle crmedr's mentions review (add_mention / set_span / remove_mention, the
 # eulogy markup's doubtful and unmatched marks) one month at a time into a

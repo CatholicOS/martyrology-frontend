@@ -392,7 +392,8 @@
       "rejected": "{count} abgelehnt",
       "edited": "{count} bearbeitet",
       "undecided": "{count} offen",
-      "export": "Entscheidungen exportieren"
+      "export": "Entscheidungen exportieren",
+      "blocked": "{count, plural, one {# Namenskarte muss} other {# Namenskarten müssen}} vor dem Export neu entschieden werden"
     },
     "decision": {
       "accept": "annehmen",
@@ -488,7 +489,8 @@
         "sparql": "an diesem Tag gestorben",
         "title": "Titel oder Fest",
         "curated": "kuratierter Titel",
-        "group": "über eine Gruppe gefunden ({prop})"
+        "group": "über eine Gruppe gefunden ({prop})",
+        "place": "über einen Ort gefunden"
       },
       "jevSuggests": "Jev schlägt vor: {what} ({confidence} %)",
       "jevNone": "kein Eintrag",
@@ -518,6 +520,19 @@
         "celebration_or_title": "ein Fest oder ein Titel",
         "anonymous_group": "eine anonyme Gruppe",
         "not_identifiable": "nicht identifizierbar"
+      },
+      "evidence": {
+        "human": "Mensch",
+        "status": "heilig oder selig",
+        "name": "Name stimmt überein",
+        "death": "Todesdatum stimmt überein",
+        "place": "Ort stimmt überein"
+      },
+      "agrees": {
+        "P19": "geboren in {place}",
+        "P20": "gestorben in {place}",
+        "P119": "begraben in {place}",
+        "P937": "tätig in {place}"
       }
     },
     "mention": {
@@ -614,6 +629,26 @@
       },
       "acceptSelected": "Auswahl annehmen",
       "labels": "Bezeichnungen"
+    },
+    "relabel": {
+      "current": "Aktuelle Namen:",
+      "follows": "Folgt der ID {id}:",
+      "followsUndecided": "Folgt einer noch nicht entschiedenen ID, {id}:",
+      "typedId": "Die ID {id} ist von Hand eingegeben, kein Kandidat und ergibt keine Namen. Bearbeiten Sie stattdessen den Wortlaut.",
+      "noId": "Die ID wird nicht umbenannt: Es gibt keine ID, der gefolgt werden kann.",
+      "undecidedId": "Entscheiden Sie zuerst über die ID: Die Namen folgen ihr.",
+      "follow": "Der ID folgen",
+      "editWording": "Wortlaut bearbeiten",
+      "keep": "Aktuelle Namen behalten",
+      "edited": "bearbeitet: {labels}",
+      "staleAccept": "Angenommen, aber die ID, der es folgt, hat sich geändert: neu entscheiden",
+      "hint": "Wikidata: {labels}",
+      "hintNote": "eine Orientierung für den Wortlaut, keine Auswahl",
+      "lang": {
+        "la": "Latein",
+        "en": "Englisch",
+        "it": "Italienisch"
+      }
     },
     "eulogyGroup": "Elogium {eulogy}"
   },

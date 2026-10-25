@@ -111,6 +111,22 @@ describe("RenameCard", () => {
     expect(onDecide).toHaveBeenLastCalledWith("subject:mr:0101-eugendus", { decision: "edit", edited: { new_id: "mr:0101-x", subject_la: "Sanctus Eugendus Abbas" } });
   });
 
+  it("beside a relabel, the edit form neither shows nor records subject_la", () => {
+    const onDecide = vi.fn();
+    render(<OperationCard op={op} hasRelabel onDecide={onDecide} {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.queryByLabelText("subject_la")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("new_id"), { target: { value: "mr:0101-x" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith("subject:mr:0101-eugendus", { decision: "edit", edited: { new_id: "mr:0101-x" } });
+  });
+
+  it("without a relabel, the edit form keeps subject_la", () => {
+    render(<OperationCard op={op} hasRelabel={false} onDecide={vi.fn()} {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.getByLabelText("subject_la")).toHaveValue("Sanctus Eugendus Abbas");
+  });
+
   it("a rename without candidates keeps the old card", () => {
     render(<OperationCard op={{ ...op, candidates: undefined }} onDecide={vi.fn()} {...props} />);
     expect(screen.getByText("mr:0101-eugendus-abbas")).toBeInTheDocument();

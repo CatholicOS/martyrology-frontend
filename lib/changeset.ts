@@ -43,6 +43,8 @@ export interface EditedFields {
   start?: number;
   end?: number;
   form?: string;
+  /** relabel: the eulogy's subjects in three languages (null leaves one empty). */
+  labels?: SubjectLabels;
 }
 
 export interface DecisionRecord {
@@ -121,6 +123,56 @@ export interface RenameOp extends Base {
   subject_la?: string;
   candidates?: RenameCandidate[];
   jev?: RenameJev | null;
+}
+
+/** A eulogy's subjects in Latin, English and Italian; null where a language has none. */
+export interface SubjectLabels {
+  la: string | null;
+  en: string | null;
+  it: string | null;
+}
+
+/** One subjects set a relabel may take: a candidate rename's labels, or the current set (`from_id` null, always last). */
+export interface RelabelCandidate {
+  labels: SubjectLabels;
+  from_id: string | null;
+}
+
+/** Jev's pick on a relabel card, from earlier crmedr runs: no longer asked, never shown (the subject follows the ID). */
+export interface RelabelJev {
+  decision?: "accept" | "edit" | "reject";
+  /** An edit's chosen labels. */
+  labels?: SubjectLabels;
+  probability?: number;
+  confidence?: number;
+  model: string;
+  flags?: string[];
+  /** One score per candidate, in candidate order. */
+  scores?: number[];
+}
+
+/** A reference for a relabel's wording: the decided item of the eulogy's one person, never a choice. */
+export interface RelabelHint {
+  wikidata: string;
+  labels: { en: string | null; it: string | null };
+}
+
+/**
+ * A eulogy's subject (crmedr subject identity): it follows the eulogy's decided ID. Accept writes the
+ * subject that ID implies, edit the edited labels, reject keeps the current subject.
+ */
+export interface RelabelOp extends Base {
+  op: "relabel";
+  id: string;
+  current: SubjectLabels;
+  labels: SubjectLabels;
+  /** One per distinct subject of the rename candidates (from_id: the new ID it came from), then the current set. */
+  candidates: RelabelCandidate[];
+  /** From earlier runs; ignored. */
+  jev?: RelabelJev | null;
+  /** From earlier runs (crmedr no longer prefills a relabel); ignored. */
+  prefilled?: "jev";
+  hint?: RelabelHint;
 }
 
 export interface DeleteOp extends Base {
@@ -215,8 +267,12 @@ export interface PersonCandidate {
   died: string | null;
   feast: string[];
   evidence: string[];
-  /** search | companion:Pnnn | sparql | title | curated */
+  /** search | companion:Pnnn | sparql | title | curated | place */
   source?: string;
+  /** The places of the eulogy this candidate's Wikidata item agrees with, and through which property. */
+  places?: { role: string; qid: string; label?: string; via: "P19" | "P20" | "P119" | "P937" }[];
+  /** The candidate's own places, by role, as labels. */
+  place_labels?: { death_place?: string[]; burial_place?: string[]; birth_place?: string[]; work_places?: string[] };
 }
 
 /** Identify a saint or blessed named in a eulogy with a Wikidata item (crmedr persons). */
@@ -236,6 +292,8 @@ export interface ResolvePersonOp extends Base {
   where: "text" | { footnote: number };
   companions: string[];
   failed: string[];
+  /** The places named in the eulogy, which the candidates were checked against. */
+  places?: { role: string; label: string; qid: string }[];
   candidates: PersonCandidate[];
   suggested?: { wikidata: string } | null;
   jev?: PersonJev | null;
@@ -408,6 +466,7 @@ export interface UnknownOp extends Base {
 
 export type Op =
   | RenameOp
+  | RelabelOp
   | DeleteOp
   | MergeOp
   | ResolvePlaceOp
@@ -439,6 +498,17 @@ export function parseChangeset(text: string): Changeset {
   }
   // A place candidate without evidence (a hand-built crmedr card) would crash every PlaceCard.
   const operations = (cs.operations as Op[]).map((op) => {
+    // A relabel without candidates (a hand-built card) gets an empty list, as a place without evidence does.
+    if (op.op === "relabel") {
+      const r = op as RelabelOp;
+      const empty = (): SubjectLabels => ({ la: null, en: null, it: null });
+      return {
+        ...r,
+        current: r.current ?? empty(),
+        labels: r.labels ?? empty(),
+        candidates: Array.isArray(r.candidates) ? r.candidates.map((c) => ({ ...c, labels: c.labels ?? empty() })) : [],
+      } as RelabelOp;
+    }
     if (op.op !== "resolve_place" || !Array.isArray(op.candidates)) return op;
     const place = op as ResolvePlaceOp;
     return { ...place, candidates: place.candidates.map((c) => ({ ...c, evidence: c.evidence ?? [] })) };
@@ -449,6 +519,7 @@ export function parseChangeset(text: string): Changeset {
 export function isAdjudicable(op: Op): boolean {
   return (
     op.op === "rename" ||
+    op.op === "relabel" ||
     op.op === "delete" ||
     op.op === "merge" ||
     op.op === "resolve_place" ||
@@ -470,6 +541,8 @@ export function isMentionOp(op: Op): op is MentionOp {
 export function opId(op: Op): string {
   if (typeof op.uid === "string" && op.uid !== "") return op.uid;
   if (op.op === "merge") return (op as MergeOp).ids.join("+");
+  // Without a uid a relabel must not collide with a rename of the same id.
+  if (op.op === "relabel") return `relabel:${op.id}`;
   return (op as { id?: string }).id ?? JSON.stringify(op);
 }
 

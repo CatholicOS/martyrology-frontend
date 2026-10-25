@@ -19,6 +19,9 @@ interface Props {
 const JEV_KINDS = ["person", "celebration_or_title", "anonymous_group", "not_identifiable"] as const;
 const isJevKind = (k: string): k is (typeof JEV_KINDS)[number] => (JEV_KINDS as readonly string[]).includes(k);
 
+const EVIDENCE = ["human", "status", "name", "death", "place"] as const;
+const isEvidence = (e: string): e is (typeof EVIDENCE)[number] => (EVIDENCE as readonly string[]).includes(e);
+
 const ITALIAN_2004 = "martyrologium_romanum_2004_it_IT";
 
 /**
@@ -127,7 +130,16 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
             <a className="font-mono text-xs text-blue-700 underline dark:text-blue-400" href={`https://www.wikidata.org/wiki/${c.wikidata}`} target="_blank" rel="noreferrer">
               {c.wikidata}
             </a>
-            <span className="text-xs text-slate-500 dark:text-slate-400">{c.evidence.join(", ")}</span>
+            {c.evidence.map((e) => (
+              <span key={e} className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
+                {isEvidence(e) ? t(`evidence.${e}`) : e}
+              </span>
+            ))}
+            {(c.places ?? []).map((pl) => (
+              <span key={`${pl.role}|${pl.via}|${pl.qid}`} className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
+                {t(`agrees.${pl.via}`, { place: pl.label || pl.qid })}
+              </span>
+            ))}
             {(() => {
               const source = sourceKey(c.source);
               const prop = companionProp(c.source) ?? "";
