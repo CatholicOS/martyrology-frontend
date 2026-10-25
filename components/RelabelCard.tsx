@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
+import { FlagText } from "@/components/RenameCard";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type RelabelOp, type SubjectLabels } from "@/lib/changeset";
 import { relabelChoiceIndex, relabelChoiceRecord, relabelJevRecord } from "@/lib/subject-review";
@@ -36,7 +37,7 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
   const r = useTranslations("Review");
   const uid = opId(op);
   const candidates = op.candidates ?? [];
-  const [selected, setSelected] = useState(() => Math.max(0, relabelChoiceIndex(op, decision)));
+  const [selected, setSelected] = useState(() => relabelChoiceIndex(op, decision));
   const [editing, setEditing] = useState(false);
   const seed = decision?.edited?.labels ?? op.labels;
   const [fields, setFields] = useState<Record<(typeof LANGS)[number], string>>({
@@ -49,10 +50,13 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
   const jevWhat =
     jev?.decision === "accept" ? t("proposed") : jev?.decision === "reject" ? t("keepWhat") : jev?.labels ? labelsLine(jev.labels) : "";
   const scores = jev?.scores ?? [];
+  const flags = jev?.flags ?? [];
+  // A saved edit that is none of the candidates: shown, not replaced by a radio.
+  const unmatchedEdit = decision?.decision === "edit" && decision.edited?.labels && relabelChoiceIndex(op, decision) < 0 ? decision.edited.labels : null;
 
   const decide = (d: DecisionRecord) => {
     const at = relabelChoiceIndex(op, d);
-    if (at >= 0) setSelected(at);
+    setSelected(at);
     onDecide(uid, d);
   };
 
@@ -96,7 +100,7 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
                     <span className="text-[11px] text-slate-500 dark:text-slate-400">
                       {c.from_id === null ? t("currentSet") : t("from", { id: c.from_id })}
                     </span>
-                    {typeof score === "number" && <span className={chip}>{t("score", { score: score.toFixed(1) })}</span>}
+                    {typeof score === "number" && <span className={chip}>{r("rename.clarity", { score: score.toFixed(1) })}</span>}
                   </span>
                 </span>
               </label>
@@ -110,13 +114,17 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
           {t("suggests", { what: jevWhat, confidence: Math.round((jev.probability ?? 0) * 100) })}
         </p>
       )}
-      {(jev?.flags?.length ?? 0) > 0 && (
+      {jev && !jev.decision && flags.length > 0 && <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">{r("rename.doubts")}</p>}
+      {flags.length > 0 && (
         <ul className="mb-2 list-disc pl-5 text-xs text-amber-700 dark:text-amber-400">
-          {jev!.flags!.map((f) => (
-            <li key={f}>{f}</li>
+          {flags.map((f) => (
+            <li key={f}>
+              <FlagText flag={f} />
+            </li>
           ))}
         </ul>
       )}
+      {unmatchedEdit && <p className="mb-2 text-xs text-slate-700 dark:text-slate-300">{t("edited", { labels: labelsLine(unmatchedEdit) })}</p>}
 
       {!editing ? (
         <div className="flex flex-wrap gap-2">
@@ -135,7 +143,7 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
               {t("take")}
             </button>
           )}
-          <button type="button" className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, relabelChoiceRecord(op, selected))}>
+          <button type="button" disabled={selected < 0} className={`${button} bg-green-600 hover:bg-green-700`} onClick={() => onDecide(uid, relabelChoiceRecord(op, selected))}>
             {t("acceptSelected")}
           </button>
           <button type="button" className={`${button} bg-slate-600 hover:bg-slate-700`} onClick={() => setEditing(true)}>

@@ -489,7 +489,7 @@
         "title": "titolo o festa",
         "curated": "titolo curato",
         "group": "trovato tramite un gruppo ({prop})",
-        "place": "trovato attraverso un luogo"
+        "place": "trovato tramite un luogo"
       },
       "jevSuggests": "Jev suggerisce: {what} ({confidence}%)",
       "jevNone": "nessuna voce",
@@ -634,14 +634,14 @@
       "candidates": "Soggetti tra cui scegliere",
       "currentSet": "i soggetti attuali",
       "from": "da {id}",
-      "score": "punteggio {score}",
       "proposed": "i soggetti proposti",
       "keepWhat": "mantenere i soggetti attuali",
       "suggests": "Jev suggerisce: {what} ({confidence}%)",
       "take": "Accetta il suggerimento",
       "acceptSelected": "Accetta la selezione",
       "keep": "Mantieni i soggetti attuali",
-      "prefilled": "precompilato da Jev",
+      "prefilled": "precompilata da Jev",
+      "edited": "modificato: {labels}",
       "lang": {
         "la": "Latino",
         "en": "Inglese",

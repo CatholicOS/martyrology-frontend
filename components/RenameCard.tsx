@@ -23,7 +23,7 @@ interface Props {
 }
 
 /** A Jev flag as words: "record:places[0]" or "grammar:places[0]:genitive". */
-function FlagText({ flag }: { flag: string }) {
+export function FlagText({ flag }: { flag: string }) {
   const t = useTranslations("Review.rename");
   if (flag.startsWith("record:")) return <>{t("flag.record", { field: flag.slice("record:".length) })}</>;
   if (flag.startsWith("grammar:")) {

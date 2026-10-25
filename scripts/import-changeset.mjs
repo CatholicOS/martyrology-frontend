@@ -160,8 +160,10 @@ export function writeBundle(cs, name, { byMonth, dir, isPublic, exceptMonths = [
 export function main(argv = process.argv.slice(2), env = process.env) {
   const here = dirname(fileURLToPath(import.meta.url));
   // `--except-months 01,02` takes a value; take it out before the positional arguments are read.
+  if (argv.some((a) => a.startsWith("--except-months="))) throw new Error("--except-months takes its list as the next argument, e.g. --except-months 01,02 (not --except-months=01,02)");
   const at = argv.indexOf("--except-months");
   if (at >= 0 && (argv[at + 1] === undefined || argv[at + 1].startsWith("--"))) throw new Error("--except-months takes a comma-separated list of months, e.g. 01,02");
+  if (at >= 0 && !argv.includes("--by-month")) throw new Error("--except-months needs --by-month: it leaves months out of the per-month parts");
   const exceptMonths = at >= 0 ? argv[at + 1].split(",") : [];
   checkMonths(exceptMonths);
   const rest = at >= 0 ? argv.filter((_, i) => i !== at && i !== at + 1) : argv;

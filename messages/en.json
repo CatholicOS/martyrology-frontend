@@ -634,7 +634,6 @@
       "candidates": "Subjects to choose from",
       "currentSet": "the current subjects",
       "from": "from {id}",
-      "score": "score {score}",
       "proposed": "the proposed subjects",
       "keepWhat": "keep the current subjects",
       "suggests": "Jev suggests: {what} ({confidence}%)",
@@ -642,6 +641,7 @@
       "acceptSelected": "Accept selected",
       "keep": "Keep the current subjects",
       "prefilled": "pre-filled by Jev",
+      "edited": "edited: {labels}",
       "lang": {
         "la": "Latin",
         "en": "English",

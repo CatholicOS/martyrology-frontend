@@ -230,6 +230,17 @@ describe("bundling the mentions review", () => {
       expect(readdirSync(work)).toEqual(["src.json"]);
     });
 
+    it("refuses the equals form and a missing --by-month, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01"])));
+      const dir = join(work, "out");
+      const env = { CHANGESETS_DIR: dir };
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months=01"], env)).toThrow(/--except-months 01,02/);
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--private", "--except-months", "01"], env)).toThrow(/--by-month/);
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
     it("takes the month list from the command line", () => {
       const work = mkdtempSync(join(tmpdir(), "cs-"));
       const src = join(work, "src.json");

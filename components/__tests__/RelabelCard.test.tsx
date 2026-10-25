@@ -34,9 +34,9 @@ describe("RelabelCard", () => {
     expect(screen.getByText("Sanctus Felix Nolanus · — · San Felice di Nola")).toBeInTheDocument();
     expect(screen.getByText("from mr:0101-felix-romae")).toBeInTheDocument();
     expect(screen.getByText("the current subjects")).toBeInTheDocument();
-    expect(screen.getByText("score 2.6")).toBeInTheDocument();
-    expect(screen.getByText("score 1.1")).toBeInTheDocument();
-    expect(screen.getByText("score 0.4")).toBeInTheDocument();
+    expect(screen.getByText("clarity 2.6/3")).toBeInTheDocument();
+    expect(screen.getByText("clarity 1.1/3")).toBeInTheDocument();
+    expect(screen.getByText("clarity 0.4/3")).toBeInTheDocument();
     expect(screen.getAllByRole("radio")[0]).toBeChecked();
   });
 
@@ -107,5 +107,22 @@ describe("RelabelCard", () => {
     fireEvent.click(screen.getAllByRole("radio")[0]);
     fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
     expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "accept" });
+  });
+
+  it("a saved edit matching no candidate shows its labels, selects nothing and cannot be accepted-selected", () => {
+    const typed = { la: "Sanctus Felix Typus", en: "Typed Felix", it: null };
+    render(<OperationCard op={op} decision={{ decision: "edit", edited: { labels: typed } }} onDecide={vi.fn()} {...props} />);
+    expect(screen.getByText("edited: Sanctus Felix Typus · Typed Felix · —")).toBeInTheDocument();
+    for (const radio of screen.getAllByRole("radio")) expect(radio).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Accept selected" })).toBeDisabled();
+    fireEvent.click(screen.getAllByRole("radio")[1]);
+    expect(screen.getByRole("button", { name: "Accept selected" })).toBeEnabled();
+  });
+
+  it("a flagged relabel without a pick shows the doubt and the flags as words", () => {
+    const jev = { flags: ["record:places[0]"], model: "m", scores: [1, 2] };
+    render(<OperationCard op={withJev(jev)} onDecide={vi.fn()} {...props} />);
+    expect(screen.getByText("Jev doubts the record")).toBeInTheDocument();
+    expect(screen.getByText("record: places[0]")).toBeInTheDocument();
   });
 });

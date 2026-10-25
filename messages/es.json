@@ -489,7 +489,7 @@
         "title": "título o fiesta",
         "curated": "título curado",
         "group": "encontrado a través de un grupo ({prop})",
-        "place": "encontrado por un lugar"
+        "place": "encontrado a través de un lugar"
       },
       "jevSuggests": "Jev sugiere: {what} ({confidence} %)",
       "jevNone": "ningún elemento",
@@ -630,18 +630,18 @@
       "labels": "etiquetas"
     },
     "relabel": {
-      "current": "Sujetos actuales:",
-      "candidates": "Sujetos para elegir",
-      "currentSet": "los sujetos actuales",
+      "current": "Nombres actuales:",
+      "candidates": "Nombres para elegir",
+      "currentSet": "los nombres actuales",
       "from": "de {id}",
-      "score": "puntuación {score}",
-      "proposed": "los sujetos propuestos",
-      "keepWhat": "mantener los sujetos actuales",
+      "proposed": "los nombres propuestos",
+      "keepWhat": "mantener los nombres actuales",
       "suggests": "Jev sugiere: {what} ({confidence} %)",
       "take": "Seguir la sugerencia",
       "acceptSelected": "Aceptar la selección",
-      "keep": "Mantener los sujetos actuales",
+      "keep": "Mantener los nombres actuales",
       "prefilled": "rellenado por Jev",
+      "edited": "editado: {labels}",
       "lang": {
         "la": "Latín",
         "en": "Inglés",
