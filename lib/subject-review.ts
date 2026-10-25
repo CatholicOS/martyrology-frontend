@@ -25,35 +25,39 @@ export function renameJevRecord(op: RenameOp): DecisionRecord | null {
   return renameChoiceRecord(op, id);
 }
 
-const sameLabels = (a: SubjectLabels, b: SubjectLabels) => a.la === b.la && a.en === b.en && a.it === b.it;
-
-/** Where a relabel record sits among the candidates: the proposal (accept), the current set (reject), or edited labels; -1 when none. */
-export function relabelChoiceIndex(op: RelabelOp, d?: DecisionRecord | null): number {
-  const target =
-    !d || d.decision === "accept" ? op.labels : d.decision === "reject" ? op.current : (d.edited?.labels ?? null);
-  if (!target) return -1;
-  if (d?.decision === "reject") {
-    const current = op.candidates.findIndex((c) => c.from_id === null);
-    if (current >= 0) return current;
-  }
-  return op.candidates.findIndex((c) => sameLabels(c.labels, target));
-}
-
-/** The relabel choice a click records: the proposed labels accept, the current set rejects, another candidate edits. */
-export function relabelChoiceRecord(op: RelabelOp, index: number): DecisionRecord {
-  const c = op.candidates[index];
-  if (!c || sameLabels(c.labels, op.labels)) return { decision: "accept" };
-  if (c.from_id === null) return { decision: "reject" };
-  return { decision: "edit", edited: { labels: c.labels } };
-}
-
-/** What taking Jev's relabel pick records; null when Jev gave none, or an edit without labels. */
-export function relabelJevRecord(op: RelabelOp): DecisionRecord | null {
-  const jev = op.jev;
-  if (jev?.decision === "accept") return { decision: "accept" };
-  if (jev?.decision === "reject") return { decision: "reject" };
-  if (jev?.decision === "edit" && jev.labels) return { decision: "edit", edited: { labels: jev.labels } };
+/** The new ID a rename decision gives (crmedr `_new_id`): accept its new_id, edit the edited one; null otherwise. */
+export function renameDecidedId(op: RenameOp, d?: DecisionRecord | null): string | null {
+  if (d?.decision === "accept") return op.new_id;
+  if (d?.decision === "edit") return d.edited?.new_id || op.new_id;
   return null;
+}
+
+/** The subject an ID implies, as crmedr `_followed`: id, its labels (null for a typed ID), whether the rename is undecided. */
+export interface FollowedSubject {
+  id: string | null;
+  labels: SubjectLabels | null;
+  undecided: boolean;
+}
+
+const LANGS = ["la", "en", "it"] as const;
+
+/**
+ * The subject the eulogy's decided ID implies (the subject follows the ID, crmedr `_followed`): the
+ * relabel candidate whose from_id is that ID, else the rename candidate with that new_id, a null
+ * language filled from the current subjects. An undecided rename gives its proposed ID, marked
+ * undecided; a rejected rename (or none) gives no ID.
+ */
+export function followedSubject(op: RelabelOp, rename?: RenameOp | null, decision?: DecisionRecord | null): FollowedSubject {
+  if (!rename) return { id: null, labels: null, undecided: false };
+  const undecided = !decision;
+  const id = undecided ? rename.new_id : renameDecidedId(rename, decision);
+  if (id === null) return { id: null, labels: null, undecided: false };
+  const own = op.candidates.find((c) => c.from_id === id);
+  if (own) return { id, labels: own.labels, undecided };
+  const cand = rename.candidates?.find((c) => c.new_id === id);
+  if (!cand) return { id, labels: null, undecided };
+  const labels = Object.fromEntries(LANGS.map((k) => [k, cand.labels[k] ?? op.current[k] ?? null])) as unknown as SubjectLabels;
+  return { id, labels, undecided };
 }
 
 /** What a person card's accept means (crmedr `_resolve`). */

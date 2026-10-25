@@ -20,6 +20,8 @@ interface Props {
   onDecide: (id: string, d: DecisionRecord) => void;
   locale: Locale;
   baseEdition: string;
+  /** The eulogy has a relabel: the edit form leaves subject_la to the subject card. */
+  hasRelabel?: boolean;
 }
 
 /** A Jev flag as words: "record:places[0]" or "grammar:places[0]:genitive". */
@@ -38,7 +40,7 @@ export function FlagText({ flag }: { flag: string }) {
  * Review card for a subject-identity rename with ranked candidates: pick one (the proposal is the
  * default), take Jev's suggestion, or type an ID by hand. A click records the decision; Jev never does.
  */
-export default function RenameCard({ op, decision, onDecide, locale, baseEdition }: Props) {
+export default function RenameCard({ op, decision, onDecide, locale, baseEdition, hasRelabel = false }: Props) {
   const t = useTranslations("Review.rename");
   const r = useTranslations("Review");
   const uid = opId(op);
@@ -157,16 +159,18 @@ export default function RenameCard({ op, decision, onDecide, locale, baseEdition
             new_id
             <input className={input} value={newIdInput} onChange={(e) => setNewIdInput(e.target.value)} />
           </label>
-          <label className="flex items-center gap-2 text-xs">
-            subject_la
-            <input className={input} value={subjectLaInput} onChange={(e) => setSubjectLaInput(e.target.value)} />
-          </label>
+          {!hasRelabel && (
+            <label className="flex items-center gap-2 text-xs">
+              subject_la
+              <input className={input} value={subjectLaInput} onChange={(e) => setSubjectLaInput(e.target.value)} />
+            </label>
+          )}
           <div className="flex gap-2">
             <button
               type="button"
               className={`${button} bg-amber-600 hover:bg-amber-700`}
               onClick={() => {
-                const subjectLa = subjectLaInput.trim();
+                const subjectLa = hasRelabel ? "" : subjectLaInput.trim();
                 onDecide(uid, { decision: "edit", edited: { new_id: newIdInput, ...(subjectLa ? { subject_la: subjectLaInput } : {}) } });
                 setEditing(false);
               }}

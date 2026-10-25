@@ -138,7 +138,7 @@ export interface RelabelCandidate {
   from_id: string | null;
 }
 
-/** Jev's pick on a relabel card: never a decision by itself. `reject` keeps the current subjects. */
+/** Jev's pick on a relabel card, from earlier crmedr runs: no longer asked, never shown (the subject follows the ID). */
 export interface RelabelJev {
   decision?: "accept" | "edit" | "reject";
   /** An edit's chosen labels. */
@@ -151,16 +151,28 @@ export interface RelabelJev {
   scores?: number[];
 }
 
-/** The subjects shown for a eulogy (crmedr subject identity, the rename card): current, proposed, the choices. */
+/** A reference for a relabel's wording: the decided item of the eulogy's one person, never a choice. */
+export interface RelabelHint {
+  wikidata: string;
+  labels: { en: string | null; it: string | null };
+}
+
+/**
+ * A eulogy's subject (crmedr subject identity): it follows the eulogy's decided ID. Accept writes the
+ * subject that ID implies, edit the edited labels, reject keeps the current subject.
+ */
 export interface RelabelOp extends Base {
   op: "relabel";
   id: string;
   current: SubjectLabels;
   labels: SubjectLabels;
+  /** One per distinct subject of the rename candidates (from_id: the new ID it came from), then the current set. */
   candidates: RelabelCandidate[];
+  /** From earlier runs; ignored. */
   jev?: RelabelJev | null;
-  /** Set when crmedr pre-filled the decision from Jev's pick. */
+  /** From earlier runs (crmedr no longer prefills a relabel); ignored. */
   prefilled?: "jev";
+  hint?: RelabelHint;
 }
 
 export interface DeleteOp extends Base {

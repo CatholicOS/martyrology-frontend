@@ -1,10 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@/test/intl";
 import OperationCard from "@/components/OperationCard";
-import type { RelabelJev, RelabelOp } from "@/lib/changeset";
+import type { DecisionRecord, RelabelOp, RenameOp } from "@/lib/changeset";
 
 vi.mock("@/components/EulogyView", () => ({ default: () => <div data-testid="eulogy" /> }));
 
+// Invented subjects, never the copyrighted 2004 text.
 const CURRENT = { la: "Sanctus Felix", en: "Saint Felix", it: "San Felice" };
 const PROPOSED = { la: "Sanctus Felix Romanus", en: "Saint Felix of Rome", it: "San Felice di Roma" };
 const OTHER = { la: "Sanctus Felix Nolanus", en: null, it: "San Felice di Nola" };
@@ -21,108 +22,138 @@ const op: RelabelOp = {
   ],
   decision: null,
 };
+const rename: RenameOp = {
+  op: "rename",
+  id: "mr:0101-felix",
+  new_id: "mr:0101-felix-romae",
+  uid: "subject:mr:0101-felix",
+  decision: null,
+  candidates: [
+    { new_id: "mr:0101-felix-romae", category: "place-genitive", weak: false, labels: PROPOSED, basis: "b" },
+    { new_id: "mr:0101-felix-nolae", category: "place-genitive", weak: false, labels: OTHER, basis: "b" },
+    // Deduplicated out of the relabel would need equal labels; this one is simply not among its candidates.
+    { new_id: "mr:0101-felix-presbyter", category: "role", weak: false, labels: { la: "Sanctus Felix presbyter", en: null, it: null }, basis: "b" },
+  ],
+};
 const props = { locale: "la" as const, baseEdition: "martyrologium_romanum_2004" };
-const jevBase = { probability: 0.93, confidence: 0.9, model: "jev", flags: [], scores: [2.6, 1.1, 0.4] };
-const withJev = (jev: RelabelJev, extra: Partial<RelabelOp> = {}): RelabelOp => ({ ...op, jev, ...extra });
 const UID = "labels:mr:0101-felix";
+const line = (l: { la: string | null; en: string | null; it: string | null }) => [l.la, l.en, l.it].map((x) => x ?? "—").join(" · ");
+const card = (renameDecision?: DecisionRecord, extra: Partial<RelabelOp> = {}, decision?: DecisionRecord, onDecide = vi.fn()) => (
+  <OperationCard op={{ ...op, ...extra }} decision={decision} rename={rename} renameDecision={renameDecision} onDecide={onDecide} {...props} />
+);
 
-describe("RelabelCard", () => {
-  it("shows current and candidates", () => {
-    render(<OperationCard op={withJev({ ...jevBase, decision: "accept" })} onDecide={vi.fn()} {...props} />);
-    expect(screen.getAllByText("Sanctus Felix · Saint Felix · San Felice")).toHaveLength(2);
-    expect(screen.getByText("Sanctus Felix Romanus · Saint Felix of Rome · San Felice di Roma")).toBeInTheDocument();
-    expect(screen.getByText("Sanctus Felix Nolanus · — · San Felice di Nola")).toBeInTheDocument();
-    expect(screen.getByText("from mr:0101-felix-romae")).toBeInTheDocument();
-    expect(screen.getByText("the current subjects")).toBeInTheDocument();
-    expect(screen.getByText("clarity 2.6/3")).toBeInTheDocument();
-    expect(screen.getByText("clarity 1.1/3")).toBeInTheDocument();
-    expect(screen.getByText("clarity 0.4/3")).toBeInTheDocument();
-    expect(screen.getAllByRole("radio")[0]).toBeChecked();
-  });
-
-  it("accept", () => {
+describe("RelabelCard: the subject follows the ID", () => {
+  it("an accepted rename: the proposal is its new ID's subject, and Follow records accept", () => {
     const onDecide = vi.fn();
-    render(<OperationCard op={op} onDecide={onDecide} {...props} />);
-    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+    render(card({ decision: "accept" }, {}, undefined, onDecide));
+    expect(screen.getByText(line(CURRENT))).toBeInTheDocument();
+    expect(screen.getByText("Follows the ID mr:0101-felix-romae:")).toBeInTheDocument();
+    expect(screen.getByText(line(PROPOSED))).toBeInTheDocument();
+    expect(screen.queryByRole("radio")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Follow the ID" }));
     expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "accept" });
-    fireEvent.click(screen.getAllByRole("radio")[1]);
-    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "edit", edited: { labels: OTHER } });
   });
 
-  it("edit three fields", () => {
+  it("a rename edited to another candidate: that candidate's subject", () => {
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-nolae" } }));
+    expect(screen.getByText("Follows the ID mr:0101-felix-nolae:")).toBeInTheDocument();
+    expect(screen.getByText(line(OTHER))).toBeInTheDocument();
+    expect(screen.queryByText(line(PROPOSED))).not.toBeInTheDocument();
+  });
+
+  it("a rename candidate missing from the relabel: its labels, a missing language from the current", () => {
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-presbyter" } }));
+    expect(screen.getByText("Sanctus Felix presbyter · Saint Felix · San Felice")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeEnabled();
+  });
+
+  it("updates when the rename decision changes", () => {
+    const { rerender } = render(card({ decision: "accept" }));
+    expect(screen.getByText(line(PROPOSED))).toBeInTheDocument();
+    rerender(card({ decision: "edit", edited: { new_id: "mr:0101-felix-nolae" } }));
+    expect(screen.getByText(line(OTHER))).toBeInTheDocument();
+    expect(screen.queryByText(line(PROPOSED))).not.toBeInTheDocument();
+  });
+
+  it("an undecided rename: the subject of its proposed ID, following an undecided ID", () => {
+    render(card(undefined));
+    expect(screen.getByText("Follows an undecided ID, mr:0101-felix-romae:")).toBeInTheDocument();
+    expect(screen.getByText(line(PROPOSED))).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeEnabled();
+  });
+
+  it("a typed ID implies no subject: Follow is disabled, with the reason", () => {
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-typed" } }));
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+    expect(screen.getByText("The ID mr:0101-felix-typed is typed, not a candidate: it implies no subject. Edit the wording instead.")).toBeInTheDocument();
+  });
+
+  it("a rejected rename, or none: Follow is disabled, with the reason", () => {
+    const { unmount } = render(card({ decision: "reject" }));
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+    expect(screen.getByText("The ID is not renamed: there is no ID to follow.")).toBeInTheDocument();
+    unmount();
+    render(<OperationCard op={op} onDecide={vi.fn()} {...props} />);
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+  });
+
+  it("edit the wording: three fields prefilled with the followed subject", () => {
     const onDecide = vi.fn();
-    render(<OperationCard op={op} onDecide={onDecide} {...props} />);
-    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
-    expect(screen.getByLabelText("Latin")).toHaveValue(PROPOSED.la);
-    fireEvent.change(screen.getByLabelText("Latin"), { target: { value: "Sanctus Felix presbyter" } });
-    fireEvent.change(screen.getByLabelText("English"), { target: { value: "Saint Felix, priest" } });
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-nolae" } }, {}, undefined, onDecide));
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    expect(screen.getByLabelText("Latin")).toHaveValue(OTHER.la);
+    expect(screen.getByLabelText("English")).toHaveValue("");
+    expect(screen.getByLabelText("Italian")).toHaveValue(OTHER.it);
+    fireEvent.change(screen.getByLabelText("English"), { target: { value: "Saint Felix of Nola" } });
     fireEvent.change(screen.getByLabelText("Italian"), { target: { value: " " } });
     fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
     expect(onDecide).toHaveBeenLastCalledWith(UID, {
       decision: "edit",
-      edited: { labels: { la: "Sanctus Felix presbyter", en: "Saint Felix, priest", it: null } },
+      edited: { labels: { la: "Sanctus Felix Nolanus", en: "Saint Felix of Nola", it: null } },
     });
   });
 
-  it("keep current", () => {
+  it("edit with no followed subject starts from the current subject", () => {
+    render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-typed" } }));
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    expect(screen.getByLabelText("Latin")).toHaveValue(CURRENT.la);
+  });
+
+  it("keep the current subject", () => {
     const onDecide = vi.fn();
-    render(<OperationCard op={op} onDecide={onDecide} {...props} />);
-    fireEvent.click(screen.getByRole("button", { name: "Keep the current subjects" }));
+    render(card({ decision: "accept" }, {}, undefined, onDecide));
+    fireEvent.click(screen.getByRole("button", { name: "Keep the current subject" }));
     expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "reject" });
-    fireEvent.click(screen.getAllByRole("radio")[2]);
-    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "reject" });
   });
 
-  it("take jev's suggestion", () => {
-    const onDecide = vi.fn();
-    const { unmount } = render(<OperationCard op={withJev({ ...jevBase, decision: "accept" })} onDecide={onDecide} {...props} />);
-    expect(screen.getByText("Jev suggests: the proposed subjects (93%)")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "accept" });
-    unmount();
-    render(<OperationCard op={withJev({ ...jevBase, decision: "edit", labels: OTHER })} onDecide={onDecide} {...props} />);
-    expect(screen.getByText("Jev suggests: Sanctus Felix Nolanus · — · San Felice di Nola (93%)")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "edit", edited: { labels: OTHER } });
-    expect(screen.getAllByRole("radio")[1]).toBeChecked();
+  it("never shows Jev, even when the op carries an old jev", () => {
+    const jev = { decision: "edit" as const, labels: OTHER, probability: 0.93, confidence: 0.9, model: "jev", flags: ["record:places[0]"], scores: [2.6, 1.1, 0.4] };
+    render(card({ decision: "accept" }, { jev, prefilled: "jev" }));
+    expect(screen.queryByText(/Jev/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/clarity/)).not.toBeInTheDocument();
+    expect(screen.queryByText("record: places[0]")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Take the suggestion" })).not.toBeInTheDocument();
   });
 
-  it("jev picks the current labels", () => {
-    const onDecide = vi.fn();
-    render(<OperationCard op={withJev({ ...jevBase, decision: "reject" })} onDecide={onDecide} {...props} />);
-    expect(screen.getByText("Jev suggests: keep the current subjects (93%)")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Take the suggestion" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "reject" });
-    expect(screen.getAllByRole("radio")[2]).toBeChecked();
-  });
-
-  it("shows a prefill, which another click undoes", () => {
-    const onDecide = vi.fn();
-    const prefilled = withJev({ ...jevBase, decision: "reject" }, { prefilled: "jev", decision: "reject" });
-    render(<OperationCard op={prefilled} decision={{ decision: "reject" }} onDecide={onDecide} {...props} />);
-    expect(screen.getByText("pre-filled by Jev")).toBeInTheDocument();
-    expect(screen.getAllByRole("radio")[2]).toBeChecked();
-    fireEvent.click(screen.getAllByRole("radio")[0]);
-    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
-    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "accept" });
-  });
-
-  it("a saved edit matching no candidate shows its labels, selects nothing and cannot be accepted-selected", () => {
+  it("a saved hand-typed edit shows its labels", () => {
     const typed = { la: "Sanctus Felix Typus", en: "Typed Felix", it: null };
-    render(<OperationCard op={op} decision={{ decision: "edit", edited: { labels: typed } }} onDecide={vi.fn()} {...props} />);
+    render(card({ decision: "accept" }, {}, { decision: "edit", edited: { labels: typed } }));
     expect(screen.getByText("edited: Sanctus Felix Typus · Typed Felix · —")).toBeInTheDocument();
-    for (const radio of screen.getAllByRole("radio")) expect(radio).not.toBeChecked();
-    expect(screen.getByRole("button", { name: "Accept selected" })).toBeDisabled();
-    fireEvent.click(screen.getAllByRole("radio")[1]);
-    expect(screen.getByRole("button", { name: "Accept selected" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    expect(screen.getByLabelText("Latin")).toHaveValue(typed.la);
   });
 
-  it("a flagged relabel without a pick shows the doubt and the flags as words", () => {
-    const jev = { flags: ["record:places[0]"], model: "m", scores: [1, 2] };
-    render(<OperationCard op={withJev(jev)} onDecide={vi.fn()} {...props} />);
-    expect(screen.getByText("Jev doubts the record")).toBeInTheDocument();
-    expect(screen.getByText("record: places[0]")).toBeInTheDocument();
+  it("the Wikidata hint: the item's labels, the QID linked, as a reference for the wording", () => {
+    render(card({ decision: "accept" }, { hint: { wikidata: "Q4115189", labels: { en: "Felix of Rome", it: null } } }));
+    expect(screen.getByText("a reference for the wording, not a choice")).toBeInTheDocument();
+    expect(screen.getByText("Wikidata: Felix of Rome · —")).toBeInTheDocument();
+    const link = screen.getByRole("link", { name: "Q4115189" });
+    expect(link).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q4115189");
+  });
+
+  it("no hint without op.hint", () => {
+    render(card({ decision: "accept" }));
+    expect(screen.queryByText(/^Wikidata:/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 });

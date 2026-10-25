@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RenameOp } from "@/lib/changeset";
+import { parseChangeset, exportChangeset, opId, type Changeset, type Op, type RealignOp, type RelabelOp, type RenameOp } from "@/lib/changeset";
 import { groupByEulogy, resolvedTarget } from "@/lib/subject-review";
 import {
   decisionsFromChangeset,
@@ -217,16 +217,33 @@ export default function ReviewPage() {
     URL.revokeObjectURL(url);
   };
 
-  const renderCard = (op: Op) => (
-    <OperationCard
-      key={opId(op)}
-      op={op}
-      decision={decisions[opId(op)]}
-      onDecide={onDecide}
-      locale={locale}
-      baseEdition={cs?.base.edition ?? ""}
-    />
-  );
+  // The subject follows the ID: a relabel reads its eulogy's rename and that rename's current decision.
+  const subjectLinks = useMemo(() => {
+    const renames = new Map<string, RenameOp>();
+    const relabelled = new Set<string>();
+    for (const op of cs?.operations ?? []) {
+      if (op.op === "rename" && !renames.has((op as RenameOp).id)) renames.set((op as RenameOp).id, op as RenameOp);
+      if (op.op === "relabel") relabelled.add((op as RelabelOp).id);
+    }
+    return { renames, relabelled };
+  }, [cs]);
+
+  const renderCard = (op: Op) => {
+    const rename = op.op === "relabel" ? subjectLinks.renames.get((op as RelabelOp).id) : undefined;
+    return (
+      <OperationCard
+        key={opId(op)}
+        op={op}
+        rename={rename}
+        renameDecision={rename ? decisions[opId(rename)] : undefined}
+        hasRelabel={op.op === "rename" && subjectLinks.relabelled.has((op as RenameOp).id)}
+        decision={decisions[opId(op)]}
+        onDecide={onDecide}
+        locale={locale}
+        baseEdition={cs?.base.edition ?? ""}
+      />
+    );
+  };
 
   return (
     <main className="mx-auto max-w-5xl p-8">

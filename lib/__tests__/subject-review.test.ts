@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { opId, type Op, type RelabelOp, type RenameOp, type ResolvePersonOp, type PersonCandidate } from "@/lib/changeset";
 import {
   companionProp, groupByEulogy, personAppliable, personDefaultQid, personJevRecord,
-  relabelChoiceRecord, relabelJevRecord, renameChoiceRecord, renameJevRecord, resolvedTarget, sourceKey,
+  followedSubject, renameChoiceRecord, renameDecidedId, renameJevRecord, resolvedTarget, sourceKey,
 } from "@/lib/subject-review";
 
 const rename = (id: string, newId: string): RenameOp => ({
@@ -121,21 +121,54 @@ describe("subject review", () => {
     expect(groups.map((g) => g.ops.map(opId))).toEqual([["subject:mr:0101-a", "mr:0101-a|A"]]);
   });
 
-  it("a relabel choice: the proposal accepts, the current set rejects, another candidate edits", () => {
-    const op = relabel("mr:0101-a");
-    expect(relabelChoiceRecord(op, 0)).toEqual({ decision: "accept" });
-    expect(relabelChoiceRecord(op, 2)).toEqual({ decision: "reject" });
-    expect(relabelChoiceRecord(op, 1)).toEqual({ decision: "edit", edited: { labels: OTHER } });
+  it("the decided ID of a rename: accept its new_id, edit the edited one, else none (crmedr _new_id)", () => {
+    const op = rename("mr:0101-a", "mr:0101-a-romae");
+    expect(renameDecidedId(op, { decision: "accept" })).toBe("mr:0101-a-romae");
+    expect(renameDecidedId(op, { decision: "edit", edited: { new_id: "mr:0101-a-ostiae" } })).toBe("mr:0101-a-ostiae");
+    expect(renameDecidedId(op, { decision: "edit", edited: {} })).toBe("mr:0101-a-romae");
+    expect(renameDecidedId(op, { decision: "reject" })).toBeNull();
+    expect(renameDecidedId(op, undefined)).toBeNull();
   });
 
-  it("Jev's relabel pick: accept, reject, or an edit to its labels", () => {
+  describe("the subject follows the ID (crmedr _followed)", () => {
     const op = relabel("mr:0101-a");
-    const jev = { probability: 0.9, confidence: 0.9, model: "jev", flags: [], scores: [] };
-    expect(relabelJevRecord(op)).toBeNull();
-    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "accept" } })).toEqual({ decision: "accept" });
-    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "reject" } })).toEqual({ decision: "reject" });
-    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "edit", labels: OTHER } })).toEqual({ decision: "edit", edited: { labels: OTHER } });
-    expect(relabelJevRecord({ ...op, jev: { ...jev, decision: "edit" } })).toBeNull();
+    // The rename's third candidate was deduplicated out of the relabel: its labels, None filled from current.
+    const ren: RenameOp = {
+      ...rename("mr:0101-a", "mr:0101-a-romae"),
+      candidates: [
+        { new_id: "mr:0101-a-romae", category: "place-genitive", weak: false, labels: PROPOSED, basis: "b" },
+        { new_id: "mr:0101-a-ostiae", category: "place-genitive", weak: false, labels: OTHER, basis: "b" },
+        { new_id: "mr:0101-a-presbyter", category: "role", weak: false, labels: { la: "Sanctus A presbyter", en: null, it: null }, basis: "b" },
+      ],
+    };
+
+    it("accept follows the proposed ID's relabel candidate", () => {
+      expect(followedSubject(op, ren, { decision: "accept" })).toEqual({ id: "mr:0101-a-romae", labels: PROPOSED, undecided: false });
+    });
+
+    it("an edit to another candidate follows that candidate", () => {
+      expect(followedSubject(op, ren, { decision: "edit", edited: { new_id: "mr:0101-a-ostiae" } }))
+        .toEqual({ id: "mr:0101-a-ostiae", labels: OTHER, undecided: false });
+    });
+
+    it("a rename candidate deduplicated out of the relabel: its own labels, None filled from current", () => {
+      expect(followedSubject(op, ren, { decision: "edit", edited: { new_id: "mr:0101-a-presbyter" } }))
+        .toEqual({ id: "mr:0101-a-presbyter", labels: { la: "Sanctus A presbyter", en: "Saint A", it: "Sant'A" }, undecided: false });
+    });
+
+    it("a typed ID implies no subject", () => {
+      expect(followedSubject(op, ren, { decision: "edit", edited: { new_id: "mr:0101-a-typed" } }))
+        .toEqual({ id: "mr:0101-a-typed", labels: null, undecided: false });
+    });
+
+    it("an undecided rename: the subject of its proposed ID, marked undecided", () => {
+      expect(followedSubject(op, ren, undefined)).toEqual({ id: "mr:0101-a-romae", labels: PROPOSED, undecided: true });
+    });
+
+    it("a rejected rename, or none, gives no ID", () => {
+      expect(followedSubject(op, ren, { decision: "reject" })).toEqual({ id: null, labels: null, undecided: false });
+      expect(followedSubject(op, undefined, undefined)).toEqual({ id: null, labels: null, undecided: false });
+    });
   });
 
   it("groups a eulogy's ops with the rename first", () => {

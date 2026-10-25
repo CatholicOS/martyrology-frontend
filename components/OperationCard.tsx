@@ -47,6 +47,11 @@ interface Props {
   onDecide: (id: string, d: DecisionRecord) => void;
   locale: Locale;
   baseEdition: string;
+  /** A relabel's eulogy rename and its current decision (the subject follows the ID). */
+  rename?: RenameOp;
+  renameDecision?: DecisionRecord;
+  /** A rename whose eulogy has a relabel: the subject wording lives on the subject card. */
+  hasRelabel?: boolean;
 }
 
 export default function OperationCard(props: Props) {

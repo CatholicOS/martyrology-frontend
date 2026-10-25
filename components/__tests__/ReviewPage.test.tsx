@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@/test/intl";
+import { render, screen, fireEvent, waitFor, within } from "@/test/intl";
 import ReviewPage from "@/components/ReviewPage";
 
 vi.mock("@/lib/api", () => ({
@@ -170,6 +170,31 @@ describe("ReviewPage groups a eulogy's cards", () => {
       "op-card-subject:mr:0101-a", "op-card-mr:0101-a|Fictinus",
       "op-card-subject:mr:0102-b", "op-card-mr:0102-b|Ficta#2",
     ]);
+  });
+
+  it("the subject card follows the ID picked on the rename card", async () => {
+    const two = {
+      ...rename("mr:0101-a"),
+      candidates: [
+        { new_id: "mr:0101-a-abbas", category: "role", weak: false, labels: { la: "Fictinus Abbas", en: "Fictinus the abbot", it: "Fictino abate" }, basis: "b" },
+        { new_id: "mr:0101-a-romae", category: "place-genitive", weak: false, labels: { la: "Fictinus Romae", en: "Fictinus of Rome", it: "Fictino di Roma" }, basis: "b" },
+      ],
+    };
+    const current = { la: "Fictinus", en: "Fictinus", it: "Fictino" };
+    const relabel = {
+      op: "relabel", id: "mr:0101-a", uid: "labels:mr:0101-a", current, labels: two.candidates[0].labels, decision: null, edited: null,
+      candidates: [...two.candidates.map((c) => ({ labels: c.labels, from_id: c.new_id })), { labels: current, from_id: null }],
+    };
+    await load([two, relabel], "follow.json");
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
+    expect(screen.getByText("Follows an undecided ID, mr:0101-a-abbas:")).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText(/mr:0101-a-romae/));
+    fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
+    expect(screen.getByText("Follows the ID mr:0101-a-romae:")).toBeInTheDocument();
+    expect(within(screen.getByTestId("op-card-labels:mr:0101-a")).getByText("Fictinus Romae · Fictinus of Rome · Fictino di Roma")).toBeInTheDocument();
+    // The rename card's edit form leaves the subject to the subject card.
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    expect(screen.queryByLabelText("subject_la")).not.toBeInTheDocument();
   });
 
   it("keeps file order and shows no heading without rename candidates", async () => {
