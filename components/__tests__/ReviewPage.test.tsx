@@ -305,3 +305,28 @@ describe("ReviewPage pre-filled only filter", () => {
     expect(screen.queryByLabelText("Pre-filled only")).not.toBeInTheDocument();
   });
 });
+
+describe("ReviewPage with a bundle missing from the index", () => {
+  const key = "mrf:decisions:martyrologium_romanum_2004:data/test.json:1";
+  beforeEach(() => {
+    window.localStorage.clear();
+    window.localStorage.setItem(key, JSON.stringify({ "p|A": { decision: "accept", target: "Q1" } }));
+    vi.stubGlobal("fetch", vi.fn((url: string) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ changesets: ["persons-review-02.json"] }),
+      text: () => Promise.resolve("{}"),
+      url,
+    })));
+  });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    window.localStorage.clear();
+  });
+
+  it("missing bundle with stored decisions: renders the picker with the bundles that are listed", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "persons-review-02.json" })).toBeInTheDocument());
+    expect(screen.getByLabelText(/bundled change-set/i)).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "persons-review-01.json" })).not.toBeInTheDocument();
+  });
+});

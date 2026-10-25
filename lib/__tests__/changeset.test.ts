@@ -178,6 +178,48 @@ describe("bundling the mentions review", () => {
     expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["gazetteer-review.json"] });
   });
 
+  describe("--except-months", () => {
+    const persons = (months: string[]) => ({
+      ...cs, operations: months.map((m) => ({ op: "resolve_person", id: `mr:${m}15-x|0`, eulogy: `mr:${m}15-x`, decision: null, edited: null })),
+    });
+
+    it("skips the excepted months, removes an earlier copy, and leaves them out of the index", () => {
+      const dir = mkdtempSync(join(tmpdir(), "cs-"));
+      writeFileSync(join(dir, "x-01.json"), "{}");
+      const written = writeBundle(persons(["01", "02"]), "x", { byMonth: true, dir, isPublic: true, exceptMonths: ["01"] });
+      expect(written.map((f) => f.split(/[\\/]/).pop())).toEqual(["x-02.json", "index.json"]);
+      expect(readdirSync(dir).sort()).toEqual(["index.json", "x-02.json"]);
+      expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["x-02.json"] });
+    });
+
+    it("refuses a malformed month list, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01"])));
+      const dir = join(work, "out");
+      for (const bad of ["13", "1", "ab", "01,", "01,13"]) {
+        expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", bad], { CHANGESETS_DIR: dir })).toThrow(/--except-months/);
+        expect(() => writeBundle(persons(["01"]), "x", { byMonth: true, dir, isPublic: false, exceptMonths: bad.split(",") })).toThrow(/--except-months/);
+      }
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
+    it("takes the month list from the command line", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      const dir = join(work, "out");
+      writeFileSync(src, JSON.stringify(persons(["01", "02", "03"])));
+      main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", "01,03"], { CHANGESETS_DIR: dir });
+      expect(readdirSync(dir)).toEqual(["x-02.json"]);
+    });
+
+    it("ignores a month with no operations", () => {
+      const dir = mkdtempSync(join(tmpdir(), "cs-"));
+      writeBundle(persons(["02"]), "x", { byMonth: true, dir, isPublic: false, exceptMonths: ["05"] });
+      expect(readdirSync(dir)).toEqual(["x-02.json"]);
+    });
+  });
+
   it("refuses --private without CHANGESETS_DIR, and writes nothing", () => {
     const work = mkdtempSync(join(tmpdir(), "cs-"));
     const src = join(work, "src.json");
