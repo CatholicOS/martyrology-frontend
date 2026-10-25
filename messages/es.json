@@ -635,6 +635,7 @@
       "followsUndecided": "Sigue un ID aún sin decidir, {id}:",
       "typedId": "El ID {id} está escrito a mano, no es un candidato: no implica ningún nombre. Edite la redacción en su lugar.",
       "noId": "El ID no se renombra: no hay ningún ID que seguir.",
+      "undecidedId": "Decida primero el ID: los nombres lo siguen.",
       "follow": "Seguir el ID",
       "editWording": "Editar la redacción",
       "keep": "Mantener los nombres actuales",

@@ -188,9 +188,12 @@ describe("ReviewPage groups a eulogy's cards", () => {
     await load([two, relabel], "follow.json");
     await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(2));
     expect(screen.getByText("Follows an undecided ID, mr:0101-a-abbas:")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
     fireEvent.click(screen.getByLabelText(/mr:0101-a-romae/));
     fireEvent.click(screen.getByRole("button", { name: "Accept selected" }));
     expect(screen.getByText("Follows the ID mr:0101-a-romae:")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeEnabled();
+    expect(screen.queryByText("Decide the ID first: the subject follows it.")).not.toBeInTheDocument();
     expect(within(screen.getByTestId("op-card-labels:mr:0101-a")).getByText("Fictinus Romae · Fictinus of Rome · Fictino di Roma")).toBeInTheDocument();
     // The rename card's edit form leaves the subject to the subject card.
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));

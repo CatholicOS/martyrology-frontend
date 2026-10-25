@@ -635,6 +635,7 @@
       "followsUndecided": "Folgt einer noch nicht entschiedenen ID, {id}:",
       "typedId": "Die ID {id} ist von Hand eingegeben, kein Kandidat: Sie ergibt keine Namen. Bearbeiten Sie stattdessen den Wortlaut.",
       "noId": "Die ID wird nicht umbenannt: Es gibt keine ID, der gefolgt werden kann.",
+      "undecidedId": "Entscheiden Sie zuerst über die ID: Die Namen folgen ihr.",
       "follow": "Der ID folgen",
       "editWording": "Wortlaut bearbeiten",
       "keep": "Aktuelle Namen behalten",

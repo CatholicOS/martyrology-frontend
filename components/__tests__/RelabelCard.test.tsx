@@ -79,7 +79,9 @@ describe("RelabelCard: the subject follows the ID", () => {
     render(card(undefined));
     expect(screen.getByText("Follows an undecided ID, mr:0101-felix-romae:")).toBeInTheDocument();
     expect(screen.getByText(line(PROPOSED))).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeEnabled();
+    // crmedr rejects an accepted relabel with no decided rename: Follow waits for the ID.
+    expect(screen.getByRole("button", { name: "Follow the ID" })).toBeDisabled();
+    expect(screen.getByText("Decide the ID first: the subject follows it.")).toBeInTheDocument();
   });
 
   it("a typed ID implies no subject: Follow is disabled, with the reason", () => {

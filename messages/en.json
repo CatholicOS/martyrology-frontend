@@ -635,6 +635,7 @@
       "followsUndecided": "Follows an undecided ID, {id}:",
       "typedId": "The ID {id} is typed, not a candidate: it implies no subject. Edit the wording instead.",
       "noId": "The ID is not renamed: there is no ID to follow.",
+      "undecidedId": "Decide the ID first: the subject follows it.",
       "follow": "Follow the ID",
       "editWording": "Edit the wording",
       "keep": "Keep the current subject",

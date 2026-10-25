@@ -31,7 +31,7 @@ const labelsLine = (l: SubjectLabels) => LANGS.map((k) => l[k] ?? "—").join(" 
 /**
  * Review card for a eulogy's subject (crmedr subject identity): the subject follows the ID. It shows
  * the current subject and the one the decided ID implies (the proposed ID while the rename is
- * undecided); follow the ID (accept), edit the wording (three labels) or keep the current subject.
+ * undecided; follow waits for the decided ID); follow the ID (accept), edit the wording (three labels) or keep the current subject.
  * Jev is not asked about the subject: its rename pick already chooses the pairing.
  */
 export default function RelabelCard({ op, decision, onDecide, locale, baseEdition, rename, renameDecision }: Props) {
@@ -43,7 +43,13 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
   const [fields, setFields] = useState<Record<(typeof LANGS)[number], string>>({ la: "", en: "", it: "" });
   const savedEdit = decision?.decision === "edit" ? (decision.edited?.labels ?? null) : null;
   const reason =
-    followed.id === null ? t("noId") : followed.labels === null ? t("typedId", { id: followed.id }) : null;
+    followed.id === null
+      ? t("noId")
+      : followed.labels === null
+        ? t("typedId", { id: followed.id })
+        : followed.undecided
+          ? t("undecidedId") // crmedr rejects an accepted relabel with no decided rename
+          : null;
 
   const startEdit = () => {
     const seed = savedEdit ?? followed.labels ?? op.current;
