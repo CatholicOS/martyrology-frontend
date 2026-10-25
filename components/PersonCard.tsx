@@ -136,7 +136,7 @@ export default function PersonCard({ op, decision, onDecide, locale, baseEdition
               </span>
             ))}
             {(c.places ?? []).map((pl) => (
-              <span key={`${pl.via}|${pl.qid}`} className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
+              <span key={`${pl.role}|${pl.via}|${pl.qid}`} className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">
                 {t(`agrees.${pl.via}`, { place: pl.label || pl.qid })}
               </span>
             ))}

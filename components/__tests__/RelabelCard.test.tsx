@@ -130,6 +130,26 @@ describe("RelabelCard: the subject follows the ID", () => {
     });
   });
 
+  it("saving the followed wording unchanged records accept; the current wording, reject; else edit", () => {
+    const onDecide = vi.fn();
+    render(card({ decision: "accept" }, {}, undefined, onDecide));
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "accept" });
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    for (const [name, k] of [["Latin", "la"], ["English", "en"], ["Italian", "it"]] as const) fireEvent.change(screen.getByLabelText(name), { target: { value: CURRENT[k] } });
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "reject" });
+  });
+
+  it("saving the followed wording while Follow is impossible (rename undecided) records an edit", () => {
+    const onDecide = vi.fn();
+    render(card(undefined, {}, undefined, onDecide));
+    fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save edit" }));
+    expect(onDecide).toHaveBeenLastCalledWith(UID, { decision: "edit", edited: { labels: PROPOSED } });
+  });
+
   it("edit with no followed subject starts from the current subject", () => {
     render(card({ decision: "edit", edited: { new_id: "mr:0101-felix-typed" } }));
     fireEvent.click(screen.getByRole("button", { name: "Edit the wording" }));

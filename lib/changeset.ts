@@ -499,7 +499,16 @@ export function parseChangeset(text: string): Changeset {
   // A place candidate without evidence (a hand-built crmedr card) would crash every PlaceCard.
   const operations = (cs.operations as Op[]).map((op) => {
     // A relabel without candidates (a hand-built card) gets an empty list, as a place without evidence does.
-    if (op.op === "relabel" && !Array.isArray((op as RelabelOp).candidates)) return { ...op, candidates: [] } as RelabelOp;
+    if (op.op === "relabel") {
+      const r = op as RelabelOp;
+      const empty = (): SubjectLabels => ({ la: null, en: null, it: null });
+      return {
+        ...r,
+        current: r.current ?? empty(),
+        labels: r.labels ?? empty(),
+        candidates: Array.isArray(r.candidates) ? r.candidates.map((c) => ({ ...c, labels: c.labels ?? empty() })) : [],
+      } as RelabelOp;
+    }
     if (op.op !== "resolve_place" || !Array.isArray(op.candidates)) return op;
     const place = op as ResolvePlaceOp;
     return { ...place, candidates: place.candidates.map((c) => ({ ...c, evidence: c.evidence ?? [] })) };
@@ -532,6 +541,8 @@ export function isMentionOp(op: Op): op is MentionOp {
 export function opId(op: Op): string {
   if (typeof op.uid === "string" && op.uid !== "") return op.uid;
   if (op.op === "merge") return (op as MergeOp).ids.join("+");
+  // Without a uid a relabel must not collide with a rename of the same id.
+  if (op.op === "relabel") return `relabel:${op.id}`;
   return (op as { id?: string }).id ?? JSON.stringify(op);
 }
 

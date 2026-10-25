@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import EulogyView from "@/components/EulogyView";
 import { decisionClass, decisionLabel } from "@/components/decisionClass";
 import { opId, type DecisionRecord, type RelabelOp, type RenameOp, type SubjectLabels } from "@/lib/changeset";
-import { followedSubject } from "@/lib/subject-review";
+import { canFollow, followedSubject } from "@/lib/subject-review";
 import type { Locale } from "@/lib/types";
 
 const button = "rounded px-2 py-1 text-xs font-medium text-white disabled:opacity-40";
@@ -143,7 +143,10 @@ export default function RelabelCard({ op, decision, onDecide, locale, baseEditio
               className={`${button} bg-amber-600 hover:bg-amber-700`}
               onClick={() => {
                 const labels = Object.fromEntries(LANGS.map((k) => [k, fields[k].trim() || null])) as unknown as SubjectLabels;
-                onDecide(uid, { decision: "edit", edited: { labels } });
+                const same = (a: SubjectLabels, b: SubjectLabels) => LANGS.every((k) => (a[k] ?? null) === (b[k] ?? null));
+                if (followed.labels !== null && canFollow(followed) && same(labels, followed.labels)) onDecide(uid, { decision: "accept" });
+                else if (same(labels, op.current)) onDecide(uid, { decision: "reject" });
+                else onDecide(uid, { decision: "edit", edited: { labels } });
                 setEditing(false);
               }}
             >

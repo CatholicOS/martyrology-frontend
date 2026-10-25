@@ -56,6 +56,23 @@ describe("changeset", () => {
     expect(exportChangeset(cs, { "labels:mr:0101-x": { decision: "edit", edited } }).operations[0]).toMatchObject({ decision: "edit", edited });
   });
 
+  it("opId: a relabel without a uid does not collide with a rename of the same id", () => {
+    const rel = { op: "relabel", id: "mr:0101-x", current: {}, labels: {}, candidates: [] } as unknown as Op;
+    const ren = { op: "rename", id: "mr:0101-x", new_id: "mr:0101-y" } as unknown as Op;
+    expect(opId(rel)).toBe("relabel:mr:0101-x");
+    expect(opId(ren)).toBe("mr:0101-x");
+  });
+
+  it("parseChangeset gives a relabel missing current, labels or candidate labels empty defaults", () => {
+    const none = { la: null, en: null, it: null };
+    const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" },
+      operations: [{ op: "relabel", id: "mr:0101-x", candidates: [{ from_id: null }] }] }));
+    const op = cs.operations[0] as Extract<Op, { op: "relabel" }>;
+    expect(op.current).toEqual(none);
+    expect(op.labels).toEqual(none);
+    expect(op.candidates[0].labels).toEqual(none);
+  });
+
   it("parses an old change-set without a relabel op", () => {
     const cs = parseChangeset(JSON.stringify({ schema: "crmedr-changeset/v1", generated_by: "x", base: { edition: "2004", registry: "r" },
       operations: [{ op: "rename", id: "mr:0101-x", new_id: "mr:0101-x-romae", decision: null }] }));
@@ -238,6 +255,22 @@ describe("bundling the mentions review", () => {
       const env = { CHANGESETS_DIR: dir };
       expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months=01"], env)).toThrow(/--except-months 01,02/);
       expect(() => main([src, "x", "martyrologium_romanum_2004", "--private", "--except-months", "01"], env)).toThrow(/--by-month/);
+      expect(readdirSync(work)).toEqual(["src.json"]);
+    });
+
+    it("refuses an exceptMonths list without byMonth, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const dir = join(work, "out");
+      expect(() => writeBundle(persons(["01"]), "x", { byMonth: false, dir, isPublic: false, exceptMonths: ["01"] })).toThrow(/--by-month/);
+      expect(readdirSync(work)).toEqual([]);
+    });
+
+    it("refuses a repeated --except-months, and writes nothing", () => {
+      const work = mkdtempSync(join(tmpdir(), "cs-"));
+      const src = join(work, "src.json");
+      writeFileSync(src, JSON.stringify(persons(["01", "02"])));
+      const dir = join(work, "out");
+      expect(() => main([src, "x", "martyrologium_romanum_2004", "--by-month", "--private", "--except-months", "01", "--except-months", "02"], { CHANGESETS_DIR: dir })).toThrow(/once only/);
       expect(readdirSync(work)).toEqual(["src.json"]);
     });
 

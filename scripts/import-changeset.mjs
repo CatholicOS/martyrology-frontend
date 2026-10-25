@@ -123,6 +123,7 @@ function checkMonths(months) {
  */
 export function writeBundle(cs, name, { byMonth, dir, isPublic, exceptMonths = [] }) {
   checkMonths(exceptMonths);
+  if (exceptMonths.length && !byMonth) throw new Error("--except-months needs --by-month: it leaves months out of the per-month parts");
   if (isPublic && quotesText(cs)) {
     throw new Error(`${name} quotes the text (its operations carry context): bundle it with --private into CHANGESETS_DIR, never into this public repo`);
   }
@@ -161,6 +162,7 @@ export function main(argv = process.argv.slice(2), env = process.env) {
   const here = dirname(fileURLToPath(import.meta.url));
   // `--except-months 01,02` takes a value; take it out before the positional arguments are read.
   if (argv.some((a) => a.startsWith("--except-months="))) throw new Error("--except-months takes its list as the next argument, e.g. --except-months 01,02 (not --except-months=01,02)");
+  if (argv.filter((a) => a === "--except-months").length > 1) throw new Error("--except-months may be given once only: join the months with commas, e.g. --except-months 01,02");
   const at = argv.indexOf("--except-months");
   if (at >= 0 && (argv[at + 1] === undefined || argv[at + 1].startsWith("--"))) throw new Error("--except-months takes a comma-separated list of months, e.g. 01,02");
   if (at >= 0 && !argv.includes("--by-month")) throw new Error("--except-months needs --by-month: it leaves months out of the per-month parts");

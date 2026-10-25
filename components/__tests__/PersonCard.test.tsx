@@ -191,6 +191,15 @@ describe("PersonCard, from the review of #113", () => {
     expect(screen.getByText("born in Q220")).toBeInTheDocument();
   });
 
+  it("shows the burial and work place agreement", () => {
+    renderCard(op({
+      candidates: [c("Q1", "Thomas Kozaki", { places: [{ role: "death_place", qid: "Q10", label: "Rome", via: "P119" }, { role: "birth_place", qid: "Q10", label: "Rome", via: "P937" }] })],
+      suggested: null,
+    }));
+    expect(screen.getByText("buried in Rome")).toBeInTheDocument();
+    expect(screen.getByText("worked in Rome")).toBeInTheDocument();
+  });
+
   it("shows unknown evidence raw", () => {
     renderCard(op({ candidates: [c("Q1", "Thomas Kozaki", { evidence: ["mystery"] })], suggested: null }));
     expect(screen.getByText("mystery")).toBeInTheDocument();
