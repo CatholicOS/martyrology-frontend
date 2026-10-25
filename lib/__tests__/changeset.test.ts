@@ -170,6 +170,14 @@ describe("bundling the mentions review", () => {
     expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["gazetteer-review.json"] });
   });
 
+  it("leaves a curator's exported decisions (*.decided.json) out of the index", () => {
+    const dir = mkdtempSync(join(tmpdir(), "cs-"));
+    writeFileSync(join(dir, "gazetteer-review-9.decided.json"), "{}\n");
+    const places = { ...cs, operations: [{ op: "resolve_place", id: "Fictópoli", decision: null, edited: null }] };
+    writeBundle(places, "gazetteer-review", { byMonth: false, dir, isPublic: true });
+    expect(JSON.parse(readFileSync(join(dir, "index.json"), "utf8"))).toEqual({ changesets: ["gazetteer-review.json"] });
+  });
+
   it("refuses --private without CHANGESETS_DIR, and writes nothing", () => {
     const work = mkdtempSync(join(tmpdir(), "cs-"));
     const src = join(work, "src.json");

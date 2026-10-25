@@ -163,13 +163,15 @@ export function main(argv = process.argv.slice(2), env = process.env) {
  * Regenerate changesets/index.json — the manifest the Review page
  * fetches (through the curator-only /api/changesets) to populate its
  * bundled change-set picker. Lists every
- * `*.json` file in the changesets directory except the index itself.
+ * `*.json` file in the changesets directory except the index itself and a curator's
+ * exported decisions (`*.decided.json`, as the Review page names its downloads), which
+ * may sit there untracked and must not be published.
  * @param {string} destDir
  * @returns {string} the index's path
  */
 function writeIndex(destDir) {
   const files = readdirSync(destDir)
-    .filter((f) => f.endsWith(".json") && f !== "index.json")
+    .filter((f) => f.endsWith(".json") && f !== "index.json" && !f.endsWith(".decided.json"))
     .sort();
   const indexPath = join(destDir, "index.json");
   writeFileSync(indexPath, JSON.stringify({ changesets: files }, null, 1) + "\n");
