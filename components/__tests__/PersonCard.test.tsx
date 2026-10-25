@@ -174,4 +174,30 @@ describe("PersonCard, from the review of #113", () => {
       expect(screen.queryByRole("button", { name: "Take the suggestion" })).toBeNull();
     });
   });
+
+  it("shows evidence as chips", () => {
+    renderCard(op({ candidates: [c("Q1", "Thomas Kozaki", { evidence: ["human", "status", "name", "death", "place"] })], suggested: null }));
+    for (const w of ["human", "saint or blessed", "name matches", "death date matches", "place matches"]) {
+      expect(screen.getByText(w)).toBeInTheDocument();
+    }
+  });
+
+  it("shows the place agreement", () => {
+    renderCard(op({
+      candidates: [c("Q1", "Thomas Kozaki", { places: [{ role: "death_place", qid: "Q1891", label: "Bologna", via: "P20" }, { role: "birth_place", qid: "Q220", via: "P19" }] })],
+      suggested: null,
+    }));
+    expect(screen.getByText("died in Bologna")).toBeInTheDocument();
+    expect(screen.getByText("born in Q220")).toBeInTheDocument();
+  });
+
+  it("shows unknown evidence raw", () => {
+    renderCard(op({ candidates: [c("Q1", "Thomas Kozaki", { evidence: ["mystery"] })], suggested: null }));
+    expect(screen.getByText("mystery")).toBeInTheDocument();
+  });
+
+  it("badges a candidate found through a place", () => {
+    renderCard(op({ candidates: [c("Q1", "Thomas Kozaki", { source: "place" })], suggested: null }));
+    expect(screen.getByText("found through a place")).toBeInTheDocument();
+  });
 });

@@ -215,8 +215,12 @@ export interface PersonCandidate {
   died: string | null;
   feast: string[];
   evidence: string[];
-  /** search | companion:Pnnn | sparql | title | curated */
+  /** search | companion:Pnnn | sparql | title | curated | place */
   source?: string;
+  /** The places of the eulogy this candidate's Wikidata item agrees with, and through which property. */
+  places?: { role: string; qid: string; label?: string; via: "P19" | "P20" | "P119" | "P937" }[];
+  /** The candidate's own places, by role, as labels. */
+  place_labels?: { death_place?: string[]; burial_place?: string[]; birth_place?: string[]; work_places?: string[] };
 }
 
 /** Identify a saint or blessed named in a eulogy with a Wikidata item (crmedr persons). */
@@ -236,6 +240,8 @@ export interface ResolvePersonOp extends Base {
   where: "text" | { footnote: number };
   companions: string[];
   failed: string[];
+  /** The places named in the eulogy, which the candidates were checked against. */
+  places?: { role: string; label: string; qid: string }[];
   candidates: PersonCandidate[];
   suggested?: { wikidata: string } | null;
   jev?: PersonJev | null;

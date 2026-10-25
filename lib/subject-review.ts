@@ -51,11 +51,11 @@ export function personJevRecord(op: ResolvePersonOp): DecisionRecord | null {
   return null;
 }
 
-export type SourceKey = "search" | "companion" | "sparql" | "title" | "curated";
+export type SourceKey = "search" | "companion" | "sparql" | "title" | "curated" | "place";
 
 export function sourceKey(source?: string): SourceKey {
   const head = (source ?? "search").split(":")[0];
-  return head === "companion" || head === "sparql" || head === "title" || head === "curated" ? head : "search";
+  return head === "companion" || head === "sparql" || head === "title" || head === "curated" || head === "place" ? head : "search";
 }
 
 /** The property a companion candidate was found through ("companion:P3373" gives "P3373"). */

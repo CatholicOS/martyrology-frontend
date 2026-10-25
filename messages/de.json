@@ -488,7 +488,8 @@
         "sparql": "an diesem Tag gestorben",
         "title": "Titel oder Fest",
         "curated": "kuratierter Titel",
-        "group": "über eine Gruppe gefunden ({prop})"
+        "group": "über eine Gruppe gefunden ({prop})",
+        "place": "über einen Ort gefunden"
       },
       "jevSuggests": "Jev schlägt vor: {what} ({confidence} %)",
       "jevNone": "kein Eintrag",
@@ -518,6 +519,19 @@
         "celebration_or_title": "ein Fest oder ein Titel",
         "anonymous_group": "eine anonyme Gruppe",
         "not_identifiable": "nicht identifizierbar"
+      },
+      "evidence": {
+        "human": "Mensch",
+        "status": "heilig oder selig",
+        "name": "Name stimmt überein",
+        "death": "Todesdatum stimmt überein",
+        "place": "Ort stimmt überein"
+      },
+      "agrees": {
+        "P19": "geboren in {place}",
+        "P20": "gestorben in {place}",
+        "P119": "begraben in {place}",
+        "P937": "tätig in {place}"
       }
     },
     "mention": {

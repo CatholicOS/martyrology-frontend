@@ -488,7 +488,8 @@
         "sparql": "died on this day",
         "title": "title or feast",
         "curated": "curated title",
-        "group": "found through a group ({prop})"
+        "group": "found through a group ({prop})",
+        "place": "found through a place"
       },
       "jevSuggests": "Jev suggests: {what} ({confidence}%)",
       "jevNone": "no item",
@@ -518,6 +519,19 @@
         "celebration_or_title": "a feast or title",
         "anonymous_group": "an anonymous group",
         "not_identifiable": "not identifiable"
+      },
+      "evidence": {
+        "human": "human",
+        "status": "saint or blessed",
+        "name": "name matches",
+        "death": "death date matches",
+        "place": "place matches"
+      },
+      "agrees": {
+        "P19": "born in {place}",
+        "P20": "died in {place}",
+        "P119": "buried in {place}",
+        "P937": "worked in {place}"
       }
     },
     "mention": {
