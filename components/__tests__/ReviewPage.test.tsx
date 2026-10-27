@@ -48,6 +48,28 @@ describe("ReviewPage paging", () => {
     expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(120);
     expect(screen.queryByRole("button", { name: /show more/i })).not.toBeInTheDocument();
   });
+
+  it("shows all the cards at once", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "gazetteer-review.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "gazetteer-review.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(50));
+    fireEvent.click(screen.getAllByRole("button", { name: /show all/i })[0]);
+    expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(120);
+    expect(screen.queryByRole("button", { name: /show all/i })).not.toBeInTheDocument();
+  });
+
+  it("starts a change-set loaded again under the same name at 50 cards", async () => {
+    render(<ReviewPage />);
+    await waitFor(() => expect(screen.getByRole("option", { name: "gazetteer-review.json" })).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/bundled change-set/i), { target: { value: "gazetteer-review.json" } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(50));
+    fireEvent.click(screen.getAllByRole("button", { name: /show all/i })[0]);
+    expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(120);
+    const file = new File([JSON.stringify(cs)], "gazetteer-review.json", { type: "application/json" });
+    fireEvent.change(screen.getByLabelText(/upload a file/i), { target: { files: [file] } });
+    await waitFor(() => expect(screen.getAllByTestId(/^op-card-/)).toHaveLength(50));
+  });
 });
 
 describe("ReviewPage with a mentions change-set", () => {

@@ -386,6 +386,7 @@
     },
     "noMatch": "Nenhuma operação corresponde aos filtros atuais.",
     "showMore": "Mostrar mais ({count} restantes)",
+    "showAll": "Mostrar todas ({count})",
     "summary": {
       "total": "<b>{count}</b> no total",
       "accepted": "{count} aceitas",

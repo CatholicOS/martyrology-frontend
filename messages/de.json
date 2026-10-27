@@ -386,6 +386,7 @@
     },
     "noMatch": "Keine Vorgänge entsprechen den aktuellen Filtern.",
     "showMore": "Mehr anzeigen ({count} übrig)",
+    "showAll": "Alle anzeigen ({count})",
     "summary": {
       "total": "<b>{count}</b> insgesamt",
       "accepted": "{count} angenommen",
