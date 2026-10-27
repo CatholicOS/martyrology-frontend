@@ -1,5 +1,5 @@
 {
-  "mr:0101-odilo": {
+  "mr:0101-odilo-cluniacensis": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Presso Sauvigny\" where the Latin has \"Apud Silviníacum\" (Souvigny, where Odilo died)."
     }
@@ -12,12 +12,12 @@
   "mr:0101-sigismundus-gorazdowski": {
     "note": "Zygmunt Gorazdowski, blessed in the 2004 editions, was canonized on 23 October 2005."
   },
-  "mr:0102-telesphorus": {
+  "mr:0102-telesphorus-papa": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"dopo l’Apostolo\" where the Latin has \"ab Apóstolis\" (from the Apostles)."
     }
   },
-  "mr:0102-theodorus": {
+  "mr:0102-theodorus-massiliae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the province of France\" where the Latin \"in Província Gálliæ\" names Provence."
     }
@@ -25,31 +25,31 @@
   "mr:0103-cyriacus-elias-chavara": {
     "note": "Kuriakose Elias Chavara, blessed in the 2004 editions, was canonized on 23 November 2014."
   },
-  "mr:0104-abrunculus": {
+  "mr:0104-abrunculus-lingonensis": {
     "editions": {
       "martyrologium_romanum_2004": "The same bishop is commemorated on 14 May as Aprunculus (mr:0514-aprunculus); the Italian (CEI) edition prints only that eulogy, where it names him Abrúncolo.",
       "martyrologium_romanum_2004_en_unofficial": "The same bishop is commemorated on 14 May as Aprunculus (mr:0514-aprunculus); the Italian (CEI) edition prints only that eulogy, where it names him Abrúncolo. Translation error: \"In Auvergne\" where the Latin \"Arvérnæ\" names the city of Clermont."
     }
   },
-  "mr:0104-ferreolus": {
+  "mr:0104-ferreolus-ucetiae": {
     "editions": {
       "martyrologium_romanum_2004": "Asterisked here (entry 4*); the Italian (CEI) edition prints the entry without an asterisk.",
       "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (4*)."
     }
   },
-  "mr:0104-rigomerus": {
+  "mr:0104-rigomerus-meldorum": {
     "editions": {
       "martyrologium_romanum_2004": "Asterisked here (entry 5*); the Italian (CEI) edition prints the entry without an asterisk.",
       "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (5*)."
     }
   },
-  "mr:0104-pharaildis": {
+  "mr:0104-pharaildis-bruaci": {
     "editions": {
       "martyrologium_romanum_2004": "Asterisked here (entry 7*); the Italian (CEI) edition prints the entry without an asterisk.",
       "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (7*)."
     }
   },
-  "mr:0104-angela": {
+  "mr:0104-angela-fulginii": {
     "note": "Angela of Foligno, blessed in the 2004 editions, was canonized on 9 October 2013."
   },
   "mr:0104-thomas-plumtree": {
@@ -66,7 +66,7 @@
   "mr:0105-ioannes-andreas-houben": {
     "note": "Charles of St Andrew (Houben), blessed in the 2004 editions, was canonized on 3 June 2007."
   },
-  "mr:0106-felix": {
+  "mr:0106-felix-nannetum": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"rebuilt the cathedral church\" where the Latin has \"ecclésiam cathedrálem ædificávit\" (built)."
     }
@@ -74,7 +74,7 @@
   "mr:0106-andreas-bessette": {
     "note": "André Bessette, blessed in the 2004 editions, was canonized on 17 October 2010."
   },
-  "mr:0107-tillo": {
+  "mr:0107-tillo-solemniaci": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"blacksmith\" where the Latin has only \"faber\" (a craftsman; Tillo worked as a goldsmith under Eligius)."
     }
@@ -84,12 +84,12 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"martyr\" is added; the Latin does not call him a martyr."
     }
   },
-  "mr:0108-severinus": {
+  "mr:0108-severinus-norici": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Ripuarian Noricum\" where the Latin \"Nórico Ripénsi\" means riverside Noricum (along the Danube)."
     }
   },
-  "mr:0108-erhardus": {
+  "mr:0108-erhardus-ratisbonae": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"di origine scozzese\" where the Latin \"génere scotus\" means of Irish origin."
     }
@@ -107,7 +107,7 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"beheaded\" where the Latin has \"iugulátæ\" (their throats cut)."
     }
   },
-  "mr:0110-gundisalvus": {
+  "mr:0110-gundisalvus-amarantii": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"ai suoi seguaci\" where the Latin has \"áccolis\" (the people living nearby). Translation error: \"sacerdote: originario di Braga\" where the Latin has \"presbýteri Bracarénsis\" (a priest of Braga).",
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"helped rebuild a bridge\" where the Latin has \"pontem ædificándum curávit\" (had a bridge built)."
@@ -123,12 +123,12 @@
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Bernardino\" where the Latin has \"Bernárdi\" (Bernardo)."
     }
   },
-  "mr:0112-arcadius": {
+  "mr:0112-arcadius-caesareae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: the city is omitted; the Latin has \"Cæsaréæ in Mauretánia\" (at Caesarea in Mauretania)."
     }
   },
-  "mr:0112-caesaria": {
+  "mr:0112-caesaria-abbatissa": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the province of France\" where the Latin \"in Província Gálliæ\" names Provence."
     }
@@ -143,25 +143,25 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Stratonice\" (a woman's name) where the Latin has \"Stratoníci\" (Stratonicus, a man)."
     }
   },
-  "mr:0113-iutta": {
+  "mr:0113-iutta-hoii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"of Saint Lutgardis\" where the Latin has sanctæ Iuttæ and the Italian (CEI) santa Ivetta: she is Yvette (Jutta) of Huy; Lutgardis is commemorated on 16 June. The English subject follows the Latin."
     }
   },
-  "mr:0114-firminus": {
+  "mr:0114-firminus-gabalorum": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"At Gabala\" where the Latin \"Apud Gábalos\" means among the Gabali (the Gévaudan)."
     }
   },
-  "mr:0115-maurus": {
+  "mr:0115-maurus-glannafolii": {
     "note": "The 1749 and 1914 editions identify this abbot with Maurus, the disciple of Saint Benedict, whom Benedict sent into Gaul; the 2004 edition commemorates the abbot of Glanfeuil without that identification."
   },
-  "mr:0115-ablebertus": {
+  "mr:0115-ablebertus-cameracensis": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"nell’odierna Olanda\" for \"Haméti in Brabántia\", which lies in present-day Belgium."
     }
   },
-  "mr:0116-honoratus": {
+  "mr:0116-honoratus-arelatis": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the Province of France\" where the Latin has \"Província Gálliæ\" (Provence)."
     }
@@ -177,12 +177,15 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"promoted the restoration of public works\" where the Latin has \"ópera pública ædificánda curávit\" (had public works built)."
     }
   },
-  "mr:0117-rosselina": {
+  "mr:0117-rosselina-cellae-robaudi": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Forcalquier\" where the Latin has \"Forum Iúlii\" (Fréjus)."
     }
   },
-  "mr:0118-deicolus": {
+  "mr:0118-prisca-romae": {
+    "note": "The 1749 and 1914 editions commemorate the passion of Prisca, virgin and martyr under Claudius; the 2004 edition commemorates only the saint whose name the basilica on the Aventine bears. Tradition holds the titulus Priscae to be the house church of Aquila and Prisca, Paul's collaborators (Romans 16:3-5), whom the 2004 edition commemorates on 8 July (mr:0708-aquila-et-prisca); the Martyrology itself does not identify the two."
+  },
+  "mr:0118-deicolus-lutrensis": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin 'In monasterio Lutrensi, in Burgundia' is Lure, in Burgundy, not Brittany."
     }
@@ -192,12 +195,12 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the monastery of Margaret\" where the Latin has \"monastérium Sanctæ Margarítæ\" (the monastery of Saint Margaret)."
     }
   },
-  "mr:0119-launomarus": {
+  "mr:0119-launomarus-corbionensis": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"the monastery of Corbie\" where the Latin has \"monastérii Corbionénsis\" (Corbion). Translation error: \"the district of Dunois\" where the Latin has \"pago Dorcasíno\" (the district of Dreux)."
     }
   },
-  "mr:0120-wulfstanus": {
+  "mr:0120-wulfstanus-vigorniae": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"condannare la venalità\" (condemning venality) where the Latin has \"in venalícia exprobránda\" (condemning the slave trade)."
     }
@@ -234,17 +237,17 @@
       "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (15*)."
     }
   },
-  "mr:0124-felicianus": {
+  "mr:0124-felicianus-fulginii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: adds \"a faithful guardian of the flock entrusted to him\", which is not in the Latin."
     }
   },
-  "mr:0124-sabinianus": {
+  "mr:0124-sabinianus-trecensis": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: adds \"who bore witness to Christ through the shedding of his blood\", which is not in the Latin."
     }
   },
-  "mr:0124-exsuperantius": {
+  "mr:0124-exsuperantius-cinguli": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: adds \"who faithfully shepherded his people and is venerated for his holiness and pastoral zeal\", which is not in the Latin."
     }
@@ -282,7 +285,7 @@
   "mr:0125-eleonora-girlani": {
     "note": "The Carmelite convent of Parma of which Archangela Girlani was prioress is not named, and its site is unknown."
   },
-  "mr:0126-albericus": {
+  "mr:0126-albericus-cistercii": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Neumünster\" where the Latin has \"Novum Monastérium\" (the New Monastery, that is Cîteaux)."
     }
@@ -292,17 +295,17 @@
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin Brixia is Brescia, not Brixen."
     }
   },
-  "mr:0127-theodoricus": {
+  "mr:0127-theodoricus-aurelianensis": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Ternand\" where the Latin has \"Ternodóri\" (Tonnerre)."
     }
   },
-  "mr:0127-gilduinus": {
+  "mr:0127-gilduinus-carnutum": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"Dôle\" where the Latin has \"Dolénsis in Británnia Minóre\" (Dol in Brittany)."
     }
   },
-  "mr:0127-ioannes": {
+  "mr:0127-ioannes-morinensis": {
     "editions": {
       "martyrologium_romanum_2004_it_IT": "Translation error: \"sede episcopale di Maurienne\" where the Latin has \"sedem Morinénsem\" (the see of the Morini, that is Thérouanne)."
     }
@@ -337,22 +340,22 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: omits \"violáta\": she was violated before being burned alive."
     }
   },
-  "mr:0131-marcella": {
+  "mr:0131-marcella-romae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Marcellina\" where the Latin has \"Marcéllæ\" (Marcella)."
     }
   },
-  "mr:0131-maedhoc": {
+  "mr:0131-maedhoc-fernae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"monasteries\" where the Latin has \"cœnóbium\" (a monastery)."
     }
   },
-  "mr:0131-waldus": {
+  "mr:0131-waldus-ebroicensis": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Constance\" where the Latin has \"Constantiénsi\" (Coutances)."
     }
   },
-  "mr:0131-eusebius": {
+  "mr:0131-eusebius-rangvilae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Regensburg\" where the Latin has \"Rangvílam\" (Rankweil)."
     }
@@ -4369,13 +4372,13 @@
     "note": "The 2004 edition reduces the eulogy to the sole Theogenes"
   },
   "mr:0107-clerus": {
-    "note": "The 2004 edition commemorates a deacon and martyr of Antioch on 14 January as Glycerius (mr:0114-glycerius) and does not print Clerus, who is probably the same martyr under a corrupted name: the Bibliotheca Sanctorum takes Baronius's “Clerus” for a second entry of Glycerius; the Hieronymian Martyrology gives the name of the Antioch deacon in several forms (one manuscript has a deacon Lucerus at Antioch on 7 January) on 7, 13 and 15 January; and the other names recorded for Clerus (Licerius, Lycerius, Lucerius, Bilicerius) are forms of Glycerius. Not settled: no source states the identification outright or explains the 2004 date, 14 January, which is the day the Syriac Martyrology gives a deacon Glycerius of Nicomedia; and some calendars have Glycerius of Antioch drowned, as the Syriac Martyrology says of another Glycerius at Antioch (8 June), where the historical editions have Clerus beheaded."
+    "note": "The 2004 edition commemorates a deacon and martyr of Antioch on 14 January as Glycerius (mr:0114-glycerius-antiochiae) and does not print Clerus, who is probably the same martyr under a corrupted name: the Bibliotheca Sanctorum takes Baronius's “Clerus” for a second entry of Glycerius; the Hieronymian Martyrology gives the name of the Antioch deacon in several forms (one manuscript has a deacon Lucerus at Antioch on 7 January) on 7, 13 and 15 January; and the other names recorded for Clerus (Licerius, Lycerius, Lucerius, Bilicerius) are forms of Glycerius. Not settled: no source states the identification outright or explains the 2004 date, 14 January, which is the day the Syriac Martyrology gives a deacon Glycerius of Nicomedia; and some calendars have Glycerius of Antioch drowned, as the Syriac Martyrology says of another Glycerius at Antioch (8 June), where the historical editions have Clerus beheaded."
   },
   "mr:0114-triginta-octo-monachi-montis-sina": {
     "note": "The 2004 edition joins the monks of Sinai (38) and of Raithu (43) in one eulogy (mr:0114-monachi-raithi); the historical editions print them as two eulogies."
   },
   "mr:0114-euphrasius-africae": {
-    "note": "The historical editions commemorate a bishop Euphrasius in Africa on this day; in the same eulogy the 2004 edition commemorates Euphrasius, bishop of Clermont (mr:0114-euphrasius)."
+    "note": "The historical editions commemorate a bishop Euphrasius in Africa on this day; in the same eulogy the 2004 edition commemorates Euphrasius, bishop of Clermont (mr:0114-euphrasius-arvernae)."
   },
   "mr:0119-canutus": {
     "editions": {

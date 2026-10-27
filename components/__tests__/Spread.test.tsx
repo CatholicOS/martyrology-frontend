@@ -175,7 +175,7 @@ describe("Spread", () => {
 
   it("marks each sheet's curators' notes from † down that sheet, with the ids shown", async () => {
     serve({
-      [A]: day(A, [el("mr:0104-ferreolus", 4, "Sancti Ferreoli."), el("mr:x", 5, "Sancti X.")]),
+      [A]: day(A, [el("mr:0104-ferreolus-ucetiae", 4, "Sancti Ferreoli."), el("mr:x", 5, "Sancti X.")]),
       [B]: day(B, [el("mr:x", 1, "Sancti X, 1749."), el("mr:0220-eleutherius-et-socii", 3, "In Perside sancti Eleutherii.")]),
     });
     vi.mocked(getElogium).mockReturnValue(new Promise(() => {})); // the one-sided rows' placements
@@ -186,7 +186,7 @@ describe("Spread", () => {
     expect(notes[1]).toHaveTextContent(/^†The 1749 edition names Eleutherius/);
     const marks = screen.getAllByRole("link", { name: "Editorial note 1" });
     expect(marks.map((m) => m.getAttribute("href"))).toEqual([
-      `#note-${A}-mr:0104-ferreolus`, `#note-${B}-mr:0220-eleutherius-et-socii`,
+      `#note-${A}-mr:0104-ferreolus-ucetiae`, `#note-${B}-mr:0220-eleutherius-et-socii`,
     ]);
   });
 
