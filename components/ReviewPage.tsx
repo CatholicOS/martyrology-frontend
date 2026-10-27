@@ -90,6 +90,8 @@ export default function ReviewPage() {
       const parsed = parseChangeset(text);
       setCs(parsed);
       setName(stripExt(filename));
+      // A change-set loaded again under the same name starts at one page, not at Show all.
+      setPaging((p) => ({ ...p, shown: PAGE_SIZE }));
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
       setDecisions({ ...decisionsFromChangeset(parsed), ...loadDecisionsFor(parsed) });
@@ -115,6 +117,8 @@ export default function ReviewPage() {
       const parsed = parseChangeset(text);
       setCs(parsed);
       setName(stripExt(file.name));
+      // A change-set loaded again under the same name starts at one page, not at Show all.
+      setPaging((p) => ({ ...p, shown: PAGE_SIZE }));
       setSelectedBundled("");
       // Seed from decisions carried in the file (e.g. a prefilled audit), then let
       // localStorage (the curator's own in-progress work) override for resume.
