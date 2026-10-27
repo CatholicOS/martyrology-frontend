@@ -152,6 +152,8 @@ export default function ReviewPage() {
       return true;
     });
   }, [cs, classFilter, confidenceFilter, opFilter, undecidedOnly, prefilledOnly, hasPrefilled, idFilter, decisions]);
+  // "Show all" keeps showing every card while decisions or the change-set's filters change.
+  const showAll = () => setPaging({ key: pageKey, shown: Number.POSITIVE_INFINITY });
 
   // A change-set with rename candidates or relabels (crmedr's subject month) shows a eulogy's cards together.
   const grouped = useMemo(
@@ -387,6 +389,15 @@ export default function ReviewPage() {
           </div>
 
           <div className="mt-4">
+            {filteredOps.length > shown && (
+              <button
+                type="button"
+                className="mb-2 rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
+                onClick={showAll}
+              >
+                {t("showAll", { count: filteredOps.length })}
+              </button>
+            )}
             {bulkTargets.length > 0 && (
               <div className="mb-2 flex items-center gap-2 text-sm">
                 {!bulkAsk ? (
@@ -430,13 +441,22 @@ export default function ReviewPage() {
                 ))
               : filteredOps.slice(0, shown).map(renderCard)}
             {filteredOps.length > shown && (
-              <button
-                type="button"
-                className="mt-2 rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
-                onClick={() => setPaging({ key: pageKey, shown: shown + PAGE_SIZE })}
-              >
-                {t("showMore", { count: filteredOps.length - shown })}
-              </button>
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  className="rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
+                  onClick={() => setPaging({ key: pageKey, shown: shown + PAGE_SIZE })}
+                >
+                  {t("showMore", { count: filteredOps.length - shown })}
+                </button>
+                <button
+                  type="button"
+                  className="rounded bg-slate-600 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700"
+                  onClick={showAll}
+                >
+                  {t("showAll", { count: filteredOps.length })}
+                </button>
+              </div>
             )}
           </div>
         </>
