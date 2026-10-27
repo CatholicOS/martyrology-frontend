@@ -44,7 +44,7 @@ describe("ApparatusPage", () => {
     vi.spyOn(api, "getEditions").mockResolvedValue([]);
     vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
       Number(mm) === 1
-        ? month(1, [{ id: "mr:0104-abrunculus", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
+        ? month(1, [{ id: "mr:0104-abrunculus-lingonensis", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
         : month(Number(mm)),
     );
     render(<ApparatusPage edition="martyrologium_romanum_2004" />);
@@ -56,11 +56,11 @@ describe("ApparatusPage", () => {
     vi.spyOn(api, "getEditions").mockResolvedValue([]);
     vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
       Number(mm) === 1
-        ? month(1, [{ id: "mr:0104-abrunculus", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: null }], "restricted-texts")
+        ? month(1, [{ id: "mr:0104-abrunculus-lingonensis", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: null }], "restricted-texts")
         : month(Number(mm), [], "restricted-texts"),
     );
     render(<ApparatusPage edition="martyrologium_romanum_2004" />);
-    const id = await screen.findByText("mr:0104-abrunculus");
+    const id = await screen.findByText("mr:0104-abrunculus-lingonensis");
     expect(id.closest("p")).toHaveTextContent("2*.");
   });
 
@@ -68,13 +68,13 @@ describe("ApparatusPage", () => {
     vi.spyOn(api, "getEditions").mockResolvedValue([]);
     vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
       Number(mm) === 1
-        ? month(1, [{ id: "mr:0104-abrunculus", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
+        ? month(1, [{ id: "mr:0104-abrunculus-lingonensis", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
         : month(Number(mm)),
     );
     render(<ApparatusPage edition="martyrologium_romanum_2004" />, { locale: "it" });
     const section = await screen.findByRole("region", { name: "gennaio" });
     expect(section.querySelector("h2")).toHaveTextContent("gennaio");
-    expect(screen.getByRole("link", { name: "4 gennaio" })).toHaveAttribute("href", "/it/read/martyrologium_romanum_2004/01/04#mr:0104-abrunculus");
+    expect(screen.getByRole("link", { name: "4 gennaio" })).toHaveAttribute("href", "/it/read/martyrologium_romanum_2004/01/04#mr:0104-abrunculus-lingonensis");
   });
 
   it("lists a misprint in a footnote with the footnote's printed mark", async () => {

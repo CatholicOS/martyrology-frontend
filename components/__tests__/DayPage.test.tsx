@@ -105,9 +105,9 @@ describe("DayPage, curators' notes", () => {
   const noted = {
     ...day,
     elogia: [
-      { id: "mr:0104-ferreolus", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." },
+      { id: "mr:0104-ferreolus-ucetiae", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." },
       { id: "mr:0104-titus", entry: 5, asterisk: false, unnumbered: false, anchor_day: "01-04", text: "Sancti Titi." },
-      { id: "mr:0104-rigomerus", entry: 6, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Rigomeri." },
+      { id: "mr:0104-rigomerus-meldorum", entry: 6, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Rigomeri." },
     ],
   };
 
@@ -173,7 +173,7 @@ describe("DayPage, printed footnotes", () => {
   it("lists printed footnotes before the curators' notes", () => {
     const both = {
       ...withNotes,
-      elogia: [...withNotes.elogia, { id: "mr:0104-ferreolus", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." }],
+      elogia: [...withNotes.elogia, { id: "mr:0104-ferreolus-ucetiae", entry: 4, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Sancti Ferreoli." }],
     };
     render(<DayPage day={both} heading="2 Octobris" edition="martyrologium_romanum_2004" showIds />);
     const asides = screen.getAllByRole("complementary").map((a) => a.getAttribute("aria-label"));
