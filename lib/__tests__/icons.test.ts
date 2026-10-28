@@ -75,4 +75,19 @@ describe("app icons", () => {
     expect(svg).not.toMatch(/#E8DCC3/i);
     expect(svg).not.toMatch(/c2pa/i);
   });
+
+  it("the header emblem carries none of the editor's metadata or hidden layers", () => {
+    const svg = fs.readFileSync("public/app-icons/emblem.svg", "utf8");
+    expect(svg).not.toMatch(/inkscape|sodipodi/i);
+    expect(svg).not.toMatch(/display:none/);
+    expect(svg).not.toMatch(/\n[ \t]*\n/);
+  });
+
+  it("the field reaches the icon's edge, with no stroke along it", async () => {
+    const { data, width } = await pixels("public/app-icons/maskable-512.png");
+    for (const [x, y] of [[0, width / 2], [width / 2, 0], [width - 1, width / 2], [width / 2, width - 1], [0, 0]]) {
+      const i = (y * width + x) * 4;
+      expect([x, y, ...[0, 1, 2].map((k) => Math.abs(data[i + k] - FIELD[k]) <= 8)]).toEqual([x, y, true, true, true]);
+    }
+  });
 });
