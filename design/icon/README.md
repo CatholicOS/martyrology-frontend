@@ -13,5 +13,8 @@ The icons are generated, not drawn: replace `good-shepherd.svg` (saved from Inks
 and hidden elements, and paints the field (the rectangle filled with `#E8DCC3`, which must stay one) as a plain
 parchment square, without any stroke along the page's edge. It then writes `public/app-icons/icon-{192,512}.png`,
 `public/app-icons/maskable-{192,512}.png`, `app/apple-icon.png`, `app/icon.png`, `app/favicon.ico` and the header's
-emblem, `public/app-icons/emblem.svg` (the disc without the field); commit them. `lib/__tests__/icons.test.ts`
+emblem, `public/app-icons/emblem.svg` (the disc without the field); commit them. The favicon (`app/icon.png`,
+`app/favicon.ico`, 16 and 32 pixels) simplifies the lamb, whose thin line work would blur to grey there: it leaves out
+the paths labelled `ear`, `eye`, `wool left` and `wool right`, and draws the one labelled `lamb` with a thick outline.
+Keep those labels in Inkscape (Object Properties → Label); the script stops if one is missing. `lib/__tests__/icons.test.ts`
 checks their sizes, transparency and the maskable safe zone.
