@@ -27,7 +27,8 @@ export function parseReturn(params: Params | undefined, edition: string): Reader
   return { day: d ? parseDay(d[1], d[2]) : null, with: typeof w === "string" && w && w !== edition ? w : null };
 }
 
-/** The reader's page to go back to: the day left, with its comparison; with no day, today's page. */
+/** The reader's page to go back to: the day left, with its comparison; with no day, today's page, with it too. */
 export function readerHref(edition: string, r: ReaderReturn): string {
-  return r.day ? dayPath(edition, r.day, r.with) : `/read/${encodeURIComponent(edition)}`;
+  if (r.day) return dayPath(edition, r.day, r.with);
+  return `/read/${encodeURIComponent(edition)}${r.with ? `?with=${encodeURIComponent(r.with)}` : ""}`;
 }

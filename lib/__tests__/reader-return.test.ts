@@ -24,9 +24,10 @@ describe("the reader's way back from a view", () => {
     expect(parseReturn({ with: [EN, EN] }, ED).with).toBeNull();
   });
 
-  it("leads back to the day left, with its comparison; with no day, to today's page", () => {
+  it("leads back to the day left, with its comparison; with no day, to today's page, keeping the comparison", () => {
     expect(readerHref(ED, { day: { mm: 10, dd: 2 }, with: EN })).toBe(`/read/${ED}/10/02?with=${EN}`);
     expect(readerHref(ED, { day: { mm: 10, dd: 2 }, with: null })).toBe(`/read/${ED}/10/02`);
     expect(readerHref(ED, NO_RETURN)).toBe(`/read/${ED}`);
+    expect(readerHref(ED, { day: null, with: EN })).toBe(`/read/${ED}?with=${EN}`);
   });
 });

@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { existsMock, viewerMock, metaMock } = vi.hoisted(() => ({ existsMock: vi.fn(), viewerMock: vi.fn(), metaMock: vi.fn() }));
+const { existsMock, viewerMock, metaMock, todayProps } = vi.hoisted(() => ({
+  existsMock: vi.fn(), viewerMock: vi.fn(), metaMock: vi.fn(), todayProps: vi.fn(),
+}));
 vi.mock("@/lib/server-editions", () => ({ editionExists: existsMock, editionMeta: metaMock }));
 vi.mock("@/lib/viewer", () => ({ getViewer: viewerMock }));
 vi.mock("next/navigation", () => ({
@@ -10,7 +12,7 @@ vi.mock("@/i18n/navigation", () => ({
   redirect: ({ href }: { href: string }) => { throw new Error(`NEXT_REDIRECT ${href}`); },
 }));
 vi.mock("@/components/Reader", () => ({ default: () => null }));
-vi.mock("@/components/TodayRedirect", () => ({ default: () => null }));
+vi.mock("@/components/TodayRedirect", () => ({ default: (p: unknown) => { todayProps(p); return null; } }));
 
 import DayRoute, { generateMetadata } from "@/app/[locale]/read/[edition]/[mm]/[dd]/page";
 import EditionRoute from "@/app/[locale]/read/[edition]/page";
@@ -33,6 +35,17 @@ describe("/read routes", () => {
     existsMock.mockResolvedValue(false);
     await expect(DayRoute(params({ edition: "nope", mm: "01", dd: "01" }))).rejects.toThrow("NEXT_NOT_FOUND");
     await expect(EditionRoute(params({ edition: "nope" }))).rejects.toThrow("NEXT_NOT_FOUND");
+  });
+
+  it("hands today's page the comparison a `?with=` asks for, but not the edition itself", async () => {
+    const { render } = await import("@testing-library/react");
+    const route = (w?: string) => EditionRoute({ ...params({ edition: "martyrologium_romanum_1749" }), searchParams: Promise.resolve(w ? { with: w } : {}) });
+    render(await route("martyrologium_romanum_2004"));
+    expect(todayProps).toHaveBeenLastCalledWith({ edition: "martyrologium_romanum_1749", withEdition: "martyrologium_romanum_2004" });
+    render(await route("martyrologium_romanum_1749"));
+    expect(todayProps).toHaveBeenLastCalledWith({ edition: "martyrologium_romanum_1749", withEdition: null });
+    render(await route());
+    expect(todayProps).toHaveBeenLastCalledWith({ edition: "martyrologium_romanum_1749", withEdition: null });
   });
 
   it("renders a valid day, including 29 February", async () => {
