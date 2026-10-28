@@ -21,7 +21,9 @@ const ops = Array.from({ length: 120 }, (_, i) => ({
 }));
 const cs = { schema: "crmedr-changeset/v1", generated_by: "t", base: { edition: "2004", registry: "data/places.json" }, operations: ops };
 
-describe("ReviewPage paging", () => {
+// These tests render up to 120 real cards: about a second alone, but past Vitest's default five seconds
+// at times in a full parallel run (measured 4.5–5.3 s). The time goes to rendering, not to waiting.
+describe("ReviewPage paging", { timeout: 20_000 }, () => {
   beforeEach(() => {
     vi.stubGlobal(
       "fetch",
