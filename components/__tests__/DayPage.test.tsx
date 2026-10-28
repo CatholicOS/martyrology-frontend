@@ -288,6 +288,15 @@ describe("DayPage, the edition's printed errata", () => {
       expect(subject).toHaveAttribute("lang", "la");
     });
 
+    it("puts the subject first, at the left, and the ID after it, at the right", () => {
+      render(<DayPage day={withLeo} heading="" lang="la" showIds />);
+      const parts = [...hint("mr:1002-leodegarius").children];
+      expect(parts.map((c) => c.textContent)).toEqual(["Sanctus Leodegarius", "mr:1002-leodegarius"]);
+      expect(parts[1]).toHaveClass(styles.idCode);
+      // Without a subject the ID keeps its place at the right.
+      expect(screen.getByText("mr:1002-x")).toHaveClass(styles.idCode);
+    });
+
     it("takes the Italian and the English subjects for those editions", () => {
       const { unmount } = render(<DayPage day={withLeo} heading="" lang="it" showIds />);
       expect(within(hint("mr:1002-leodegarius")).getByText("San Leodegario")).toHaveAttribute("lang", "it");
