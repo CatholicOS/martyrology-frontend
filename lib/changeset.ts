@@ -45,6 +45,8 @@ export interface EditedFields {
   form?: string;
   /** relabel: the eulogy's subjects in three languages (null leaves one empty). */
   labels?: SubjectLabels;
+  /** set_persons: the eulogy's text persons, in printed order. */
+  persons?: ListedPerson[];
 }
 
 export interface DecisionRecord {
@@ -299,6 +301,33 @@ export interface ResolvePersonOp extends Base {
   jev?: PersonJev | null;
 }
 
+/** A person of a set_persons list: the Latin nominative and, when the Italian prints it otherwise, its Italian form. */
+export interface ListedPerson {
+  name: string;
+  it?: string | null;
+}
+
+/** A drafted person: one read now, or one drafted from a printed form not read (with the other readings). */
+export interface ProposedPerson extends ListedPerson {
+  n?: number;
+  also?: string[];
+  printed?: string;
+  alternatives?: string[];
+}
+
+/**
+ * The persons of a eulogy whose list of names crmedr could not read to its end (persons_review.py):
+ * the names read now, the printed forms not read, and a list drafted through to its end. Accept writes
+ * the drafted list, edit an edited one, reject keeps the names as read.
+ */
+export interface SetPersonsOp extends Base {
+  op: "set_persons";
+  id: string;
+  current: string[];
+  unread: string[];
+  persons: ProposedPerson[];
+}
+
 export type RealignAction = "rename" | "rekey" | "split" | "merge" | "link" | "note" | "rubric";
 
 /** One eulogy a run-in key's text is split into, from `split_at` up to the next part. */
@@ -478,6 +507,7 @@ export type Op =
   | AddMentionOp
   | SetSpanOp
   | RemoveMentionOp
+  | SetPersonsOp
   | UnknownOp;
 
 export interface Changeset {
@@ -530,7 +560,8 @@ export function isAdjudicable(op: Op): boolean {
     op.op === "place_margin" ||
     op.op === "add_mention" ||
     op.op === "set_span" ||
-    op.op === "remove_mention"
+    op.op === "remove_mention" ||
+    op.op === "set_persons"
   );
 }
 

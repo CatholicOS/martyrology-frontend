@@ -1,4 +1,4 @@
-import { opId, type DecisionRecord, type Op, type PersonCandidate, type RelabelOp, type RenameOp, type ResolvePersonOp, type SubjectLabels } from "@/lib/changeset";
+import { opId, type DecisionRecord, type Op, type PersonCandidate, type RelabelOp, type RenameOp, type ResolvePersonOp, type SetPersonsOp, type SubjectLabels } from "@/lib/changeset";
 
 /** What a plain accept on this op applies (a person card's default item, a rename's proposed ID); null for other ops. */
 export function resolvedTarget(op: Op): string | null {
@@ -125,6 +125,7 @@ export function opEulogy(op: Op): string | null {
   if (op.op === "rename") return (op as RenameOp).id;
   if (op.op === "relabel") return (op as RelabelOp).id;
   if (op.op === "resolve_person") return (op as ResolvePersonOp).eulogy;
+  if (op.op === "set_persons") return (op as SetPersonsOp).id;
   return null;
 }
 

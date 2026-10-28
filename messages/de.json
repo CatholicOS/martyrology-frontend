@@ -654,6 +654,18 @@
         "it": "Italienisch"
       }
     },
+    "persons": {
+      "current": "Jetzt gelesen:",
+      "unread": "Nicht gelesen:",
+      "proposed": "Vorgeschlagene Liste:",
+      "from": "aus {printed}",
+      "or": "oder {names}",
+      "edited": "Bearbeitet: {persons}",
+      "accept": "Liste übernehmen",
+      "edit": "Liste bearbeiten",
+      "keep": "Wie gelesen lassen",
+      "editHelp": "Eine Person pro Zeile, in der Reihenfolge des Textes: lateinischer Name | italienische Form"
+    },
     "eulogyGroup": "Elogium {eulogy}"
   },
   "Docs": {

@@ -654,6 +654,18 @@
         "it": "Italian"
       }
     },
+    "persons": {
+      "current": "Read now:",
+      "unread": "Not read:",
+      "proposed": "Proposed list:",
+      "from": "from {printed}",
+      "or": "or {names}",
+      "edited": "Edited: {persons}",
+      "accept": "Accept the list",
+      "edit": "Edit the list",
+      "keep": "Keep as read",
+      "editHelp": "One person per line, in printed order: Latin name | Italian form"
+    },
     "eulogyGroup": "Eulogy {eulogy}"
   },
   "Docs": {
