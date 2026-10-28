@@ -8,6 +8,7 @@ import EulogyView from "@/components/EulogyView";
 import MentionCard from "@/components/MentionCard";
 import PlaceMarginCard from "@/components/PlaceMarginCard";
 import PersonCard from "@/components/PersonCard";
+import PersonsListCard from "@/components/PersonsListCard";
 import PlaceCard from "@/components/PlaceCard";
 import RealignCard from "@/components/RealignCard";
 import RelabelCard from "@/components/RelabelCard";
@@ -29,6 +30,7 @@ import {
   type RealignOp,
   type AttachNoteOp,
   type PlaceMarginOp,
+  type SetPersonsOp,
 } from "@/lib/changeset";
 import type { Locale } from "@/lib/types";
 
@@ -66,6 +68,10 @@ export default function OperationCard(props: Props) {
   // A person named in a eulogy (crmedr persons): candidates, like a place.
   if (props.op.op === "resolve_person") {
     return <PersonCard {...props} op={props.op as ResolvePersonOp} />;
+  }
+  // A eulogy's list of persons read through to its end (crmedr persons_review.py).
+  if (props.op.op === "set_persons") {
+    return <PersonsListCard {...props} op={props.op as SetPersonsOp} />;
   }
   // A historical-edition finding (crmedr #51) carries its own texts and actions.
   if (props.op.op === "realign") {
