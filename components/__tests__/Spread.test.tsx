@@ -50,6 +50,22 @@ describe("Spread", () => {
     expect(cellOf("Quod sequitur legitur.")).toBe(cellOf("Romae passio sancti X."));
   });
 
+  it("with the IDs, sets each sheet's subject in its own edition's language", async () => {
+    const EN = "martyrologium_romanum_1914_en_unofficial";
+    serve({
+      [A]: day(A, [el("mr:1002-leodegarius", 1, "Augustoduni sancti Leodegarii.")]),
+      [EN]: day(EN, [el("mr:1002-leodegarius", 3, "At Autun, St. Leodegarius.")]),
+    });
+    render(<Spread a={A} b={EN} editions={[...EDITIONS, ed(EN, 1914, "en")]} mm={10} dd={4} signedIn={false} turn={null} showIds />);
+    await screen.findByText("Augustoduni sancti Leodegarii.");
+    expect(screen.getByText("Sanctus Leodegarius")).toHaveAttribute("lang", "la");
+    expect(cellOf("Sanctus Leodegarius")).toHaveAttribute("data-side", "a");
+    expect(cellOf("Saint Leodegar")).toHaveAttribute("data-side", "b");
+    expect(cellOf("Sanctus Leodegarius")).toBe(cellOf("Augustoduni sancti Leodegarii."));
+    expect(screen.getByText("Saint Leodegar")).toHaveAttribute("lang", "en");
+    expect(cellOf("Saint Leodegar")).toBe(cellOf("At Autun, St. Leodegarius."));
+  });
+
   it("sets a eulogy level with its counterpart, on its own sheet", async () => {
     serve({ [A]: day(A, [el("mr:x", 1, "Romae sancti X.")]), [B]: day(B, [el("mr:x", 4, "Romae passio sancti X.")]) });
     render(<Spread a={A} b={B} editions={EDITIONS} mm={10} dd={4} signedIn={false} turn={null} />);

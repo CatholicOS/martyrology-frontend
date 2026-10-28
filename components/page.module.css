@@ -7,10 +7,17 @@
 .heading { color: #a3161b; text-align: center; font-size: 1.15rem; font-weight: normal; margin-bottom: 1rem; }
 .rubric { color: #a3161b; font-size: 0.85em; margin-right: 0.35em; }
 .entry { margin: 0.6rem 0; }
-/* The canonical id over a eulogy: a monospace teal tag, plainly not part of the print. */
+/* The canonical id over a eulogy: a monospace teal tag, plainly not part of the print. Its subject, in
+   the edition's language, sits at the right in the page's italic; when both do not fit, it wraps, still
+   at the right, rather than being cut short. */
 .idHint {
   margin: 0.9rem 0 -0.5rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.72rem; line-height: 1.2; color: #0b6e7f; letter-spacing: 0.01em;
+  display: flex; flex-wrap: wrap; column-gap: 1em; row-gap: 0.15rem;
+}
+.idSubject {
+  margin-left: auto; text-align: right; font-family: var(--font-text), Georgia, "Times New Roman", serif;
+  font-style: italic; font-size: 0.8rem; color: #5c4f45; letter-spacing: normal;
 }
 .idHint + .entry { margin-top: 0.5rem; }
 /* The eulogy the subject search went to: a brief wash that fades out. */

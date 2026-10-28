@@ -223,6 +223,7 @@ export default function Spread({
           <Eulogy
             e={e}
             edition={s.id}
+            lang={s.lang}
             showId={showIds}
             note={notes[side].curators.find((n) => n.at === i)}
             footnotes={notes[side].printed.filter((f) => f.at === i)}
