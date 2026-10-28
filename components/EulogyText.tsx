@@ -107,9 +107,13 @@ export default function EulogyText({
             {words}
             {e && <ErratumNote e={e} className={errataClassName} />}
             {s.intended && (
-              <span className={noteClassName} style={{ fontStyle: "normal" }}>
-                {" "}[{t.rich("sic", { intended: s.intended, i: (c) => <i>{c}</i> })}]
-              </span>
+              <>
+                {/* The space outside the note, so that a highlighted note starts at its bracket. */}
+                {" "}
+                <span className={noteClassName} style={{ fontStyle: "normal" }}>
+                  [{t.rich("sic", { intended: s.intended, i: (c) => <i>{c}</i> })}]
+                </span>
+              </>
             )}
           </Fragment>
         );

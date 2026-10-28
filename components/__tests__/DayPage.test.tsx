@@ -77,6 +77,9 @@ describe("DayPage misprints", () => {
     const sic = screen.getByText("sic!");
     expect(sic.tagName).toBe("I");
     expect(sic.closest("p")).toHaveTextContent("nell’odiena [sic! expected: nell’odierna] Turchia");
+    // Plain in the reader, not to stand out from the text being read; the notes page highlights it.
+    expect(sic.parentElement).toHaveClass(styles.sic);
+    expect(sic.parentElement).not.toHaveClass(styles.sicMarked);
   });
 
   it("adds no note for another edition", () => {
