@@ -17,9 +17,48 @@ const SIDE = 1024;
 /** The favicon's crop of the master: the disc with the shepherd and the lamb, without the field. */
 const FAVICON_CROP = { left: 120, top: 120, width: 784, height: 784 };
 
-const svg = fs.readFileSync(MASTER);
-/** The master rendered as a square PNG of `size` pixels. */
-const render = (size) => sharp(svg, { density: (72 * size) / SIDE }).resize(size, size).png().toBuffer();
+/**
+ * The master as an Inkscape file is saved, made plain: no XML declaration, editor metadata (sodipodi:namedview,
+ * inkscape:* and sodipodi:* attributes) or hidden elements, sized in pixels. Its field (the parchment rectangle,
+ * which Inkscape may give a stroke along the page's edge) is replaced by a plain parchment square, or left out.
+ */
+function plain(source, { field }) {
+  const out = source
+    .replace(/^<\?xml[^>]*>\s*/, "")
+    .replace(/<sodipodi:namedview\b[^>]*?(?:\/>|>[\s\S]*?<\/sodipodi:namedview>)/, "")
+    .replace(/\s(?:inkscape|sodipodi):[\w-]+="[^"]*"/g, "")
+    .replace(/\sxmlns:(?:inkscape|sodipodi)="[^"]*"/g, "")
+    .replace(/\sclass="UnoptimicedTransforms"/g, "")
+    .replace(/<(path|rect|g)\b[^>]*style="[^"]*display:none[^"]*"[^>]*\/>/g, "")
+    .replace(/(<svg\b[^>]*?)\swidth="[^"]*"\s+height="[^"]*"/, `$1 width="${SIDE}" height="${SIDE}"`);
+  const fieldRe = new RegExp(`<rect\\b[^>]*fill:${FIELD}[^>]*/>`, "i");
+  if (!fieldRe.test(out)) throw new Error("the master's field (a rect filled with the parchment colour) was not found");
+  return tidy(out.replace(fieldRe, field ? `<rect width="${SIDE}" height="${SIDE}" fill="${FIELD}"/>` : ""));
+}
+
+/** Without the blank lines and trailing spaces that removing attributes and elements leaves. */
+const tidy = (s) => s.replace(/[ \t]+$/gm, "").replace(/\n{2,}/g, "\n");
+
+/** The lamb's details that blur to grey at favicon size, by their Inkscape labels: the favicon leaves them out. */
+const LAMB_DETAILS = ["ear", "eye", "wool left", "wool right"];
+/** The lamb's line work, by its Inkscape label: the favicon draws it thick, a bold outline round a white lamb. */
+const LAMB_OUTLINE = "lamb";
+const LAMB_OUTLINE_STYLE = "fill:#000000;stroke:#000000;stroke-width:120";
+const labelled = (label) => new RegExp(`<path\\b(?:(?!/>)[\\s\\S])*?inkscape:label="${label}"(?:(?!/>)[\\s\\S])*?/>`);
+
+/** The master for the favicon: the lamb simplified, so that at 16 and 32 pixels it stays a lamb apart from the shepherd. */
+function simplified(source) {
+  for (const label of [...LAMB_DETAILS, LAMB_OUTLINE])
+    if (!labelled(label).test(source)) throw new Error(`the master has no path labelled "${label}"`);
+  return LAMB_DETAILS.reduce((out, label) => out.replace(labelled(label), ""), source)
+    .replace(labelled(LAMB_OUTLINE), (path) => path.replace(/\sstyle="[^"]*"/, ` style="${LAMB_OUTLINE_STYLE}"`));
+}
+
+const source = fs.readFileSync(MASTER, "utf8");
+const svg = Buffer.from(plain(source, { field: true }));
+const faviconSvg = Buffer.from(plain(simplified(source), { field: true }));
+/** The master (or `master`) rendered as a square PNG of `size` pixels. */
+const render = (size, master = svg) => sharp(master, { density: (72 * size) / SIDE }).resize(size, size).png().toBuffer();
 
 async function anyIcon(size, out) {
   const r = Math.round(size * CORNER);
@@ -38,16 +77,17 @@ async function maskableIcon(size, out) {
 }
 
 async function faviconPng(size) {
-  return sharp(await render(SIDE)).extract(FAVICON_CROP).resize(size, size).png().toBuffer();
+  return sharp(await render(SIDE, faviconSvg)).extract(FAVICON_CROP).resize(size, size).png().toBuffer();
 }
 
-/** The header's emblem: the master's disc alone, as SVG, without the field (the master's first path). */
+/** The header's emblem: the master's disc alone, as SVG, without the field, framed as the favicon is. */
 function emblem() {
-  const master = svg.toString("utf8").replace(/^<\?xml[^>]*>\s*/, "");
-  const [, field] = master.match(/(<path fill="#E8DCC3"[^>]*\/>)/i) ?? [];
-  if (!field) throw new Error("the master's field path was not found");
   const { left, top, width, height } = FAVICON_CROP;
-  return master.replace(field, "").replace(/viewBox="[^"]*"/, `viewBox="${left} ${top} ${width} ${height}"`).replace(/ width="\d+" height="\d+"/, "");
+  return tidy(
+    plain(source, { field: false })
+      .replace(/viewBox="[^"]*"/, `viewBox="${left} ${top} ${width} ${height}"`)
+      .replace(/\swidth="\d+" height="\d+"/, ""),
+  );
 }
 
 /** An .ico holding PNG images (allowed since Windows Vista, read by every current browser). */

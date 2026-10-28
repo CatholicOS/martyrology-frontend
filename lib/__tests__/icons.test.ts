@@ -75,4 +75,30 @@ describe("app icons", () => {
     expect(svg).not.toMatch(/#E8DCC3/i);
     expect(svg).not.toMatch(/c2pa/i);
   });
+
+  it("the header emblem carries none of the editor's metadata or hidden layers", () => {
+    const svg = fs.readFileSync("public/app-icons/emblem.svg", "utf8");
+    expect(svg).not.toMatch(/inkscape|sodipodi/i);
+    expect(svg).not.toMatch(/display:none/);
+    expect(svg).not.toMatch(/\n[ \t]*\n/);
+  });
+
+  // The full drawing's thin line work blurs to grey at 32 pixels (3 such pixels); the bold outline gives about 50.
+  it("the favicon draws the lamb with a bold dark outline, so it stands apart from the shepherd", async () => {
+    const { data } = await pixels("app/icon.png");
+    let dark = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const rgb = [data[i], data[i + 1], data[i + 2]];
+      if (Math.max(...rgb) < 110 && Math.max(...rgb) - Math.min(...rgb) < 40) dark++;
+    }
+    expect(dark).toBeGreaterThan(25);
+  });
+
+  it("the field reaches the icon's edge, with no stroke along it", async () => {
+    const { data, width } = await pixels("public/app-icons/maskable-512.png");
+    for (const [x, y] of [[0, width / 2], [width / 2, 0], [width - 1, width / 2], [width / 2, width - 1], [0, 0]]) {
+      const i = (y * width + x) * 4;
+      expect([x, y, ...[0, 1, 2].map((k) => Math.abs(data[i + k] - FIELD[k]) <= 8)]).toEqual([x, y, true, true, true]);
+    }
+  });
 });
