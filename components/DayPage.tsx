@@ -70,7 +70,7 @@ export default function DayPage({
       <Rubricae day={day} after={null} />
       {day.elogia.map((e, i) => (
         <Fragment key={e.id ?? i}>
-          <Eulogy e={e} edition={edition} showId={showIds} note={noteAt.get(i)} footnotes={footAt.get(i)} />
+          <Eulogy e={e} edition={edition} lang={lang} showId={showIds} note={noteAt.get(i)} footnotes={footAt.get(i)} />
           {e.id && <Rubricae day={day} after={e.id} />}
         </Fragment>
       ))}

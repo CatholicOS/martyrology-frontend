@@ -456,7 +456,7 @@ describe("Reader, id switch", () => {
     expect(screen.getAllByText("mr:1002-modestus-sardus")).toHaveLength(2);
     first.unmount();
     render1749(10, 3);
-    expect(await screen.findByText("mr:1002-modestus-sardus")).toHaveClass(styles.idHint);
+    expect((await screen.findByText("mr:1002-modestus-sardus")).parentElement).toHaveClass(styles.idHint);
     expect(screen.getByRole("switch", { name: "IDs and notes" })).toBeChecked();
     expect(window.localStorage.getItem("reader.showIds")).toBe("1");
   });

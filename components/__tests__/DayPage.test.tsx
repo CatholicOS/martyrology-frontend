@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@/test/intl";
+import { render, screen, within } from "@/test/intl";
 import DayPage from "@/components/DayPage";
 import styles from "@/components/page.module.css";
 
@@ -273,5 +273,40 @@ describe("DayPage, the edition's printed errata", () => {
     const { container } = render(<DayPage day={dele} heading="2 Octobris" edition="ed" />);
     expect(container.querySelector("del")).toHaveTextContent("Sardi.");
     expect(container.querySelector("p")?.textContent).toContain("[Errata: dele]");
+  });
+
+  describe("with the IDs, the subject beside each", () => {
+    const leo = { id: "mr:1002-leodegarius", entry: 4, asterisk: false, unnumbered: false, anchor_day: "10-02", text: "Augustoduni sancti Leodegarii." };
+    const withLeo = { ...day, elogia: [...day.elogia, leo] };
+    const hint = (id: string) => screen.getByText(id).parentElement!;
+
+    it("sets the registry's subject in the edition's language on the ID's line, marked as that language", () => {
+      render(<DayPage day={withLeo} heading="" lang="la" showIds />);
+      const subject = within(hint("mr:1002-leodegarius")).getByText("Sanctus Leodegarius");
+      expect(hint("mr:1002-leodegarius")).toHaveClass(styles.idHint);
+      expect(subject).toHaveClass(styles.idSubject);
+      expect(subject).toHaveAttribute("lang", "la");
+    });
+
+    it("takes the Italian and the English subjects for those editions", () => {
+      const { unmount } = render(<DayPage day={withLeo} heading="" lang="it" showIds />);
+      expect(within(hint("mr:1002-leodegarius")).getByText("San Leodegario")).toHaveAttribute("lang", "it");
+      unmount();
+      render(<DayPage day={withLeo} heading="" lang="en" showIds />);
+      expect(within(hint("mr:1002-leodegarius")).getByText("Saint Leodegar")).toHaveAttribute("lang", "en");
+    });
+
+    it("shows nothing beside an ID without a subject in the edition's language, or unknown to the registry", () => {
+      render(<DayPage day={withLeo} heading="" lang="en" showIds />);
+      // The registry has this eulogy's subject in Latin only, and does not know mr:1002-x.
+      expect(hint("mr:1002-modestus-sardus").textContent).toBe("mr:1002-modestus-sardus");
+      expect(hint("mr:1002-x").textContent).toBe("mr:1002-x");
+      expect(screen.queryByText("Sanctus Modestus Sardus")).toBeNull();
+    });
+
+    it("shows no subject without the IDs", () => {
+      render(<DayPage day={withLeo} heading="" lang="la" />);
+      expect(screen.queryByText("Sanctus Leodegarius")).toBeNull();
+    });
   });
 });
