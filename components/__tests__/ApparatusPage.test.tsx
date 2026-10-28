@@ -1,12 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@/test/intl";
 import ApparatusPage from "@/components/ApparatusPage";
+import styles from "@/components/page.module.css";
 import * as api from "@/lib/api";
 import type { MonthOut } from "@/lib/types";
 
 vi.mock("@/data/misprints-snapshot.json", () => ({
   default: [
     { id: "mr:0801-fictus", edition: "martyrologium_romanum_2004_it_IT", printed: "e maria", intended: "e Maria", footnote: 1 },
+    { id: "mr:0802-falsus", edition: "martyrologium_romanum_2004_it_IT", printed: "Fittiza", intended: "Fittizia" },
   ],
 }));
 
@@ -94,6 +96,21 @@ describe("ApparatusPage", () => {
     const section = await screen.findByRole("region", { name: "gennaio" });
     expect(section.querySelector("h2")).toHaveTextContent("gennaio");
     expect(screen.getByRole("link", { name: "4 gennaio" })).toHaveAttribute("href", "/it/read/martyrologium_romanum_2004/01/04#mr:0104-abrunculus-lingonensis");
+  });
+
+  it("highlights the sic! note in the eulogy's text, where the reader keeps it plain", async () => {
+    vi.spyOn(api, "getEditions").mockResolvedValue([]);
+    vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
+      Number(mm) === 8
+        ? month(8, [{ id: "mr:0802-falsus", entry: 2, asterisk: false, unnumbered: false, anchor_day: "08-02", text: "A Roma, santa Fittiza." }])
+        : month(Number(mm)),
+    );
+    render(<ApparatusPage edition="martyrologium_romanum_2004_it_IT" />);
+    const text = await screen.findByText(/A Roma, santa Fittiza/);
+    const note = [...text.querySelectorAll("span")].find((s) => s.textContent?.includes("sic!"))!;
+    expect(note).toHaveTextContent("[sic! expected: Fittizia]");
+    expect(note).toHaveClass(styles.sicMarked);
+    expect(note).not.toHaveClass(styles.sic);
   });
 
   it("lists a misprint in a footnote with the footnote's printed mark", async () => {

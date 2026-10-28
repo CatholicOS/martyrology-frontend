@@ -161,7 +161,7 @@ export default function ApparatusPage({ edition, back = NO_RETURN }: { edition: 
                   <p className={e.unnumbered ? `${styles.entry} ${styles.unnumbered}` : styles.entry} lang={lang}>
                     {e.entry !== null && !e.unnumbered && <Number e={e} />}
                     <EulogyText
-                      text={e.text} id={e.id} edition={edition} noteClassName={styles.sic}
+                      text={e.text} id={e.id} edition={edition} noteClassName={styles.sicMarked}
                       errata={e.errata} errataClassName={styles.errata}
                     />
                   </p>
