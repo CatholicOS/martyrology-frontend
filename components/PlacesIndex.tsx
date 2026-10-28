@@ -8,6 +8,7 @@ import { roleLabel, roleText } from "@/lib/body-places";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { letterSlug } from "@/lib/letters";
 import { placeHeadingId, placeLetterEntries, type IndexPlace, type PlacesIndexData } from "@/lib/places-index";
+import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/reader-return";
 import { placeCountries, regionNames } from "@/lib/regions";
 
 /**
@@ -16,10 +17,11 @@ import { placeCountries, regionNames } from "@/lib/regions";
  * subject, the place as the edition prints it, their typology unless it is the dies natalis, and the place's
  * roles in the eulogy unless it is only the place of death. A role narrows the index to the lines that have it.
  * `index` null: the catalog could not be loaded. `lang`: the edition's language, which its subjects and
- * printed places are in, inside a page in the interface language.
+ * printed places are in, inside a page in the interface language. `back`: the reader's day and comparison
+ * it was opened from, which every link keeps.
  */
-export default function PlacesIndex({ edition, title, index, letter, lang }: {
-  edition: string; title: string; index: PlacesIndexData | null; letter?: string; lang?: Lang;
+export default function PlacesIndex({ edition, title, index, letter, lang, back = NO_RETURN }: {
+  edition: string; title: string; index: PlacesIndexData | null; letter?: string; lang?: Lang; back?: ReaderReturn;
 }) {
   const t = useTranslations("Places");
   const tMap = useTranslations("Map");
@@ -29,8 +31,9 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
   const ed = encodeURIComponent(edition);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
-  // A chosen role goes with every link between the letters.
-  const q = index?.role ? `?role=${encodeURIComponent(index.role)}` : "";
+  // A chosen role goes with every link between the letters, as the way back to the reader goes with every link.
+  const q = returnQuery(back, { role: index?.role ?? null });
+  const bq = returnQuery(back);
 
   /** One place's heading and lines, with an id the cross-references link to. */
   const placeBlock = (p: IndexPlace) => {
@@ -47,7 +50,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
             return (
               <li key={line.key}>
                 {/* Named with its eulogy too: the page has thousands of day links. */}
-                <Link href={`${dayPath(edition, line.day)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
+                <Link href={`${dayPath(edition, line.day, back.with)}#${line.id}`} aria-label={`${day} · ${line.subject}`} className="underline">
                   {day}
                 </Link>
                 {" · "}
@@ -74,14 +77,14 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
         {t("title", { title })}
       </h1>
       <p className="mb-3 text-center text-sm text-slate-600">
-        <Link href={`/read/${ed}`} className="underline">{t("readEdition")}</Link>
+        <Link href={readerHref(edition, back)} className="underline">{t("readEdition")}</Link>
         {" · "}
-        <Link href={`/read/${ed}/notes`} className="underline">{t("notesLink")}</Link>
+        <Link href={`/read/${ed}/notes${bq}`} className="underline">{t("notesLink")}</Link>
       </p>
       {!index ? (
         <p className="text-center text-red-700">
           {t("loadError")}{" "}
-          <Link href={`/read/${ed}/places`} className="underline">{t("retry")}</Link>
+          <Link href={`/read/${ed}/places${bq}`} className="underline">{t("retry")}</Link>
         </p>
       ) : (
         <>
@@ -89,7 +92,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
             // Every role link leads to the first letter: a letter may have no line of that role.
             <nav aria-label={t("roleFilter")} className="mb-3 text-center text-sm">
               {index.role ? (
-                <Link href={`/read/${ed}/places`} className="underline">{t("allRoles")}</Link>
+                <Link href={`/read/${ed}/places${bq}`} className="underline">{t("allRoles")}</Link>
               ) : (
                 <span>{t("allRoles")}</span>
               )}
@@ -99,7 +102,7 @@ export default function PlacesIndex({ edition, title, index, letter, lang }: {
                   {index.role === r ? (
                     <span>{roleLabel(tRoles, r)} ({n})</span>
                   ) : (
-                    <Link href={`/read/${ed}/places?role=${encodeURIComponent(r)}`} className="underline">
+                    <Link href={`/read/${ed}/places${returnQuery(back, { role: r })}`} className="underline">
                       {roleLabel(tRoles, r)} ({n})
                     </Link>
                   )}

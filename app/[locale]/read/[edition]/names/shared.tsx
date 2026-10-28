@@ -8,6 +8,7 @@ import { letterFromSlug, slugLetter } from "@/lib/letters";
 import { namesIndex, type NamesIndexData } from "@/lib/names-index";
 import { getPersons } from "@/lib/persons";
 import { hasPersons } from "@/lib/persons-editions";
+import { NO_RETURN, type ReaderReturn } from "@/lib/reader-return";
 import { editionExists, editionInfo, editionMeta, fetchCatalog } from "@/lib/server-editions";
 
 /** The `<title>` of the index of names, or of one of its letters' pages. */
@@ -20,9 +21,12 @@ export async function namesMetadata(locale: string, edition: string, slug?: stri
 
 /**
  * One edition's index of names, one letter at a time, rendered on the server from its catalog and the
- * persons snapshot: the letter a URL names (404 when the index has none), else the first.
+ * persons snapshot: the letter a URL names (404 when the index has none), else the first. `back`: the
+ * reader's day and comparison, which the index's links keep.
  */
-export async function NamesPage({ locale, edition, slug }: { locale: string; edition: string; slug?: string }) {
+export async function NamesPage({ locale, edition, slug, back = NO_RETURN }: {
+  locale: string; edition: string; slug?: string; back?: ReaderReturn;
+}) {
   setRequestLocale(locale as Locale);
   if (!(await editionExists(edition))) notFound();
   const e = await editionInfo(edition);
@@ -47,7 +51,7 @@ export async function NamesPage({ locale, edition, slug }: { locale: string; edi
   }
   return (
     <main className="mx-auto max-w-5xl py-4 sm:p-4">
-      <NamesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} error={error} letter={letter} lang={e ? editionLang(e) : undefined} />
+      <NamesIndex edition={edition} title={e ? `${editionTitle(e)} ${e.year}` : edition} index={index} error={error} letter={letter} lang={e ? editionLang(e) : undefined} back={back} />
     </main>
   );
 }

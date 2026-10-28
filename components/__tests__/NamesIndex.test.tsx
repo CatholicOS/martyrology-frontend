@@ -23,6 +23,9 @@ const index: NamesIndexData = {
 const renderIndex = (i: NamesIndexData | null = index, error = false, letter?: string, locale: "en" | "de" = "en") =>
   render(<NamesIndex edition={ED} title="MARTYROLOGIUM ROMANUM 2004" index={i} error={error} letter={letter} lang="la" />, { locale });
 
+const BACK = { day: { mm: 10, dd: 2 }, with: "martyrologium_romanum_1914_en_unofficial" };
+const BQ = "?day=10-02&with=martyrologium_romanum_1914_en_unofficial";
+
 describe("NamesIndex", () => {
   it("shows one letter, the first by default, with a bar linking every letter's page and the next letter", () => {
     renderIndex();
@@ -32,6 +35,17 @@ describe("NamesIndex", () => {
     expect(within(bar).getByText("B")).toHaveAttribute("aria-current", "page");
     expect(within(bar).getByRole("link", { name: "T" })).toHaveAttribute("href", `/en/read/${ED}/names/t`);
     expect(screen.getByRole("link", { name: "Next letter: T" })).toHaveAttribute("href", `/en/read/${ED}/names/t`);
+  });
+
+  it("keeps the reader's day and comparison it was opened from on every link, back to the reader included", () => {
+    render(<NamesIndex edition={ED} title="T" index={index} letter="T" lang="la" back={BACK} />);
+    expect(screen.getByRole("link", { name: "⟵ Read the edition" }))
+      .toHaveAttribute("href", `/en/read/${ED}/10/02?with=martyrologium_romanum_1914_en_unofficial`);
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/en/read/${ED}/notes${BQ}`);
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/en/read/${ED}/places${BQ}`);
+    expect(screen.getByRole("link", { name: "9 November · Sanctus Theodorus" }))
+      .toHaveAttribute("href", `/en/read/${ED}/11/09?with=martyrologium_romanum_1914_en_unofficial#mr:1109-theodorus`);
+    expect(screen.getByRole("link", { name: "Previous letter: B" })).toHaveAttribute("href", `/en/read/${ED}/names/b${BQ}`);
   });
 
   it("titles the page and links to the edition, its notes and its places", () => {

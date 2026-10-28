@@ -64,6 +64,15 @@ describe("/read/<edition>/places", () => {
     expect(indexProps.mock.lastCall![0].index.role).toBe("death");
   });
 
+  it("hands the index the reader's day and comparison it was opened from, beside a role", async () => {
+    const q = { day: "10-02", with: "martyrologium_romanum_1914_en_unofficial", role: "death" };
+    render(await PlacesRoute({ ...params(E.edition_id), searchParams: Promise.resolve(q) }));
+    expect(indexProps.mock.lastCall![0].back).toEqual({ day: { mm: 10, dd: 2 }, with: "martyrologium_romanum_1914_en_unofficial" });
+    expect(indexProps.mock.lastCall![0].index.role).toBe("death");
+    render(await PlacesRoute(params(E.edition_id)));
+    expect(indexProps.mock.lastCall![0].back).toEqual({ day: null, with: null });
+  });
+
   it("renders the error state, not a crash, when the catalog cannot be loaded, and logs why", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     const down = new Error("down");

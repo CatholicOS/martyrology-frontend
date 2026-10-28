@@ -1,7 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, within } from "@/test/intl";
 
-vi.mock("@/i18n/navigation", () => ({ Link: ({ href, children }: { href: string; children?: React.ReactNode }) => <a href={href}>{children}</a> }));
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({ href, children, className }: { href: string; children?: React.ReactNode; className?: string }) => <a href={href} className={className}>{children}</a>,
+}));
 
 import ReaderBar from "@/components/ReaderBar";
 
@@ -163,7 +165,7 @@ describe("ReaderBar's subject search", () => {
 });
 
 describe("ReaderBar's Names & places switch", () => {
-  it("is a switch beside Show IDs, telling what it does", () => {
+  it("is a switch beside IDs and notes, telling what it does", () => {
     const onMarkup = vi.fn();
     render(<ReaderBar {...props} markupAvailable markup={false} onMarkup={onMarkup} />);
     const sw = screen.getByRole("switch", { name: "Names & places" });
@@ -181,6 +183,76 @@ describe("ReaderBar's Names & places switch", () => {
   it("is not rendered when the day on screen names no one and nowhere", () => {
     render(<ReaderBar {...props} markupAvailable={false} markup onMarkup={vi.fn()} />);
     expect(screen.queryByRole("switch", { name: "Names & places" })).toBeNull();
-    expect(screen.getByRole("switch", { name: "IDs" })).toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: "IDs and notes" })).toBeInTheDocument();
+  });
+});
+
+describe("ReaderBar's layout", () => {
+  const ED = "martyrologium_romanum_2004";
+  const EN = "martyrologium_romanum_1914_en_unofficial";
+  const books = [{ id: ED, label: "Martyrologium Romanum 2004" }, { id: EN, label: "Roman Martyrology 1914" }];
+  const renderBar = (compareWith: string | null) =>
+    render(<ReaderBar {...props} day={{ mm: 10, dd: 2 }} books={books} compareBooks={books.slice(1)} compareWith={compareWith}
+      markupAvailable markup={false} onMarkup={vi.fn()} />);
+
+  it("opens with the shelf and the edition's other views, marked as leading away", () => {
+    renderBar(null);
+    const nav = screen.getByRole("navigation", { name: "Shelf, notes and indexes" });
+    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(
+      ["⟵ Shelf", "Notes & errata →", "Index of places →", "Index of names →"],
+    );
+    // The arrow is a visual cue only: the links keep their names.
+    expect(within(nav).getByRole("link", { name: "Notes & errata" })).toBeInTheDocument();
+    // First in the bar, so first in the focus order.
+    expect(document.body.querySelector("a, select, button, input")).toBe(within(nav).getByRole("link", { name: "⟵ Shelf" }));
+  });
+
+  it("carries the day into the views, and the comparison when there is one", () => {
+    const { unmount } = renderBar(null);
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/read/${ED}/notes?day=10-02`);
+    unmount();
+    renderBar(EN);
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/read/${ED}/notes?day=10-02&with=${EN}`);
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/read/${ED}/places?day=10-02&with=${EN}`);
+    expect(screen.getByRole("link", { name: "Index of names" })).toHaveAttribute("href", `/read/${ED}/names?day=10-02&with=${EN}`);
+  });
+
+  it("orders the controls: views, then [edition] ⇄ [compare with] ×, then the day and the switches", () => {
+    renderBar(EN);
+    const ids = [...document.querySelectorAll("select, button, input")].map((el) => el.id);
+    expect(ids).toEqual([
+      "reader-book", "reader-swap", "reader-with", "reader-close",
+      "reader-month", "reader-day", "reader-today", "reader-subject", "reader-ids", "reader-markup",
+    ]);
+    expect(screen.getByRole("button", { name: "Swap the two editions" })).toHaveAttribute("id", "reader-swap");
+    expect(screen.getByRole("button", { name: "Close the second edition" })).toHaveAttribute("id", "reader-close");
+    expect(screen.getByLabelText("Switch book")).toHaveAttribute("id", "reader-book");
+    expect(screen.getByLabelText("Compare with")).toHaveAttribute("id", "reader-with");
+  });
+
+  it("on a phone stacks the pickers, with × beside the second and ⇄ beside the pair", () => {
+    renderBar(EN);
+    const area = document.getElementById("reader-book")!.parentElement!;
+    expect(area).toHaveClass("grid", "sm:flex");
+    expect(document.getElementById("reader-book")).toHaveClass("col-start-1", "row-start-1", "w-full", "min-w-0");
+    expect(document.getElementById("reader-with")).toHaveClass("col-start-1", "row-start-2", "w-full", "min-w-0");
+    expect(document.getElementById("reader-close")).toHaveClass("col-start-2", "row-start-2");
+    expect(document.getElementById("reader-swap")).toHaveClass("col-start-3", "row-start-1", "row-span-2");
+  });
+
+  it("draws no swap or clear button without a comparison", () => {
+    renderBar(null);
+    expect(screen.queryByRole("button", { name: "Swap the two editions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Close the second edition" })).toBeNull();
+  });
+});
+
+describe("ReaderBar's IDs and notes switch", () => {
+  it.each([
+    ["en", "IDs and notes"], ["it", "ID e note"], ["fr", "ID et notes"],
+    ["de", "IDs und Anmerkungen"], ["es", "ID y notas"], ["pt", "IDs e notas"],
+  ] as const)("is named for both the ids and the curators' notes it shows (%s)", (locale, name) => {
+    render(<ReaderBar {...props} markupAvailable={false} markup={false} onMarkup={vi.fn()} />, { locale });
+    expect(screen.getByRole("switch", { name })).toBeInTheDocument();
   });
 });

@@ -6,6 +6,7 @@ import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { letterSlug } from "@/lib/letters";
 import { fnAnchor, headingId, letterEntries, type IndexPerson, type NamesIndexData } from "@/lib/names-index";
+import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/reader-return";
 
 /**
  * An edition's index of names, as a Latin martyrology's Index nominum: the saints and blessed its
@@ -13,14 +14,16 @@ import { fnAnchor, headingId, letterEntries, type IndexPerson, type NamesIndexDa
  * language linked to Wikidata; each mention links to its eulogy, or to the footnote that names it.
  * `index` null: crmedr has no persons for the edition yet (or, with `error`, the catalog failed).
  * `lang`: the edition's language, which its names and subjects are in, inside a page in the interface language.
+ * `back`: the reader's day and comparison it was opened from, which every link keeps.
  */
-export default function NamesIndex({ edition, title, index, error = false, letter, lang }: {
-  edition: string; title: string; index: NamesIndexData | null; error?: boolean; letter?: string; lang?: Lang;
+export default function NamesIndex({ edition, title, index, error = false, letter, lang, back = NO_RETURN }: {
+  edition: string; title: string; index: NamesIndexData | null; error?: boolean; letter?: string; lang?: Lang; back?: ReaderReturn;
 }) {
   const t = useTranslations("Names");
   const format = useFormatter();
   const locale = useLocale();
   const ed = encodeURIComponent(edition);
+  const q = returnQuery(back);
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
 
@@ -47,7 +50,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
             <li key={`${line.id}-${line.footnote ?? 0}`}>
               {/* A plain link, with the locale: the page has thousands, and a client Link each
                   would weigh the page down (it opens the day with a page load). */}
-              <a href={`/${locale}${dayPath(edition, line.day)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
+              <a href={`/${locale}${dayPath(edition, line.day, back.with)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
                 {day}
               </a>
               {" · "}
@@ -64,16 +67,16 @@ export default function NamesIndex({ edition, title, index, error = false, lette
     <article className={styles.page} aria-labelledby="names-title">
       <h1 id="names-title" className={styles.heading}>{t("title", { title })}</h1>
       <p className="mb-3 text-center text-sm text-slate-600">
-        <Link href={`/read/${ed}`} className="underline">{t("readEdition")}</Link>
+        <Link href={readerHref(edition, back)} className="underline">{t("readEdition")}</Link>
         {" · "}
-        <Link href={`/read/${ed}/notes`} className="underline">{t("notesLink")}</Link>
+        <Link href={`/read/${ed}/notes${q}`} className="underline">{t("notesLink")}</Link>
         {" · "}
-        <Link href={`/read/${ed}/places`} className="underline">{t("placesLink")}</Link>
+        <Link href={`/read/${ed}/places${q}`} className="underline">{t("placesLink")}</Link>
       </p>
       {error ? (
         <p className="text-center text-red-700">
           {t("loadError")}{" "}
-          <Link href={`/read/${ed}/names`} className="underline">{t("retry")}</Link>
+          <Link href={`/read/${ed}/names${q}`} className="underline">{t("retry")}</Link>
         </p>
       ) : !index || !shown ? (
         <p className="text-center text-slate-600">{t("notIndexed")}</p>
@@ -82,7 +85,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
           {index.naming < index.printed && (
             <p className="mb-3 text-center text-sm text-slate-600">{t("coverage", { naming: index.naming, printed: index.printed })}</p>
           )}
-          <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/names`} label={t("letters")} />
+          <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/names`} label={t("letters")} query={q} />
           <section aria-labelledby="letter-h">
             <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
             {letterEntries(shown).map((e) =>
@@ -90,7 +93,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
                 <p key={`see-${e.see.name}-${e.see.key}`} className="mb-4">
                   <span lang={lang} className="italic">{e.see.name}</span>
                   {` → ${t("see")} `}
-                  <Link href={`/read/${ed}/names/${letterSlug(e.see.letter)}#${headingId(e.see.key)}`} className="font-semibold underline">
+                  <Link href={`/read/${ed}/names/${letterSlug(e.see.letter)}${q}#${headingId(e.see.key)}`} className="font-semibold underline">
                     <span lang={lang}>{e.see.target}</span>
                   </Link>
                 </p>
@@ -99,7 +102,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
               ),
             )}
           </section>
-          <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/names`} />
+          <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/names`} query={q} />
         </>
       )}
     </article>
