@@ -23,12 +23,27 @@ const index: PlacesIndexData = {
 const renderIndex = (i: PlacesIndexData | null = index, letter?: string, locale: "en" | "de" = "en") =>
   render(<PlacesIndex edition="martyrologium_romanum_2004" title="MARTYROLOGIUM ROMANUM 2004" index={i} letter={letter} lang="la" />, { locale });
 
+const BACK = { day: { mm: 10, dd: 2 }, with: "martyrologium_romanum_1914_en_unofficial" };
+const BQ = "?day=10-02&with=martyrologium_romanum_1914_en_unofficial";
+
 describe("PlacesIndex", () => {
   it("titles the page and links back to the edition and its notes", () => {
     renderIndex();
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("MARTYROLOGIUM ROMANUM 2004: index of places");
     expect(screen.getByRole("link", { name: "⟵ Read the edition" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004");
     expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/notes");
+  });
+
+  it("keeps the reader's day and comparison it was opened from on every link, back to the reader included", () => {
+    render(<PlacesIndex edition="martyrologium_romanum_2004" title="T" index={index} letter="R" lang="la" back={BACK} />);
+    expect(screen.getByRole("link", { name: "⟵ Read the edition" }))
+      .toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/10/02?with=martyrologium_romanum_1914_en_unofficial");
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/notes${BQ}`);
+    expect(screen.getByRole("link", { name: "1 January · Sanctus Almachius" }))
+      .toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/01/01?with=martyrologium_romanum_1914_en_unofficial#mr:0101-almachius");
+    expect(within(screen.getByRole("navigation", { name: "Letters" })).getByRole("link", { name: "L" }))
+      .toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/places/l${BQ}`);
+    expect(within(screen.getByRole("navigation", { name: "Role" })).getByRole("link", { name: /birth/i })).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/places?role=birth&${BQ.slice(1)}`);
   });
 
   it("shows one letter, the first by default, with a bar linking every letter's page", () => {

@@ -50,6 +50,14 @@ describe("/read/<edition>/names", () => {
     expect(props.lang).toBe("la");
   });
 
+  it("hands the index the reader's day and comparison it was opened from", async () => {
+    const searchParams = Promise.resolve({ day: "10-02", with: "martyrologium_romanum_1914_en_unofficial" });
+    render(await NamesRoute({ ...params(LA.edition_id), searchParams }));
+    expect(indexProps.mock.lastCall![0].back).toEqual({ day: { mm: 10, dd: 2 }, with: "martyrologium_romanum_1914_en_unofficial" });
+    render(await NamesLetterRoute({ params: Promise.resolve({ locale: "en", edition: LA.edition_id, letter: "b" }), searchParams }));
+    expect(indexProps.mock.lastCall![0].back.with).toBe("martyrologium_romanum_1914_en_unofficial");
+  });
+
   it("does not ask for the catalog of an edition without persons, and says it is not indexed", async () => {
     infoMock.mockResolvedValue(OLD);
     render(await NamesRoute(params(OLD.edition_id)));

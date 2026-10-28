@@ -12,6 +12,7 @@ import { erratumPlace } from "@/lib/errata";
 import { editionLang, editionTitle } from "@/lib/editions";
 import { noteParts } from "@/lib/note-links";
 import { hasPersons } from "@/lib/persons-editions";
+import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/reader-return";
 import { getSnapshot } from "@/lib/snapshot";
 import type { EditionOut } from "@/lib/types";
 
@@ -36,8 +37,9 @@ function Number({ e }: { e: ApparatusEntry }) {
  * An edition's whole apparatus on one page: every eulogy with a curator's note, a misprint the
  * curators verified, or a correction the edition prints in its own errata, in printed order, with
  * the eulogy's text as printed (misprints and errata marked in place) and a link to its day.
+ * `back`: the reader's day and comparison it was opened from, which its links to the reader keep.
  */
-export default function ApparatusPage({ edition }: { edition: string }) {
+export default function ApparatusPage({ edition, back = NO_RETURN }: { edition: string; back?: ReaderReturn }) {
   const t = useTranslations("Notes");
   const tReader = useTranslations("Reader");
   const format = useFormatter();
@@ -82,17 +84,17 @@ export default function ApparatusPage({ edition }: { edition: string }) {
         {t("title", { title })}
       </h1>
       <p className="mb-3 text-center text-sm text-slate-600">
-        <Link href={`/read/${encodeURIComponent(edition)}`} className="underline">
+        <Link href={readerHref(edition, back)} className="underline">
           {t("readEdition")}
         </Link>
         {" · "}
-        <Link href={`/read/${encodeURIComponent(edition)}/places`} className="underline">
+        <Link href={`/read/${encodeURIComponent(edition)}/places${returnQuery(back)}`} className="underline">
           {tReader("placesLink")}
         </Link>
         {hasPersons(edition) && (
           <>
             {" · "}
-            <Link href={`/read/${encodeURIComponent(edition)}/names`} className="underline">
+            <Link href={`/read/${encodeURIComponent(edition)}/names${returnQuery(back)}`} className="underline">
               {tReader("namesLink")}
             </Link>
           </>
@@ -141,7 +143,7 @@ export default function ApparatusPage({ edition }: { edition: string }) {
             {entries.map((e) => (
               <li key={e.id} id={e.id} className="mb-5">
                 <p className="text-sm">
-                  <Link href={`${dayPath(edition, { mm: e.mm, dd: e.dd })}#${e.id}`} className="underline">
+                  <Link href={`${dayPath(edition, { mm: e.mm, dd: e.dd }, back.with)}#${e.id}`} className="underline">
                     {e.dd} {interfaceMonth(format, e.mm)}
                   </Link>
                   {/* Without the text (no access), the printed number still shows here. */}

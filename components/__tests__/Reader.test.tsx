@@ -75,10 +75,11 @@ describe("Reader", () => {
     expect(screen.queryByRole("link", { name: "Index of names" })).toBeNull();
   });
 
-  it("links to the edition's notes and its index of places", async () => {
+  it("links to the edition's notes and its index of places, carrying the day", async () => {
     render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");
-    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", "/read/martyrologium_romanum_1749/places");
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", "/read/martyrologium_romanum_1749/notes?day=10-02");
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", "/read/martyrologium_romanum_1749/places?day=10-02");
   });
 
   it("restores focus to the control that navigated, after the remount", async () => {
@@ -331,6 +332,13 @@ describe("Reader, two editions", () => {
     expect(push).toHaveBeenLastCalledWith(`/read/martyrologium_romanum_1749/10/15?with=${EN}`);
   });
 
+  it("carries the day and the pairing into the notes and the index of places", async () => {
+    renderPair();
+    await screen.findAllByText("Romae passio sancti Modesti Sardi.");
+    expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/read/martyrologium_romanum_1749/notes?day=10-02&with=${EN}`);
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/read/martyrologium_romanum_1749/places?day=10-02&with=${EN}`);
+  });
+
   it("swaps the two editions, and closes the second", async () => {
     const first = renderPair();
     await screen.findAllByText("Romae passio sancti Modesti Sardi.");
@@ -444,12 +452,12 @@ describe("Reader, id switch", () => {
     const first = renderPair();
     await screen.findAllByText("Romae passio sancti Modesti Sardi.");
     expect(screen.queryByText("mr:1002-modestus-sardus")).toBeNull();
-    fireEvent.click(screen.getByRole("switch", { name: "IDs" }));
+    fireEvent.click(screen.getByRole("switch", { name: "IDs and notes" }));
     expect(screen.getAllByText("mr:1002-modestus-sardus")).toHaveLength(2);
     first.unmount();
     render1749(10, 3);
     expect(await screen.findByText("mr:1002-modestus-sardus")).toHaveClass(styles.idHint);
-    expect(screen.getByRole("switch", { name: "IDs" })).toBeChecked();
+    expect(screen.getByRole("switch", { name: "IDs and notes" })).toBeChecked();
     expect(window.localStorage.getItem("reader.showIds")).toBe("1");
   });
 });
@@ -483,7 +491,7 @@ describe("Reader, a link to a eulogy", () => {
     render1749();
     const note = await screen.findByText("A printed footnote on Modestus.");
     await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
-    expect(screen.getByRole("switch", { name: "IDs" })).not.toBeChecked();
+    expect(screen.getByRole("switch", { name: "IDs and notes" })).not.toBeChecked();
     window.history.replaceState(null, "", "/");
   });
 
@@ -530,7 +538,7 @@ describe("Reader, a link to a eulogy", () => {
     render1749();
     const note = await screen.findByText("A curator's note on Modestus.");
     await waitFor(() => expect(note.closest("li")).toHaveAttribute("data-found"));
-    expect(screen.getByRole("switch", { name: "IDs" })).toBeChecked();
+    expect(screen.getByRole("switch", { name: "IDs and notes" })).toBeChecked();
     window.history.replaceState(null, "", "/");
   });
 

@@ -40,6 +40,25 @@ describe("ApparatusPage", () => {
     );
   });
 
+  it("keeps the reader's day and comparison it was opened from on its links, back to the reader included", async () => {
+    vi.spyOn(api, "getEditions").mockResolvedValue([]);
+    vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>
+      Number(mm) === 1
+        ? month(1, [{ id: "mr:0104-abrunculus-lingonensis", entry: 2, asterisk: true, unnumbered: false, anchor_day: "01-04", text: "Treviris sancti Abrunculi." }])
+        : month(Number(mm)),
+    );
+    const back = { day: { mm: 10, dd: 2 }, with: "martyrologium_romanum_1914_en_unofficial" };
+    const q = "?day=10-02&with=martyrologium_romanum_1914_en_unofficial";
+    render(<ApparatusPage edition="martyrologium_romanum_2004" back={back} />);
+    expect(await screen.findByRole("link", { name: "⟵ Read the edition" }))
+      .toHaveAttribute("href", "/en/read/martyrologium_romanum_2004/10/02?with=martyrologium_romanum_1914_en_unofficial");
+    expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/places${q}`);
+    expect(screen.getByRole("link", { name: "Index of names" })).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/names${q}`);
+    expect(await screen.findByRole("link", { name: "4 January" })).toHaveAttribute(
+      "href", "/en/read/martyrologium_romanum_2004/01/04?with=martyrologium_romanum_1914_en_unofficial#mr:0104-abrunculus-lingonensis",
+    );
+  });
+
   it("prints each eulogy's number with this edition's asterisk", async () => {
     vi.spyOn(api, "getEditions").mockResolvedValue([]);
     vi.spyOn(api, "getMonth").mockImplementation(async (_ed, mm) =>

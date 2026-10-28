@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { daysInMonth, interfaceMonth, todayLocal, type Day } from "@/lib/calendar";
 import { hasPersons } from "@/lib/persons-editions";
+import { returnQuery } from "@/lib/reader-return";
 import { findSubject, matchSubjects, type SubjectOption } from "@/lib/subjects";
 
 const control = "rounded border border-slate-300 bg-white px-2 py-1 text-sm dark:border-slate-700 dark:bg-slate-900";
@@ -175,70 +176,81 @@ export default function ReaderBar({
   const t = useTranslations("Reader");
   const tm = useTranslations("Markup");
   const format = useFormatter();
+  // The views carry the day and the comparison, so that their links back to the reader return here.
+  const view = (path: string) => `/read/${encodeURIComponent(edition)}/${path}${returnQuery({ day, with: compareWith })}`;
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2 px-4 sm:px-0">
-      <label className="sr-only" htmlFor="reader-month">{t("month")}</label>
-      <select
-        id="reader-month"
-        className={control}
-        value={day.mm}
-        onChange={(e) => {
-          const mm = Number(e.target.value);
-          onGo({ mm, dd: Math.min(day.dd, daysInMonth(mm)) }, "reader-month");
-        }}
-      >
-        {Array.from({ length: 12 }, (_, i) => (
-          <option key={i + 1} value={i + 1}>{interfaceMonth(format, i + 1)}</option>
-        ))}
-      </select>
-      <label className="sr-only" htmlFor="reader-day">{t("day")}</label>
-      <select id="reader-day" className={control} value={day.dd} onChange={(e) => onGo({ mm: day.mm, dd: Number(e.target.value) }, "reader-day")}>
-        {Array.from({ length: daysInMonth(day.mm) }, (_, i) => (
-          <option key={i + 1} value={i + 1}>{i + 1}</option>
-        ))}
-      </select>
-      <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>{t("today")}</button>
-      <SubjectSearch subjects={subjects} onFind={onFind} />
-      <label className="sr-only" htmlFor="reader-book">{t("switchBook")}</label>
-      <select id="reader-book" className={`${control} ml-auto`} value={edition} onChange={(e) => onSwitch(e.target.value, "reader-book")}>
-        {books.map((b) => (
-          <option key={b.id} value={b.id}>{b.label}</option>
-        ))}
-      </select>
-      <label className="sr-only" htmlFor="reader-with">{t("compareWith")}</label>
-      <select
-        id="reader-with"
-        className={control}
-        value={compareWith ?? ""}
-        onChange={(e) => onCompare(e.target.value || null, "reader-with")}
-      >
-        <option value="">{t("compareWithPlaceholder")}</option>
-        {compareBooks.map((b) => (
-          <option key={b.id} value={b.id}>{b.label}</option>
-        ))}
-      </select>
-      {compareWith && (
-        <>
-          <button type="button" id="reader-swap" className={control} aria-label={t("swap")} onClick={onSwap}>⇄</button>
-          <button type="button" id="reader-close" className={control} aria-label={t("closeSecond")} onClick={() => onCompare(null, "reader-with")}>×</button>
-        </>
-      )}
-      <Switch id="reader-ids" label={t("ids")} title={t("showIdsTitle")} checked={showIds} onChange={onShowIds} />
-      {markupAvailable && (
-        <Switch id="reader-markup" label={tm("switch")} title={tm("switchTitle")} checked={markup} onChange={onMarkup} />
-      )}
-      <Link href={`/read/${encodeURIComponent(edition)}/notes`} className="text-sm underline">
-        {t("notesLink")}
-      </Link>
-      <Link href={`/read/${encodeURIComponent(edition)}/places`} className="text-sm underline">
-        {t("placesLink")}
-      </Link>
-      {hasPersons(edition) && (
-        <Link href={`/read/${encodeURIComponent(edition)}/names`} className="text-sm underline">
-          {t("namesLink")}
+    <div className="mb-4 flex flex-col gap-3 px-4 sm:px-0">
+      {/* First, like breadcrumbs: the shelf, then the edition's other views, each marked as leading away. */}
+      <nav aria-label={t("views")} className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        <Link href="/" className="underline">{t("shelf")}</Link>
+        <Link href={view("notes")} className="underline">
+          {t("notesLink")}<span aria-hidden> →</span>
         </Link>
-      )}
-      <Link href="/" className="text-sm underline">{t("shelf")}</Link>
+        <Link href={view("places")} className="underline">
+          {t("placesLink")}<span aria-hidden> →</span>
+        </Link>
+        {hasPersons(edition) && (
+          <Link href={view("names")} className="underline">
+            {t("namesLink")}<span aria-hidden> →</span>
+          </Link>
+        )}
+      </nav>
+      {/* The editions. Phones: the pickers stacked, × beside the second, ⇄ beside the pair. Wider: in a row,
+          [edition] ⇄ [compare with] ×, which is also the focus order. */}
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 sm:flex sm:flex-wrap">
+        <label className="sr-only" htmlFor="reader-book">{t("switchBook")}</label>
+        <select id="reader-book" className={`${control} col-start-1 row-start-1 w-full min-w-0 sm:w-auto`} value={edition} onChange={(e) => onSwitch(e.target.value, "reader-book")}>
+          {books.map((b) => (
+            <option key={b.id} value={b.id}>{b.label}</option>
+          ))}
+        </select>
+        {compareWith && (
+          <button type="button" id="reader-swap" className={`${control} col-start-3 row-span-2 row-start-1`} aria-label={t("swap")} onClick={onSwap}>⇄</button>
+        )}
+        <label className="sr-only" htmlFor="reader-with">{t("compareWith")}</label>
+        <select
+          id="reader-with"
+          className={`${control} col-start-1 row-start-2 w-full min-w-0 sm:w-auto`}
+          value={compareWith ?? ""}
+          onChange={(e) => onCompare(e.target.value || null, "reader-with")}
+        >
+          <option value="">{t("compareWithPlaceholder")}</option>
+          {compareBooks.map((b) => (
+            <option key={b.id} value={b.id}>{b.label}</option>
+          ))}
+        </select>
+        {compareWith && (
+          <button type="button" id="reader-close" className={`${control} col-start-2 row-start-2`} aria-label={t("closeSecond")} onClick={() => onCompare(null, "reader-with")}>×</button>
+        )}
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="sr-only" htmlFor="reader-month">{t("month")}</label>
+        <select
+          id="reader-month"
+          className={control}
+          value={day.mm}
+          onChange={(e) => {
+            const mm = Number(e.target.value);
+            onGo({ mm, dd: Math.min(day.dd, daysInMonth(mm)) }, "reader-month");
+          }}
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>{interfaceMonth(format, i + 1)}</option>
+          ))}
+        </select>
+        <label className="sr-only" htmlFor="reader-day">{t("day")}</label>
+        <select id="reader-day" className={control} value={day.dd} onChange={(e) => onGo({ mm: day.mm, dd: Number(e.target.value) }, "reader-day")}>
+          {Array.from({ length: daysInMonth(day.mm) }, (_, i) => (
+            <option key={i + 1} value={i + 1}>{i + 1}</option>
+          ))}
+        </select>
+        <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>{t("today")}</button>
+        <SubjectSearch subjects={subjects} onFind={onFind} />
+        <Switch id="reader-ids" label={t("ids")} title={t("showIdsTitle")} checked={showIds} onChange={onShowIds} />
+        {markupAvailable && (
+          <Switch id="reader-markup" label={tm("switch")} title={tm("switchTitle")} checked={markup} onChange={onMarkup} />
+        )}
+      </div>
     </div>
   );
 }
