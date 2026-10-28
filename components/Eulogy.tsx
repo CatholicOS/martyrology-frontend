@@ -11,8 +11,8 @@ import type { ElogiumOut } from "@/lib/types";
 /**
  * One eulogy as printed: its number, asterisk and full stop as rubrics ("3*."), or,
  * unnumbered, as a centred heading. `edition` (a CLBDR edition id) selects the misprint notes;
- * `showId` sets the canonical id above it, with the registry's subject in `lang` (the edition's language)
- * at the right, when it has one; `note` marks the curators' note on it, for curators;
+ * `showId` sets the canonical id above it at the right, with the registry's subject in `lang` (the
+ * edition's language) at the left, when it has one; `note` marks the curators' note on it, for curators;
  * `footnotes` are the edition's own footnotes on it, marked in the text; the notes the edition prints
  * in the margin beside the eulogy (not beside one of its footnotes) are set at its side.
  */
@@ -34,8 +34,8 @@ export default function Eulogy({
   const subject = showId && e.id && lang ? getSnapshot()[e.id]?.subject?.[lang]?.trim() : "";
   const hint = showId && e.id ? (
     <p className={styles.idHint}>
-      <span>{e.id}</span>
       {subject && <span className={styles.idSubject} lang={lang}>{subject}</span>}
+      <span className={styles.idCode}>{e.id}</span>
     </p>
   ) : null;
   return e.unnumbered ? (
