@@ -171,6 +171,7 @@
     "ministry": "Lieu du ministère",
     "foundation": "Lieu d’une fondation",
     "exile": "Lieu de l’exil",
+    "captivity": "Lieu de captivité",
     "journey": "Lieu d’un voyage",
     "mention": "Nommé dans l’éloge",
     "of": "{role} ({name})"
@@ -597,6 +598,7 @@
         "ministry": "ministère",
         "foundation": "fondation",
         "exile": "exil",
+        "captivity": "captivité",
         "journey": "voyage",
         "mention": "mention"
       }

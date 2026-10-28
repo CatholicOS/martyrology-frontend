@@ -4,7 +4,7 @@ import type { MentionRole } from "@/lib/types";
 /** The role a place plays in one eulogy (crmedr's ROLES in scripts/extract_places.py). */
 export const PLACE_ROLES = [
   "death", "burial", "translation", "dedication", "cult", "birth", "education",
-  "religious_life", "ministry", "foundation", "exile", "journey", "mention",
+  "religious_life", "ministry", "foundation", "exile", "captivity", "journey", "mention",
 ] as const;
 
 export type PlaceRole = (typeof PLACE_ROLES)[number];
