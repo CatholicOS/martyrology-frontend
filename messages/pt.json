@@ -171,6 +171,7 @@
     "ministry": "Local do ministério",
     "foundation": "Local de uma fundação",
     "exile": "Local do exílio",
+    "captivity": "Local do cativeiro",
     "journey": "Local de uma viagem",
     "mention": "Nomeado no elogio",
     "of": "{role} ({name})"
@@ -597,6 +598,7 @@
         "ministry": "ministério",
         "foundation": "fundação",
         "exile": "exílio",
+        "captivity": "cativeiro",
         "journey": "viagem",
         "mention": "menção"
       }

@@ -171,6 +171,7 @@
     "ministry": "Place of ministry",
     "foundation": "Place of a foundation",
     "exile": "Place of exile",
+    "captivity": "Place of captivity",
     "journey": "Place on a journey",
     "mention": "Named in the eulogy",
     "of": "{role} ({name})"
@@ -597,6 +598,7 @@
         "ministry": "ministry",
         "foundation": "foundation",
         "exile": "exile",
+        "captivity": "captivity",
         "journey": "journey",
         "mention": "mention"
       }

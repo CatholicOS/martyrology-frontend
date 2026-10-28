@@ -5,8 +5,9 @@ import { PLACE_ROLES, printings, printingSpan, roleText } from "@/lib/body-place
 import type { MentionRole } from "@/lib/types";
 
 describe("body places", () => {
-  it("lists the thirteen roles", () => {
-    expect(PLACE_ROLES).toHaveLength(13);
+  it("lists the fourteen roles, captivity after exile", () => {
+    expect(PLACE_ROLES).toHaveLength(14);
+    expect(PLACE_ROLES.slice(10, 12)).toEqual(["exile", "captivity"]);
     expect(PLACE_ROLES[0]).toBe("death");
     expect(PLACE_ROLES).toContain("religious_life");
   });
@@ -35,11 +36,13 @@ describe("roleText", () => {
     render(
       <>
         <Probe r={{ role: "birth" }} />
+        <Probe r={{ role: "captivity" }} />
         <Probe r={{ role: "ministry", name: "Pionius" }} />
         <Probe r={{ role: "burial", name: "Felix", n: 2 }} />
       </>
     );
     expect(screen.getByText("Place of birth")).toBeInTheDocument();
+    expect(screen.getByText("Place of captivity")).toBeInTheDocument();
     expect(screen.getByText("Place of ministry (Pionius)")).toBeInTheDocument();
     expect(screen.getByText("Place of burial (Felix 2)")).toBeInTheDocument();
   });
