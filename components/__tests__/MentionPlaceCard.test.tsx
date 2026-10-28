@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeAll, beforeEach } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@/test/intl";
 import type { EntityState } from "@/lib/entities-client";
 
@@ -30,6 +30,13 @@ const card = (locale: "en" | "it" | "de" = "en", m = caesarea) =>
   render(<MentionPlaceCard mention={m} edition="martyrologium_romanum_2004" lang="la" headingId="h" />, { locale });
 
 describe("MentionPlaceCard", () => {
+  // The card loads its map lazily, and the map loads Leaflet: loaded cold, under a full parallel run, the
+  // two imports can outlast waitFor's one second in the first test. Loaded here, they are ready for every test.
+  beforeAll(async () => {
+    await import("@/components/markup/MentionMap");
+    await import("leaflet");
+  });
+
   beforeEach(() => {
     state.current = { status: "ready", entity: KAYSERI };
     mapSpy.mockReset();
