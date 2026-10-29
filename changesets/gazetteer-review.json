@@ -1,0 +1,461 @@
+{
+ "schema": "crmedr-changeset/v1",
+ "generated_by": "scripts/build_gazetteer.py",
+ "generated_at": "2026-10-15",
+ "base": {
+  "edition": "martyrologium_romanum_2004",
+  "registry": "data/places.json"
+ },
+ "operations": [
+  {
+   "op": "resolve_place",
+   "id": "Mulénsis",
+   "la": "Mulénsis",
+   "it": [
+    "Monte Mula"
+   ],
+   "occurrences": [
+    "mr:0301-leo-lucas"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q31610309",
+     "label": "La Mula",
+     "description": "mountain in Italy",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      39.7042,
+      15.9808
+     ],
+     "types": [
+      "Q8502"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q31610309",
+    "country": "IT"
+   },
+   "confidence": "low",
+   "reasoning": "Research (2026-10-30, unlocated places): Italian Wikipedia (Leoluca di Corleone) says he lived in the monastery near Monte Mula (Monte La Mula, 1,935 m), one of the highest peaks of the Orsomarso mountains in the Mercurion area, and the 2004 Italian text glosses the adjective 'Mulensis' as 'Monte Mula'. Q31610309 is a mountain in Italy at 39.704 N, 15.981 E, which matches La Mula in the Orsomarso range. The item is the mountain the monastery was named after, not the monastery itself, whose site is lost. Previous note: no item, unlocated: Monastery of Mula (Leo-Luke's house) in Calabria/Mercurion; site not securely identifiable, no item. New item not warranted"
+  },
+  {
+   "op": "resolve_place",
+   "id": "erémo apud Aspháltitem lacum",
+   "la": "erémo apud Aspháltitem lacum",
+   "it": [
+    "eremo presso il lago di Mareotide in Egitto"
+   ],
+   "occurrences": [
+    "mr:0721-simeon-salus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q2046004",
+     "label": "Judaean Desert",
+     "description": "desert in the southern Levant",
+     "country": null,
+     "countries": [
+      "IL",
+      "PS"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      31.7,
+      35.3
+     ],
+     "types": [
+      "Q8514"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q2046004",
+    "country": null
+   },
+   "confidence": "low",
+   "reasoning": "Research (2026-10-30, unlocated places): In Leontius's Life of Symeon Salos, Symeon and John leave the lavra of Abba Gerasimus near Jericho for the desert by the Dead Sea (lacus Asphaltites). That is the Judaean Desert, which runs down to the Dead Sea's western shore. The text names no specific hermitage. The Italian 'lago di Mareotide' is a translation error. Previous note: no item, unlocated: Unnamed hermitage in the desert by the Dead Sea (Asphaltites); the Italian wrongly names Lake Mareotis. A 'near' phrase is not the lake"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastérii Sancti Petri de Silva",
+   "la": "monastérii Sancti Petri de Silva",
+   "it": [
+    "monastero di San Pietro della Foresta"
+   ],
+   "occurrences": [
+    "mr:0330-clinius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3947819",
+     "label": "San Pietro in Curolis",
+     "description": "frazione del comune italiano di Esperia",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      41.386388888889,
+      13.686666666667
+     ],
+     "types": [
+      "Q1134686"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3947819",
+    "country": "IT"
+   },
+   "confidence": "low",
+   "reasoning": "Research (2026-10-30, unlocated places): Clinius (Clino, patron of Esperia) was abbot of a Greek/Basilian house between Pontecorvo and Roccaguglielma (Esperia), attested in 1030. Italian Wikipedia says the hamlet of San Pietro in Curolis (Esperia Inferiore) grew in the 10th century around the Cassinese monasteries of San Pietro and San Paolo della Foresta. This item is the hamlet that grew up at the monastery, not the monastery itself. The church items Q120824513 and Q120824514 (San Pietro in Curulis) may be its successor buildings, but this is not verified. Previous note: no item, unlocated: the monastery of San Pietro della Foresta near Aquino, Clinius's; a single devotional source places it between Pontecorvo and Esperia"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastériii Sanctæ Maríæ",
+   "la": "monastériii Sanctæ Maríæ",
+   "it": [
+    "monastero di Santa Maria"
+   ],
+   "occurrences": [
+    "mr:1204-adrehildis"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3580415",
+     "label": "Église Notre-Dame-du-Pré du Mans",
+     "description": "church located in Sarthe, in France",
+     "country": "FR",
+     "countries": [
+      "FR"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      48.00963,
+      0.19292
+     ],
+     "types": [
+      "Q16970"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3580415",
+    "country": "FR"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-30, unlocated places): Wikipedia's Saint Ada (Adrehildis), from the Benedictine/Butler tradition, says her uncle Bishop Engelbert/Aiglibert brought her from Soissons to Le Mans and made her abbess of the monastery of Pré (St-Julien-du-Pré). That nuns' abbey's church is today Notre-Dame-du-Pré, and the frwiki 'Abbaye Saint-Julien-du-Pré' redirects to this item. Le Mans's early women's monastery of St Mary is therefore most likely this abbey, but no source found says outright that the MR's 'St Mary' is the Pré house. Previous note: no item, unlocated: Unnamed St Mary monastery at Le Mans; not identifiable"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastério Papiénsi",
+   "la": "monastério Papiénsi",
+   "it": [
+    "monastero di Pavia"
+   ],
+   "occurrences": [
+    "mr:0304-appianus"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3860504",
+     "label": "monastero di San Pietro in Ciel d'Oro",
+     "description": "",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q44613"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3860504",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-30, unlocated places): Zimmermann's biography (Bibliotheca Sanctorum, on santiebeati.it) says Appian was a monk of San Pietro in Ciel d'Oro at Pavia. His abbot sent him to Comacchio to supervise the monastery's salt supply, and the house kept his memory on 6 November. Q3860504 is the monastery itself (P31 monastery, in Pavia); the church is Q2036332. Previous note: no item, unlocated: A monastery of Pavia from which Appian was sent; which one is unidentified"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastério Storacénsi",
+   "la": "monastério Storacénsi",
+   "it": [
+    "monastero di Storaco"
+   ],
+   "occurrences": [
+    "mr:0927-bonfilius"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q119193681",
+     "label": "chiesa di Santa Maria di Storaco",
+     "description": "chiesa a Filottrano",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      43.446194,
+      13.32675
+     ],
+     "types": [
+      "Q16970"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q119193681",
+    "country": "IT"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-30, unlocated places): Italian Wikipedia places the Benedictine abbey of Santa Maria di Storaco near Filottrano (Ancona); Bonfilius was its monk and abbot and retired there. Q119193681 is the church of Santa Maria di Storaco in Filottrano (BeWeB 88524, 43.446N 13.327E), which bears the abbey's name and dedication. It is most likely the abbey's surviving or successor church, but no source seen confirms that this building is the medieval abbey. Previous note: no item, unlocated: Monastery of Storaco near Fano/Marche region; not identified, no item found"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastérium Græcórum",
+   "la": "monastérium Græcórum",
+   "it": [
+    "monastero dei Greci"
+   ],
+   "occurrences": [
+    "mr:0819-bartholomaeus-de-simero"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3603276",
+     "label": "Abbazia del Patire",
+     "description": "building in Rossano, Italy",
+     "country": "IT",
+     "countries": [
+      "IT"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      39.5718,
+      16.5698
+     ],
+     "types": [
+      "Q160742",
+      "Q16970"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3603276",
+    "country": "IT"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-30, unlocated places): Bartholomew of Simeri, after his hermit life, founded the Greek (Basilian) monastery of Santa Maria Nuova Odigitria, called del Patire ('of the father', after him), near Rossano in Calabria, c. 1095-1105, with help from Count Roger and Admiral Christodoulos. This is his Calabrian foundation; his later San Salvatore was at Messina in Sicily. Q3603276 is the abbey of Santa Maria del Patire (abbey + church) at 39.572 N, 16.570 E, in Corigliano-Rossano. Previous note: no item, unlocated: Generic Greek monastery in Calabria founded by Bartholomew of Simeri; no specific item"
+  },
+  {
+   "op": "resolve_place",
+   "id": "monastérium Sancti Michaélis",
+   "la": "monastérium Sancti Michaélis",
+   "it": [
+    "monastero di San Michele"
+   ],
+   "occurrences": [
+    "mr:0905-ioannes-bonus-de-siponto"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q211306",
+     "label": "Mljet",
+     "description": "isola della costa dalmata della Croazia",
+     "country": "HR",
+     "countries": [
+      "HR"
+     ],
+     "la": [
+      "Melitussa"
+     ],
+     "p9314": false,
+     "coords": [
+      42.745,
+      17.535
+     ],
+     "types": [
+      "Q23442"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q211306",
+    "country": "HR"
+   },
+   "confidence": "low",
+   "reasoning": "Research (2026-10-30, unlocated places): The 2004 Italian edition of this eulogy places the monastery of San Michele on the island of Mljet; the Latin says only 'on the Dalmatian coast'. Benedictines from Apulia (Pulsano) settled on Mljet in the 12th century, and Babino Polje on Mljet has a church of St Michael (hrwiki). No Wikidata item exists for a St Michael monastery or church on Mljet, so the island stands in for it. The earlier Palagruža guess is not supported. Previous note: no item, unlocated: Monastery of St Michael founded by John of Siponto on the Dalmatian coast facing Gargano (possibly on Palagruza Q378556): not verified"
+  },
+  {
+   "op": "resolve_place",
+   "id": "spelúncam prope confluéntes ramos Euphrátis",
+   "la": "spelúncam prope confluéntes ramos Euphrátis",
+   "it": [
+    "grotta alla confluenza dei rami del fiume Eufrate"
+   ],
+   "occurrences": [
+    "mr:0930-gregorius-illuminator"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q47530516",
+     "label": "Mount Sepuh (Սեպուհ)",
+     "description": "mountain",
+     "country": "TR",
+     "countries": [
+      "TR"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": null,
+     "types": [
+      "Q8502"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q47530516",
+    "country": "TR"
+   },
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-30, unlocated places): Armenian tradition (Agathangelos; Aristakes found Gregory in Daranali) places Gregory's retreat in the caves of Manē (Manēay ayrk') on Mount Sepuh in Daranali, by the Western Euphrates near Kemah/Erzincan. Q47530516 (hy 'Սեպուհ', mountain in Turkey) carries the aliases Մանյա այրք / Մանէայրք, the cave's name. The nearby Great Illuminator Monastery (Q107324554) stood beside the Manē cave. Previous note: no item, unlocated: Unnamed cave near the Euphrates sources in Armenia"
+  },
+  {
+   "op": "resolve_place",
+   "id": "ínsula Halóna",
+   "la": "ínsula Halóna",
+   "it": [
+    "isola di Alone"
+   ],
+   "occurrences": [
+    "mr:0821-bassa-et-socii"
+   ],
+   "claims": [],
+   "failed": [
+    "redecide: left without an item (unresolved); research found one"
+   ],
+   "candidates": [
+    {
+     "wikidata": "Q3083368",
+     "label": "Paşalimanı Island",
+     "description": "isola in Turchia",
+     "country": "TR",
+     "countries": [
+      "TR"
+     ],
+     "la": [
+      "Halone"
+     ],
+     "p9314": false,
+     "coords": [
+      40.476111111111,
+      27.618611111111
+     ],
+     "types": [
+      "Q23442"
+     ],
+     "evidence": []
+    }
+   ],
+   "decision": null,
+   "edited": null,
+   "redecide": true,
+   "suggested": {
+    "wikidata": "Q3083368",
+    "country": "TR"
+   },
+   "confidence": "high",
+   "reasoning": "Research (2026-10-30, unlocated places): The ancient island Halone (Alone) in the Propontis near Cyzicus is Pleiades 511263, 'Halone (island)'. Q3083368 carries that Pleiades ID, the Latin label 'Halone' and the Greek label 'Αλώνη', at 40.476 N, 27.619 E in the Marmara islands off Erdek, opposite Cyzicus. The synaxarion tradition places Bassa's martyrdom on the island of Halone/Alone in the Propontis. Previous note: no item, unlocated: Island of Alone near Cyzicus (Propontis), possibly a Marmara island; no item identified"
+  }
+ ]
+}
