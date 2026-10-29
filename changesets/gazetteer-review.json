@@ -68,6 +68,25 @@
    ],
    "candidates": [
     {
+     "wikidata": "Q2120208",
+     "label": "Wadi Mujib",
+     "description": "Fiume e riserva della Giordania",
+     "country": "JO",
+     "countries": [
+      "JO"
+     ],
+     "la": [],
+     "p9314": false,
+     "coords": [
+      31.465833,
+      35.573333
+     ],
+     "types": [
+      "Q187971"
+     ],
+     "evidence": []
+    },
+    {
      "wikidata": "Q2046004",
      "label": "Judaean Desert",
      "description": "desert in the southern Levant",
@@ -92,11 +111,11 @@
    "edited": null,
    "redecide": true,
    "suggested": {
-    "wikidata": "Q2046004",
-    "country": null
+    "wikidata": "Q2120208",
+    "country": "JO"
    },
-   "confidence": "low",
-   "reasoning": "Research (2026-10-30, unlocated places): In Leontius's Life of Symeon Salos, Symeon and John leave the lavra of Abba Gerasimus near Jericho for the desert by the Dead Sea (lacus Asphaltites). That is the Judaean Desert, which runs down to the Dead Sea's western shore. The text names no specific hermitage. The Italian 'lago di Mareotide' is a translation error. Previous note: no item, unlocated: Unnamed hermitage in the desert by the Dead Sea (Asphaltites); the Italian wrongly names Lake Mareotis. A 'near' phrase is not the lake"
+   "confidence": "medium",
+   "reasoning": "Research (2026-10-30, unlocated places; corrected): Leontius's Life of Symeon the Fool has Symeon and John, after the monastery of Abba Gerasimus, come to the Dead Sea toward the river called Arnon (Greek Arnonas); the Acta Sanctorum editor notes the Arnon torrent is meant, and a modern translation identifies it as the Arnon, modern Mujib, in Jordan. Q2120208 Wadi Mujib (Hebrew label Nahal Arnon) is that river canyon on the Dead Sea's eastern shore; the hermitage itself is unlocated. The Judaean Desert, suggested first, lies on the western shore. Previous note: no item, unlocated: Unnamed hermitage in the desert by the Dead Sea (Asphaltites); the Italian wrongly names Lake Mareotis."
   },
   {
    "op": "resolve_place",
