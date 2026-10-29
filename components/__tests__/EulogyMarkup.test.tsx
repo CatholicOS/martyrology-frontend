@@ -24,7 +24,7 @@ const footnotes = pageFootnotes([{ id: ID, footnotes: [NOTE], mentions: [place, 
 const erratum: Erratum = { kind: "replace", printed: "Basilíi", corrected: "Basilii", ref: "1.2", entry: "Basilíi] Basilii" };
 
 const within = (on: boolean, ui: ReactNode, langs: Record<string, string> = { ed: "la" }) => (
-  <MarkupProvider on={on} langs={langs}>{ui}</MarkupProvider>
+  <MarkupProvider on={on} langs={langs} page={{ edition: "ed", with: null }}>{ui}</MarkupProvider>
 );
 
 describe("mentions in the reader's text", () => {

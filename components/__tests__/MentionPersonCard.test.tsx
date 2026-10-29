@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@/test/intl";
+import { render, screen, fireEvent, within } from "@/test/intl";
 import type { EntityState } from "@/lib/entities-client";
 import type { CommonsImage, Entity } from "@/lib/entities";
 
@@ -8,6 +8,7 @@ vi.mock("@/lib/entities-client", () => ({ useEntity: () => state.current, reques
 
 import MentionPersonCard from "@/components/markup/MentionPersonCard";
 import type { PlacedMention } from "@/lib/mentions";
+import type { ReaderPage } from "@/components/markup/Markup";
 
 const basil: PlacedMention = {
   kind: "person", where: "text", start: 40, end: 47, form: "Basilíi", name: "Basilius", qid: "Q19546",
@@ -23,11 +24,21 @@ const BASIL = {
     image: { file: "Basil of Caesarea.jpg", author: "Anonymous", license: "Public domain", license_url: null },
     wikipedia: { it: "Basilio di Cesarea" },
   },
+  eulogies: [],
 } satisfies Entity;
 const withImage = (image: CommonsImage | null) =>
   ({ status: "ready", entity: { ...BASIL, details: { ...BASIL.details, image } } }) satisfies EntityState;
-const card = (m = basil, locale: "en" | "it" | "de" = "en") =>
-  render(<MentionPersonCard mention={m} headingId="h" />, { locale });
+const card = (m = basil, locale: "en" | "it" | "de" = "en", page: ReaderPage = { edition: "martyrologium_romanum_2004", with: null }) =>
+  render(<MentionPersonCard mention={m} page={page} headingId="h" />, { locale });
+const subject = (en: string) => ({ la: `la ${en}`, it: `it ${en}`, en });
+const AGATHA = {
+  ...BASIL,
+  eulogies: [
+    { id: "mr:0109-agatha-yi-et-teresia-kim", month: 1, day: 9, subject: subject("Saints Agatha Yi and Teresa Kim"), own: true },
+    { id: "mr:0101-basilius", month: 1, day: 1, subject: subject("Saint Basil"), own: false },
+    { id: "mr:0920-andreas-kim-tae-gon-et-socii", month: 9, day: 20, subject: subject("Saints Andrew Kim and companions"), own: false },
+  ],
+} satisfies Entity;
 
 describe("MentionPersonCard", () => {
   beforeEach(() => {
@@ -132,5 +143,43 @@ describe("MentionPersonCard", () => {
     state.current = { status: "loading" };
     card();
     expect(screen.getByRole("status")).toHaveTextContent("Loading…");
+  });
+
+  it("links the other eulogies that name the person, after Wikidata's details, leaving out this one", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    card();
+    expect(screen.getByText("Greek bishop and Doctor of the Church")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Wikidata" })).toBeInTheDocument();
+    const list = screen.getByRole("list", { name: "Other eulogies" });
+    const links = within(list).getAllByRole("link");
+    expect(links.map((a) => a.getAttribute("href"))).toEqual([
+      "/en/read/martyrologium_romanum_2004/01/09#mr:0109-agatha-yi-et-teresia-kim",
+      "/en/read/martyrologium_romanum_2004/09/20#mr:0920-andreas-kim-tae-gon-et-socii",
+    ]);
+    expect(links[0]).toHaveTextContent("9 January");
+    expect(within(list).getByText("Saints Agatha Yi and Teresa Kim")).not.toHaveAttribute("lang");
+    expect(screen.queryByText("Saint Basil")).toBeNull();
+  });
+
+  it("opens them in the reader's edition, with its comparison, and the subject in the interface language", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    card(basil, "it", { edition: "martyrologium_romanum_2004_it_IT", with: "martyrologium_romanum_2004" });
+    const link = screen.getAllByRole("link").find((a) => a.getAttribute("href")?.includes("#mr:0109"))!;
+    expect(link).toHaveAttribute("href",
+      "/it/read/martyrologium_romanum_2004_it_IT/01/09?with=martyrologium_romanum_2004#mr:0109-agatha-yi-et-teresia-kim");
+    expect(screen.getByText("it Saints Agatha Yi and Teresa Kim")).not.toHaveAttribute("lang");
+  });
+
+  it("tags the English subject in an interface language crmedr has no subjects in", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    card(basil, "de");
+    expect(screen.getByText("Saints Agatha Yi and Teresa Kim")).toHaveAttribute("lang", "en");
+    expect(screen.getByRole("list", { name: "Weitere Elogien" })).toBeInTheDocument();
+  });
+
+  it("shows no list when no other eulogy names the person", () => {
+    state.current = { status: "ready", entity: { ...AGATHA, eulogies: [AGATHA.eulogies[1]] } };
+    card();
+    expect(screen.queryByRole("list")).toBeNull();
   });
 });
