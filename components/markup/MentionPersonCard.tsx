@@ -95,8 +95,8 @@ export default function MentionPersonCard({ mention, page, headingId }: {
 
 /**
  * The other eulogies that name the person: each day, a plain link with the locale, and its subject. A eulogy opens
- * on the day the page's edition prints it, else its comparison; one neither prints, or whose placements are not
- * known yet, is left out.
+ * on the day the page's edition prints it, else its comparison, at the ID that edition prints it under; one neither
+ * prints, or whose placements are not known yet, is left out.
  */
 function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: ReaderPage }) {
   const t = useTranslations("Markup");
@@ -107,7 +107,7 @@ function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: Reade
   const printed = eulogies.flatMap((e) => {
     const p = placements[e.id]?.[page.edition] ?? (page.with ? placements[e.id]?.[page.with] : undefined);
     const m = /^(\d{2})-(\d{2})$/.exec(p?.day_printed ?? "");
-    return m ? [{ ...e, month: Number(m[1]), day: Number(m[2]) }] : [];
+    return m ? [{ ...e, month: Number(m[1]), day: Number(m[2]), anchor: p?.printedAs ?? e.id }] : [];
   });
   if (printed.length === 0) return null;
   return (
@@ -120,7 +120,7 @@ function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: Reade
           const lang = [locale, "en", "la"].find((l) => e.subject[l as keyof EulogyLink["subject"]]?.trim() === subject);
           return (
             <li key={e.id}>
-              <a href={`/${locale}${dayPath(page.edition, { mm: e.month, dd: e.day }, page.with)}#${e.id}`} className="underline">
+              <a href={`/${locale}${dayPath(page.edition, { mm: e.month, dd: e.day }, page.with)}#${e.anchor}`} className="underline">
                 {`${e.day} ${interfaceMonth(format, e.month)}`}
               </a>
               {" · "}

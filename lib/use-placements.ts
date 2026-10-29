@@ -34,7 +34,7 @@ export function usePlacements(ids: string[]): Placements {
               const twins = await Promise.all(
                 (e.same_eulogy ?? []).map((t) =>
                   getElogium(t).then(
-                    (x) => x.editions,
+                    (x) => Object.fromEntries(Object.entries(x.editions).map(([ed, p]) => [ed, { ...p, printedAs: t }])),
                     (err: unknown) => {
                       if (err instanceof ApiError && err.status === 404) return {};
                       throw err;

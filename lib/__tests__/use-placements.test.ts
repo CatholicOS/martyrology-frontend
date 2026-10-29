@@ -52,7 +52,7 @@ describe("usePlacements", () => {
     expect(getElogium).not.toHaveBeenCalled();
   });
 
-  it("adds the placements of the same eulogy printed on another day", async () => {
+  it("adds the placements of the same eulogy printed on another day, with the ID it is printed under", async () => {
     const june = { day_printed: "06-10", entry: 9, asterisk: true, unnumbered: false, text: null };
     const december = { day_printed: "12-10", entry: 9, asterisk: true, unnumbered: false, text: null };
     vi.mocked(getElogium).mockImplementation(async (id: string): Promise<EulogyOut> => {
@@ -63,7 +63,7 @@ describe("usePlacements", () => {
       }
     });
     const { result } = renderHook(() => usePlacements(["mr:0610-x"]));
-    await waitFor(() => expect(result.current).toEqual({ "mr:0610-x": { la: june, it: december } }));
+    await waitFor(() => expect(result.current).toEqual({ "mr:0610-x": { la: june, it: { ...december, printedAs: "mr:1210-x" } } }));
   });
 
   it("does not cache a eulogy whose twin failed to load, and asks again on the next mount", async () => {

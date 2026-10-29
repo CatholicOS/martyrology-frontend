@@ -5,7 +5,7 @@ import type { CommonsImage, Entity } from "@/lib/entities";
 
 const { state, request } = vi.hoisted(() => ({ state: { current: { status: "idle" } as EntityState }, request: vi.fn() }));
 vi.mock("@/lib/entities-client", () => ({ useEntity: () => state.current, requestEntities: request }));
-const { printed } = vi.hoisted(() => ({ printed: { current: {} as Record<string, Record<string, { day_printed: string }>> } }));
+const { printed } = vi.hoisted(() => ({ printed: { current: {} as Record<string, Record<string, { day_printed: string; printedAs?: string }>> } }));
 vi.mock("@/lib/use-placements", () => ({
   usePlacements: (ids: string[]) => Object.fromEntries(ids.flatMap((id) => (printed.current[id] ? [[id, printed.current[id]]] : []))),
 }));
@@ -196,6 +196,14 @@ describe("MentionPersonCard", () => {
     expect(links[0]).toHaveAttribute("href",
       "/en/read/martyrologium_romanum_1749/01/10?with=martyrologium_romanum_2004#mr:0109-agatha-yi-et-teresia-kim");
     expect(links[0]).toHaveTextContent("10 January");
+  });
+
+  it("opens a eulogy an edition prints under another ID at that ID", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    printed.current = { ...PRINTED, "mr:0109-agatha-yi-et-teresia-kim": { martyrologium_romanum_1749: { day_printed: "01-08", printedAs: "mr:0108-agatha" } } };
+    card(basil, "en", { edition: "martyrologium_romanum_1749", with: null });
+    const links = within(screen.getByRole("list", { name: "Other eulogies" })).getAllByRole("link");
+    expect(links[0]).toHaveAttribute("href", "/en/read/martyrologium_romanum_1749/01/08#mr:0108-agatha");
   });
 
   it("leaves out a eulogy neither edition of the page prints, and one whose placements are not known yet", () => {
