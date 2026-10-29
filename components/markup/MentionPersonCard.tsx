@@ -12,6 +12,7 @@ import { lifeYears } from "@/lib/life-years";
 import { inLanguage } from "@/lib/mention-labels";
 import type { PlacedMention } from "@/lib/mentions";
 import { subjectFor } from "@/lib/subjects";
+import { usePlacements } from "@/lib/use-placements";
 import { commonsPage, commonsThumb, wikidataUrl, wikipediaUrl } from "@/lib/wikimedia";
 
 const EXTERNAL = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -92,17 +93,28 @@ export default function MentionPersonCard({ mention, page, headingId }: {
   );
 }
 
-/** The other eulogies that name the person: each day, a plain link with the locale, and its subject. */
+/**
+ * The other eulogies that name the person: each day, a plain link with the locale, and its subject. A eulogy opens
+ * on the day the page's edition prints it, else its comparison; one neither prints, or whose placements are not
+ * known yet, is left out.
+ */
 function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: ReaderPage }) {
   const t = useTranslations("Markup");
   const locale = useLocale() as Locale;
   const format = useFormatter();
   const listId = useId();
+  const placements = usePlacements(eulogies.map((e) => e.id));
+  const printed = eulogies.flatMap((e) => {
+    const p = placements[e.id]?.[page.edition] ?? (page.with ? placements[e.id]?.[page.with] : undefined);
+    const m = /^(\d{2})-(\d{2})$/.exec(p?.day_printed ?? "");
+    return m ? [{ ...e, month: Number(m[1]), day: Number(m[2]) }] : [];
+  });
+  if (printed.length === 0) return null;
   return (
     <div className="mt-2 border-t border-slate-200 pt-2 text-xs dark:border-slate-700">
       <p id={listId} className="text-slate-600 dark:text-slate-400">{t("otherEulogies")}</p>
       <ul aria-labelledby={listId}>
-        {eulogies.map((e) => {
+        {printed.map((e) => {
           const subject = subjectFor(e.subject, locale, e.id);
           // subjectFor's own order: the interface language, else English, else Latin.
           const lang = [locale, "en", "la"].find((l) => e.subject[l as keyof EulogyLink["subject"]]?.trim() === subject);

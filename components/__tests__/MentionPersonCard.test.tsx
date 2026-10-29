@@ -5,6 +5,10 @@ import type { CommonsImage, Entity } from "@/lib/entities";
 
 const { state, request } = vi.hoisted(() => ({ state: { current: { status: "idle" } as EntityState }, request: vi.fn() }));
 vi.mock("@/lib/entities-client", () => ({ useEntity: () => state.current, requestEntities: request }));
+const { printed } = vi.hoisted(() => ({ printed: { current: {} as Record<string, Record<string, { day_printed: string }>> } }));
+vi.mock("@/lib/use-placements", () => ({
+  usePlacements: (ids: string[]) => Object.fromEntries(ids.flatMap((id) => (printed.current[id] ? [[id, printed.current[id]]] : []))),
+}));
 
 import MentionPersonCard from "@/components/markup/MentionPersonCard";
 import type { PlacedMention } from "@/lib/mentions";
@@ -40,9 +44,16 @@ const AGATHA = {
   ],
 } satisfies Entity;
 
+/** Where the editions print AGATHA's eulogies: both 2004 editions, on their days. */
+const PRINTED = Object.fromEntries(AGATHA.eulogies.map((e) => {
+  const day = { day_printed: `${String(e.month).padStart(2, "0")}-${String(e.day).padStart(2, "0")}` };
+  return [e.id, { martyrologium_romanum_2004: day, martyrologium_romanum_2004_it_IT: day }];
+}));
+
 describe("MentionPersonCard", () => {
   beforeEach(() => {
     state.current = { status: "ready", entity: BASIL };
+    printed.current = PRINTED;
     request.mockReset();
   });
 
@@ -175,6 +186,26 @@ describe("MentionPersonCard", () => {
     card(basil, "de");
     expect(screen.getByText("Saints Agatha Yi and Teresa Kim")).toHaveAttribute("lang", "en");
     expect(screen.getByRole("list", { name: "Weitere Elogien" })).toBeInTheDocument();
+  });
+
+  it("opens a eulogy the reader's edition does not print in its comparison, on the day that edition prints it", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    printed.current = { ...PRINTED, "mr:0109-agatha-yi-et-teresia-kim": { martyrologium_romanum_2004: { day_printed: "01-10" } } };
+    card(basil, "en", { edition: "martyrologium_romanum_1749", with: "martyrologium_romanum_2004" });
+    const links = within(screen.getByRole("list", { name: "Other eulogies" })).getAllByRole("link");
+    expect(links[0]).toHaveAttribute("href",
+      "/en/read/martyrologium_romanum_1749/01/10?with=martyrologium_romanum_2004#mr:0109-agatha-yi-et-teresia-kim");
+    expect(links[0]).toHaveTextContent("10 January");
+  });
+
+  it("leaves out a eulogy neither edition of the page prints, and one whose placements are not known yet", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    printed.current = { "mr:0920-andreas-kim-tae-gon-et-socii": PRINTED["mr:0920-andreas-kim-tae-gon-et-socii"] };
+    card(basil, "en", { edition: "martyrologium_romanum_1749", with: null });
+    expect(screen.queryByRole("list")).toBeNull();
+    printed.current = { "mr:0109-agatha-yi-et-teresia-kim": {} };
+    card();
+    expect(screen.queryAllByRole("list")).toHaveLength(0);
   });
 
   it("shows no list when no other eulogy names the person", () => {

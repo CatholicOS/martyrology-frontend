@@ -42,6 +42,17 @@ describe("entitiesFor", () => {
     });
   });
 
+  it("gives a person whose item has neither labels nor details the eulogies that name them", () => {
+    const reg: RegistrySnapshot = {
+      "mr:0101-basilius": { deprecated: false, month: 1, day: 1, entry: 1, asterisk: false, unnumbered: false, country: null, subject: { la: "Sanctus Basilius", it: "", en: "" } },
+    };
+    const ps: PersonsSnapshot = { editions: { martyrologium_romanum_2004: { "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q9" }] } }, labels: {} };
+    expect(entitiesFor(["Q9"], ps, {}, places, reg).Q9).toEqual({
+      kind: "person", labels: {}, details: null,
+      eulogies: [{ id: "mr:0101-basilius", month: 1, day: 1, subject: reg["mr:0101-basilius"].subject, own: true }],
+    });
+  });
+
   it("gives a person every eulogy that names their item: their own first (the subject names them), then by day", () => {
     const entry = (month: number, day: number, la: string) =>
       ({ deprecated: false, month, day, entry: 1, asterisk: false, unnumbered: false, country: null, subject: { la, it: `it ${la}`, en: `en ${la}` } });

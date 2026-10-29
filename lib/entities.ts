@@ -111,7 +111,7 @@ export function entitiesFor(
   for (const q of ids) {
     const p = places.places[q];
     if (p) out[q] = { kind: "place", labels: p.labels ?? {}, label: p.label, country: p.country, ...(p.countries ? { countries: p.countries } : {}), coords: p.coords };
-    else if (persons.labels[q] || details[q]) out[q] = {
+    else if (persons.labels[q] || details[q] || links.has(q)) out[q] = {
       kind: "person", labels: persons.labels[q] ?? {}, details: details[q] ?? null, eulogies: links.get(q) ?? [],
     };
   }
