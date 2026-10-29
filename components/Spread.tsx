@@ -138,7 +138,7 @@ export default function Spread({
   const href = (d: Day) => dayPath(a, d, b);
   // Each sheet's language, for the printed words in a place popup.
   const marked = (ui: ReactNode) => (
-    <MarkupProvider on={markup} langs={{ [a]: A.lang, [b]: B.lang }}>{ui}</MarkupProvider>
+    <MarkupProvider on={markup} langs={{ [a]: A.lang, [b]: B.lang }} page={{ edition: a, with: b }}>{ui}</MarkupProvider>
   );
 
   const unaligned = [A, B].filter((s) => s.meta?.aligned === false);

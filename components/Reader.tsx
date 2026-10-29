@@ -110,7 +110,7 @@ function DayView({
   }
   return (
     <div className={turn === "next" ? styles.turnNext : turn === "prev" ? styles.turnPrev : undefined}>
-      <MarkupProvider on={markup} langs={{ [edition]: lang }}>
+      <MarkupProvider on={markup} langs={{ [edition]: lang }} page={{ edition, with: null }}>
         <DayPage day={state.day} heading={dateHeading({ mm, dd }, lang)} lang={lang} edition={edition} showIds={showIds} />
       </MarkupProvider>
     </div>

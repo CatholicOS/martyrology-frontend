@@ -17,6 +17,12 @@ export interface MarkupTarget {
   edition: string;
 }
 
+/** The reader's page: its edition and the one it is compared with, where a popup's links to other days go. */
+export interface ReaderPage {
+  edition: string;
+  with: string | null;
+}
+
 /** The open popup: its mention, the piece it sits beside, whether a click pinned it and whether the keyboard did. */
 export interface OpenPopup {
   target: MarkupTarget;
@@ -50,11 +56,12 @@ function firstPiece(key: string): HTMLElement | undefined {
 
 /**
  * The reader's markup: whether it is on, which mention is tinted, and the one popup (in a portal). `langs` gives
- * each edition's language, for the printed words in a place popup. Each day's view mounts its own provider, so a
+ * each edition's language, for the printed words in a place popup; `page` the reader's page, for a person popup's
+ * links to other eulogies. Each day's view mounts its own provider, so a
  * new day starts with no popup; switching the markup off forgets the popup, and back on does not bring it back.
  */
-export function MarkupProvider({ on, langs, children }: {
-  on: boolean; langs: Record<string, string>; children: ReactNode;
+export function MarkupProvider({ on, langs, page, children }: {
+  on: boolean; langs: Record<string, string>; page: ReaderPage; children: ReactNode;
 }) {
   const [open, setOpen] = useState<OpenPopup | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -147,6 +154,7 @@ export function MarkupProvider({ on, langs, children }: {
             ref={popupRef}
             open={open}
             lang={langs[open.target.edition]}
+            page={page}
             onEnter={() => window.clearTimeout(timer.current)}
             onLeave={api.hoverEnd}
           />,

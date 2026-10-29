@@ -1,8 +1,11 @@
 import type { Day } from "@/lib/calendar";
 import type { EditionPlacement, ElogiumOut } from "@/lib/types";
 
-/** Every edition's placement of a eulogy, by canonical id, then edition id. A missing id: not fetched yet. */
-export type Placements = Record<string, Record<string, EditionPlacement>>;
+/**
+ * Every edition's placement of a eulogy, by canonical id, then edition id; `printedAs` is the other ID an edition
+ * prints it under (its same_eulogy twin). A missing id: not fetched yet.
+ */
+export type Placements = Record<string, Record<string, EditionPlacement & { printedAs?: string }>>;
 
 export interface EulogyRow {
   kind: "eulogy";

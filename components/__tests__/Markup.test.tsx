@@ -24,7 +24,7 @@ const MENTIONS: Mention[] = [
 
 function Page({ on = true }: { on?: boolean }) {
   return (
-    <MarkupProvider on={on} langs={{ ed: "la" }}>
+    <MarkupProvider on={on} langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
       <p>
         <MentionText text={TEXT} mentions={MENTIONS} where="text" eulogy="mr:0101-basilius" edition="ed" />
       </p>
@@ -50,7 +50,7 @@ describe("the markup", () => {
     const outside = render(<p>{run}</p>);
     expect(outside.container.querySelector("p")!.innerHTML).toBe(TEXT);
     outside.unmount();
-    const off = render(<MarkupProvider on={false} langs={{ ed: "la" }}><p>{run}</p></MarkupProvider>);
+    const off = render(<MarkupProvider on={false} langs={{ ed: "la" }} page={{ edition: "ed", with: null }}><p>{run}</p></MarkupProvider>);
     expect(off.container.querySelector("p")!.innerHTML).toBe(TEXT);
   });
 
@@ -69,7 +69,7 @@ describe("the markup", () => {
     // A mention cut in two (as a footnote mark cuts it): both pieces carry it, only the first takes the focus.
     const placed = mentionsIn(MENTIONS, "text", "ed", "mr:0101-basilius", TEXT.length);
     const { container } = render(
-      <MarkupProvider on langs={{ ed: "la" }}>
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
         <p>
           <MentionRun text={TEXT} from={0} to={43} mentions={placed} edition="ed" />
           <sup>1</sup>
@@ -245,7 +245,7 @@ describe("the pieces of one person", () => {
 
   it("are tinted together when one is hovered or focused, and another person is not", () => {
     render(
-      <MarkupProvider on langs={{ ed: "la" }}>
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
         <p><MentionText text={TEXT2} mentions={MARKS} where="text" eulogy="mr:0111-petrus-apselamus" edition="ed" /></p>
       </MarkupProvider>,
     );

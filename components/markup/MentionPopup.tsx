@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useLayoutEffect, type RefObject } from "react";
-import type { OpenPopup } from "@/components/markup/Markup";
+import type { OpenPopup, ReaderPage } from "@/components/markup/Markup";
 import MentionPersonCard from "@/components/markup/MentionPersonCard";
 import MentionPlaceCard from "@/components/markup/MentionPlaceCard";
 import { popupPosition } from "@/lib/popup-position";
@@ -10,8 +10,9 @@ import { popupPosition } from "@/lib/popup-position";
  * The open mention's popup: a non-modal dialog beside its mention, below it unless it fits only above, kept in
  * the window as the page scrolls or resizes. Focus moves into it only when the keyboard opened it.
  */
-export default function MentionPopup({ ref, open, lang, onEnter, onLeave }: {
-  ref: RefObject<HTMLDivElement | null>; open: OpenPopup; lang: string | undefined; onEnter: () => void; onLeave: () => void;
+export default function MentionPopup({ ref, open, lang, page, onEnter, onLeave }: {
+  ref: RefObject<HTMLDivElement | null>; open: OpenPopup; lang: string | undefined; page: ReaderPage;
+  onEnter: () => void; onLeave: () => void;
 }) {
   const headingId = useId();
   // Written straight to the element (hidden until then), so following a scroll costs no render.
@@ -60,7 +61,7 @@ export default function MentionPopup({ ref, open, lang, onEnter, onLeave }: {
       onMouseLeave={onLeave}
     >
       {m.kind === "person" ? (
-        <MentionPersonCard mention={m} headingId={headingId} />
+        <MentionPersonCard mention={m} page={page} headingId={headingId} />
       ) : (
         <MentionPlaceCard mention={m} edition={open.target.edition} lang={lang} headingId={headingId} />
       )}
