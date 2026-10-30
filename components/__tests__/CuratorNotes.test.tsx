@@ -15,4 +15,18 @@ describe("CuratorNotes", () => {
       "href", "/en/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii",
     );
   });
+
+  it("links a Wikidata QID to its item in a new tab", () => {
+    render(
+      <CuratorNotes
+        edition="martyrologium_romanum_2004"
+        notes={[{ id: "mr:0930-gregorius-illuminator", mark: "†", note: "On Mount Sepuh (Q47530516).",
+          anchor: "note-y", markAnchor: "note-y-mark", at: 0 }]}
+      />,
+    );
+    const link = screen.getByRole("link", { name: "Q47530516" });
+    expect(link).toHaveAttribute("href", "https://www.wikidata.org/wiki/Q47530516");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noreferrer");
+  });
 });
