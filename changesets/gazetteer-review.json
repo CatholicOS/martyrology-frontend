@@ -9,51 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "Mulénsis",
-   "la": "Mulénsis",
-   "it": [
-    "Monte Mula"
-   ],
-   "occurrences": [
-    "mr:0301-leo-lucas"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q31610309",
-     "label": "La Mula",
-     "description": "mountain in Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      39.7042,
-      15.9808
-     ],
-     "types": [
-      "Q8502"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q31610309",
-    "country": "IT"
-   },
-   "confidence": "low",
-   "reasoning": "Research (2026-10-30, unlocated places): Italian Wikipedia (Leoluca di Corleone) says he lived in the monastery near Monte Mula (Monte La Mula, 1,935 m), one of the highest peaks of the Orsomarso mountains in the Mercurion area, and the 2004 Italian text glosses the adjective 'Mulensis' as 'Monte Mula'. Q31610309 is a mountain in Italy at 39.704 N, 15.981 E, which matches La Mula in the Orsomarso range. The item is the mountain the monastery was named after, not the monastery itself, whose site is lost. Previous note: no item, unlocated: Monastery of Mula (Leo-Luke's house) in Calabria/Mercurion; site not securely identifiable, no item. New item not warranted"
-  },
-  {
-   "op": "resolve_place",
    "id": "monastériii Sanctæ Maríæ",
    "la": "monastériii Sanctæ Maríæ",
    "it": [
