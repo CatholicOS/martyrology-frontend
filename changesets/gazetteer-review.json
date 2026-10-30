@@ -9,51 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "monastério Storacénsi",
-   "la": "monastério Storacénsi",
-   "it": [
-    "monastero di Storaco"
-   ],
-   "occurrences": [
-    "mr:0927-bonfilius"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q119193681",
-     "label": "chiesa di Santa Maria di Storaco",
-     "description": "chiesa a Filottrano",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      43.446194,
-      13.32675
-     ],
-     "types": [
-      "Q16970"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q119193681",
-    "country": "IT"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-30, unlocated places): Italian Wikipedia places the Benedictine abbey of Santa Maria di Storaco near Filottrano (Ancona); Bonfilius was its monk and abbot and retired there. Q119193681 is the church of Santa Maria di Storaco in Filottrano (BeWeB 88524, 43.446N 13.327E), which bears the abbey's name and dedication. It is most likely the abbey's surviving or successor church, but no source seen confirms that this building is the medieval abbey. Previous note: no item, unlocated: Monastery of Storaco near Fano/Marche region; not identified, no item found"
-  },
-  {
-   "op": "resolve_place",
    "id": "monastérium Græcórum",
    "la": "monastérium Græcórum",
    "it": [
