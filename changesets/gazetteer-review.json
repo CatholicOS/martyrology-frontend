@@ -9,48 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "spelúncam prope confluéntes ramos Euphrátis",
-   "la": "spelúncam prope confluéntes ramos Euphrátis",
-   "it": [
-    "grotta alla confluenza dei rami del fiume Eufrate"
-   ],
-   "occurrences": [
-    "mr:0930-gregorius-illuminator"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q47530516",
-     "label": "Mount Sepuh (Սեպուհ)",
-     "description": "mountain",
-     "country": "TR",
-     "countries": [
-      "TR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q8502"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q47530516",
-    "country": "TR"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-30, unlocated places): Armenian tradition (Agathangelos; Aristakes found Gregory in Daranali) places Gregory's retreat in the caves of Manē (Manēay ayrk') on Mount Sepuh in Daranali, by the Western Euphrates near Kemah/Erzincan. Q47530516 (hy 'Սեպուհ', mountain in Turkey) carries the aliases Մանյա այրք / Մանէայրք, the cave's name. The nearby Great Illuminator Monastery (Q107324554) stood beside the Manē cave. Previous note: no item, unlocated: Unnamed cave near the Euphrates sources in Armenia"
-  },
-  {
-   "op": "resolve_place",
    "id": "ínsula Halóna",
    "la": "ínsula Halóna",
    "it": [
