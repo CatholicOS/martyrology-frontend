@@ -82,4 +82,27 @@ describe("entitiesFor", () => {
       ],
     });
   });
+
+  it("tells which footnote names the person in a eulogy whose text does not, the first of several", () => {
+    const entry = (month: number, day: number, la: string) =>
+      ({ deprecated: false, month, day, entry: 1, asterisk: false, unnumbered: false, country: null, subject: { la, it: la, en: la } });
+    const reg: RegistrySnapshot = {
+      "mr:0121-x-et-socii": entry(1, 21, "Sancti X et socii"),
+      "mr:0202-y-et-socii": entry(2, 2, "Sancti Y et socii"),
+      "mr:0303-z": entry(3, 3, "Sanctus Z"),
+    };
+    const at = (where: "text" | number) => ({ name: "Petrus", where: where === "text" ? "text" as const : { footnote: where }, wikidata: "Q5" });
+    const ps: PersonsSnapshot = {
+      editions: { martyrologium_romanum_2004: {
+        "mr:0121-x-et-socii": [at(2), at(1)], // two lists name him: the first
+        "mr:0202-y-et-socii": [at(1), at("text")], // the text names him too: the eulogy
+        "mr:0303-z": [at("text")],
+      } },
+      labels: {},
+    };
+    const links = entitiesFor(["Q5"], ps, {}, places, reg).Q5;
+    expect(links.kind === "person" && links.eulogies.map((e) => [e.id, e.footnote])).toEqual([
+      ["mr:0121-x-et-socii", 1], ["mr:0202-y-et-socii", undefined], ["mr:0303-z", undefined],
+    ]);
+  });
 });

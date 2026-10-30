@@ -98,8 +98,9 @@ export default function MentionPersonCard({ mention, page, headingId, nth }: {
 
 /**
  * The other eulogies that name the person: each day, a plain link with the locale, and its subject. A eulogy opens
- * on the day the page's edition prints it, else its comparison, at the ID that edition prints it under; one neither
- * prints, or whose placements are not known yet, is left out.
+ * on the day the page's edition prints it, else its comparison, at the ID that edition prints it under, or at the
+ * footnote that names the person when the text does not and that edition prints it; one neither prints, or whose
+ * placements are not known yet, is left out.
  */
 function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: ReaderPage }) {
   const t = useTranslations("Markup");
@@ -108,9 +109,14 @@ function OtherEulogies({ eulogies, page }: { eulogies: EulogyLink[]; page: Reade
   const listId = useId();
   const placements = usePlacements(eulogies.map((e) => e.id));
   const printed = eulogies.flatMap((e) => {
-    const p = placements[e.id]?.[page.edition] ?? (page.with ? placements[e.id]?.[page.with] : undefined);
+    const edition = placements[e.id]?.[page.edition] ? page.edition : page.with;
+    const p = edition ? placements[e.id]?.[edition] : undefined;
     const m = /^(\d{2})-(\d{2})$/.exec(p?.day_printed ?? "");
-    return m ? [{ ...e, month: Number(m[1]), day: Number(m[2]), anchor: p?.printedAs ?? e.id }] : [];
+    if (!m || !edition || !p) return [];
+    const id = p.printedAs ?? e.id;
+    // A person only a footnote names opens at that footnote, where the edition prints it (pageFootnotes' anchor).
+    const note = e.footnote && (p.footnotes?.length ?? 0) >= e.footnote ? e.footnote : null;
+    return [{ ...e, month: Number(m[1]), day: Number(m[2]), anchor: note ? `fn-${edition}-${id}-${note}` : id }];
   });
   if (printed.length === 0) return null;
   return (
