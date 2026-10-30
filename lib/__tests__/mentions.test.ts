@@ -85,12 +85,29 @@ describe("mentionQids", () => {
   it("lists the items a page names, text and footnotes, each once", () => {
     expect(mentionQids([{ mentions: [place, person, inNote] }, null, { mentions: [place] }, {}])).toEqual(["Q1", "Q48338"]);
   });
+
+  it("lists the items of every person a mark names", () => {
+    const both: Mention = { ...person, qid: null, others: [{ name: "Basilius", n: 2, qid: "Q7" }, { name: "X", n: null, qid: null }] };
+    expect(mentionQids([{ mentions: [both] }])).toEqual(["Q7"]);
+  });
 });
 
 describe("hasMentions", () => {
   it("tells whether a page names anyone or anywhere, footnotes included", () => {
     expect(hasMentions([null, {}, { mentions: [] }])).toBe(false);
     expect(hasMentions([{ mentions: [inNote] }])).toBe(true);
+  });
+});
+
+describe("a mark that names several persons", () => {
+  it("belongs to every person it names, and a mark that names one to its own group alone", () => {
+    const both: Mention = { kind: "person", where: "text", start: 0, end: 10, form: "Anastasius", qid: null, name: "Anastasius",
+      others: [{ name: "Anastasius", n: 2, qid: "Q754124" }] };
+    const [shared] = mentionsIn([both], "text", "ed", "mr:x", 10);
+    expect(shared.groups).toEqual(["mr:x|person|Anastasius#1", "mr:x|person|Anastasius#2"]);
+    expect(shared.group).toBe("mr:x|person|Anastasius#1");
+    const [one] = mentionsIn([person], "text", "ed", "mr:x", TEXT.length);
+    expect(one.groups).toEqual([one.group]);
   });
 });
 

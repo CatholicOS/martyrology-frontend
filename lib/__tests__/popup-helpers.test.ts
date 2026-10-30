@@ -30,6 +30,14 @@ describe("popupPosition", () => {
   it("stays below when it fits neither way and there is more room below", () => {
     expect(popupPosition(box(40, 50), { width: 288, height: 700 }, vp).placement).toBe("below");
   });
+  it("moves a popup taller than the room on either side up, inside the window", () => {
+    // Near the top of the window it goes below, where it would run past the bottom.
+    const tall = { width: 288, height: vp.height - 40 };
+    const { top, placement } = popupPosition(box(40, 50), tall, vp);
+    expect(placement).toBe("below");
+    expect(top).toBeGreaterThanOrEqual(8);
+    expect(top + tall.height).toBeLessThanOrEqual(vp.height - 8);
+  });
 });
 
 describe("dates", () => {

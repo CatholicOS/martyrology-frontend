@@ -26,8 +26,10 @@ const isWebUrl = (s: string | null): s is string => !!s && /^https?:\/\//i.test(
  * Wikidata, then the other eulogies that name the same item (their own first), opened in the reader's `page`. A
  * person not yet linked to Wikidata shows the Latin name, a notice and the eulogy's canonical ID.
  */
-export default function MentionPersonCard({ mention, page, headingId }: {
+export default function MentionPersonCard({ mention, page, headingId, nth }: {
   mention: PlacedMention; page: ReaderPage; headingId: string;
+  /** Which person of the name this is, shown on a card not linked yet: one of several a word names. */
+  nth?: number;
 }) {
   const t = useTranslations("Markup");
   const locale = useLocale() as Locale;
@@ -37,6 +39,7 @@ export default function MentionPersonCard({ mention, page, headingId }: {
     return (
       <>
         <h2 id={headingId} className="font-semibold" lang={langOn("la", locale)}>{latin}</h2>
+        {nth && <p className="text-xs text-slate-600 dark:text-slate-400">{t("ordinal", { n: nth })}</p>}
         <p className="mt-1 text-slate-600 dark:text-slate-400">{t("notLinked")}</p>
         <p className="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400">{mention.eulogy}</p>
       </>

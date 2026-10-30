@@ -84,6 +84,13 @@ export interface MentionRole {
   n?: number | null;
 }
 
+/** Another person a person mention names (crmedr `others`): one word can name two ("quibus nomen Anastasius"). */
+export interface MentionPerson {
+  name: string;
+  n?: number | null;
+  qid: string | null;
+}
+
 export interface Mention {
   kind: "person" | "place";
   where: "text" | { footnote: number };
@@ -96,6 +103,8 @@ export interface Mention {
   n?: number | null;
   /** A place's roles in the eulogy, in crmedr's order; null for a person. Absent from APIs older than v0.18.0. */
   roles?: MentionRole[] | null;
+  /** The other persons a person mention names, in no order; null or absent when it names one (APIs before v0.19.4). */
+  others?: MentionPerson[] | null;
 }
 
 export interface EditionPlacement {

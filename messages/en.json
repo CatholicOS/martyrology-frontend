@@ -141,6 +141,7 @@
     "person": "person",
     "place": "place",
     "notLinked": "Not yet linked to Wikidata",
+    "ordinal": "the {n, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} of this name in this eulogy",
     "seeOnMap": "See on the map",
     "wikidata": "Wikidata",
     "otherEulogies": "Other eulogies",

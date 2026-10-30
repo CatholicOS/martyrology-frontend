@@ -32,14 +32,14 @@ export interface OpenPopup {
 }
 
 export interface MarkupApi {
-  /** The group of marks tinted (a mention's `group`): open, hovered or focused. */
-  active: string | null;
+  /** The groups of marks tinted (a mention's `groups`): open, hovered or focused; empty when none is. */
+  active: string[];
   open: OpenPopup | null;
   hoverStart(t: MarkupTarget, anchor: HTMLElement): void;
   hoverEnd(): void;
   /** Pins the mention's popup, or unpins it when it is the one pinned. */
   pin(t: MarkupTarget, anchor: HTMLElement, keyboard: boolean): void;
-  focus(group: string | null): void;
+  focus(groups: string[] | null): void;
 }
 
 const Ctx = createContext<MarkupApi | null>(null);
@@ -64,8 +64,8 @@ export function MarkupProvider({ on, langs, page, children }: {
   on: boolean; langs: Record<string, string>; page: ReaderPage; children: ReactNode;
 }) {
   const [open, setOpen] = useState<OpenPopup | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [focused, setFocused] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string[] | null>(null);
+  const [focused, setFocused] = useState<string[] | null>(null);
   const [wasOn, setWasOn] = useState(on);
   const popupRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number | undefined>(undefined);
@@ -121,10 +121,10 @@ export function MarkupProvider({ on, langs, page, children }: {
   }, [open, close]);
 
   const api = useMemo<MarkupApi>(() => ({
-    active: open?.target.mention.group ?? hovered ?? focused,
+    active: open?.target.mention.groups ?? hovered ?? focused ?? [],
     open,
     hoverStart(t, anchor) {
-      setHovered(t.mention.group);
+      setHovered(t.mention.groups);
       if (open?.pinned) return;
       if (open?.target.mention.key === t.mention.key) {
         window.clearTimeout(timer.current);

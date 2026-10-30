@@ -23,7 +23,8 @@ import type { PlacedMention } from "@/lib/mentions";
 
 const caesarea: PlacedMention = {
   kind: "place", where: "text", start: 0, end: 21, form: "Cæsaréæ in Cappadócia", name: null, qid: "Q48338",
-  key: "mr:0101-basilius-magnus|text|0", group: "mr:0101-basilius-magnus|text|0", eulogy: "mr:0101-basilius-magnus",
+  key: "mr:0101-basilius-magnus|text|0", group: "mr:0101-basilius-magnus|text|0",
+  groups: ["mr:0101-basilius-magnus|text|0"], eulogy: "mr:0101-basilius-magnus",
 };
 const KAYSERI = { kind: "place" as const, labels: { en: "Kayseri", it: "Kayseri" }, label: "Kayseri", country: "TR", coords: [38.7, 35.5] as [number, number] };
 const card = (locale: "en" | "it" | "de" = "en", m = caesarea) =>

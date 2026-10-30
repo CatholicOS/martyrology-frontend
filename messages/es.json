@@ -141,6 +141,7 @@
     "person": "persona",
     "place": "lugar",
     "notLinked": "Aún no vinculado a Wikidata",
+    "ordinal": "la {n}.ª persona con este nombre en este elogio",
     "seeOnMap": "Ver en el mapa",
     "wikidata": "Wikidata",
     "otherEulogies": "Otros elogios",
