@@ -63,5 +63,7 @@ describe("noteParts", () => {
 
   it("leaves a Q inside a word, or a Q without a number, as plain text", () => {
     expect(noteParts("AQ12 and Q0 and Quintus", LA, snap)).toEqual([{ text: "AQ12 and Q0 and Quintus" }]);
+    expect(noteParts("éQ12 and Q12é", LA, snap)).toEqual([{ text: "éQ12 and Q12é" }]);
+    expect(noteParts("(Q12)", LA, snap)[1]).toEqual({ text: "Q12", href: "https://www.wikidata.org/wiki/Q12" });
   });
 });

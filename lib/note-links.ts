@@ -1,7 +1,8 @@
 import { getSnapshot, type RegistrySnapshot } from "@/lib/snapshot";
 import type { TextPart } from "@/lib/text-url";
 
-const ID_RE = /\bmr:\d{4}-[a-z]+(?:-[a-z]+)*|\bQ[1-9]\d*\b/g;
+// A QID stands alone: no letter, digit or underscore in any script touches it (\b is ASCII-only).
+const ID_RE = /\bmr:\d{4}-[a-z]+(?:-[a-z]+)*|(?<![\p{L}\p{N}_])Q[1-9]\d*(?![\p{L}\p{N}_])/gu;
 const LATIN_2004 = "martyrologium_romanum_2004";
 
 /**
