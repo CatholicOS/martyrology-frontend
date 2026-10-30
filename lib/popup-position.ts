@@ -8,7 +8,8 @@ export interface Box {
 
 /**
  * Where a popup of `size` goes beside its mention (fixed coordinates): below it, else above it when it fits
- * there and not below, at the mention's left edge shifted to stay `margin` inside the window.
+ * there and not below, at the mention's left edge shifted to stay `margin` inside the window. One taller than the
+ * room on either side moves up until its foot is inside the window (the popup's height is capped at the window's).
  */
 export function popupPosition(
   anchor: Box, size: { width: number; height: number }, viewport: { width: number; height: number }, gap = 6, margin = 8,
@@ -18,7 +19,7 @@ export function popupPosition(
   const fitsBelow = below + size.height <= viewport.height - margin;
   const fitsAbove = above >= margin;
   const placement = fitsBelow || (!fitsAbove && viewport.height - anchor.bottom >= anchor.top) ? "below" : "above";
-  const top = placement === "below" ? below : Math.max(margin, above);
+  const top = Math.max(margin, placement === "below" ? Math.min(below, viewport.height - margin - size.height) : above);
   const left = Math.min(Math.max(anchor.left, margin), Math.max(margin, viewport.width - size.width - margin));
   return { top, left, placement };
 }

@@ -132,6 +132,10 @@ describe("mentions in the reader's text", () => {
     fireEvent.click(marks("b")[0]);
     const dialog = screen.getByRole("dialog");
     expect(within_(dialog).getAllByRole("heading").map((h) => h.textContent)).toEqual(["Frumentius", "Frumentius"]);
+    // Two persons of one name, neither linked yet: each card says which one it is.
+    expect(within_(dialog).getByText("the 1st of this name in this eulogy")).toBeInTheDocument();
+    expect(within_(dialog).getByText("the 2nd of this name in this eulogy")).toBeInTheDocument();
+    expect(dialog.className).toMatch(/max-h-\[calc\(100dvh-1rem\)\] overflow-y-auto/);
     expect(dialog).toHaveAccessibleName("Frumentius Frumentius");
   });
 });

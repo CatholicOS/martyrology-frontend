@@ -56,7 +56,7 @@ export default function MentionPopup({ ref, open, lang, page, onEnter, onLeave }
       aria-labelledby={ids.join(" ")}
       tabIndex={-1}
       className={
-        `fixed z-50 ${persons.length > 1 ? "w-[36rem]" : "w-72"} max-w-[calc(100vw-1rem)] rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 ` +
+        `fixed z-50 ${persons.length > 1 ? "w-[36rem]" : "w-72"} max-w-[calc(100vw-1rem)] max-h-[calc(100dvh-1rem)] overflow-y-auto rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 ` +
         "shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 " +
         (open.keyboard ? "focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-600" : "outline-none")
       }
@@ -68,7 +68,7 @@ export default function MentionPopup({ ref, open, lang, page, onEnter, onLeave }
         <div className="grid gap-3 sm:grid-cols-2 sm:divide-x sm:divide-slate-200 dark:sm:divide-slate-700">
           {persons.map((p, i) => (
             <div key={p.group} className={i > 0 ? "border-t border-slate-200 pt-3 sm:border-t-0 sm:pl-3 sm:pt-0 dark:border-slate-700" : ""}>
-              <MentionPersonCard mention={p} page={page} headingId={ids[i]} />
+              <MentionPersonCard mention={p} page={page} headingId={ids[i]} nth={p.n ?? 1} />
             </div>
           ))}
         </div>
