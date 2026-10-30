@@ -8,6 +8,8 @@ import type { ElogiumOut, Mention } from "@/lib/types";
 export interface PlacedMention extends Mention {
   key: string;
   group: string;
+  /** Its own group and, for a mark that names several persons, each other person's: tinted with all of them. */
+  groups: string[];
   eulogy: string;
 }
 
@@ -39,7 +41,20 @@ export function mentionKey(edition: string, eulogy: string, m: Mention): string 
 export function mentionGroup(edition: string, eulogy: string, m: Mention): string {
   if (m.kind === "place" && m.qid) return `${eulogy}|place|${m.qid}`;
   if (m.kind !== "person" || !m.name) return mentionKey(edition, eulogy, m);
-  return `${eulogy}|person|${m.name}#${m.n ?? 1}`;
+  return personGroup(eulogy, m.name, m.n);
+}
+
+const personGroup = (eulogy: string, name: string, n: number | null | undefined) => `${eulogy}|person|${name}#${n ?? 1}`;
+
+/**
+ * Every person a mark names, each as a mark of its own: the mark itself, then the other persons of one word that
+ * names several (crmedr `others`), with their name, n, item and group.
+ */
+export function personsOf(m: PlacedMention): PlacedMention[] {
+  return [m, ...(m.others ?? []).map((o) => {
+    const group = personGroup(m.eulogy, o.name, o.n);
+    return { ...m, name: o.name, n: o.n ?? null, qid: o.qid, others: null, group, groups: [group] };
+  })];
 }
 
 /**
@@ -59,7 +74,9 @@ export function mentionsIn(
       console.warn(`markup: ${eulogy}: "${m.form}" (${m.start}–${m.end}) overlaps "${clash.form}" and is not marked`);
       continue;
     }
-    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m), group: mentionGroup(edition, eulogy, m) });
+    const group = mentionGroup(edition, eulogy, m);
+    const others = m.kind === "person" ? (m.others ?? []).map((o) => personGroup(eulogy, o.name, o.n)) : [];
+    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m), group, groups: [group, ...others] });
   }
   return kept.sort((a, b) => a.start - b.start);
 }
@@ -91,5 +108,6 @@ export function hasMentions(elogia: (Pick<ElogiumOut, "mentions"> | null)[]): bo
 
 /** The Wikidata items a page's eulogies name, text and footnotes, each once, sorted. */
 export function mentionQids(elogia: (Pick<ElogiumOut, "mentions"> | null)[]): string[] {
-  return [...new Set(elogia.flatMap((e) => (e?.mentions ?? []).flatMap((m) => (m.qid ? [m.qid] : []))))].sort();
+  const qids = (m: Mention) => [m.qid, ...(m.others ?? []).map((o) => o.qid)].filter((q): q is string => !!q);
+  return [...new Set(elogia.flatMap((e) => (e?.mentions ?? []).flatMap(qids)))].sort();
 }

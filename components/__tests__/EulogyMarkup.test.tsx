@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import type { ReactNode } from "react";
-import { render, screen, fireEvent, act } from "@/test/intl";
+import { render, screen, fireEvent, act, within as within_ } from "@/test/intl";
 import type { EntityState } from "@/lib/entities-client";
 
 vi.mock("@/lib/entities-client", () => ({
@@ -107,5 +107,31 @@ describe("mentions in the reader's text", () => {
     expect(basilius("a")).toHaveAttribute("aria-expanded", "false");
     fireEvent.keyDown(document, { key: "Escape" });
     expect(basilius("b")).toHaveFocus();
+  });
+
+  it("tints with a mark that names two persons the marks of each, and shows both in its popup", () => {
+    const la = "Fruméntii et alteríus Fruméntii.";
+    const it = "due mercanti entrambi di nome Frumenzio.";
+    const first: Mention = { kind: "person", where: "text", start: 0, end: 9, form: "Fruméntii", name: "Frumentius", qid: null };
+    const second: Mention = { ...first, start: 22, end: 31, n: 2 };
+    const both: Mention = { kind: "person", where: "text", start: 30, end: 39, form: "Frumenzio", name: "Frumentius", qid: null,
+      others: [{ name: "Frumentius", n: 2, qid: null }] };
+    const { container } = render(within(true, <>
+      <div data-side="a"><p><EulogyText text={la} id="mr:0323-x" edition="a" mentions={[first, second]} /></p></div>
+      <div data-side="b"><p><EulogyText text={it} id="mr:0323-x" edition="b" mentions={[both]} /></p></div>
+    </>, { a: "la", b: "it" }));
+    const marks = (side: string) => [...container.querySelectorAll<HTMLElement>(`[data-side="${side}"] [data-mention]`)];
+    const active = (side: string) => marks(side).filter((p) => p.hasAttribute("data-active")).map((p) => p.dataset.mention);
+    fireEvent.mouseEnter(marks("b")[0]);
+    expect(active("a")).toEqual(["a|mr:0323-x|text|0", "a|mr:0323-x|text|22"]);
+    fireEvent.mouseLeave(marks("b")[0]);
+    fireEvent.mouseEnter(marks("a")[1]); // the second Frumentius alone
+    expect(active("a")).toEqual(["a|mr:0323-x|text|22"]);
+    expect(active("b")).toEqual(["b|mr:0323-x|text|30"]);
+    fireEvent.mouseLeave(marks("a")[1]);
+    fireEvent.click(marks("b")[0]);
+    const dialog = screen.getByRole("dialog");
+    expect(within_(dialog).getAllByRole("heading").map((h) => h.textContent)).toEqual(["Frumentius", "Frumentius"]);
+    expect(dialog).toHaveAccessibleName("Frumentius Frumentius");
   });
 });

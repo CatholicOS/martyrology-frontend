@@ -20,7 +20,7 @@ function MentionPiece({ markup, mention, edition, first, children }: {
   return (
     <span
       data-mention={mention.key}
-      data-active={markup.active === mention.group ? "" : undefined}
+      data-active={mention.groups.some((g) => markup.active.includes(g)) ? "" : undefined}
       className={`${styles.mention} ${mention.kind === "person" ? styles.person : styles.place}`}
       onMouseEnter={(e) => markup.hoverStart(target, e.currentTarget)}
       onMouseLeave={() => markup.hoverEnd()}
@@ -32,7 +32,7 @@ function MentionPiece({ markup, mention, edition, first, children }: {
             "aria-haspopup": "dialog" as const,
             "aria-expanded": expanded,
             "aria-roledescription": t(mention.kind),
-            onFocus: () => markup.focus(mention.group),
+            onFocus: () => markup.focus(mention.groups),
             onBlur: () => markup.focus(null),
             onKeyDown: (e: KeyboardEvent<HTMLSpanElement>) => {
               if (e.key !== "Enter" && e.key !== " ") return;
