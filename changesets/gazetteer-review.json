@@ -9,52 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "monastérium Græcórum",
-   "la": "monastérium Græcórum",
-   "it": [
-    "monastero dei Greci"
-   ],
-   "occurrences": [
-    "mr:0819-bartholomaeus-de-simero"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q3603276",
-     "label": "Abbazia del Patire",
-     "description": "building in Rossano, Italy",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      39.5718,
-      16.5698
-     ],
-     "types": [
-      "Q160742",
-      "Q16970"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q3603276",
-    "country": "IT"
-   },
-   "confidence": "high",
-   "reasoning": "Research (2026-10-30, unlocated places): Bartholomew of Simeri, after his hermit life, founded the Greek (Basilian) monastery of Santa Maria Nuova Odigitria, called del Patire ('of the father', after him), near Rossano in Calabria, c. 1095-1105, with help from Count Roger and Admiral Christodoulos. This is his Calabrian foundation; his later San Salvatore was at Messina in Sicily. Q3603276 is the abbey of Santa Maria del Patire (abbey + church) at 39.572 N, 16.570 E, in Corigliano-Rossano. Previous note: no item, unlocated: Generic Greek monastery in Calabria founded by Bartholomew of Simeri; no specific item"
-  },
-  {
-   "op": "resolve_place",
    "id": "monastérium Sancti Michaélis",
    "la": "monastérium Sancti Michaélis",
    "it": [
