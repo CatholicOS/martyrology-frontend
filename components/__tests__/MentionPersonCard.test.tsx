@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, within } from "@/test/intl";
+import { render, screen, fireEvent, within, cleanup } from "@/test/intl";
 import type { EntityState } from "@/lib/entities-client";
 import type { CommonsImage, Entity } from "@/lib/entities";
 
 const { state, request } = vi.hoisted(() => ({ state: { current: { status: "idle" } as EntityState }, request: vi.fn() }));
 vi.mock("@/lib/entities-client", () => ({ useEntity: () => state.current, requestEntities: request }));
-const { printed } = vi.hoisted(() => ({ printed: { current: {} as Record<string, Record<string, { day_printed: string; printedAs?: string }>> } }));
+const { printed } = vi.hoisted(() => ({ printed: { current: {} as Record<string, Record<string, { day_printed: string; printedAs?: string; footnotes?: unknown[] }>> } }));
 vi.mock("@/lib/use-placements", () => ({
   usePlacements: (ids: string[]) => Object.fromEntries(ids.flatMap((id) => (printed.current[id] ? [[id, printed.current[id]]] : []))),
 }));
@@ -204,6 +204,20 @@ describe("MentionPersonCard", () => {
     card(basil, "en", { edition: "martyrologium_romanum_1749", with: null });
     const links = within(screen.getByRole("list", { name: "Other eulogies" })).getAllByRole("link");
     expect(links[0]).toHaveAttribute("href", "/en/read/martyrologium_romanum_1749/01/08#mr:0108-agatha");
+  });
+
+  it("opens a eulogy that names the person only in a footnote at that footnote, where the edition prints it", () => {
+    const andrew = "mr:0920-andreas-kim-tae-gon-et-socii";
+    state.current = { status: "ready", entity: { ...AGATHA, eulogies: AGATHA.eulogies.map((e) => (e.id === andrew ? { ...e, footnote: 2 } : e)) } };
+    const day = { day_printed: "09-20" };
+    printed.current = { ...PRINTED, [andrew]: { martyrologium_romanum_2004: { ...day, footnotes: [{}, {}] }, martyrologium_romanum_2004_en_unofficial: day } };
+    card(basil);
+    const href = () => within(screen.getByRole("list", { name: "Other eulogies" })).getAllByRole("link").at(-1);
+    expect(href()).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004/09/20#fn-martyrologium_romanum_2004-${andrew}-2`);
+    cleanup();
+    // An edition without that footnote (the unofficial English prints none) opens the eulogy.
+    card(basil, "en", { edition: "martyrologium_romanum_2004_en_unofficial", with: null });
+    expect(href()).toHaveAttribute("href", `/en/read/martyrologium_romanum_2004_en_unofficial/09/20#${andrew}`);
   });
 
   it("leaves out a eulogy neither edition of the page prints, and one whose placements are not known yet", () => {

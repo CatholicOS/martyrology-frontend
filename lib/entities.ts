@@ -33,13 +33,17 @@ export interface PersonDetails {
   wikipedia: Labels;
 }
 
-/** A eulogy that names a person: its day and subject, and whether the subject names them (their own eulogy). */
+/**
+ * A eulogy that names a person: its day and subject, whether the subject names them (their own eulogy), and the
+ * footnote that names them when its text does not (the first, when several lists do).
+ */
 export interface EulogyLink {
   id: string;
   month: number;
   day: number;
   subject: SnapshotEntry["subject"];
   own: boolean;
+  footnote?: number;
 }
 
 /**
@@ -84,9 +88,13 @@ function eulogyLinks(persons: PersonsSnapshot, registry: RegistrySnapshot): Map<
         if (!m.wikidata) continue;
         const links = out.get(m.wikidata) ?? [];
         const own = words(m.name).every((w) => subject.has(w));
+        const note = m.where === "text" ? undefined : m.where.footnote;
         const seen = links.find((l) => l.id === id);
-        if (seen) seen.own ||= own;
-        else links.push({ id, month: e.month, day: e.day, subject: e.subject, own });
+        if (seen) {
+          seen.own ||= own;
+          // Named in the text too: the eulogy is the place to open; else the first footnote that names them.
+          seen.footnote = note === undefined || seen.footnote === undefined ? undefined : Math.min(seen.footnote, note);
+        } else links.push({ id, month: e.month, day: e.day, subject: e.subject, own, ...(note ? { footnote: note } : {}) });
         out.set(m.wikidata, links);
       }
     }
