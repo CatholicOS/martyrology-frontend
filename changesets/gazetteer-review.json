@@ -133,9 +133,9 @@
    ],
    "candidates": [
     {
-     "wikidata": "Q3947819",
-     "label": "San Pietro in Curolis",
-     "description": "frazione del comune italiano di Esperia",
+     "wikidata": "Q18453456",
+     "label": "Sant'Oliva",
+     "description": "frazione del comune italiano di Pontecorvo, provincia di Frosinone",
      "country": "IT",
      "countries": [
       "IT"
@@ -143,8 +143,8 @@
      "la": [],
      "p9314": false,
      "coords": [
-      41.386388888889,
-      13.686666666667
+      41.41667,
+      13.63333
      ],
      "types": [
       "Q1134686"
@@ -156,11 +156,11 @@
    "edited": null,
    "redecide": true,
    "suggested": {
-    "wikidata": "Q3947819",
+    "wikidata": "Q18453456",
     "country": "IT"
    },
    "confidence": "low",
-   "reasoning": "Research (2026-10-30, unlocated places): Clinius (Clino, patron of Esperia) was abbot of a Greek/Basilian house between Pontecorvo and Roccaguglielma (Esperia), attested in 1030. Italian Wikipedia says the hamlet of San Pietro in Curolis (Esperia Inferiore) grew in the 10th century around the Cassinese monasteries of San Pietro and San Paolo della Foresta. This item is the hamlet that grew up at the monastery, not the monastery itself. The church items Q120824513 and Q120824514 (San Pietro in Curulis) may be its successor buildings, but this is not verified. Previous note: no item, unlocated: the monastery of San Pietro della Foresta near Aquino, Clinius's; a single devotional source places it between Pontecorvo and Esperia"
+   "reasoning": "Research (2026-10-30, unlocated places; corrected): the monastery of San Pietro della Foresta (in Foresta) was a Greek house founded in 998 on land of Guido, count of Pontecorvo, in the valley of the Forma Quesa near Crocella di Sant'Oliva; it is distinct from the village of San Pietro in Curolis (Esperia), suggested first. The national archaeology map (GNA, Censimento record 5597, from Hayes and Martini 1994, Archaeological Survey in the Lower Liri Valley, p. 236 no. 576) places the site 'S. Pietro in Foresta = La Torre' in the comune of Esperia at about 41.4093, 13.6220: a scatter of pottery 50 m around the ruins of a church. Wikidata has no item for the monastery; Q18453456 Sant'Oliva, the hamlet of Pontecorvo about 1 km to the north-east, stands in for the locality. Previous note: no item, unlocated: the monastery of San Pietro della Foresta near Aquino, Clinius's; a single devotional source places it between Pontecorvo and Esperia"
   },
   {
    "op": "resolve_place",
