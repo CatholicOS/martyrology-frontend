@@ -9,51 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "monastériii Sanctæ Maríæ",
-   "la": "monastériii Sanctæ Maríæ",
-   "it": [
-    "monastero di Santa Maria"
-   ],
-   "occurrences": [
-    "mr:1204-adrehildis"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q3580415",
-     "label": "Église Notre-Dame-du-Pré du Mans",
-     "description": "church located in Sarthe, in France",
-     "country": "FR",
-     "countries": [
-      "FR"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": [
-      48.00963,
-      0.19292
-     ],
-     "types": [
-      "Q16970"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q3580415",
-    "country": "FR"
-   },
-   "confidence": "medium",
-   "reasoning": "Research (2026-10-30, unlocated places): Wikipedia's Saint Ada (Adrehildis), from the Benedictine/Butler tradition, says her uncle Bishop Engelbert/Aiglibert brought her from Soissons to Le Mans and made her abbess of the monastery of Pré (St-Julien-du-Pré). That nuns' abbey's church is today Notre-Dame-du-Pré, and the frwiki 'Abbaye Saint-Julien-du-Pré' redirects to this item. Le Mans's early women's monastery of St Mary is therefore most likely this abbey, but no source found says outright that the MR's 'St Mary' is the Pré house. Previous note: no item, unlocated: Unnamed St Mary monastery at Le Mans; not identifiable"
-  },
-  {
-   "op": "resolve_place",
    "id": "monastério Papiénsi",
    "la": "monastério Papiénsi",
    "it": [
