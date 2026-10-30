@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import styles from "@/components/page.module.css";
-import { Link } from "@/i18n/navigation";
-import { noteParts } from "@/lib/note-links";
+import NoteText from "@/components/NoteText";
 import type { PageNote } from "@/lib/notes";
 
 /** A note's mark in the text: red daggers, linked to the note at the foot of the page. */
@@ -27,15 +26,7 @@ export default function CuratorNotes({ notes, edition }: { notes: PageNote[]; ed
               {n.mark}
             </a>
             <span>
-              {noteParts(n.note, edition).map((p, i) =>
-                p.href ? (
-                  <Link key={i} href={p.href} className="underline">
-                    {p.text}
-                  </Link>
-                ) : (
-                  <span key={i}>{p.text}</span>
-                ),
-              )}
+              <NoteText note={n.note} edition={edition} />
             </span>
           </li>
         ))}

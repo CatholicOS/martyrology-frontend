@@ -4,13 +4,13 @@ import { Link } from "@/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import EulogyText from "@/components/EulogyText";
+import NoteText from "@/components/NoteText";
 import styles from "@/components/page.module.css";
 import { getEditions, getMonth } from "@/lib/api";
 import { apparatus, count, only, type ApparatusEntry, type ApparatusKind } from "@/lib/apparatus";
 import { dayPath, interfaceMonth, pad2 } from "@/lib/calendar";
 import { erratumPlace } from "@/lib/errata";
 import { editionLang, editionTitle } from "@/lib/editions";
-import { noteParts } from "@/lib/note-links";
 import { hasPersons } from "@/lib/persons-editions";
 import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/reader-return";
 import { getSnapshot } from "@/lib/snapshot";
@@ -171,15 +171,7 @@ export default function ApparatusPage({ edition, back = NO_RETURN }: { edition: 
                     e.notes.map((n, i) => (
                       <li key={`n${i}`} lang="en">
                         <span className={styles.noteMark}>†</span>{" "}
-                        {noteParts(n, edition).map((p, k) =>
-                          p.href ? (
-                            <Link key={k} href={p.href} className="underline">
-                              {p.text}
-                            </Link>
-                          ) : (
-                            <span key={k}>{p.text}</span>
-                          ),
-                        )}
+                        <NoteText note={n} edition={edition} />
                       </li>
                     ))}
                   {shown.has("misprints") &&

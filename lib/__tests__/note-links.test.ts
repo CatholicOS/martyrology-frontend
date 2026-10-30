@@ -50,4 +50,18 @@ describe("noteParts", () => {
       "/read/martyrologium_romanum_2004/02/18#mr:0218-sadoth-et-socii",
     ]);
   });
+
+  it("links a Wikidata QID to its item, on any page", () => {
+    expect(noteParts("On Mount Sepuh (Q47530516), near mr:0821-paternus.", Y1749, snap)).toEqual([
+      { text: "On Mount Sepuh (" },
+      { text: "Q47530516", href: "https://www.wikidata.org/wiki/Q47530516" },
+      { text: "), near " },
+      { text: "mr:0821-paternus", href: "/read/martyrologium_romanum_2004/08/21#mr:0821-paternus" },
+      { text: "." },
+    ]);
+  });
+
+  it("leaves a Q inside a word, or a Q without a number, as plain text", () => {
+    expect(noteParts("AQ12 and Q0 and Quintus", LA, snap)).toEqual([{ text: "AQ12 and Q0 and Quintus" }]);
+  });
 });
