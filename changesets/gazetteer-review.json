@@ -9,53 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "monastérium Sancti Michaélis",
-   "la": "monastérium Sancti Michaélis",
-   "it": [
-    "monastero di San Michele"
-   ],
-   "occurrences": [
-    "mr:0905-ioannes-bonus-de-siponto"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q211306",
-     "label": "Mljet",
-     "description": "isola della costa dalmata della Croazia",
-     "country": "HR",
-     "countries": [
-      "HR"
-     ],
-     "la": [
-      "Melitussa"
-     ],
-     "p9314": false,
-     "coords": [
-      42.745,
-      17.535
-     ],
-     "types": [
-      "Q23442"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q211306",
-    "country": "HR"
-   },
-   "confidence": "low",
-   "reasoning": "Research (2026-10-30, unlocated places): The 2004 Italian edition of this eulogy places the monastery of San Michele on the island of Mljet; the Latin says only 'on the Dalmatian coast'. Benedictines from Apulia (Pulsano) settled on Mljet in the 12th century, and Babino Polje on Mljet has a church of St Michael (hrwiki). No Wikidata item exists for a St Michael monastery or church on Mljet, so the island stands in for it. The earlier Palagruža guess is not supported. Previous note: no item, unlocated: Monastery of St Michael founded by John of Siponto on the Dalmatian coast facing Gargano (possibly on Palagruza Q378556): not verified"
-  },
-  {
-   "op": "resolve_place",
    "id": "spelúncam prope confluéntes ramos Euphrátis",
    "la": "spelúncam prope confluéntes ramos Euphrátis",
    "it": [
