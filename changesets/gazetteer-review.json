@@ -9,48 +9,6 @@
  "operations": [
   {
    "op": "resolve_place",
-   "id": "monastério Papiénsi",
-   "la": "monastério Papiénsi",
-   "it": [
-    "monastero di Pavia"
-   ],
-   "occurrences": [
-    "mr:0304-appianus"
-   ],
-   "claims": [],
-   "failed": [
-    "redecide: left without an item (unresolved); research found one"
-   ],
-   "candidates": [
-    {
-     "wikidata": "Q3860504",
-     "label": "monastero di San Pietro in Ciel d'Oro",
-     "description": "",
-     "country": "IT",
-     "countries": [
-      "IT"
-     ],
-     "la": [],
-     "p9314": false,
-     "coords": null,
-     "types": [
-      "Q44613"
-     ],
-     "evidence": []
-    }
-   ],
-   "decision": null,
-   "edited": null,
-   "redecide": true,
-   "suggested": {
-    "wikidata": "Q3860504",
-    "country": "IT"
-   },
-   "confidence": "high",
-   "reasoning": "Research (2026-10-30, unlocated places): Zimmermann's biography (Bibliotheca Sanctorum, on santiebeati.it) says Appian was a monk of San Pietro in Ciel d'Oro at Pavia. His abbot sent him to Comacchio to supervise the monastery's salt supply, and the house kept his memory on 6 November. Q3860504 is the monastery itself (P31 monastery, in Pavia); the church is Q2036332. Previous note: no item, unlocated: A monastery of Pavia from which Appian was sent; which one is unidentified"
-  },
-  {
-   "op": "resolve_place",
    "id": "monastério Storacénsi",
    "la": "monastério Storacénsi",
    "it": [
