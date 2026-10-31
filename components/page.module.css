@@ -17,6 +17,7 @@
 }
 .idSubject { font-family: Georgia, "Times New Roman", serif; font-size: 0.8rem; color: #785028; letter-spacing: normal; }
 .idCode { margin-left: auto; }
+.idItem { font-family: Georgia, "Times New Roman", serif; font-size: 0.75rem; letter-spacing: normal; text-decoration: underline; }
 .idHint + .entry { margin-top: 0.5rem; }
 /* The eulogy the subject search went to: a brief wash that fades out. */
 .entry[data-found] { animation: found 2.4s ease-out; border-radius: 3px; }

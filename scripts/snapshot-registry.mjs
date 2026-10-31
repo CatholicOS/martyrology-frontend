@@ -24,6 +24,7 @@ import { fileURLToPath } from "node:url";
  * @property {string|null} country
  * @property {string|null} attested_in
  * @property {{la: string, it: string, en: string}} subject
+ * @property {{wikidata: string, kind: string}} [item] what a eulogy of no single person commemorates (crmedr data/eulogy_items.json)
  *
  * @param {{entries: RegistryEntry[]}} registry
  * @param {Record<string, string>} la
@@ -44,6 +45,7 @@ export function buildSnapshot(registry, la, it, en) {
       country: e.country ?? null,
       attested_in: e.attested_in ?? null,
       subject: { la: la[e.id] ?? "", it: it[e.id] ?? "", en: en[e.id] ?? "" },
+      ...(e.item ? { item: { wikidata: e.item.wikidata, kind: e.item.kind } } : {}),
     };
   }
   return out;
