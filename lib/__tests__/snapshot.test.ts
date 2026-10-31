@@ -19,6 +19,13 @@ describe("buildSnapshot", () => {
     expect(snap["mr:0101-circumcisio-domini"].deprecated).toBe(true);
     expect(snap["mr:0101-circumcisio-domini"].attested_in).toBe("martyrologium_romanum_1749");
   });
+
+  it("copies a eulogy's item, and leaves the key out when it has none", () => {
+    const withItem = { entries: [{ ...registry.entries[0], item: { wikidata: "Q85977003", kind: "group" } }, registry.entries[1]] };
+    const snap = buildSnapshot(withItem, la, itSubj, en);
+    expect(snap["mr:0104-titus"].item).toEqual({ wikidata: "Q85977003", kind: "group" });
+    expect("item" in snap["mr:0101-circumcisio-domini"]).toBe(false);
+  });
 });
 
 describe("buildMisprints", () => {
