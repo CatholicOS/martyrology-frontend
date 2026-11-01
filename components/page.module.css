@@ -177,13 +177,18 @@
 .place { text-decoration-style: dashed; }
 .person[data-active] { background-color: rgba(214, 170, 60, 0.25); }
 .place[data-active] { background-color: rgba(11, 110, 127, 0.15); }
+/* A mark inside another, lit with the outer mark: the outer's tint, its own while it is active itself. */
+.withinPerson[data-within-active]:not([data-active]) { background-color: rgba(214, 170, 60, 0.25); }
+.withinPlace[data-within-active]:not([data-active]) { background-color: rgba(11, 110, 127, 0.15); }
 .mention:focus-visible { outline: 2px solid rgba(11, 110, 127, 0.5); outline-offset: 1px; }
 @media (prefers-color-scheme: dark) {
   .person[data-active] { background-color: rgba(250, 204, 21, 0.2); }
   .place[data-active] { background-color: rgba(103, 232, 249, 0.18); }
+  .withinPerson[data-within-active]:not([data-active]) { background-color: rgba(250, 204, 21, 0.2); }
+  .withinPlace[data-within-active]:not([data-active]) { background-color: rgba(103, 232, 249, 0.18); }
 }
 @media (forced-colors: active) {
-  .mention[data-active] { forced-color-adjust: none; background-color: Highlight; color: HighlightText; }
+  .mention[data-active], .mention[data-within-active] { forced-color-adjust: none; background-color: Highlight; color: HighlightText; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mention { transition: none; }
