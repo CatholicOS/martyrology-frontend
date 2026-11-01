@@ -39,9 +39,28 @@ describe("mentionsIn", () => {
 
   it("keeps the first of two overlapping mentions and warns", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const inside: Mention = { kind: "person", where: "text", start: 11, end: 21, form: "Cappadócia", name: null, qid: null };
-    expect(mentionsIn([place, inside], "text", "ed", "mr:x", TEXT.length).map((m) => m.form)).toEqual(["Cæsaréæ in Cappadócia"]);
+    const across: Mention = { kind: "person", where: "text", start: 11, end: 30, form: "Cappadócia, sepultúra", name: "X", qid: null };
+    expect(mentionsIn([place, across], "text", "ed", "mr:x", TEXT.length).map((m) => m.form)).toEqual(["Cæsaréæ in Cappadócia"]);
     expect(warn).toHaveBeenCalledWith(expect.stringContaining("overlaps"));
+    warn.mockRestore();
+  });
+
+  it("keeps a mark inside one of the other kind, one level deep, as within it", () => {
+    const inner: Mention = { kind: "person", where: "text", start: 11, end: 21, form: "Cappadócia", name: "X", qid: null };
+    const ms = mentionsIn([place, inner], "text", "ed", "mr:x", TEXT.length);
+    expect(ms.map((m) => [m.form, m.within?.key ?? null])).toEqual([
+      ["Cæsaréæ in Cappadócia", null], ["Cappadócia", "ed|mr:x|text|0"]]);
+  });
+
+  it("drops a mark inside one of its own kind, or a second level, and warns", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const samePlace: Mention = { kind: "place", where: "text", start: 11, end: 21, form: "Cappadócia", name: null, qid: null };
+    expect(mentionsIn([place, samePlace], "text", "ed", "mr:x", TEXT.length)).toHaveLength(1);
+    const inner: Mention = { kind: "person", where: "text", start: 11, end: 21, form: "Cappadócia", name: "X", qid: null };
+    const deeper: Mention = { kind: "place", where: "text", start: 11, end: 15, form: "Capp", name: null, qid: null };
+    expect(mentionsIn([place, inner, deeper], "text", "ed", "mr:x", TEXT.length).map((m) => m.form))
+      .toEqual(["Cæsaréæ in Cappadócia", "Cappadócia"]);
+    expect(warn).toHaveBeenCalledTimes(2);
     warn.mockRestore();
   });
 
@@ -66,6 +85,26 @@ describe("splitByMentions", () => {
     const after = splitByMentions(7, 30, ms);
     expect(after[0]).toMatchObject({ start: 7, end: 21, first: false });
     expect(after[0].mention?.key).toBe("ed|mr:x|text|0");
+  });
+
+  it("cuts a mark around the one inside it, which carries the mark it is within", () => {
+    const inner: Mention = { kind: "person", where: "text", start: 11, end: 21, form: "Cappadócia", name: "X", qid: null };
+    const nested = mentionsIn([place, inner], "text", "ed", "mr:x", TEXT.length);
+    const pieces = splitByMentions(0, 22, nested);
+    expect(pieces.map((p) => [p.start, p.end, p.mention?.form ?? null, p.first, p.within?.form ?? null])).toEqual([
+      [0, 11, "Cæsaréæ in Cappadócia", true, null],
+      [11, 21, "Cappadócia", true, "Cæsaréæ in Cappadócia"],
+      [21, 22, null, false, null],
+    ]);
+  });
+
+  it("makes the outer mark's first piece the one after an inner mark at its start", () => {
+    const inner: Mention = { kind: "person", where: "text", start: 0, end: 7, form: "Cæsaréæ", name: "X", qid: null };
+    const nested = mentionsIn([place, inner], "text", "ed", "mr:x", TEXT.length);
+    expect(splitByMentions(0, 21, nested).map((p) => [p.start, p.end, p.mention?.form, p.first])).toEqual([
+      [0, 7, "Cæsaréæ", true],
+      [7, 21, "Cæsaréæ in Cappadócia", true],
+    ]);
   });
 
   it("returns nothing for an empty stretch", () => {

@@ -11,6 +11,8 @@ export interface PlacedMention extends Mention {
   /** Its own group and, for a mark that names several persons, each other person's: tinted with all of them. */
   groups: string[];
   eulogy: string;
+  /** The mark of the other kind this one is printed inside ("Placéntia" in "Conrádi de Placéntia Confalonieri"). */
+  within?: PlacedMention;
 }
 
 /** A stretch of text between two cut points, inside a mention or not; `first` marks a mention's first piece. */
@@ -19,6 +21,8 @@ export interface Piece {
   end: number;
   mention: PlacedMention | null;
   first: boolean;
+  /** For a piece of an inner mark, the mark it is printed inside. */
+  within?: PlacedMention | null;
 }
 
 const whereKey = (w: Mention["where"]) => (w === "text" ? "text" : `fn${w.footnote}`);
@@ -59,26 +63,33 @@ export function personsOf(m: PlacedMention): PlacedMention[] {
 
 /**
  * The mentions of `where` (the text, or footnote n) that fit a text of `length`, sorted and keyed for the eulogy
- * as printed in `edition`. A mention past the text (the text corrected since) is left out. Two that overlap should
- * not exist (crmedr forbids it): the first in the list is kept, the other dropped with a warning.
+ * as printed in `edition`. A mention past the text (the text corrected since) is left out. A mark may lie inside one
+ * mark of the other kind, one level deep (a place in a person's name, a person in a place phrase): it is kept `within`
+ * it. Any other overlap should not exist (crmedr forbids it): the earlier mark is kept, the other dropped with a warning.
  */
 export function mentionsIn(
   mentions: Mention[] | undefined, where: "text" | number, edition: string, eulogy: string, length: number,
 ): PlacedMention[] {
   const kept: PlacedMention[] = [];
-  for (const m of mentions ?? []) {
-    const here = where === "text" ? m.where === "text" : m.where !== "text" && m.where.footnote === where;
-    if (!here || m.start < 0 || m.end > length || m.end <= m.start) continue;
-    const clash = kept.find((k) => m.start < k.end && k.start < m.end);
-    if (clash) {
-      console.warn(`markup: ${eulogy}: "${m.form}" (${m.start}–${m.end}) overlaps "${clash.form}" and is not marked`);
+  const here = (m: Mention) => (where === "text" ? m.where === "text" : m.where !== "text" && m.where.footnote === where);
+  // The outer of two nested marks first: by start, the longer first.
+  const candidates = (mentions ?? []).filter((m) => here(m) && m.start >= 0 && m.end <= length && m.end > m.start)
+    .sort((a, b) => a.start - b.start || b.end - a.end);
+  for (const m of candidates) {
+    const crossed = kept.filter((k) => m.start < k.end && k.start < m.end);
+    const outer = crossed.length === 1 ? crossed[0] : undefined;
+    const nests = outer !== undefined && !outer.within && outer.kind !== m.kind
+      && outer.start <= m.start && m.end <= outer.end && (outer.start !== m.start || outer.end !== m.end);
+    if (crossed.length > 0 && !nests) {
+      console.warn(`markup: ${eulogy}: "${m.form}" (${m.start}–${m.end}) overlaps "${crossed[0].form}" and is not marked`);
       continue;
     }
     const group = mentionGroup(edition, eulogy, m);
     const others = m.kind === "person" ? (m.others ?? []).map((o) => personGroup(eulogy, o.name, o.n)) : [];
-    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m), group, groups: [group, ...others] });
+    kept.push({ ...m, eulogy, key: mentionKey(edition, eulogy, m), group, groups: [group, ...others],
+      ...(nests ? { within: outer } : {}) });
   }
-  return kept.sort((a, b) => a.start - b.start);
+  return kept;
 }
 
 /**
@@ -86,18 +97,36 @@ export function mentionsIn(
  * Never an empty piece, so none can be made focusable (two cut points at one offset leave an empty stretch).
  */
 export function splitByMentions(from: number, to: number, mentions: PlacedMention[]): Piece[] {
+  const outers = mentions.filter((m) => !m.within);
+  const inners = mentions.filter((m) => m.within);
+  // Where a mark's own words begin: past any inner mark printed at its start.
+  const firstAt = (m: PlacedMention) => {
+    let at = m.start;
+    for (let i; (i = inners.find((x) => x.within?.key === m.key && x.start === at)); ) at = i.end;
+    return at;
+  };
   const pieces: Piece[] = [];
+  const push = (start: number, end: number, mention: PlacedMention | null, first: boolean) => {
+    if (start < end) pieces.push({ start, end, mention, first, ...(mention?.within ? { within: mention.within } : {}) });
+  };
   let at = from;
-  for (const m of mentions) {
+  for (const m of outers) {
     if (m.end <= from || m.start >= to) continue;
     const s = Math.max(m.start, from);
     const e = Math.min(m.end, to);
     if (s >= e) continue;
-    if (s > at) pieces.push({ start: at, end: s, mention: null, first: false });
-    pieces.push({ start: s, end: e, mention: m, first: s === m.start });
+    push(at, s, null, false);
+    // The outer mark in pieces around the marks inside it.
+    let cut = s;
+    for (const i of inners.filter((x) => x.within?.key === m.key && x.end > s && x.start < e)) {
+      push(cut, Math.max(i.start, s), m, Math.max(i.start, s) > cut && cut === firstAt(m));
+      push(Math.max(i.start, s), Math.min(i.end, e), i, Math.max(i.start, s) === i.start);
+      cut = Math.min(i.end, e);
+    }
+    push(cut, e, m, cut === firstAt(m));
     at = e;
   }
-  if (at < to) pieces.push({ start: at, end: to, mention: null, first: false });
+  push(at, to, null, false);
   return pieces;
 }
 

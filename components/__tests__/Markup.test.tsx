@@ -92,6 +92,34 @@ describe("the markup", () => {
     expect(pieces[0]).toHaveAttribute("aria-expanded", "true");
   });
 
+  it("draws a mark inside another as its own piece, tinted with the outer mark too", () => {
+    // "Conrádi de Placéntia Confalonieri": the place is printed inside the person's name.
+    const text = "Neti, beáti Conrádi de Placéntia Confalonieri, eremítæ.";
+    const nested: Mention[] = [
+      { kind: "person", where: "text", start: 12, end: 45, form: "Conrádi de Placéntia Confalonieri", name: "Conradus", qid: null },
+      { kind: "place", where: "text", start: 23, end: 32, form: "Placéntia", name: null, qid: "Q13362" },
+    ];
+    const { container } = render(
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
+        <p><MentionText text={text} mentions={nested} where="text" eulogy="mr:0219-x" edition="ed" /></p>
+      </MarkupProvider>,
+    );
+    const pieces = [...container.querySelectorAll<HTMLElement>("[data-mention]")];
+    expect(pieces.map((n) => n.textContent)).toEqual(["Conrádi de ", "Placéntia", " Confalonieri"]);
+    expect(pieces[1]).toHaveClass(styles.mention, styles.place, styles.withinPerson);
+    expect(pieces[0]).toHaveAttribute("tabindex", "0");
+    expect(pieces[1]).toHaveAttribute("tabindex", "0");
+    expect(pieces[2]).not.toHaveAttribute("tabindex");
+    fireEvent.mouseEnter(pieces[0]);
+    expect(pieces[2]).toHaveAttribute("data-active");
+    expect(pieces[1]).not.toHaveAttribute("data-active");
+    expect(pieces[1]).toHaveAttribute("data-within-active");
+    fireEvent.mouseLeave(pieces[0]);
+    fireEvent.mouseEnter(pieces[1]);
+    expect(pieces[1]).toHaveAttribute("data-active");
+    expect(pieces[0]).not.toHaveAttribute("data-active");
+  });
+
   it("opens on hover after the delay, and closes after the pointer leaves", () => {
     render(<Page />);
     fireEvent.mouseEnter(person());
