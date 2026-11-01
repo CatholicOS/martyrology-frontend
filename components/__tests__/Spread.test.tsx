@@ -53,17 +53,17 @@ describe("Spread", () => {
   it("with the IDs, sets each sheet's subject in its own edition's language", async () => {
     const EN = "martyrologium_romanum_1914_en_unofficial";
     serve({
-      [A]: day(A, [el("mr:1002-leodegarius", 1, "Augustoduni sancti Leodegarii.")]),
-      [EN]: day(EN, [el("mr:1002-leodegarius", 3, "At Autun, St. Leodegarius.")]),
+      [A]: day(A, [el("mr:1002-leodegarius-augustodunensis", 1, "Augustoduni sancti Leodegarii.")]),
+      [EN]: day(EN, [el("mr:1002-leodegarius-augustodunensis", 3, "At Autun, St. Leodegarius.")]),
     });
     render(<Spread a={A} b={EN} editions={[...EDITIONS, ed(EN, 1914, "en")]} mm={10} dd={4} signedIn={false} turn={null} showIds />);
     await screen.findByText("Augustoduni sancti Leodegarii.");
-    expect(screen.getByText("Sanctus Leodegarius")).toHaveAttribute("lang", "la");
-    expect(cellOf("Sanctus Leodegarius")).toHaveAttribute("data-side", "a");
-    expect(cellOf("Saint Leodegar")).toHaveAttribute("data-side", "b");
-    expect(cellOf("Sanctus Leodegarius")).toBe(cellOf("Augustoduni sancti Leodegarii."));
-    expect(screen.getByText("Saint Leodegar")).toHaveAttribute("lang", "en");
-    expect(cellOf("Saint Leodegar")).toBe(cellOf("At Autun, St. Leodegarius."));
+    expect(screen.getByText("Sanctus Leodegarius Augustodunensis")).toHaveAttribute("lang", "la");
+    expect(cellOf("Sanctus Leodegarius Augustodunensis")).toHaveAttribute("data-side", "a");
+    expect(cellOf("Saint Leodegar of Autun")).toHaveAttribute("data-side", "b");
+    expect(cellOf("Sanctus Leodegarius Augustodunensis")).toBe(cellOf("Augustoduni sancti Leodegarii."));
+    expect(screen.getByText("Saint Leodegar of Autun")).toHaveAttribute("lang", "en");
+    expect(cellOf("Saint Leodegar of Autun")).toBe(cellOf("At Autun, St. Leodegarius."));
   });
 
   it("sets a eulogy level with its counterpart, on its own sheet", async () => {

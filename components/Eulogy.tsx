@@ -1,5 +1,6 @@
 import { NoteMark } from "@/components/CuratorNotes";
 import { MarginNotes } from "@/components/PrintedFootnotes";
+import EulogyItemLink from "@/components/EulogyItemLink";
 import EulogyText from "@/components/EulogyText";
 import styles from "@/components/page.module.css";
 import type { Lang } from "@/lib/calendar";
@@ -32,9 +33,11 @@ export default function Eulogy({
   const side = beside.length > 0 ? <MarginNotes notes={beside} /> : null;
   const text = note ? <>{side}{printed}<NoteMark note={note} /></> : <>{side}{printed}</>;
   const subject = showId && e.id && lang ? getSnapshot()[e.id]?.subject?.[lang]?.trim() : "";
+  const item = showId && e.id ? getSnapshot()[e.id]?.item : undefined;
   const hint = showId && e.id ? (
     <p className={styles.idHint}>
       {subject && <span className={styles.idSubject} lang={lang}>{subject}</span>}
+      <EulogyItemLink item={item} className={styles.idItem} />
       <span className={styles.idCode}>{e.id}</span>
     </p>
   ) : null;

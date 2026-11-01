@@ -36,13 +36,13 @@
     "intended": "Cauleas"
   },
   {
-    "id": "mr:0305-phoca",
+    "id": "mr:0305-phoca-sinopes",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "nell’odiena",
     "intended": "nell’odierna"
   },
   {
-    "id": "mr:0310-attala",
+    "id": "mr:0310-attala-bobiensis",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "tala",
     "intended": "Attala"
@@ -164,31 +164,31 @@
     "intended": "Scubícolo"
   },
   {
-    "id": "mr:1013-comganus",
+    "id": "mr:1013-comganus-hiensis",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "desposizione",
     "intended": "deposizione"
   },
   {
-    "id": "mr:1014-venantius",
+    "id": "mr:1014-venantius-lunae",
     "edition": "martyrologium_romanum_2004_it_IT",
     "printed": "comemorazione",
     "intended": "commemorazione"
   },
   {
-    "id": "mr:1102-ambrosius",
+    "id": "mr:1102-ambrosius-agaunensis",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "outstanĐing",
     "intended": "outstanding"
   },
   {
-    "id": "mr:1102-winefrida",
+    "id": "mr:1102-winefrida-holywell",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "outstanĐing",
     "intended": "outstanding"
   },
   {
-    "id": "mr:1103-ermengaudius",
+    "id": "mr:1103-ermengaudius-urgelli",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "rebuilĐing",
     "intended": "rebuilding"
@@ -236,25 +236,25 @@
     "intended": "shedding"
   },
   {
-    "id": "mr:1111-bartholomaeus",
+    "id": "mr:1111-bartholomaeus-cryptae-ferratae",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "founĐing",
     "intended": "founding"
   },
   {
-    "id": "mr:1112-nilus",
+    "id": "mr:1112-nilus-ancyrae",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "spreaĐing",
     "intended": "spreading"
   },
   {
-    "id": "mr:1113-abbo",
+    "id": "mr:1113-abbo-floriacensis",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "defenĐing",
     "intended": "defending"
   },
   {
-    "id": "mr:1113-varmundus",
+    "id": "mr:1113-varmundus-eporediae",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "outstanĐing",
     "intended": "outstanding"
@@ -266,7 +266,7 @@
     "intended": "spreading"
   },
   {
-    "id": "mr:1115-desiderius",
+    "id": "mr:1115-desiderius-cadurci",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "builĐings",
     "intended": "buildings"
@@ -290,19 +290,19 @@
     "intended": "founding"
   },
   {
-    "id": "mr:1116-othmarus",
+    "id": "mr:1116-othmarus-sancti-galli",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "defenĐing",
     "intended": "defending"
   },
   {
-    "id": "mr:1117-gertrudis",
+    "id": "mr:1117-gertrudis-magna",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "preceĐing",
     "intended": "preceding"
   },
   {
-    "id": "mr:1117-hilda",
+    "id": "mr:1117-hilda-vitbiae",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "reaĐing",
     "intended": "reading"
@@ -326,7 +326,7 @@
     "intended": "Ferdinand"
   },
   {
-    "id": "mr:1118-odo",
+    "id": "mr:1118-odo-cluniacensis",
     "edition": "martyrologium_romanum_2004_en_unofficial",
     "printed": "accorĐing",
     "intended": "according"
@@ -338,7 +338,7 @@
     "intended": "defending"
   },
   {
-    "id": "mr:1204-adrehildis",
+    "id": "mr:1204-adrehildis-cenomanorum",
     "edition": "martyrologium_romanum_2004",
     "printed": "monastériii",
     "intended": "monastérii"

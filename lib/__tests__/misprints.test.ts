@@ -30,7 +30,7 @@ describe("misprintsFor", () => {
   });
 
   it("reads the bundled snapshot by default", () => {
-    expect(misprintsFor(IT, "mr:0305-phoca")).toEqual([m("mr:0305-phoca", IT, "nell’odiena", "nell’odierna")]);
+    expect(misprintsFor(IT, "mr:0305-phoca-sinopes")).toEqual([m("mr:0305-phoca-sinopes", IT, "nell’odiena", "nell’odierna")]);
   });
 });
 

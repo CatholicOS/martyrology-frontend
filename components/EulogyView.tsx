@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import EulogyItemLink from "@/components/EulogyItemLink";
 import EulogyText from "@/components/EulogyText";
 import { getElogium, ApiError } from "@/lib/api";
 import { apiErrorTitle } from "@/lib/api-error-title";
@@ -116,6 +117,11 @@ export default function EulogyView({
       {eulogy && sel && (
         <>
           <p className="font-semibold">{subjectFor(eulogy.subject, locale, eulogy.id)}</p>
+          {eulogy.item && (
+            <p className="text-xs">
+              <EulogyItemLink item={eulogy.item} className="text-blue-700 underline dark:text-blue-400" />
+            </p>
+          )}
           <div className={showAlongside ? "grid gap-3 sm:grid-cols-2" : undefined}>
             <div>
               {sel.isFallback && sel.editionId && (

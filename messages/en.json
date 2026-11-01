@@ -751,5 +751,11 @@
   },
   "Errors": {
     "unreachable": "API unreachable"
+  },
+  "EulogyItem": {
+    "group": "Group on Wikidata",
+    "feast": "Feast on Wikidata",
+    "dedication": "Church on Wikidata",
+    "translation": "Translation on Wikidata"
   }
 }

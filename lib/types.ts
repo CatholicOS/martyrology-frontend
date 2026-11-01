@@ -126,6 +126,8 @@ export interface EulogyOut {
   editions: Record<string, EditionPlacement>;
   /** The same eulogy printed by another edition on another day (other IDs). */
   same_eulogy?: string[];
+  /** Its Wikidata item as a whole (a group, feast, church, translation); absent or null for most. */
+  item?: { wikidata: string; kind: "group" | "feast" | "dedication" | "translation" } | null;
 }
 
 export interface ElogiumOut {

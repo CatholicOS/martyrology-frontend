@@ -68,7 +68,7 @@ describe("DayPage", () => {
 describe("DayPage misprints", () => {
   const it2004 = {
     titulus: null,
-    elogia: [{ id: "mr:0305-phoca", entry: 4, asterisk: false, unnumbered: false, anchor_day: "03-05", text: "Commemorazione nell’odiena Turchia di san Foca." }],
+    elogia: [{ id: "mr:0305-phoca-sinopes", entry: 4, asterisk: false, unnumbered: false, anchor_day: "03-05", text: "Commemorazione nell’odiena Turchia di san Foca." }],
     conclusio: null,
   };
 
@@ -92,7 +92,7 @@ describe("DayPage, a print that numbers no eulogies", () => {
   it("prints no number, asterisk or full stop when a eulogy has no entry", () => {
     const unnumberedPrint = {
       titulus: "4 Octobris",
-      elogia: [{ id: "mr:1004-petronius", entry: null, asterisk: false, unnumbered: false, anchor_day: "10-04", text: "Bononiae sancti Petronii." }],
+      elogia: [{ id: "mr:1004-petronius-bononiae", entry: null, asterisk: false, unnumbered: false, anchor_day: "10-04", text: "Bononiae sancti Petronii." }],
       conclusio: null,
     };
     render(<DayPage day={unnumberedPrint} heading="" />);
@@ -188,7 +188,7 @@ describe("DayPage, printed footnotes", () => {
       ...day,
       elogia: [
         {
-          id: "mr:0305-phoca", entry: 1, asterisk: false, unnumbered: false, anchor_day: "03-05",
+          id: "mr:0305-phoca-sinopes", entry: 1, asterisk: false, unnumbered: false, anchor_day: "03-05",
           text: "Commemorazione nell’odiena memoria.", footnotes: [{ mark: "1", after: "nell’odiena", text: "Nota." }],
         },
       ],
@@ -279,22 +279,22 @@ describe("DayPage, the edition's printed errata", () => {
   });
 
   describe("with the IDs, the subject beside each", () => {
-    const leo = { id: "mr:1002-leodegarius", entry: 4, asterisk: false, unnumbered: false, anchor_day: "10-02", text: "Augustoduni sancti Leodegarii." };
+    const leo = { id: "mr:1002-leodegarius-augustodunensis", entry: 4, asterisk: false, unnumbered: false, anchor_day: "10-02", text: "Augustoduni sancti Leodegarii." };
     const withLeo = { ...day, elogia: [...day.elogia, leo] };
     const hint = (id: string) => screen.getByText(id).parentElement!;
 
     it("sets the registry's subject in the edition's language on the ID's line, marked as that language", () => {
       render(<DayPage day={withLeo} heading="" lang="la" showIds />);
-      const subject = within(hint("mr:1002-leodegarius")).getByText("Sanctus Leodegarius");
-      expect(hint("mr:1002-leodegarius")).toHaveClass(styles.idHint);
+      const subject = within(hint("mr:1002-leodegarius-augustodunensis")).getByText("Sanctus Leodegarius Augustodunensis");
+      expect(hint("mr:1002-leodegarius-augustodunensis")).toHaveClass(styles.idHint);
       expect(subject).toHaveClass(styles.idSubject);
       expect(subject).toHaveAttribute("lang", "la");
     });
 
     it("puts the subject first, at the left, and the ID after it, at the right", () => {
       render(<DayPage day={withLeo} heading="" lang="la" showIds />);
-      const parts = [...hint("mr:1002-leodegarius").children];
-      expect(parts.map((c) => c.textContent)).toEqual(["Sanctus Leodegarius", "mr:1002-leodegarius"]);
+      const parts = [...hint("mr:1002-leodegarius-augustodunensis").children];
+      expect(parts.map((c) => c.textContent)).toEqual(["Sanctus Leodegarius Augustodunensis", "mr:1002-leodegarius-augustodunensis"]);
       expect(parts[1]).toHaveClass(styles.idCode);
       // Without a subject the ID keeps its place at the right.
       expect(screen.getByText("mr:1002-x")).toHaveClass(styles.idCode);
@@ -302,10 +302,10 @@ describe("DayPage, the edition's printed errata", () => {
 
     it("takes the Italian and the English subjects for those editions", () => {
       const { unmount } = render(<DayPage day={withLeo} heading="" lang="it" showIds />);
-      expect(within(hint("mr:1002-leodegarius")).getByText("San Leodegario")).toHaveAttribute("lang", "it");
+      expect(within(hint("mr:1002-leodegarius-augustodunensis")).getByText("San Leodegario di Autun")).toHaveAttribute("lang", "it");
       unmount();
       render(<DayPage day={withLeo} heading="" lang="en" showIds />);
-      expect(within(hint("mr:1002-leodegarius")).getByText("Saint Leodegar")).toHaveAttribute("lang", "en");
+      expect(within(hint("mr:1002-leodegarius-augustodunensis")).getByText("Saint Leodegar of Autun")).toHaveAttribute("lang", "en");
     });
 
     it("shows nothing beside an ID without a subject in the edition's language, or unknown to the registry", () => {
@@ -318,7 +318,7 @@ describe("DayPage, the edition's printed errata", () => {
 
     it("shows no subject without the IDs", () => {
       render(<DayPage day={withLeo} heading="" lang="la" />);
-      expect(screen.queryByText("Sanctus Leodegarius")).toBeNull();
+      expect(screen.queryByText("Sanctus Leodegarius Augustodunensis")).toBeNull();
     });
   });
 });
