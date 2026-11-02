@@ -1001,7 +1001,7 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"where he was a vigorous helper\" where the Latin \"cui strénuus fuit adiútor\" means he was a vigorous helper to the pope."
     }
   },
-  "mr:0318-salvator-de-horta": {
+  "mr:0318-salvator-grionesos": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"from Girona\" where the Latin has the surname \"Grionesos\"."
     }
@@ -1062,7 +1062,7 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Pont-Sainte-Maxence\" where the Latin has \"Pontísaræ\" (Pontoise)."
     }
   },
-  "mr:0323-rebecca-de-himlaya": {
+  "mr:0323-rebecca-ar-rayyas": {
     "editions": {
       "martyrologium_romanum_2004": "Printed here without an asterisk (entry 11.); the Italian (CEI) edition marks the entry with one.",
       "martyrologium_romanum_2004_it_IT": "Asterisked here; the Latin editio altera prints the entry without an asterisk (11.). Translation error: \"Congregazione delle Suore Libanesi Maronite\" where the Latin has \"Ordine Libanénsi Sancti Antónii Maronitárum\" (the Lebanese Maronite Order of Saint Anthony)."
@@ -4371,7 +4371,7 @@
   "mr:0103-cyrinus-et-socii": {
     "note": "The 2004 edition reduces the eulogy to the sole Theogenes"
   },
-  "mr:0107-clerus": {
+  "mr:0107-clerus-antiochiae": {
     "note": "The 2004 edition commemorates a deacon and martyr of Antioch on 14 January as Glycerius (mr:0114-glycerius-antiochiae) and does not print Clerus, who is probably the same martyr under a corrupted name: the Bibliotheca Sanctorum takes Baronius's “Clerus” for a second entry of Glycerius; the Hieronymian Martyrology gives the name of the Antioch deacon in several forms (one manuscript has a deacon Lucerus at Antioch on 7 January) on 7, 13 and 15 January; and the other names recorded for Clerus (Licerius, Lycerius, Lucerius, Bilicerius) are forms of Glycerius. Not settled: no source states the identification outright or explains the 2004 date, 14 January, which is the day the Syriac Martyrology gives a deacon Glycerius of Nicomedia; and some calendars have Glycerius of Antioch drowned, as the Syriac Martyrology says of another Glycerius at Antioch (8 June), where the historical editions have Clerus beheaded."
   },
   "mr:0114-triginta-octo-monachi-montis-sina": {
@@ -4380,7 +4380,7 @@
   "mr:0114-euphrasius-africae": {
     "note": "The historical editions commemorate a bishop Euphrasius in Africa on this day; in the same eulogy the 2004 edition commemorates Euphrasius, bishop of Clermont (mr:0114-euphrasius-arvernae)."
   },
-  "mr:0119-canutus": {
+  "mr:0119-canutus-ottoniae": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "\"Whose birthday is the 7th of this month\" seems to be an error, as this would point to Canute Lavard (mr:0107-canutus-lavard), who was not a king."
     }
@@ -4400,7 +4400,7 @@
   "mr:0504-triginta-novem-martyres-phaenonis": {
     "note": "The 1749 and 1914 editions print the thirty-nine martyrs of the mines of Phaeno as a eulogy of their own, after that of Silvanus of Gaza; the 2004 edition commemorates them together with him in mr:0504-silvanus-et-socii."
   },
-  "mr:0513-mucius": {
+  "mr:0513-mucius-byzantii": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Translation error: 'Lucius' where the Latin has 'Mucii'."
     }
@@ -4421,7 +4421,7 @@
       "martyrologium_romanum_1914_en_unofficial": "This text joins the Octave and the Seven Sorrows in one sentence, with no clean point to split it; the Seven Sorrows half corresponds to mr:0915-maria-perdolens."
     }
   },
-  "mr:0923-paternus": {
+  "mr:0923-paternus-abrincensis": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the 1749 Latin calls him 'Episcopi Abrincensis et Confessoris', not a martyr."
     }
@@ -4429,7 +4429,7 @@
   "mr:0928-marcus-et-socii": {
     "note": "The 2004 edition drops Mark and leads with the three brothers."
   },
-  "mr:1020-felicianus": {
+  "mr:1020-felicianus-fulginii": {
     "editions": {
       "martyrologium_romanum_1914_en_unofficial": "Translation error: the Latin is a translation of relics (Translatio), not a birthday."
     }
