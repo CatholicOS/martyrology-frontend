@@ -76,9 +76,9 @@ export default function NamesIndex({ edition, title, index, error = false, lette
           const id = `${headingId(p.key)}-${mentioned ? "m" : "c"}`;
           return (
             <div key={id}>
-              <p id={id} className="ml-4 mt-1 text-xs uppercase tracking-wide text-slate-600">
+              <h4 id={id} className="ml-4 mt-1 text-xs font-normal uppercase tracking-wide text-slate-600">
                 {t(mentioned ? "mentionedGroup" : "commemoratedGroup")}
-              </p>
+              </h4>
               {lineList(lines, id)}
             </div>
           );
