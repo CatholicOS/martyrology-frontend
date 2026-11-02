@@ -185,4 +185,11 @@ describe("mentionGroup", () => {
     expect(mentionGroup("la", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("it", "mr:x", piece(9, 14, "Felix", 2)));
     expect(mentionGroup("la", "mr:x", piece(0, 5, "Felix"))).not.toBe(mentionGroup("la", "mr:y", piece(0, 5, "Felix")));
   });
+
+  it("joins an event's marks by its item, apart from a place of the same item", () => {
+    const at = (kind: "event" | "place", start: number, qid: string) =>
+      ({ kind, where: "text" as const, start, end: start + 4, form: "x", qid, name: null });
+    expect(mentionGroup("la", "mr:x", at("event", 0, "Q184332"))).toBe(mentionGroup("it", "mr:x", at("event", 9, "Q184332")));
+    expect(mentionGroup("la", "mr:x", at("event", 0, "Q1"))).not.toBe(mentionGroup("la", "mr:x", at("place", 0, "Q1")));
+  });
 });

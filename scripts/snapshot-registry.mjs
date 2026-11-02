@@ -419,6 +419,28 @@ export function buildPersonDetails(detailsDoc, qids) {
   return out;
 }
 
+/**
+ * crmedr's event details (data/event_details.json) for the event popups, by QID: the label in Latin and the
+ * interface languages, the description and Wikipedia title in the interface languages, the dates and the place it
+ * was held (a QID), as crmedr writes them.
+ * @param {Record<string, any>} eventsDoc
+ */
+export function buildEventDetails(eventsDoc) {
+  /** @param {Record<string, string> | undefined} o @param {string[]} langs */
+  const pick = (o, langs) => Object.fromEntries(langs.flatMap((l) => (o?.[l] ? [[l, o[l]]] : [])));
+  /** @type {Record<string, {label: Record<string, string>, description: Record<string, string>, start: WikidataDate|null, end: WikidataDate|null, place: string|null, wikipedia: Record<string, string>}>} */
+  const out = {};
+  for (const [q, d] of Object.entries(eventsDoc)) {
+    // crmedr's file carries a "$comment" beside the QIDs.
+    if (q.startsWith("$") || !d || typeof d === "string") continue;
+    out[q] = {
+      label: pick(d.label, ["la", ...LABEL_LANGS]), description: pick(d.description, LABEL_LANGS),
+      start: d.start ?? null, end: d.end ?? null, place: d.place ?? null, wikipedia: pick(d.wikipedia, LABEL_LANGS),
+    };
+  }
+  return out;
+}
+
 async function main() {
   const here = dirname(fileURLToPath(import.meta.url));
   const crmedr = process.argv[2] ?? join(here, "..", "..", "crmedr");
@@ -473,5 +495,13 @@ async function main() {
   const detailsDest = join(here, "..", "data", "person-details-snapshot.json");
   writeFileSync(detailsDest, JSON.stringify(details) + "\n");
   console.log(`wrote ${detailsDest}: ${Object.keys(details).length} persons with details`);
+
+  // The event popups' details (councils, synods): crmedr builds them from Wikidata too.
+  const eventsPath = join(crmedr, "data", "event_details.json");
+  const events = buildEventDetails(existsSync(eventsPath) ? JSON.parse(readFileSync(eventsPath, "utf8")) : {});
+  if (!existsSync(eventsPath)) console.log(`no ${eventsPath} yet: the event popups show the printed words only`);
+  const eventsDest = join(here, "..", "data", "event-details-snapshot.json");
+  writeFileSync(eventsDest, JSON.stringify(events) + "\n");
+  console.log(`wrote ${eventsDest}: ${Object.keys(events).length} events`);
 }
 if (import.meta.url === `file://${process.argv[1]}`) await main();

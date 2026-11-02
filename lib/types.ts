@@ -72,10 +72,10 @@ export interface Erratum {
 }
 
 /**
- * A person or place a eulogy names (crmedr's mentions, checked by the API against the text): where its words
+ * A person, place or event (a council or synod) a eulogy names (crmedr's mentions, checked by the API against the text): where its words
  * are, `start`/`end` in UTF-16 code units (JavaScript string indices) of the text or of footnote n (counted
  * from 1 in the eulogy's footnotes), and the Wikidata item crmedr decided for it, null while undecided.
- * `name` is a person's nominative, the key crmedr files them by; the API always sends it, null for a place.
+ * `name` is a person's nominative, the key crmedr files them by; the API always sends it, null for a place or event.
  */
 /** The role a place plays in a eulogy (crmedr `roles`); `name` / `n` say whose, as person mentions name them. */
 export interface MentionRole {
@@ -92,7 +92,7 @@ export interface MentionPerson {
 }
 
 export interface Mention {
-  kind: "person" | "place";
+  kind: "person" | "place" | "event";
   where: "text" | { footnote: number };
   start: number;
   end: number;

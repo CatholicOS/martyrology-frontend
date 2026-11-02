@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, type RefObject } from "react";
 import type { OpenPopup, ReaderPage } from "@/components/markup/Markup";
+import MentionEventCard from "@/components/markup/MentionEventCard";
 import MentionPersonCard from "@/components/markup/MentionPersonCard";
 import MentionPlaceCard from "@/components/markup/MentionPlaceCard";
 import { personsOf } from "@/lib/mentions";
@@ -74,6 +75,8 @@ export default function MentionPopup({ ref, open, lang, page, onEnter, onLeave }
         </div>
       ) : m.kind === "person" ? (
         <MentionPersonCard mention={m} page={page} headingId={headingId} />
+      ) : m.kind === "event" ? (
+        <MentionEventCard mention={m} lang={lang} headingId={headingId} />
       ) : (
         <MentionPlaceCard mention={m} edition={open.target.edition} lang={lang} headingId={headingId} />
       )}

@@ -70,7 +70,7 @@ const SAME_AS_ENGLISH: Record<string, readonly string[]> = {
   "Review.relabel.lang.la": ["fr"],
   // The relabel card's hint, "Wikidata: {labels}": a name and an argument (French spaces the colon).
   "Review.relabel.hint": ["it", "de", "es", "pt"],
-  "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.circa": ["es", "pt"],
+  "Markup.wikidata": ALL, "Markup.wikipedia": ALL, "Markup.lifeBoth": ALL, "Markup.eventYears": ALL, "Markup.circa": ["es", "pt"],
 };
 
 describe("messages are translated", () => {

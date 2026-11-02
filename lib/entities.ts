@@ -34,6 +34,19 @@ export interface PersonDetails {
 }
 
 /**
+ * An event's Wikidata details for the popup (crmedr data/event_details.json): a council or synod, its label in
+ * Latin and the interface languages, when it met and the place it was held (a QID).
+ */
+export interface EventDetails {
+  label: Labels & { la?: string };
+  description: Labels;
+  start: WikidataDate | null;
+  end: WikidataDate | null;
+  place: string | null;
+  wikipedia: Labels;
+}
+
+/**
  * A eulogy that names a person: its day and subject, whether the subject names them (their own eulogy), and the
  * footnote that names them when its text does not (the first, when several lists do).
  */
@@ -47,12 +60,17 @@ export interface EulogyLink {
 }
 
 /**
- * What a popup shows of one Wikidata item: a person's names, details and the eulogies that name them, or a
- * place's names and position.
+ * What a popup shows of one Wikidata item: a person's names, details and the eulogies that name them, a place's
+ * names and position, or an event's names, dates and the place it was held (named when the places snapshot
+ * knows it).
  */
 export type Entity =
   | { kind: "person"; labels: Labels; details: PersonDetails | null; eulogies: EulogyLink[] }
-  | { kind: "place"; labels: Labels; label: string; country: string; countries?: string[]; coords: [number, number] | null };
+  | { kind: "place"; labels: Labels; label: string; country: string; countries?: string[]; coords: [number, number] | null }
+  | {
+      kind: "event"; labels: EventDetails["label"]; description: Labels; start: WikidataDate | null; end: WikidataDate | null;
+      place: { qid: string; labels: Labels; label: string } | null; wikipedia: Labels;
+    };
 
 /** The most items one request may ask for: a day names a few dozen, a spread of two long days up to ~150. */
 export const MAX_IDS = 200;
@@ -107,18 +125,25 @@ function eulogyLinks(persons: PersonsSnapshot, registry: RegistrySnapshot): Map<
 }
 
 /**
- * What the popups show of each item asked for that the snapshots know: a place's labels, country and position,
- * else a person's labels, details and eulogies. An item none of them knows is left out.
+ * What the popups show of each item asked for that the snapshots know: an event's details, else a place's labels,
+ * country and position, else a person's labels, details and eulogies. An item none of them knows is left out.
  */
 export function entitiesFor(
   ids: string[], persons: PersonsSnapshot, details: Record<string, PersonDetails>, places: PlacesSnapshot,
-  registry: RegistrySnapshot,
+  registry: RegistrySnapshot, events: Record<string, EventDetails> = {},
 ): Record<string, Entity> {
   const links = eulogyLinks(persons, registry);
   const out: Record<string, Entity> = {};
   for (const q of ids) {
     const p = places.places[q];
-    if (p) out[q] = { kind: "place", labels: p.labels ?? {}, label: p.label, country: p.country, ...(p.countries ? { countries: p.countries } : {}), coords: p.coords };
+    const ev = events[q];
+    if (ev) {
+      const held = ev.place ? places.places[ev.place] : undefined;
+      out[q] = {
+        kind: "event", labels: ev.label, description: ev.description, start: ev.start, end: ev.end,
+        place: held && ev.place ? { qid: ev.place, labels: held.labels ?? {}, label: held.label } : null, wikipedia: ev.wikipedia,
+      };
+    } else if (p) out[q] = { kind: "place", labels: p.labels ?? {}, label: p.label, country: p.country, ...(p.countries ? { countries: p.countries } : {}), coords: p.coords };
     else if (persons.labels[q] || details[q] || links.has(q)) out[q] = {
       kind: "person", labels: persons.labels[q] ?? {}, details: details[q] ?? null, eulogies: links.get(q) ?? [],
     };

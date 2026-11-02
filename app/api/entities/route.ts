@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { entitiesFor, MAX_IDS, parseIds } from "@/lib/entities";
+import { getEventDetails } from "@/lib/event-details";
 import { getPersonDetails } from "@/lib/person-details";
 import { getPersons } from "@/lib/persons";
 import { getPlaces } from "@/lib/places";
@@ -9,7 +10,7 @@ import { getSnapshot } from "@/lib/snapshot";
 const CACHE = { "cache-control": "public, max-age=3600" };
 
 /**
- * The names, details, eulogies and positions of the persons and places a reader's page marks (/api/entities?ids=Q1,Q2),
+ * The names, details, eulogies and positions of the persons, places and events a reader's page marks (/api/entities?ids=Q1,Q2),
  * read from the snapshots here so the reader never downloads them.
  */
 export function GET(request: NextRequest) {
@@ -20,5 +21,5 @@ export function GET(request: NextRequest) {
       { status: 400, headers: { "content-type": "application/problem+json" } },
     );
   }
-  return Response.json({ entities: entitiesFor(ids, getPersons(), getPersonDetails(), getPlaces(), getSnapshot()) }, { headers: CACHE });
+  return Response.json({ entities: entitiesFor(ids, getPersons(), getPersonDetails(), getPlaces(), getSnapshot(), getEventDetails()) }, { headers: CACHE });
 }
