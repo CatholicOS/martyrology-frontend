@@ -9,7 +9,8 @@
     "dayTitle": "{day}. {month} — {books}",
     "notesTitle": "{edition}: Anmerkungen, Druckfehler und Errata",
     "placesTitle": "{edition}: Ortsregister",
-    "namesTitle": "{edition}: Namensregister"
+    "namesTitle": "{edition}: Namensregister",
+    "mentionedTitle": "{edition}: nicht kommemorierte Personen"
   },
   "Header": {
     "brand": "Martyrologium",
@@ -108,6 +109,7 @@
     "notesLink": "Anmerkungen & Errata",
     "placesLink": "Ortsregister",
     "namesLink": "Namensregister",
+    "mentionedLink": "Nicht kommemorierte Personen",
     "views": "Regal, Anmerkungen und Register",
     "shelf": "⟵ Regal",
     "loading": "Wird geladen…",
@@ -241,15 +243,21 @@
   },
   "Names": {
     "title": "{title}: Namensregister",
+    "mentionedTitle": "{title}: nicht kommemorierte Personen",
     "readEdition": "⟵ Ausgabe lesen",
     "notesLink": "Anmerkungen & Errata",
     "placesLink": "Ortsregister",
+    "namesLink": "Namensregister",
+    "mentionedLink": "Nicht kommemorierte Personen",
     "letters": "Buchstaben",
     "coverage": "{naming, number} der {printed, number} Elogien dieser Ausgabe nennen jemanden.",
     "notIndexed": "Die Personen dieser Ausgabe sind noch nicht erfasst.",
+    "noneNotCommemorated": "Jede Person, die diese Ausgabe erwähnt, wird irgendwo kommemoriert.",
     "loadError": "Das Register konnte nicht geladen werden.",
     "retry": "Erneut versuchen",
     "inFootnote": "in Fußnote {n}",
+    "commemoratedGroup": "Kommemoriert",
+    "mentionedGroup": "Erwähnt",
     "wikidata": "Wikidata",
     "see": "siehe"
   },

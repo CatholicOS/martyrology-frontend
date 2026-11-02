@@ -97,6 +97,10 @@ export default function ApparatusPage({ edition, back = NO_RETURN }: { edition: 
             <Link href={`/read/${encodeURIComponent(edition)}/names${returnQuery(back)}`} className="underline">
               {tReader("namesLink")}
             </Link>
+            {" · "}
+            <Link href={`/read/${encodeURIComponent(edition)}/mentioned${returnQuery(back)}`} className="underline">
+              {tReader("mentionedLink")}
+            </Link>
           </>
         )}
       </p>

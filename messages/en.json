@@ -9,7 +9,8 @@
     "dayTitle": "{day} {month} — {books}",
     "notesTitle": "{edition}: notes, misprints and errata",
     "placesTitle": "{edition}: index of places",
-    "namesTitle": "{edition}: index of names"
+    "namesTitle": "{edition}: index of names",
+    "mentionedTitle": "{edition}: persons not commemorated"
   },
   "Header": {
     "brand": "Martyrology",
@@ -108,6 +109,7 @@
     "notesLink": "Notes & errata",
     "placesLink": "Index of places",
     "namesLink": "Index of names",
+    "mentionedLink": "Persons not commemorated",
     "views": "Shelf, notes and indexes",
     "shelf": "⟵ Shelf",
     "loading": "Loading…",
@@ -241,15 +243,21 @@
   },
   "Names": {
     "title": "{title}: index of names",
+    "mentionedTitle": "{title}: persons not commemorated",
     "readEdition": "⟵ Read the edition",
     "notesLink": "Notes & errata",
     "placesLink": "Index of places",
+    "namesLink": "Index of names",
+    "mentionedLink": "Persons not commemorated",
     "letters": "Letters",
     "coverage": "{naming, number} of the {printed, number} eulogies of this edition name someone.",
     "notIndexed": "The persons of this edition are not indexed yet.",
+    "noneNotCommemorated": "Every person this edition mentions is commemorated somewhere.",
     "loadError": "The index could not be loaded.",
     "retry": "Try again",
     "inFootnote": "in footnote {n}",
+    "commemoratedGroup": "Commemorated",
+    "mentionedGroup": "Mentioned",
     "wikidata": "Wikidata",
     "see": "see"
   },

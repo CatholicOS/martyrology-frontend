@@ -7,7 +7,8 @@ vi.mock("@/lib/server-editions", () => ({ listEditions: listMock, fetchCatalog: 
 vi.mock("@/lib/persons-editions", () => ({ hasPersons: (e: string) => e === "martyrologium_romanum_2004" }));
 vi.mock("@/lib/persons", () => ({
   getPersons: () => ({ editions: { martyrologium_romanum_2004: {
-    "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q1" }] } }, labels: {} }),
+    "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q1" }, { name: "Nero", where: "text", wikidata: "Q8", role: "mentioned" }] } },
+    labels: {} }),
 }));
 vi.mock("@/lib/places", () => ({
   getPlaces: () => ({
@@ -87,9 +88,13 @@ describe("sitemap", () => {
     expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_1914_en_unofficial/12/31");
     expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_2004/notes");
     expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_2004/names/b");
+    expect(urls).not.toContain("https://example.org/it/read/martyrologium_romanum_2004/names/n");
+    expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_2004/mentioned");
+    expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_2004/mentioned/n");
     expect(urls).toContain("https://example.org/it/read/martyrologium_romanum_2004/places/r");
     // The index of names only for an edition crmedr has persons for.
     expect(urls).not.toContain("https://example.org/it/read/martyrologium_romanum_1914_en_unofficial/names");
+    expect(urls).not.toContain("https://example.org/it/read/martyrologium_romanum_1914_en_unofficial/mentioned");
     // No unavailable edition, curator page or redirect.
     expect(urls.some((u) => u.includes("1584"))).toBe(false);
     expect(urls.some((u) => /\/(compare|review)$/.test(u))).toBe(false);

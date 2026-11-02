@@ -76,7 +76,7 @@ describe("namesIndex", () => {
 
   it("gives a footnote mention its footnote, in calendar order, the unnumbered first", () => {
     const a = namesIndex(catalog, snap, ED, "en")!.letters[0].persons[0].lines;
-    expect(a[0]).toEqual({ id: "mr:0101-y", day: { mm: 1, dd: 1 }, entry: null, subject: "Sanctus Y", footnote: 2 });
+    expect(a[0]).toEqual({ id: "mr:0101-y", day: { mm: 1, dd: 1 }, entry: null, subject: "Sanctus Y", footnote: 2, mentioned: false });
     expect(a[1].footnote).toBeNull();
     expect(fnAnchor(ED, "mr:0101-y", 2)).toBe("fn-martyrologium_romanum_2004-mr:0101-y-2");
   });
@@ -188,5 +188,36 @@ describe("namesIndex, from the final review", () => {
       const [first, second] = headings(s, "Felix");
       expect([first.qid, second.qid]).toEqual([null, "Q2"]);
     });
+  });
+});
+
+describe("namesIndex, mentioned persons", () => {
+  const s: PersonsSnapshot = { editions: {
+    [ED]: {
+      "mr:1107-willibrordus": [{ name: "Willibrordus", where: "text", wikidata: "Q298" }],
+      "mr:0320-wulframnus": [{ name: "Willibrordus", where: "text", wikidata: "Q298", role: "mentioned" }],
+      "mr:0501-x": [{ name: "Gregorius", where: "text", wikidata: "Q7", role: "mentioned" }, { name: "Nero", where: "text", wikidata: "Q8", role: "mentioned" }],
+      "mr:0502-y": [{ name: "Thomas", where: "text" }, { name: "Thomas", n: 2, where: "text", role: "mentioned" }],
+    },
+    // Commemorated in another edition of the snapshot: commemorated somewhere.
+    martyrologio_romano_2004_it: { "mr:0601-gregorius": [{ name: "Gregorius", where: "text", wikidata: "Q7" }] },
+  }, labels: {} };
+  const days = [cat("mr:1107-willibrordus", "Sanctus Willibrordus", "11-07"), cat("mr:0320-wulframnus", "Sanctus Wulframnus", "03-20"),
+    cat("mr:0501-x", "Sancti X", "05-01"), cat("mr:0502-y", "Sancti Y", "05-02")];
+  const all = () => namesIndex(days, s, ED, "en")!.letters.flatMap((l) => l.persons);
+
+  it("marks the line of a eulogy that only mentions a person, under their heading", () => {
+    const w = all().find((p) => p.qid === "Q298")!;
+    expect(w.lines.map((l) => [l.id, l.mentioned])).toEqual([["mr:0320-wulframnus", true], ["mr:1107-willibrordus", false]]);
+  });
+
+  it("keeps a person commemorated in another edition, with their mentioned lines only", () => {
+    const g = all().find((p) => p.qid === "Q7")!;
+    expect(g.lines.map((l) => l.mentioned)).toEqual([true]);
+  });
+
+  it("leaves out a person no eulogy commemorates", () => {
+    expect(all().some((p) => p.qid === "Q8")).toBe(false);
+    expect(all().filter((p) => p.name === "Thomas").map((p) => p.key)).toEqual(["name:Thomas"]);
   });
 });

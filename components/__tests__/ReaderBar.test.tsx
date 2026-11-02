@@ -199,7 +199,7 @@ describe("ReaderBar's layout", () => {
     renderBar(null);
     const nav = screen.getByRole("navigation", { name: "Shelf, notes and indexes" });
     expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(
-      ["⟵ Shelf", "Notes & errata →", "Index of places →", "Index of names →"],
+      ["⟵ Shelf", "Notes & errata →", "Index of places →", "Index of names →", "Persons not commemorated →"],
     );
     // The arrow is a visual cue only: the links keep their names.
     expect(within(nav).getByRole("link", { name: "Notes & errata" })).toBeInTheDocument();
@@ -215,6 +215,7 @@ describe("ReaderBar's layout", () => {
     expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/read/${ED}/notes?day=10-02&with=${EN}`);
     expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/read/${ED}/places?day=10-02&with=${EN}`);
     expect(screen.getByRole("link", { name: "Index of names" })).toHaveAttribute("href", `/read/${ED}/names?day=10-02&with=${EN}`);
+    expect(screen.getByRole("link", { name: "Persons not commemorated" })).toHaveAttribute("href", `/read/${ED}/mentioned?day=10-02&with=${EN}`);
   });
 
   it("orders the controls: views, then [edition] ⇄ [compare with] ×, then the day and the switches", () => {
