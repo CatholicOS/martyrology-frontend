@@ -179,7 +179,7 @@
 .person { text-decoration-style: dotted; }
 .place { text-decoration-style: dashed; }
 .event { text-decoration-style: wavy; }
-.uncommemorated { text-decoration-style: double; text-decoration-color: #be123c; }
+.uncommemorated { text-decoration-style: double; text-decoration-thickness: 2px; text-decoration-color: #be123c; }
 .person[data-active] { background-color: rgba(214, 170, 60, 0.25); }
 .place[data-active] { background-color: rgba(11, 110, 127, 0.15); }
 .event[data-active] { background-color: rgba(124, 58, 237, 0.14); }
