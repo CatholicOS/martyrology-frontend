@@ -68,7 +68,7 @@ export function useReaderSwitch(key: string): [boolean, (on: boolean) => void] {
   return [on, set];
 }
 
-/** The reader's "Names & places" switch: marks the persons and places the eulogies name. */
+/** The reader's "Annotations" switch: marks the persons and places the eulogies name. */
 export function useMarkupSwitch(): [boolean, (on: boolean) => void] {
   return useReaderSwitch("reader.markup");
 }

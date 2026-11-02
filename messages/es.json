@@ -136,8 +136,8 @@
     "unaligned": "La edición {edition} aún no está alineada, por lo que sus elogios no están emparejados."
   },
   "Markup": {
-    "switch": "Nombres y lugares",
-    "switchTitle": "Señalar las personas y los lugares que nombra cada elogio",
+    "switch": "Anotaciones",
+    "switchTitle": "Señalar las personas, los lugares y los acontecimientos que nombra cada elogio",
     "person": "persona",
     "place": "lugar",
     "event": "acontecimiento",

@@ -136,8 +136,8 @@
     "unaligned": "Die Ausgabe {edition} ist noch nicht abgeglichen, daher sind ihre Elogien nicht zugeordnet."
   },
   "Markup": {
-    "switch": "Namen und Orte",
-    "switchTitle": "Die Personen und Orte kennzeichnen, die jedes Elogium nennt",
+    "switch": "Annotationen",
+    "switchTitle": "Die Personen, Orte und Ereignisse kennzeichnen, die jedes Elogium nennt",
     "person": "Person",
     "place": "Ort",
     "event": "Ereignis",

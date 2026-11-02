@@ -555,7 +555,7 @@ describe("Reader, a link to a eulogy", () => {
   });
 });
 
-describe("Reader, the Names & places switch", () => {
+describe("Reader, the Annotations switch", () => {
   const MENTION = { kind: "place", where: "text", start: 0, end: 5, form: "Romae", name: null, qid: "Q220" } as const;
   const named = (day: typeof DAY, edition: string) => ({
     ...day, metadata: { ...day.metadata, edition }, elogia: [{ ...day.elogia[0], mentions: [MENTION] }],
@@ -564,14 +564,14 @@ describe("Reader, the Names & places switch", () => {
   it("shows when the day on screen names someone or somewhere", async () => {
     vi.mocked(getDay).mockResolvedValue(named(DAY, "martyrologium_romanum_1749"));
     render1749();
-    expect(await screen.findByRole("switch", { name: "Names & places" })).toBeInTheDocument();
+    expect(await screen.findByRole("switch", { name: "Annotations" })).toBeInTheDocument();
   });
 
   it("is not rendered on a day without mentions, and the stored choice is left alone", async () => {
     window.localStorage.setItem("reader.markup", "1");
     render1749();
     await screen.findByText("Romae passio sancti Modesti Sardi.");
-    expect(screen.queryByRole("switch", { name: "Names & places" })).toBeNull();
+    expect(screen.queryByRole("switch", { name: "Annotations" })).toBeNull();
     expect(window.localStorage.getItem("reader.markup")).toBe("1");
   });
 
@@ -602,6 +602,6 @@ describe("Reader, the Names & places switch", () => {
     vi.mocked(getDay).mockImplementation(async (edition: string) =>
       edition === EN ? named(DAY, EN) : DAY);
     renderPair();
-    expect(await screen.findByRole("switch", { name: "Names & places" })).toBeInTheDocument();
+    expect(await screen.findByRole("switch", { name: "Annotations" })).toBeInTheDocument();
   });
 });

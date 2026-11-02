@@ -43,7 +43,7 @@ export function ErratumNote({ e, className }: { e: Erratum; className: string })
  * its phrase, and the edition's own errata in place: the words a correction concerns underlined
  * (struck through for a deletion), then "[Errata: …]". `noteClassName` sets the misprint note's size
  * and colour, `errataClassName` the errata's. `mentions` are the persons and places it names, marked while
- * "Names & places" is on.
+ * "Annotations" is on.
  */
 export default function EulogyText({
   text, id, edition, noteClassName = "text-[0.8em] text-slate-600 dark:text-slate-300", footnotes = [], errata = [],

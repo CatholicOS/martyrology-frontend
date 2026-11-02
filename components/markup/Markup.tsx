@@ -44,7 +44,7 @@ export interface MarkupApi {
 
 const Ctx = createContext<MarkupApi | null>(null);
 
-/** The markup's state, or null while "Names & places" is off (or outside the reader): then nothing is marked. */
+/** The markup's state, or null while "Annotations" is off (or outside the reader): then nothing is marked. */
 export function useMarkup(): MarkupApi | null {
   return useContext(Ctx);
 }

@@ -136,8 +136,8 @@
     "unaligned": "The {edition} edition is not yet aligned, so its eulogies are not matched."
   },
   "Markup": {
-    "switch": "Names & places",
-    "switchTitle": "Mark the persons and places each eulogy names",
+    "switch": "Annotations",
+    "switchTitle": "Mark the persons, places and events each eulogy names",
     "person": "person",
     "place": "place",
     "event": "event",
