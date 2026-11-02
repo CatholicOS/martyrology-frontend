@@ -10,7 +10,7 @@ import { useEntity } from "@/lib/entities-client";
 import type { EulogyLink } from "@/lib/entities";
 import { lifeYears } from "@/lib/life-years";
 import { inLanguage } from "@/lib/mention-labels";
-import type { PlacedMention } from "@/lib/mentions";
+import { commemoratedNowhere, type PlacedMention } from "@/lib/mentions";
 import { subjectFor } from "@/lib/subjects";
 import { usePlacements } from "@/lib/use-placements";
 import { commonsPage, commonsThumb, wikidataUrl, wikipediaUrl } from "@/lib/wikimedia";
@@ -43,6 +43,7 @@ export default function MentionPersonCard({ mention, page, headingId, nth }: {
         <h2 id={headingId} className="font-semibold" lang={langOn("la", locale)}>{latin}</h2>
         {nth && <p className="text-xs text-slate-600 dark:text-slate-400">{t("ordinal", { n: nth })}</p>}
         <p className="mt-1 text-slate-600 dark:text-slate-400">{t("notLinked")}</p>
+        {commemoratedNowhere(mention) && <p className="mt-1 text-slate-600 dark:text-slate-400">{t("notCommemorated")}</p>}
         <p className="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400">{mention.eulogy}</p>
       </>
     );

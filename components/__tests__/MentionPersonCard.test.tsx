@@ -143,6 +143,15 @@ describe("MentionPersonCard", () => {
     expect(screen.queryByRole("link", { name: "Wikidata" })).toBeNull();
   });
 
+  it("a person not yet linked whom the eulogy only mentions: both notices", () => {
+    card({ ...basil, qid: null, role: "mentioned", commemorated_in: [] });
+    expect(screen.getByText("Not yet linked to Wikidata")).toBeInTheDocument();
+    expect(screen.getByText("Not commemorated in the Martyrology")).toBeInTheDocument();
+    cleanup();
+    card({ ...basil, qid: null });
+    expect(screen.queryByText("Not commemorated in the Martyrology")).toBeNull();
+  });
+
   it("when the details fail: the printed name, the notice and a retry", () => {
     state.current = { status: "error" };
     card();
