@@ -4,11 +4,15 @@ import { Fragment, useMemo, type KeyboardEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { useMarkup, type MarkupApi } from "@/components/markup/Markup";
 import styles from "@/components/page.module.css";
-import { mentionsIn, splitByMentions, type PlacedMention } from "@/lib/mentions";
+import { commemoratedNowhere, mentionsIn, splitByMentions, type PlacedMention } from "@/lib/mentions";
 import type { Mention } from "@/lib/types";
 
-const TINT = { person: styles.person, place: styles.place, event: styles.event };
-const WITHIN = { person: styles.withinPerson, place: styles.withinPlace, event: styles.withinEvent };
+const TINT = { person: styles.person, place: styles.place, event: styles.event, uncommemorated: styles.uncommemorated };
+const WITHIN = {
+  person: styles.withinPerson, place: styles.withinPlace, event: styles.withinEvent, uncommemorated: styles.withinUncommemorated,
+};
+/** A mark's tint: its kind's, or the accent of a person the Martyrology commemorates nowhere. */
+const tint = (m: Mention) => (commemoratedNowhere(m) ? "uncommemorated" : m.kind);
 
 /**
  * One piece of a mention (a footnote mark or an erratum can cut a mention in two): every piece hovers, tints and
@@ -27,7 +31,7 @@ function MentionPiece({ markup, mention, edition, first, children }: {
       data-active={mention.groups.some((g) => markup.active.includes(g)) ? "" : undefined}
       // A mark inside another (a place in a person's name, a person in a council's) lights with the outer mark too, in its tint.
       data-within-active={within?.groups.some((g) => markup.active.includes(g)) ? "" : undefined}
-      className={`${styles.mention} ${TINT[mention.kind]}${within ? ` ${WITHIN[within.kind]}` : ""}`}
+      className={`${styles.mention} ${TINT[tint(mention)]}${within ? ` ${WITHIN[tint(within)]}` : ""}`}
       onMouseEnter={(e) => markup.hoverStart(target, e.currentTarget)}
       onMouseLeave={() => markup.hoverEnd()}
       onClick={(e) => markup.pin(target, e.currentTarget, false)}

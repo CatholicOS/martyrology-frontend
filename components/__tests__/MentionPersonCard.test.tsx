@@ -236,4 +236,49 @@ describe("MentionPersonCard", () => {
     card();
     expect(screen.queryByRole("list")).toBeNull();
   });
+
+  it("a person this eulogy only mentions: the day of each eulogy that commemorates them, linked, and not again below", () => {
+    state.current = { status: "ready", entity: AGATHA };
+    const mentioned = { ...basil, role: "mentioned", commemorated_in: ["mr:0109-agatha-yi-et-teresia-kim", "mr:0920-andreas-kim-tae-gon-et-socii"] } satisfies PlacedMention;
+    card(mentioned);
+    const on = screen.getAllByText(/^Commemorated on/);
+    expect(on.map((p) => p.textContent)).toEqual(["Commemorated on 9 January", "Commemorated on 20 September"]);
+    expect(within(on[0]).getByRole("link", { name: "9 January" })).toHaveAttribute("href",
+      "/en/read/martyrologium_romanum_2004/01/09#mr:0109-agatha-yi-et-teresia-kim");
+    expect(within(on[1]).getByRole("link", { name: "20 September" })).toHaveAttribute("href",
+      "/en/read/martyrologium_romanum_2004/09/20#mr:0920-andreas-kim-tae-gon-et-socii");
+    expect(screen.queryByRole("list", { name: "Other eulogies" })).toBeNull();
+    expect(screen.queryByText("Not commemorated in the Martyrology")).toBeNull();
+  });
+
+  it("dates a commemoration even before the details arrive, in the reader's edition", () => {
+    state.current = { status: "loading" };
+    card({ ...basil, role: "mentioned", commemorated_in: ["mr:0109-agatha-yi-et-teresia-kim"] }, "it",
+      { edition: "martyrologium_romanum_2004_it_IT", with: "martyrologium_romanum_2004" });
+    expect(screen.getByRole("link", { name: "9 gennaio" })).toHaveAttribute("href",
+      "/it/read/martyrologium_romanum_2004_it_IT/01/09?with=martyrologium_romanum_2004#mr:0109-agatha-yi-et-teresia-kim");
+    expect(screen.getByText(/^Commemorazione:/)).toBeInTheDocument();
+  });
+
+  it("a person commemorated nowhere: says so, and lists the other eulogies that mention them", () => {
+    const mentionedOnly = AGATHA.eulogies.map((e) => ({ ...e, own: false, mentioned: true as const }));
+    state.current = { status: "ready", entity: { ...AGATHA, eulogies: mentionedOnly } };
+    card({ ...basil, role: "mentioned", commemorated_in: [] });
+    expect(screen.getByText("Not commemorated in the Martyrology")).toBeInTheDocument();
+    expect(screen.queryByText(/^Commemorated on/)).toBeNull();
+    expect(screen.queryByRole("list", { name: "Other eulogies" })).toBeNull();
+    const list = screen.getByRole("list", { name: "Also mentioned in" });
+    expect(within(list).getAllByRole("link").map((a) => a.textContent)).toEqual(["9 January", "20 September"]);
+    expect(within(list).queryByText("only mentioned")).toBeNull();
+  });
+
+  it("marks, among a commemorated person's other eulogies, those that only mention them", () => {
+    const andrew = "mr:0920-andreas-kim-tae-gon-et-socii";
+    state.current = { status: "ready", entity: { ...AGATHA, eulogies: AGATHA.eulogies.map((e) => (e.id === andrew ? { ...e, mentioned: true as const } : e)) } };
+    card();
+    const items = within(screen.getByRole("list", { name: "Other eulogies" })).getAllByRole("listitem");
+    expect(items[0]).not.toHaveTextContent("only mentioned");
+    expect(items[1]).toHaveTextContent("20 September · Saints Andrew Kim and companions · only mentioned");
+    expect(screen.queryByText("Not commemorated in the Martyrology")).toBeNull();
+  });
 });

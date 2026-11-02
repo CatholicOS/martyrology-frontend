@@ -346,10 +346,10 @@ export function personQids(personsDoc, itemsDoc) {
 /**
  * The persons an edition's marks name, by eulogy, each once (by Latin name and n), where first marked: for an
  * edition crmedr lists no persons for, whose marks carry the Latin persons' names (the Italian 2004).
- * @param {Record<string, {kind: string, where: unknown, name?: string|null, n?: number, others?: {name: string, n?: number}[]}[]>} byId
+ * @param {Record<string, {kind: string, where: unknown, name?: string|null, n?: number, role?: string|null, others?: {name: string, n?: number}[]}[]>} byId
  */
 function personsFromMarks(byId) {
-  /** @type {Record<string, {name: string, n?: number, where: unknown}[]>} */
+  /** @type {Record<string, {name: string, n?: number, where: unknown, role?: string}[]>} */
   const out = {};
   for (const [id, marks] of Object.entries(byId)) {
     const seen = new Set();
@@ -360,7 +360,8 @@ function personsFromMarks(byId) {
         const key = `${p.name}#${p.n ?? 1}`;
         if (seen.has(key)) continue;
         seen.add(key);
-        persons.push({ name: p.name, ...(p.n ? { n: p.n } : {}), where: m.where });
+        // crmedr's role is the mark's: every person a mentioned mark names is mentioned.
+        persons.push({ name: p.name, ...(p.n ? { n: p.n } : {}), where: m.where, ...(m.role === "mentioned" ? { role: m.role } : {}) });
       }
     }
     if (persons.length) out[id] = persons;
@@ -370,15 +371,15 @@ function personsFromMarks(byId) {
 
 /**
  * The index of names' data: each edition's persons by eulogy, with the QID crmedr decided (auto or
- * reviewed), and each QID's labels in the interface languages, in LABEL_LANGS order. An edition crmedr lists no
+ * reviewed) and crmedr's role "mentioned" for one the eulogy only mentions, and each QID's labels in the interface languages, in LABEL_LANGS order. An edition crmedr lists no
  * persons for gets them from its marks (`mentionsDoc`, crmedr data/mentions.json).
- * @param {{editions: Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown}[]>>}} personsDoc
+ * @param {{editions: Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown, role?: string}[]>>}} personsDoc
  * @param {{persons: Record<string, Record<string, {wikidata: string|null, status: string}>>}} itemsDoc
  * @param {Record<string, Record<string, string>>} [labels]
  * @param {{editions: Record<string, Record<string, any[]>>}} [mentionsDoc]
  */
 export function buildPersons(personsDoc, itemsDoc, labels = {}, mentionsDoc = { editions: {} }) {
-  /** @type {Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown, wikidata?: string}[]>>} */
+  /** @type {Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown, wikidata?: string, role?: string}[]>>} */
   const editions = {};
   const used = new Set();
   const listed = { ...personsDoc.editions };
@@ -397,7 +398,7 @@ export function buildPersons(personsDoc, itemsDoc, labels = {}, mentionsDoc = { 
         if (qid) used.add(qid);
         return {
           name: p.name, ...(p.n ? { n: p.n } : {}), ...(p.also?.length ? { also: p.also } : {}),
-          where: p.where, ...(qid ? { wikidata: qid } : {}),
+          where: p.where, ...(qid ? { wikidata: qid } : {}), ...(p.role === "mentioned" ? { role: p.role } : {}),
         };
       });
     }
