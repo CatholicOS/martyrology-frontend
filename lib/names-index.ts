@@ -81,22 +81,25 @@ export function fnAnchor(edition: string, id: string, n: number): string {
   return `fn-${edition}-${id}-${n}`;
 }
 
+/** The editions whose eulogies make a person commemorated: the current Martyrology's, never an older edition's. */
+export const COMMEMORATING_EDITIONS: readonly string[] = ["martyrologium_romanum_2004", "martyrologium_romanum_2004_it_IT"];
+
 const commemoratedCache = new WeakMap<PersonsSnapshot, Set<string>>();
 
-/** The QIDs some eulogy of the snapshot, in any edition, commemorates: lists without crmedr's role "mentioned". */
+/** The QIDs some eulogy of the snapshot's COMMEMORATING_EDITIONS commemorates: lists without crmedr's role "mentioned". */
 function commemoratedQids(snap: PersonsSnapshot): Set<string> {
   let out = commemoratedCache.get(snap);
   if (!out) {
     out = new Set();
-    for (const byId of Object.values(snap.editions))
-      for (const mentions of Object.values(byId))
+    for (const edition of COMMEMORATING_EDITIONS)
+      for (const mentions of Object.values(snap.editions[edition] ?? {}))
         for (const p of mentions) if (p.wikidata && p.role !== "mentioned") out.add(p.wikidata);
     commemoratedCache.set(snap, out);
   }
   return out;
 }
 
-/** Whether a heading's person is commemorated somewhere: by a line of theirs here, or (by their item) in any eulogy of the snapshot. */
+/** Whether a heading's person is commemorated somewhere: by a line of theirs here, or (by their item) in a eulogy of the current Martyrology. */
 export function isCommemorated(p: IndexPerson, snap: PersonsSnapshot): boolean {
   return p.lines.some((l) => !l.mentioned) || (p.qid !== null && commemoratedQids(snap).has(p.qid));
 }
@@ -148,7 +151,12 @@ export function personsIndex(
       // One line per eulogy and place: two spellings of one identified person in the same text
       // (or footnote) are one mention, though both count towards the heading's form.
       const footnote = p.where === "text" ? null : p.where.footnote;
-      if (person.lines.some((l) => l.id === c.id && l.footnote === footnote)) continue;
+      const same = person.lines.find((l) => l.id === c.id && l.footnote === footnote);
+      if (same) {
+        // Commemorated there if any entry of theirs is.
+        if (!mentioned) same.mentioned = false;
+        continue;
+      }
       person.lineForms.push(p.name);
       person.lines.push({
         id: c.id,

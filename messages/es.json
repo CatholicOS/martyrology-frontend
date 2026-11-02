@@ -256,8 +256,8 @@
     "loadError": "No se pudo cargar el índice.",
     "retry": "Reintentar",
     "inFootnote": "en la nota {n}",
-    "commemoratedGroup": "Conmemorado",
-    "mentionedGroup": "Mencionado",
+    "commemoratedGroup": "Conmemoraciones",
+    "mentionedGroup": "Menciones",
     "wikidata": "Wikidata",
     "see": "véase"
   },

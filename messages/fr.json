@@ -256,8 +256,8 @@
     "loadError": "L’index n’a pas pu être chargé.",
     "retry": "Réessayer",
     "inFootnote": "dans la note {n}",
-    "commemoratedGroup": "Commémoré",
-    "mentionedGroup": "Mentionné",
+    "commemoratedGroup": "Commémorations",
+    "mentionedGroup": "Mentions",
     "wikidata": "Wikidata",
     "see": "voir"
   },

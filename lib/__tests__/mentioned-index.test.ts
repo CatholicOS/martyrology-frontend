@@ -24,7 +24,9 @@ const snap: PersonsSnapshot = { editions: {
     ],
     "mr:0503-z": [{ name: "Diocletianus", where: "text" }],
   },
-  martyrologio_romano_2004_it: { "mr:0601-gregorius": [{ name: "Gregorius", where: "text", wikidata: "Q7" }] },
+  martyrologium_romanum_2004_it_IT: { "mr:0601-gregorius": [{ name: "Gregorius", where: "text", wikidata: "Q7" }] },
+  // An older edition's commemoration does not count: Nero stays not commemorated.
+  martyrologium_romanum_1914_en_unofficial: { "mr:0601-nero": [{ name: "Nero", where: "text", wikidata: "Q8" }] },
 }, labels: { Q8: { en: "Nero" } } };
 const days = [cat("mr:1107-willibrordus", "Sanctus Willibrordus", "11-07"), cat("mr:0320-wulframnus", "Sanctus Wulframnus", "03-20"),
   cat("mr:0501-x", "Sancti X", "05-01"), cat("mr:0502-y", "Sancti Y", "05-02"), cat("mr:0503-z", "Sanctus Z", "05-03")];
@@ -39,6 +41,10 @@ describe("mentionedIndex", () => {
     const n = all().find((p) => p.qid === "Q8")!;
     expect(n).toMatchObject({ key: "Q8", name: "Nero", label: "Nero" });
     expect(n.lines.map((l) => [l.id, l.mentioned])).toEqual([["mr:0501-x", true], ["mr:0502-y", true]]);
+  });
+
+  it("keeps a person whom only an older edition commemorates", () => {
+    expect(all().some((p) => p.qid === "Q8")).toBe(true);
   });
 
   it("leaves out persons commemorated somewhere, in this edition or another", () => {

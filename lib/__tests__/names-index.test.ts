@@ -200,7 +200,7 @@ describe("namesIndex, mentioned persons", () => {
       "mr:0502-y": [{ name: "Thomas", where: "text" }, { name: "Thomas", n: 2, where: "text", role: "mentioned" }],
     },
     // Commemorated in another edition of the snapshot: commemorated somewhere.
-    martyrologio_romano_2004_it: { "mr:0601-gregorius": [{ name: "Gregorius", where: "text", wikidata: "Q7" }] },
+    martyrologium_romanum_2004_it_IT: { "mr:0601-gregorius": [{ name: "Gregorius", where: "text", wikidata: "Q7" }] },
   }, labels: {} };
   const days = [cat("mr:1107-willibrordus", "Sanctus Willibrordus", "11-07"), cat("mr:0320-wulframnus", "Sanctus Wulframnus", "03-20"),
     cat("mr:0501-x", "Sancti X", "05-01"), cat("mr:0502-y", "Sancti Y", "05-02")];
@@ -214,6 +214,16 @@ describe("namesIndex, mentioned persons", () => {
   it("keeps a person commemorated in another edition, with their mentioned lines only", () => {
     const g = all().find((p) => p.qid === "Q7")!;
     expect(g.lines.map((l) => l.mentioned)).toEqual([true]);
+  });
+
+  it("makes a line commemorating when one of a person's entries in the same text is not mentioned, in either order", () => {
+    for (const roles of [["mentioned", undefined], [undefined, "mentioned"]] as const) {
+      const t: PersonsSnapshot = { editions: { [ED]: { "mr:0501-x": roles.map((role, i) => ({
+        name: i ? "Nereus" : "Nerius", where: "text" as const, wikidata: "Q9", ...(role ? { role } : {}),
+      })) } }, labels: {} };
+      const p = namesIndex([cat("mr:0501-x", "Sancti X", "05-01")], t, ED, "en")!.letters[0].persons[0];
+      expect(p.lines.map((l) => l.mentioned)).toEqual([false]);
+    }
   });
 
   it("leaves out a person no eulogy commemorates", () => {
