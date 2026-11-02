@@ -338,6 +338,31 @@ describe("buildPersons", () => {
     ]);
   });
 
+  it("lists an edition's persons from its marks when crmedr lists them only for the Latin (the Italian 2004)", () => {
+    const IT = "martyrologium_romanum_2004_it_IT";
+    const mentionsDoc = { editions: {
+      martyrologium_romanum_2004: { "mr:0101-basilius": [{ kind: "person", where: "text", name: "Basilius" }] },
+      [IT]: {
+        "mr:0206-paulus-miki-et-socii": [
+          { kind: "person", where: "text", name: "Paulus Miki" },
+          { kind: "place", where: "text", name: null },
+          { kind: "person", where: "text", name: "Paulus Miki" },
+          { kind: "person", where: { footnote: 1 }, name: "Paulus Miki" },
+          { kind: "person", where: { footnote: 1 }, name: "Thomas Kozaki", others: [{ name: "Felix", n: 2 }] },
+          { kind: "event", where: "text", name: null },
+        ],
+      },
+    } };
+    const snap = buildPersons(personsDoc, itemsDoc, {}, mentionsDoc);
+    expect(Object.keys(snap.editions)).toEqual(["martyrologium_romanum_2004", IT]);
+    expect(snap.editions.martyrologium_romanum_2004["mr:0101-basilius"]).toEqual([{ name: "Basilius", where: "text", wikidata: "Q1" }]);
+    expect(snap.editions[IT]["mr:0206-paulus-miki-et-socii"]).toEqual([
+      { name: "Paulus Miki", where: "text", wikidata: "Q380649" },
+      { name: "Thomas Kozaki", where: { footnote: 1 } },
+      { name: "Felix", n: 2, where: { footnote: 1 } },
+    ]);
+  });
+
   it("copies a person's other names", () => {
     const doc = { editions: { martyrologium_romanum_2004: { "mr:0817-mamas": [
       { name: "Mamas", also: ["Mames"], where: "text" },

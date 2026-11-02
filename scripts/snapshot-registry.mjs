@@ -344,17 +344,50 @@ export function personQids(personsDoc, itemsDoc) {
 }
 
 /**
+ * The persons an edition's marks name, by eulogy, each once (by Latin name and n), where first marked: for an
+ * edition crmedr lists no persons for, whose marks carry the Latin persons' names (the Italian 2004).
+ * @param {Record<string, {kind: string, where: unknown, name?: string|null, n?: number, others?: {name: string, n?: number}[]}[]>} byId
+ */
+function personsFromMarks(byId) {
+  /** @type {Record<string, {name: string, n?: number, where: unknown}[]>} */
+  const out = {};
+  for (const [id, marks] of Object.entries(byId)) {
+    const seen = new Set();
+    const persons = [];
+    for (const m of marks) {
+      if (m.kind !== "person" || !m.name) continue;
+      for (const p of [{ name: m.name, n: m.n }, ...(m.others ?? [])]) {
+        const key = `${p.name}#${p.n ?? 1}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        persons.push({ name: p.name, ...(p.n ? { n: p.n } : {}), where: m.where });
+      }
+    }
+    if (persons.length) out[id] = persons;
+  }
+  return out;
+}
+
+/**
  * The index of names' data: each edition's persons by eulogy, with the QID crmedr decided (auto or
- * reviewed), and each QID's labels in the interface languages, in LABEL_LANGS order.
+ * reviewed), and each QID's labels in the interface languages, in LABEL_LANGS order. An edition crmedr lists no
+ * persons for gets them from its marks (`mentionsDoc`, crmedr data/mentions.json).
  * @param {{editions: Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown}[]>>}} personsDoc
  * @param {{persons: Record<string, Record<string, {wikidata: string|null, status: string}>>}} itemsDoc
  * @param {Record<string, Record<string, string>>} [labels]
+ * @param {{editions: Record<string, Record<string, any[]>>}} [mentionsDoc]
  */
-export function buildPersons(personsDoc, itemsDoc, labels = {}) {
+export function buildPersons(personsDoc, itemsDoc, labels = {}, mentionsDoc = { editions: {} }) {
   /** @type {Record<string, Record<string, {name: string, n?: number, also?: string[], where: unknown, wikidata?: string}[]>>} */
   const editions = {};
   const used = new Set();
-  for (const [edition, byId] of Object.entries(personsDoc.editions)) {
+  const listed = { ...personsDoc.editions };
+  for (const [edition, byId] of Object.entries(mentionsDoc.editions)) {
+    if (listed[edition]) continue;
+    const marked = personsFromMarks(byId);
+    if (Object.keys(marked).length) listed[edition] = marked;
+  }
+  for (const [edition, byId] of Object.entries(listed)) {
     editions[edition] = {};
     for (const [id, persons] of Object.entries(byId)) {
       editions[edition][id] = persons.map((p) => {
@@ -480,7 +513,9 @@ async function main() {
   const itemsDoc = JSON.parse(readFileSync(join(crmedr, "data", "person_items.json"), "utf8"));
   const personsDest = join(here, "..", "data", "persons-snapshot.json");
   const personLabels = await fetchPersonLabels(personQids(personsDoc, itemsDoc), () => JSON.parse(readFileSync(personsDest, "utf8")));
-  const persons = buildPersons(personsDoc, itemsDoc, personLabels);
+  // The Italian 2004's persons come from its marks, which carry the Latin persons' names.
+  const mentionsDoc = JSON.parse(readFileSync(join(crmedr, "data", "mentions.json"), "utf8"));
+  const persons = buildPersons(personsDoc, itemsDoc, personLabels, mentionsDoc);
   writeFileSync(personsDest, JSON.stringify(persons) + "\n");
   // The editions with persons, apart: client components link to the index of names from it.
   writeFileSync(join(here, "..", "data", "persons-editions.json"), JSON.stringify(Object.keys(persons.editions)) + "\n");
