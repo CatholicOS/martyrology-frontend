@@ -4,17 +4,20 @@ import { compareLines, filingLetter } from "@/lib/places-index";
 import type { PersonsSnapshot } from "@/lib/persons";
 import type { CatalogEntryOut } from "@/lib/types";
 
-/** One mention: the eulogy, its day and number, its subject in the edition's language, and the footnote the name is printed in (null: the text). */
+/** One mention: the eulogy, its day and number, its subject in the edition's language, the footnote the name is printed in
+ *  (null: the text), and whether the eulogy only mentions the person (crmedr's role "mentioned") rather than commemorates them. */
 export interface NameLine {
   id: string;
   day: Day;
   entry: number | null;
   subject: string;
   footnote: number | null;
+  mentioned: boolean;
 }
 
 export interface IndexPerson {
-  /** The QID; else `name:<name>`, or `name:<name>#<n>@<eulogy>` for the nth (from 2) person of a name in a eulogy. */
+  /** The QID; else `name:<name>`, or `name:<name>#<n>@<eulogy>` for the nth (from 2) person of a name in a eulogy, or
+   *  `name:<name>#<n|1>@<eulogy>` for one the eulogy only mentions (never merged with a namesake). */
   key: string;
   /** The heading: the person's most frequent Latin form. */
   name: string;
@@ -78,12 +81,43 @@ export function fnAnchor(edition: string, id: string, n: number): string {
   return `fn-${edition}-${id}-${n}`;
 }
 
+/** The editions whose eulogies make a person commemorated: the current Martyrology's, never an older edition's. */
+export const COMMEMORATING_EDITIONS: readonly string[] = ["martyrologium_romanum_2004", "martyrologium_romanum_2004_it_IT"];
+
+const commemoratedCache = new WeakMap<PersonsSnapshot, Set<string>>();
+
+/** The QIDs some eulogy of the snapshot's COMMEMORATING_EDITIONS commemorates: lists without crmedr's role "mentioned". */
+function commemoratedQids(snap: PersonsSnapshot): Set<string> {
+  let out = commemoratedCache.get(snap);
+  if (!out) {
+    out = new Set();
+    for (const edition of COMMEMORATING_EDITIONS)
+      for (const mentions of Object.values(snap.editions[edition] ?? {}))
+        for (const p of mentions) if (p.wikidata && p.role !== "mentioned") out.add(p.wikidata);
+    commemoratedCache.set(snap, out);
+  }
+  return out;
+}
+
+/** Whether a heading's person is commemorated somewhere: by a line of theirs here, or (by their item) in a eulogy of the current Martyrology. */
+export function isCommemorated(p: IndexPerson, snap: PersonsSnapshot): boolean {
+  return p.lines.some((l) => !l.mentioned) || (p.qid !== null && commemoratedQids(snap).has(p.qid));
+}
+
 /**
- * An edition's index of names: the saints and blessed its printed eulogies name, one heading per
- * person (by QID, else by the Latin name, apart for the 2nd, 3rd… of a name in one eulogy) under their most frequent Latin form, sorted and filed by
- * letter in Latin order, each mention in calendar order. Null when crmedr has no persons for the edition.
+ * An edition's index of names: the saints and blessed its printed eulogies name and the Martyrology commemorates
+ * somewhere, one heading per person (by QID, else by the Latin name, apart for the 2nd, 3rd… of a name in one eulogy)
+ * under their most frequent Latin form, sorted and filed by letter in Latin order, each mention in calendar order,
+ * those of eulogies that only mention them marked. Null when crmedr has no persons for the edition.
  */
 export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, edition: string, locale: Locale): NamesIndexData | null {
+  return personsIndex(catalog, snap, edition, locale, (p) => isCommemorated(p, snap));
+}
+
+/** An edition's persons index, the headings `keep` keeps, with their see entries; `naming`: the eulogies that name anyone. */
+export function personsIndex(
+  catalog: CatalogEntryOut[], snap: PersonsSnapshot, edition: string, locale: Locale, keep: (p: IndexPerson) => boolean,
+): NamesIndexData | null {
   const byId = snap.editions[edition];
   if (!byId) return null;
   const people = new Map<string, IndexPerson & { forms: Map<string, number>; lineForms: string[] }>();
@@ -101,7 +135,10 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
     for (const p of mentions) {
       // An unidentified namesake in another eulogy may be the same saint: one heading. The 2nd, 3rd… of a
       // name in one eulogy are other persons: a heading each, its key after the first's (a longer string).
-      const key = p.wikidata ?? (p.n ? `name:${p.name}#${p.n}@${c.id}` : `name:${p.name}`);
+      // An unidentified person a eulogy only mentions is no one known to be a namesake's: a heading of their own.
+      const mentioned = p.role === "mentioned";
+      const key = p.wikidata
+        ?? (mentioned ? `name:${p.name}#${p.n ?? 1}@${c.id}` : p.n ? `name:${p.name}#${p.n}@${c.id}` : `name:${p.name}`);
       for (const v of p.also ?? []) wanted.push({ name: v, key });
       let person = people.get(key);
       if (!person) {
@@ -114,7 +151,12 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
       // One line per eulogy and place: two spellings of one identified person in the same text
       // (or footnote) are one mention, though both count towards the heading's form.
       const footnote = p.where === "text" ? null : p.where.footnote;
-      if (person.lines.some((l) => l.id === c.id && l.footnote === footnote)) continue;
+      const same = person.lines.find((l) => l.id === c.id && l.footnote === footnote);
+      if (same) {
+        // Commemorated there if any entry of theirs is.
+        if (!mentioned) same.mentioned = false;
+        continue;
+      }
       person.lineForms.push(p.name);
       person.lines.push({
         id: c.id,
@@ -122,6 +164,7 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
         entry: c.entry ?? null,
         subject: c.subject ?? c.id,
         footnote,
+        mentioned,
       });
     }
   }
@@ -133,7 +176,7 @@ export function namesIndex(catalog: CatalogEntryOut[], snap: PersonsSnapshot, ed
     const first = (form: string) => order.findIndex((o) => o.form === form);
     const name = [...forms.entries()].sort((a, b) => b[1] - a[1] || a[0].length - b[0].length || first(a[0]) - first(b[0]))[0][0];
     return { ...p, name };
-  });
+  }).filter(keep);
   persons.sort((a, b) => collator.compare(a.name, b.name) || (a.qid ? 1 : 0) - (b.qid ? 1 : 0) || a.key.localeCompare(b.key));
   const letters: NamesLetter[] = [];
   const byLetter = new Map<string, NamesLetter>();

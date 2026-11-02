@@ -27,10 +27,14 @@ describe("ApparatusPage", () => {
     expect(await screen.findByRole("link", { name: "Index of names" })).toHaveAttribute(
       "href", "/en/read/martyrologium_romanum_2004/names",
     );
+    expect(screen.getByRole("link", { name: "Persons not commemorated" })).toHaveAttribute(
+      "href", "/en/read/martyrologium_romanum_2004/mentioned",
+    );
     unmount();
     render(<ApparatusPage edition="martyrologium_romanum_1749" />);
     await screen.findByRole("link", { name: "Index of places" });
     expect(screen.queryByRole("link", { name: "Index of names" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Persons not commemorated" })).toBeNull();
   });
 
   it("links to the edition's index of places", async () => {

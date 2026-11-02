@@ -167,7 +167,10 @@
 .lunaYearInput { width: 4.5em; padding: 0 0.25rem; border: 1px solid #c9b9a3; border-radius: 3px; background: #fffdf8; color: #2a1a10; text-align: center; }
 /* Persons, places and events (councils, synods) the eulogy names, while "Names & places" is on: dotted for
    persons, dashed for places, wavy for events, in the text's own colour; a soft tint (warm for persons, cool for
-   places, violet for events) on every piece while one is hovered, focused or open. */
+   places, violet for events) on every piece while one is hovered, focused or open. A person the eulogy only
+   mentions whom the Martyrology commemorates nowhere is double-underlined in rose (at least 3:1 on the page),
+   tinted rose: a line style of its own, so the mark never rests on colour alone (WCAG 1.4.1). Forced colours
+   replace the colours but keep the line style, so the double line still tells it from the others. */
 .mention {
   text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;
   text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
@@ -176,21 +179,27 @@
 .person { text-decoration-style: dotted; }
 .place { text-decoration-style: dashed; }
 .event { text-decoration-style: wavy; }
+.uncommemorated { text-decoration-style: double; text-decoration-thickness: 2px; text-decoration-color: #be123c; }
 .person[data-active] { background-color: rgba(214, 170, 60, 0.25); }
 .place[data-active] { background-color: rgba(11, 110, 127, 0.15); }
 .event[data-active] { background-color: rgba(124, 58, 237, 0.14); }
+.uncommemorated[data-active] { background-color: rgba(225, 29, 72, 0.14); }
 /* A mark inside another, lit with the outer mark: the outer's tint, its own while it is active itself. */
 .withinPerson[data-within-active]:not([data-active]) { background-color: rgba(214, 170, 60, 0.25); }
 .withinPlace[data-within-active]:not([data-active]) { background-color: rgba(11, 110, 127, 0.15); }
 .withinEvent[data-within-active]:not([data-active]) { background-color: rgba(124, 58, 237, 0.14); }
+.withinUncommemorated[data-within-active]:not([data-active]) { background-color: rgba(225, 29, 72, 0.14); }
 .mention:focus-visible { outline: 2px solid rgba(11, 110, 127, 0.5); outline-offset: 1px; }
 @media (prefers-color-scheme: dark) {
   .person[data-active] { background-color: rgba(250, 204, 21, 0.2); }
   .place[data-active] { background-color: rgba(103, 232, 249, 0.18); }
   .event[data-active] { background-color: rgba(196, 181, 253, 0.22); }
+  .uncommemorated { text-decoration-color: #fda4af; }
+  .uncommemorated[data-active] { background-color: rgba(251, 113, 133, 0.2); }
   .withinPerson[data-within-active]:not([data-active]) { background-color: rgba(250, 204, 21, 0.2); }
   .withinPlace[data-within-active]:not([data-active]) { background-color: rgba(103, 232, 249, 0.18); }
   .withinEvent[data-within-active]:not([data-active]) { background-color: rgba(196, 181, 253, 0.22); }
+  .withinUncommemorated[data-within-active]:not([data-active]) { background-color: rgba(251, 113, 133, 0.2); }
 }
 @media (forced-colors: active) {
   .mention[data-active], .mention[data-within-active] { forced-color-adjust: none; background-color: Highlight; color: HighlightText; }

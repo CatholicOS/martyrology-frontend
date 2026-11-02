@@ -363,6 +363,27 @@ describe("buildPersons", () => {
     ]);
   });
 
+  it("keeps a person the eulogy only mentions as mentioned, from crmedr's persons and from the marks", () => {
+    const doc = { editions: { martyrologium_romanum_2004: { "mr:0303-cunegundis-confugiae": [
+      { name: "Cunegundis", where: "text" }, { name: "Henricus", where: "text", role: "mentioned" },
+    ] } } };
+    const items = { persons: { "mr:0303-cunegundis-confugiae": { Henricus: { wikidata: "Q103556", status: "auto" } } } };
+    const IT = "martyrologium_romanum_2004_it_IT";
+    const mentionsDoc = { editions: { [IT]: { "mr:0303-cunegundis-confugiae": [
+      { kind: "person", where: "text", name: "Cunegundis" },
+      { kind: "person", where: "text", name: "Henricus", role: "mentioned", commemorated_in: ["mr:0713-henricus-imperator"] },
+    ] } } };
+    const snap = buildPersons(doc, items, {}, mentionsDoc);
+    expect(snap.editions.martyrologium_romanum_2004["mr:0303-cunegundis-confugiae"]).toEqual([
+      { name: "Cunegundis", where: "text" },
+      { name: "Henricus", where: "text", wikidata: "Q103556", role: "mentioned" },
+    ]);
+    expect(snap.editions[IT]["mr:0303-cunegundis-confugiae"]).toEqual([
+      { name: "Cunegundis", where: "text" },
+      { name: "Henricus", where: "text", wikidata: "Q103556", role: "mentioned" },
+    ]);
+  });
+
   it("copies a person's other names", () => {
     const doc = { editions: { martyrologium_romanum_2004: { "mr:0817-mamas": [
       { name: "Mamas", also: ["Mames"], where: "text" },

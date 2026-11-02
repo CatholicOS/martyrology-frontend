@@ -105,6 +105,12 @@ export interface Mention {
   roles?: MentionRole[] | null;
   /** The other persons a person mention names, in no order; null or absent when it names one (APIs before v0.19.4). */
   others?: MentionPerson[] | null;
+  /** "mentioned" for a person the eulogy only mentions (commemorated elsewhere, or nowhere); null or absent for one
+   *  it commemorates, and for places and events (APIs before martyrology-api #206). */
+  role?: "mentioned" | null;
+  /** A mentioned person's commemorations: the canonical IDs of the eulogies commemorating the same Wikidata item,
+   *  empty when the Martyrology commemorates them nowhere; null or absent for every other mark. */
+  commemorated_in?: string[] | null;
 }
 
 export interface EditionPlacement {

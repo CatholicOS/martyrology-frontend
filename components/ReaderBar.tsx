@@ -190,9 +190,14 @@ export default function ReaderBar({
           {t("placesLink")}<span aria-hidden> →</span>
         </Link>
         {hasPersons(edition) && (
-          <Link href={view("names")} className="underline">
-            {t("namesLink")}<span aria-hidden> →</span>
-          </Link>
+          <>
+            <Link href={view("names")} className="underline">
+              {t("namesLink")}<span aria-hidden> →</span>
+            </Link>
+            <Link href={view("mentioned")} className="underline">
+              {t("mentionedLink")}<span aria-hidden> →</span>
+            </Link>
+          </>
         )}
       </nav>
       {/* The editions. Phones: the pickers stacked, × beside the second, ⇄ beside the pair. Wider: in a row,

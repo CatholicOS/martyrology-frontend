@@ -10,6 +10,8 @@ export interface PersonMention {
   also?: string[];
   where: "text" | { footnote: number };
   wikidata?: string;
+  /** "mentioned" when the eulogy only mentions the person (crmedr's role); absent when it commemorates them. */
+  role?: "mentioned";
 }
 
 export interface PersonsSnapshot {

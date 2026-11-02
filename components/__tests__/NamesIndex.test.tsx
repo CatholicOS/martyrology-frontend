@@ -8,14 +8,14 @@ const index: NamesIndexData = {
   printed: 5, naming: 4,
   letters: [
     { letter: "B", persons: [{ key: "Q1", name: "Basilius", qid: "Q1", label: "Basil the Great", labelLang: "en", lines: [
-      { id: "mr:0102-basilius", day: { mm: 1, dd: 2 }, entry: 1, subject: "Sancti Basilius et Gregorius", footnote: null },
+      { id: "mr:0102-basilius", day: { mm: 1, dd: 2 }, entry: 1, subject: "Sancti Basilius et Gregorius", footnote: null, mentioned: false },
     ] }] },
     { letter: "T", persons: [
       { key: "name:Thomas", name: "Thomas", qid: null, label: null, labelLang: null, lines: [
-        { id: "mr:0206-paulus-miki-et-socii", day: { mm: 2, dd: 6 }, entry: 1, subject: "Sancti Paulus Miki et socii", footnote: 1 },
+        { id: "mr:0206-paulus-miki-et-socii", day: { mm: 2, dd: 6 }, entry: 1, subject: "Sancti Paulus Miki et socii", footnote: 1, mentioned: false },
       ] },
       { key: "Q9", name: "Theodorus", qid: "Q9", label: null, labelLang: null, lines: [
-        { id: "mr:1109-theodorus", day: { mm: 11, dd: 9 }, entry: 2, subject: "Sanctus Theodorus", footnote: null },
+        { id: "mr:1109-theodorus", day: { mm: 11, dd: 9 }, entry: 2, subject: "Sanctus Theodorus", footnote: null, mentioned: false },
       ] },
     ] },
   ],
@@ -43,6 +43,7 @@ describe("NamesIndex", () => {
       .toHaveAttribute("href", `/en/read/${ED}/10/02?with=martyrologium_romanum_1914_en_unofficial`);
     expect(screen.getByRole("link", { name: "Notes & errata" })).toHaveAttribute("href", `/en/read/${ED}/notes${BQ}`);
     expect(screen.getByRole("link", { name: "Index of places" })).toHaveAttribute("href", `/en/read/${ED}/places${BQ}`);
+    expect(screen.getByRole("link", { name: "Persons not commemorated" })).toHaveAttribute("href", `/en/read/${ED}/mentioned${BQ}`);
     expect(screen.getByRole("link", { name: "9 November · Sanctus Theodorus" }))
       .toHaveAttribute("href", `/en/read/${ED}/11/09?with=martyrologium_romanum_1914_en_unofficial#mr:1109-theodorus`);
     expect(screen.getByRole("link", { name: "Previous letter: B" })).toHaveAttribute("href", `/en/read/${ED}/names/b${BQ}`);
@@ -117,5 +118,37 @@ describe("NamesIndex", () => {
     expect(screen.getByText("Cunegundis")).toHaveAttribute("lang", "la");
     renderIndex(withSee, false, "T");
     expect(document.getElementById("p-Q9")).not.toBeNull();
+  });
+});
+
+describe("NamesIndex, mentioned persons", () => {
+  const line = (id: string, dd: number, mentioned: boolean) =>
+    ({ id, day: { mm: 3, dd }, entry: 1, subject: `Sanctus ${id}`, footnote: null, mentioned });
+  const w: NamesIndexData = { printed: 3, naming: 3, letters: [{ letter: "W", persons: [
+    { key: "Q298", name: "Willibrordus", qid: "Q298", label: null, labelLang: null, lines: [line("a", 1, true), line("b", 2, false)] },
+    { key: "Q9", name: "Wulframnus", qid: "Q9", label: null, labelLang: null, lines: [line("c", 3, false)] },
+  ] }] };
+
+  it("splits a heading's eulogies into those that commemorate the person and those that mention them", () => {
+    render(<NamesIndex edition={ED} title="T" index={w} lang="la" />);
+    expect(within(screen.getByRole("list", { name: "Commemorated" })).getByText("Sanctus b")).toBeInTheDocument();
+    expect(within(screen.getByRole("list", { name: "Mentioned" })).getByText("Sanctus a")).toBeInTheDocument();
+    // A heading whose eulogies all commemorate the person needs no groups.
+    expect(screen.getAllByRole("list", { name: "Commemorated" })).toHaveLength(1);
+  });
+
+  it("is the index of persons not commemorated with kind mentioned: its title, links, letters and empty note", () => {
+    const n: NamesIndexData = { printed: 3, naming: 3, letters: [{ letter: "N", persons: [
+      { key: "Q8", name: "Nero", qid: "Q8", label: null, labelLang: null, lines: [line("a", 1, true)] },
+    ] }, { letter: "P", persons: [], see: [] }] };
+    const { unmount } = render(<NamesIndex edition={ED} title="T" index={n} lang="la" kind="mentioned" back={BACK} />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("T: persons not commemorated");
+    expect(screen.getByRole("link", { name: "Index of names" })).toHaveAttribute("href", `/en/read/${ED}/names${BQ}`);
+    expect(screen.queryByRole("link", { name: "Persons not commemorated" })).toBeNull();
+    expect(screen.getByRole("link", { name: "Next letter: P" })).toHaveAttribute("href", `/en/read/${ED}/mentioned/p${BQ}`);
+    expect(screen.queryByRole("list", { name: "Mentioned" })).toBeNull();
+    unmount();
+    render(<NamesIndex edition={ED} title="T" index={{ printed: 3, naming: 3, letters: [] }} kind="mentioned" />);
+    expect(screen.getByText("Every person this edition mentions is commemorated somewhere.")).toBeInTheDocument();
   });
 });

@@ -107,6 +107,38 @@ describe("entitiesFor", () => {
   });
 });
 
+describe("entitiesFor a person some eulogies only mention", () => {
+  it("marks the eulogies that only mention them, never their own, unless another mark there commemorates them", () => {
+    const entry = (month: number, day: number, la: string) =>
+      ({ deprecated: false, month, day, entry: 1, asterisk: false, unnumbered: false, country: null, subject: { la, it: la, en: la } });
+    const reg: RegistrySnapshot = {
+      "mr:0713-henricus-imperator": entry(7, 13, "Sanctus Henricus"),
+      "mr:0303-cunegundis-confugiae": entry(3, 3, "Sancta Cunegundis, Henrici coniux"),
+      "mr:0505-x": entry(5, 5, "Sanctus X"),
+    };
+    const henry = (role?: "mentioned") => ({ name: "Henricus", where: "text" as const, wikidata: "Q103556", ...(role ? { role } : {}) });
+    const ps: PersonsSnapshot = {
+      editions: {
+        martyrologium_romanum_2004: {
+          "mr:0713-henricus-imperator": [henry()],
+          // The subject names Henry, yet he is only mentioned: not his own eulogy.
+          "mr:0303-cunegundis-confugiae": [henry("mentioned"), henry("mentioned")],
+          "mr:0505-x": [henry("mentioned")],
+        },
+        // Another edition's mark there commemorates him: the eulogy is not one that only mentions him.
+        martyrologium_romanum_2004_it_IT: { "mr:0505-x": [henry()] },
+      },
+      labels: {},
+    };
+    const out = entitiesFor(["Q103556"], ps, {}, places, reg).Q103556;
+    expect(out.kind === "person" && out.eulogies.map((e) => [e.id, e.own, e.mentioned])).toEqual([
+      ["mr:0713-henricus-imperator", true, undefined],
+      ["mr:0303-cunegundis-confugiae", false, true],
+      ["mr:0505-x", false, undefined],
+    ]);
+  });
+});
+
 describe("entitiesFor an event", () => {
   const ephesus: EventDetails = {
     label: { la: "Concilium Ephesinum", en: "First Council of Ephesus" },

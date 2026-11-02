@@ -48,6 +48,10 @@ export function mentionGroup(edition: string, eulogy: string, m: Mention): strin
   return personGroup(eulogy, m.name, m.n);
 }
 
+/** A person the eulogy only mentions whom the Martyrology commemorates nowhere: their marks have an accent of their own. */
+export const commemoratedNowhere = (m: Mention) =>
+  m.kind === "person" && m.role === "mentioned" && !m.commemorated_in?.length;
+
 const personGroup = (eulogy: string, name: string, n: number | null | undefined) => `${eulogy}|person|${name}#${n ?? 1}`;
 
 /**

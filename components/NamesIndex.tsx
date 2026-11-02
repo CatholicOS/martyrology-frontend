@@ -5,7 +5,7 @@ import { LetterBar, LetterPager } from "@/components/LetterNav";
 import styles from "@/components/page.module.css";
 import { dayPath, interfaceMonth, type Lang } from "@/lib/calendar";
 import { letterSlug } from "@/lib/letters";
-import { fnAnchor, headingId, letterEntries, type IndexPerson, type NamesIndexData } from "@/lib/names-index";
+import { fnAnchor, headingId, letterEntries, type IndexPerson, type NameLine, type NamesIndexData } from "@/lib/names-index";
 import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/reader-return";
 
 /**
@@ -15,17 +15,43 @@ import { NO_RETURN, readerHref, returnQuery, type ReaderReturn } from "@/lib/rea
  * `index` null: crmedr has no persons for the edition yet (or, with `error`, the catalog failed).
  * `lang`: the edition's language, which its names and subjects are in, inside a page in the interface language.
  * `back`: the reader's day and comparison it was opened from, which every link keeps.
+ * `kind`: "names", the persons commemorated somewhere, each heading's eulogies that only mention them apart; or
+ * "mentioned", the index of persons not commemorated, laid out the same.
  */
-export default function NamesIndex({ edition, title, index, error = false, letter, lang, back = NO_RETURN }: {
+export default function NamesIndex({ edition, title, index, error = false, letter, lang, back = NO_RETURN, kind = "names" }: {
   edition: string; title: string; index: NamesIndexData | null; error?: boolean; letter?: string; lang?: Lang; back?: ReaderReturn;
+  kind?: "names" | "mentioned";
 }) {
   const t = useTranslations("Names");
   const format = useFormatter();
   const locale = useLocale();
   const ed = encodeURIComponent(edition);
   const q = returnQuery(back);
+  const base = `/read/${ed}/${kind}`;
   const letters = index?.letters.map((l) => l.letter) ?? [];
   const shown = index?.letters.find((l) => l.letter === letter) ?? index?.letters[0];
+
+  /** A heading's lines, each linked to its eulogy or footnote; `labelledBy`: the group label's id. */
+  const lineList = (lines: NameLine[], labelledBy?: string) => (
+    <ul className="ml-4 text-sm" aria-labelledby={labelledBy}>
+      {lines.map((line) => {
+        const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
+        const hash = line.footnote ? fnAnchor(edition, line.id, line.footnote) : line.id;
+        return (
+          <li key={`${line.id}-${line.footnote ?? 0}`}>
+            {/* A plain link, with the locale: the page has thousands, and a client Link each
+                would weigh the page down (it opens the day with a page load). */}
+            <a href={`/${locale}${dayPath(edition, line.day, back.with)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
+              {day}
+            </a>
+            {" · "}
+            <span lang={lang}>{line.subject}</span>
+            {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
+          </li>
+        );
+      })}
+    </ul>
+  );
 
   /** One person's heading and lines, with an id the see entries link to. */
   const personBlock = (p: IndexPerson) => (
@@ -42,50 +68,58 @@ export default function NamesIndex({ edition, title, index, error = false, lette
           </>
         )}
       </h3>
-      <ul className="ml-4 text-sm">
-        {p.lines.map((line) => {
-          const day = `${line.day.dd} ${interfaceMonth(format, line.day.mm)}`;
-          const hash = line.footnote ? fnAnchor(edition, line.id, line.footnote) : line.id;
+      {kind === "names" && p.lines.some((l) => l.mentioned) ? (
+        // Two groups, the eulogies that commemorate the person and those that only mention them, each labelled.
+        [false, true].map((mentioned) => {
+          const lines = p.lines.filter((l) => l.mentioned === mentioned);
+          if (!lines.length) return null;
+          const id = `${headingId(p.key)}-${mentioned ? "m" : "c"}`;
           return (
-            <li key={`${line.id}-${line.footnote ?? 0}`}>
-              {/* A plain link, with the locale: the page has thousands, and a client Link each
-                  would weigh the page down (it opens the day with a page load). */}
-              <a href={`/${locale}${dayPath(edition, line.day, back.with)}#${hash}`} aria-label={`${day} · ${line.subject}`} className="underline">
-                {day}
-              </a>
-              {" · "}
-              <span lang={lang}>{line.subject}</span>
-              {line.footnote && <span className="text-slate-600"> · {t("inFootnote", { n: line.footnote })}</span>}
-            </li>
+            <div key={id}>
+              <h4 id={id} className="ml-4 mt-1 text-xs font-normal uppercase tracking-wide text-slate-600">
+                {t(mentioned ? "mentionedGroup" : "commemoratedGroup")}
+              </h4>
+              {lineList(lines, id)}
+            </div>
           );
-        })}
-      </ul>
+        })
+      ) : (
+        lineList(p.lines)
+      )}
     </div>
   );
 
   return (
     <article className={styles.page} aria-labelledby="names-title">
-      <h1 id="names-title" className={styles.heading}>{t("title", { title })}</h1>
+      <h1 id="names-title" className={styles.heading}>{t(kind === "names" ? "title" : "mentionedTitle", { title })}</h1>
       <p className="mb-3 text-center text-sm text-slate-600">
         <Link href={readerHref(edition, back)} className="underline">{t("readEdition")}</Link>
         {" · "}
         <Link href={`/read/${ed}/notes${q}`} className="underline">{t("notesLink")}</Link>
         {" · "}
         <Link href={`/read/${ed}/places${q}`} className="underline">{t("placesLink")}</Link>
+        {" · "}
+        {kind === "names" ? (
+          <Link href={`/read/${ed}/mentioned${q}`} className="underline">{t("mentionedLink")}</Link>
+        ) : (
+          <Link href={`/read/${ed}/names${q}`} className="underline">{t("namesLink")}</Link>
+        )}
       </p>
       {error ? (
         <p className="text-center text-red-700">
           {t("loadError")}{" "}
-          <Link href={`/read/${ed}/names${q}`} className="underline">{t("retry")}</Link>
+          <Link href={`${base}${q}`} className="underline">{t("retry")}</Link>
         </p>
-      ) : !index || !shown ? (
+      ) : !index ? (
         <p className="text-center text-slate-600">{t("notIndexed")}</p>
+      ) : !shown ? (
+        <p className="text-center text-slate-600">{t(kind === "names" ? "notIndexed" : "noneNotCommemorated")}</p>
       ) : (
         <>
-          {index.naming < index.printed && (
+          {kind === "names" && index.naming < index.printed && (
             <p className="mb-3 text-center text-sm text-slate-600">{t("coverage", { naming: index.naming, printed: index.printed })}</p>
           )}
-          <LetterBar letters={letters} current={shown.letter} base={`/read/${ed}/names`} label={t("letters")} query={q} />
+          <LetterBar letters={letters} current={shown.letter} base={base} label={t("letters")} query={q} />
           <section aria-labelledby="letter-h">
             <h2 id="letter-h" className={`${styles.heading} mt-6`}>{shown.letter}</h2>
             {letterEntries(shown).map((e) =>
@@ -93,7 +127,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
                 <p key={`see-${e.see.name}-${e.see.key}`} className="mb-4">
                   <span lang={lang} className="italic">{e.see.name}</span>
                   {` → ${t("see")} `}
-                  <Link href={`/read/${ed}/names/${letterSlug(e.see.letter)}${q}#${headingId(e.see.key)}`} className="font-semibold underline">
+                  <Link href={`${base}/${letterSlug(e.see.letter)}${q}#${headingId(e.see.key)}`} className="font-semibold underline">
                     <span lang={lang}>{e.see.target}</span>
                   </Link>
                 </p>
@@ -102,7 +136,7 @@ export default function NamesIndex({ edition, title, index, error = false, lette
               ),
             )}
           </section>
-          <LetterPager letters={letters} current={shown.letter} base={`/read/${ed}/names`} query={q} />
+          <LetterPager letters={letters} current={shown.letter} base={base} query={q} />
         </>
       )}
     </article>

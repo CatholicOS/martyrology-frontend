@@ -3,6 +3,7 @@ import { dayPath, daysInMonth } from "@/lib/calendar";
 import { DOC_PAGES, docHref } from "@/lib/docs";
 import { editionLang } from "@/lib/editions";
 import { letterSlug } from "@/lib/letters";
+import { mentionedIndex } from "@/lib/mentioned-index";
 import { namesIndex } from "@/lib/names-index";
 import { getPersons } from "@/lib/persons";
 import { hasPersons } from "@/lib/persons-editions";
@@ -53,6 +54,14 @@ export const SITEMAP_ROUTES: Record<string, Paths | string> = {
       const catalog = catalogs.get(e.edition_id);
       const index = catalog && hasPersons(e.edition_id) ? namesIndex(catalog, getPersons(), e.edition_id, locale) : null;
       return (index?.letters ?? []).map((l) => read(e.edition_id, `/names/${letterSlug(l.letter)}`));
+    }),
+  "/read/[edition]/mentioned": (_, { editions }) =>
+    editions.filter((e) => hasPersons(e.edition_id)).map((e) => read(e.edition_id, "/mentioned")),
+  "/read/[edition]/mentioned/[letter]": (locale, { editions, catalogs }) =>
+    editions.flatMap((e) => {
+      const catalog = catalogs.get(e.edition_id);
+      const index = catalog && hasPersons(e.edition_id) ? mentionedIndex(catalog, getPersons(), e.edition_id, locale) : null;
+      return (index?.letters ?? []).map((l) => read(e.edition_id, `/mentioned/${letterSlug(l.letter)}`));
     }),
   "/read/[edition]/places": (_, { editions }) => editions.map((e) => read(e.edition_id, "/places")),
   "/read/[edition]/places/[letter]": (locale, { editions, catalogs }) =>

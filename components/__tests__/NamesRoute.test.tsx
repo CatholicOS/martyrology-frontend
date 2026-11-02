@@ -13,12 +13,15 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/components/NamesIndex", () => ({ default: (p: unknown) => { indexProps(p); return null; } }));
 vi.mock("@/lib/persons", () => ({
   getPersons: () => ({ editions: { martyrologium_romanum_2004: {
-    "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q1" }] } }, labels: {} }),
+    "mr:0101-basilius": [{ name: "Basilius", where: "text", wikidata: "Q1" }, { name: "Nero", where: "text", wikidata: "Q8", role: "mentioned" }] } },
+    labels: {} }),
 }));
 vi.mock("@/lib/persons-editions", () => ({ hasPersons: (e: string) => e === "martyrologium_romanum_2004" }));
 
 import NamesRoute, { generateMetadata } from "@/app/[locale]/read/[edition]/names/page";
 import NamesLetterRoute, { generateMetadata as letterMetadata } from "@/app/[locale]/read/[edition]/names/[letter]/page";
+import MentionedRoute, { generateMetadata as mentionedMetadata } from "@/app/[locale]/read/[edition]/mentioned/page";
+import MentionedLetterRoute, { generateMetadata as mentionedLetterMetadata } from "@/app/[locale]/read/[edition]/mentioned/[letter]/page";
 
 const params = (edition: string) => ({ params: Promise.resolve({ locale: "en", edition }) });
 const LA = { edition_id: "martyrologium_romanum_2004", year: 2004, locale: "la" };
@@ -104,5 +107,39 @@ describe("/read/<edition>/names", () => {
   it("titles a letter's page with the letter", async () => {
     const letterParams = { params: Promise.resolve({ locale: "en", edition: "martyrologium_romanum_2004", letter: "b" }) };
     expect((await letterMetadata(letterParams)).title).toMatch(/ — B$/);
+  });
+});
+
+describe("/read/<edition>/mentioned", () => {
+  beforeEach(() => {
+    existsMock.mockReset().mockResolvedValue(true);
+    infoMock.mockReset().mockResolvedValue(LA);
+    metaMock.mockReset().mockResolvedValue({ title: "Martyrologium Romanum", year: 2004 });
+    catalogMock.mockReset().mockResolvedValue([
+      { id: "mr:0101-basilius", subject: "Sanctus Basilius", anchor_day: "01-01", deprecated: false, present: true, day_printed: "01-01", entry: 1 },
+    ]);
+    indexProps.mockReset();
+  });
+  const letterParams = (letter: string) => ({ params: Promise.resolve({ locale: "en", edition: LA.edition_id, letter }) });
+
+  it("renders the index of persons not commemorated, apart from the index of names", async () => {
+    render(await MentionedRoute(params(LA.edition_id)));
+    const props = indexProps.mock.calls[0][0];
+    expect(props.kind).toBe("mentioned");
+    expect(props.index.letters.map((l: { letter: string }) => l.letter)).toEqual(["N"]);
+    indexProps.mockReset();
+    render(await NamesRoute(params(LA.edition_id)));
+    expect(indexProps.mock.calls[0][0].index.letters.map((l: { letter: string }) => l.letter)).toEqual(["B"]);
+  });
+
+  it("shows a letter's page, and 404s on a letter it does not have", async () => {
+    render(await MentionedLetterRoute(letterParams("n")));
+    expect(indexProps.mock.calls[0][0]).toMatchObject({ letter: "N", kind: "mentioned" });
+    await expect(MentionedLetterRoute(letterParams("b"))).rejects.toThrow("NEXT_NOT_FOUND");
+  });
+
+  it("titles the page and a letter's page", async () => {
+    expect((await mentionedMetadata(params(LA.edition_id))).title).toBe("Martyrologium Romanum 2004: persons not commemorated");
+    expect((await mentionedLetterMetadata(letterParams("n"))).title).toBe("Martyrologium Romanum 2004: persons not commemorated — N");
   });
 });

@@ -47,8 +47,9 @@ export interface EventDetails {
 }
 
 /**
- * A eulogy that names a person: its day and subject, whether the subject names them (their own eulogy), and the
- * footnote that names them when its text does not (the first, when several lists do).
+ * A eulogy that names a person: its day and subject, whether the subject names them (their own eulogy), the
+ * footnote that names them when its text does not (the first, when several lists do), and whether it only mentions
+ * them (every mark of theirs there is crmedr's role "mentioned").
  */
 export interface EulogyLink {
   id: string;
@@ -57,6 +58,7 @@ export interface EulogyLink {
   subject: SnapshotEntry["subject"];
   own: boolean;
   footnote?: number;
+  mentioned?: true;
 }
 
 /**
@@ -105,14 +107,20 @@ function eulogyLinks(persons: PersonsSnapshot, registry: RegistrySnapshot): Map<
       for (const m of mentions) {
         if (!m.wikidata) continue;
         const links = out.get(m.wikidata) ?? [];
-        const own = words(m.name).every((w) => subject.has(w));
+        const mentioned = m.role === "mentioned";
+        // A eulogy that only mentions the person is not their own, whatever its subject says.
+        const own = !mentioned && words(m.name).every((w) => subject.has(w));
         const note = m.where === "text" ? undefined : m.where.footnote;
         const seen = links.find((l) => l.id === id);
         if (seen) {
           seen.own ||= own;
           // Named in the text too: the eulogy is the place to open; else the first footnote that names them.
           seen.footnote = note === undefined || seen.footnote === undefined ? undefined : Math.min(seen.footnote, note);
-        } else links.push({ id, month: e.month, day: e.day, subject: e.subject, own, ...(note ? { footnote: note } : {}) });
+          // Only mentioned while every mark of theirs there is (in any edition).
+          if (!mentioned) delete seen.mentioned;
+        } else links.push({
+          id, month: e.month, day: e.day, subject: e.subject, own, ...(note ? { footnote: note } : {}), ...(mentioned ? { mentioned: true } : {}),
+        });
         out.set(m.wikidata, links);
       }
     }

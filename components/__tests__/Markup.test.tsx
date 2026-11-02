@@ -78,6 +78,40 @@ describe("the markup", () => {
     expect(mark).toHaveAttribute("aria-roledescription", "event");
   });
 
+  it("gives a person commemorated nowhere in the Martyrology an accent of their own, a person commemorated elsewhere the person's", () => {
+    const words = "Henrici imperatoris et Ottonis";
+    const marks: Mention[] = [
+      { kind: "person", where: "text", start: 0, end: 7, form: "Henrici", name: "Henricus", qid: "Q103556", role: "mentioned", commemorated_in: ["mr:0713-henricus-imperator"] },
+      { kind: "person", where: "text", start: 23, end: 30, form: "Ottonis", name: "Otto", qid: "Q1", role: "mentioned", commemorated_in: [] },
+    ];
+    render(
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
+        <p><MentionText text={words} mentions={marks} where="text" eulogy="mr:0303-x" edition="ed" /></p>
+      </MarkupProvider>,
+    );
+    const henry = screen.getByRole("button", { name: "Henrici" });
+    const otto = screen.getByRole("button", { name: "Ottonis" });
+    expect(henry).toHaveClass(styles.mention, styles.person);
+    expect(henry).not.toHaveClass(styles.uncommemorated);
+    expect(otto).toHaveClass(styles.mention, styles.uncommemorated);
+    expect(otto).not.toHaveClass(styles.person);
+    expect(otto).toHaveAttribute("aria-roledescription", "person");
+  });
+
+  it("tints a mark inside a person commemorated nowhere with that person's accent", () => {
+    const text = "Ottonis de Placéntia";
+    const nested: Mention[] = [
+      { kind: "person", where: "text", start: 0, end: 20, form: text, name: "Otto", qid: "Q1", role: "mentioned", commemorated_in: [] },
+      { kind: "place", where: "text", start: 11, end: 20, form: "Placéntia", name: null, qid: "Q13362" },
+    ];
+    render(
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
+        <p><MentionText text={text} mentions={nested} where="text" eulogy="mr:0219-x" edition="ed" /></p>
+      </MarkupProvider>,
+    );
+    expect(screen.getByRole("button", { name: "Placéntia" })).toHaveClass(styles.place, styles.withinUncommemorated);
+  });
+
   it("makes only a mention's first piece focusable, and tints every piece together", () => {
     // A mention cut in two (as a footnote mark cuts it): both pieces carry it, only the first takes the focus.
     const placed = mentionsIn(MENTIONS, "text", "ed", "mr:0101-basilius", TEXT.length);
