@@ -65,6 +65,19 @@ describe("the markup", () => {
     expect(place()).toHaveAttribute("aria-roledescription", "place");
   });
 
+  it("marks a council as an event, announced as one", () => {
+    const words = "in Concílio Ephesíno";
+    const council: Mention = { kind: "event", where: "text", start: 3, end: 20, form: "Concílio Ephesíno", name: null, qid: "Q184332" };
+    render(
+      <MarkupProvider on langs={{ ed: "la" }} page={{ edition: "ed", with: null }}>
+        <p><MentionText text={words} mentions={[council]} where="text" eulogy="mr:0101-maria-dei-genetrix" edition="ed" /></p>
+      </MarkupProvider>,
+    );
+    const mark = screen.getByRole("button", { name: "Concílio Ephesíno" });
+    expect(mark).toHaveClass(styles.mention, styles.event);
+    expect(mark).toHaveAttribute("aria-roledescription", "event");
+  });
+
   it("makes only a mention's first piece focusable, and tints every piece together", () => {
     // A mention cut in two (as a footnote mark cuts it): both pieces carry it, only the first takes the focus.
     const placed = mentionsIn(MENTIONS, "text", "ed", "mr:0101-basilius", TEXT.length);

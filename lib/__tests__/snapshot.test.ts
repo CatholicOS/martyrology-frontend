@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { buildMisprints, buildNotes, buildPersonDetails, buildPersons, buildPlaces, buildSnapshot, coordsQuery, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
+import { buildEventDetails, buildMisprints, buildNotes, buildPersonDetails, buildPersons, buildPlaces, buildSnapshot, coordsQuery, fetchPersonLabels, fetchPlaceData, labelsQuery, parseWktPoint, personQids, resolvedQids } from "@/scripts/snapshot-registry.mjs";
 
 const registry = { entries: [
   { id: "mr:0104-titus", month: 1, day: 4, entry: 2, asterisk: false, country: "GR" },
@@ -404,5 +404,34 @@ describe("SPARQL prefixes", () => {
       }
     }
     expect(coordsQuery(["Q220", "Q490"])).toContain("VALUES ?item { wd:Q220 wd:Q490 } ?item wdt:P625 ?c");
+  });
+});
+
+describe("buildEventDetails", () => {
+  const doc = {
+    $comment: "crmedr's note",
+    Q184332: {
+      label: { la: "Concilium Ephesinum", en: "First Council of Ephesus", it: "Concilio di Efeso", ru: "Эфесский собор" },
+      description: { en: "ecumenical council in 431", la: "concilium" },
+      start: { year: 431, precision: "year", circa: false }, end: { year: 431, precision: "year", circa: false },
+      place: "Q47611",
+      wikipedia: { en: "Council of Ephesus", ru: "Третий Вселенский собор" },
+    },
+  } as const;
+
+  it("keeps each event's Latin and interface-language labels, the others in the interface languages, its dates and place", () => {
+    expect(buildEventDetails(doc)).toEqual({
+      Q184332: {
+        label: { la: "Concilium Ephesinum", en: "First Council of Ephesus", it: "Concilio di Efeso" },
+        description: { en: "ecumenical council in 431" },
+        start: { year: 431, precision: "year", circa: false }, end: { year: 431, precision: "year", circa: false },
+        place: "Q47611",
+        wikipedia: { en: "Council of Ephesus" },
+      },
+    });
+  });
+
+  it("fills what crmedr leaves out with nulls and empty maps", () => {
+    expect(buildEventDetails({ Q1: {} })).toEqual({ Q1: { label: {}, description: {}, start: null, end: null, place: null, wikipedia: {} } });
   });
 });

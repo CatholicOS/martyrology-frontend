@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { entitiesFor, MAX_IDS, parseIds } from "@/lib/entities";
-import type { PersonDetails } from "@/lib/entities";
+import type { EventDetails, PersonDetails } from "@/lib/entities";
 import type { PersonsSnapshot } from "@/lib/persons";
 import type { PlacesSnapshot } from "@/lib/places";
 import type { RegistrySnapshot } from "@/lib/snapshot";
@@ -104,5 +104,27 @@ describe("entitiesFor", () => {
     expect(links.kind === "person" && links.eulogies.map((e) => [e.id, e.footnote])).toEqual([
       ["mr:0121-x-et-socii", 1], ["mr:0202-y-et-socii", undefined], ["mr:0303-z", undefined],
     ]);
+  });
+});
+
+describe("entitiesFor an event", () => {
+  const ephesus: EventDetails = {
+    label: { la: "Concilium Ephesinum", en: "First Council of Ephesus" },
+    description: { en: "ecumenical council in 431" },
+    start: { year: 431, precision: "year", circa: false },
+    end: { year: 431, precision: "year", circa: false },
+    place: "Q220",
+    wikipedia: { en: "Council of Ephesus" },
+  };
+
+  it("gives an event its details and the name of the place it was held, when the places snapshot knows it", () => {
+    const events = { Q184332: ephesus, Q2: { ...ephesus, place: "Q404" }, Q3: { ...ephesus, place: null } };
+    const out = entitiesFor(["Q184332", "Q2", "Q3"], persons, details, places, registry, events);
+    expect(out.Q184332).toEqual({
+      kind: "event", labels: ephesus.label, description: ephesus.description, start: ephesus.start, end: ephesus.end,
+      place: { qid: "Q220", labels: { en: "Rome", it: "Roma" }, label: "Rome" }, wikipedia: ephesus.wikipedia,
+    });
+    expect(out.Q2.kind === "event" && out.Q2.place).toBeNull();
+    expect(out.Q3.kind === "event" && out.Q3.place).toBeNull();
   });
 });

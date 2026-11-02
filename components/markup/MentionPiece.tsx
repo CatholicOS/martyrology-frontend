@@ -7,6 +7,9 @@ import styles from "@/components/page.module.css";
 import { mentionsIn, splitByMentions, type PlacedMention } from "@/lib/mentions";
 import type { Mention } from "@/lib/types";
 
+const TINT = { person: styles.person, place: styles.place, event: styles.event };
+const WITHIN = { person: styles.withinPerson, place: styles.withinPlace, event: styles.withinEvent };
+
 /**
  * One piece of a mention (a footnote mark or an erratum can cut a mention in two): every piece hovers, tints and
  * opens the same popup; the first is the one the keyboard reaches.
@@ -22,10 +25,9 @@ function MentionPiece({ markup, mention, edition, first, children }: {
     <span
       data-mention={mention.key}
       data-active={mention.groups.some((g) => markup.active.includes(g)) ? "" : undefined}
-      // A mark inside another (a place in a person's name) lights with the outer mark too, in its tint.
+      // A mark inside another (a place in a person's name, a person in a council's) lights with the outer mark too, in its tint.
       data-within-active={within?.groups.some((g) => markup.active.includes(g)) ? "" : undefined}
-      className={`${styles.mention} ${mention.kind === "person" ? styles.person : styles.place}${
-        within ? ` ${within.kind === "person" ? styles.withinPerson : styles.withinPlace}` : ""}`}
+      className={`${styles.mention} ${TINT[mention.kind]}${within ? ` ${WITHIN[within.kind]}` : ""}`}
       onMouseEnter={(e) => markup.hoverStart(target, e.currentTarget)}
       onMouseLeave={() => markup.hoverEnd()}
       onClick={(e) => markup.pin(target, e.currentTarget, false)}
