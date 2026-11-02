@@ -32,7 +32,7 @@ export function FootnoteMark({ note }: { note: PageFootnote }) {
 }
 
 /**
- * A footnote's text as printed, its persons and places marked while "Names & places" is on, with
+ * A footnote's text as printed, its persons and places marked while "Annotations" is on, with
  * `[sic! expected: …]` after each verified misprint, as in the eulogy's text.
  */
 function FootnoteText({ note, edition }: { note: PageFootnote; edition: string }) {

@@ -168,7 +168,7 @@ export default function ReaderBar({
   onFind: (o: SubjectOption) => void;
   showIds: boolean;
   onShowIds: (on: boolean) => void;
-  /** Whether the day on screen names anyone or anywhere: the "Names & places" switch is drawn only then. */
+  /** Whether the day on screen names anyone or anywhere: the "Annotations" switch is drawn only then. */
   markupAvailable: boolean;
   markup: boolean;
   onMarkup: (on: boolean) => void;
@@ -246,6 +246,9 @@ export default function ReaderBar({
         </select>
         <button type="button" id="reader-today" className={control} onClick={() => onGo(todayLocal(), "reader-today")}>{t("today")}</button>
         <SubjectSearch subjects={subjects} onFind={onFind} />
+      </div>
+      {/* The switches, on a row of their own. */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <Switch id="reader-ids" label={t("ids")} title={t("showIdsTitle")} checked={showIds} onChange={onShowIds} />
         {markupAvailable && (
           <Switch id="reader-markup" label={tm("switch")} title={tm("switchTitle")} checked={markup} onChange={onMarkup} />

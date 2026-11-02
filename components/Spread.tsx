@@ -94,7 +94,7 @@ export default function Spread({
   turn: "next" | "prev" | null;
   /** Told whether either sheet names anyone or anywhere. */
   onMentions?: (has: boolean) => void;
-  /** Mark the persons and places the sheets name ("Names & places"). */
+  /** Mark the persons and places the sheets name ("Annotations"). */
   markup?: boolean;
 }) {
   const tShelf = useTranslations("Bookshelf");

@@ -136,8 +136,8 @@
     "unaligned": "L’édition {edition} n’est pas encore alignée : ses éloges ne sont donc pas appariés."
   },
   "Markup": {
-    "switch": "Noms et lieux",
-    "switchTitle": "Signaler les personnes et les lieux que nomme chaque éloge",
+    "switch": "Annotations",
+    "switchTitle": "Signaler les personnes, les lieux et les événements que nomme chaque éloge",
     "person": "personne",
     "place": "lieu",
     "event": "événement",

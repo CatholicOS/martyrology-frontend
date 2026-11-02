@@ -164,25 +164,25 @@ describe("ReaderBar's subject search", () => {
   });
 });
 
-describe("ReaderBar's Names & places switch", () => {
+describe("ReaderBar's Annotations switch", () => {
   it("is a switch beside IDs and notes, telling what it does", () => {
     const onMarkup = vi.fn();
     render(<ReaderBar {...props} markupAvailable markup={false} onMarkup={onMarkup} />);
-    const sw = screen.getByRole("switch", { name: "Names & places" });
+    const sw = screen.getByRole("switch", { name: "Annotations" });
     expect(sw).not.toBeChecked();
-    expect(sw.closest("label")).toHaveAttribute("title", "Mark the persons and places each eulogy names");
+    expect(sw.closest("label")).toHaveAttribute("title", "Mark the persons, places and events each eulogy names");
     fireEvent.click(sw);
     expect(onMarkup).toHaveBeenCalledWith(true);
   });
 
   it("is named in the interface language", () => {
     render(<ReaderBar {...props} markupAvailable markup onMarkup={vi.fn()} />, { locale: "it" });
-    expect(screen.getByRole("switch", { name: "Nomi e luoghi" })).toBeChecked();
+    expect(screen.getByRole("switch", { name: "Annotazioni" })).toBeChecked();
   });
 
   it("is not rendered when the day on screen names no one and nowhere", () => {
     render(<ReaderBar {...props} markupAvailable={false} markup onMarkup={vi.fn()} />);
-    expect(screen.queryByRole("switch", { name: "Names & places" })).toBeNull();
+    expect(screen.queryByRole("switch", { name: "Annotations" })).toBeNull();
     expect(screen.getByRole("switch", { name: "IDs and notes" })).toBeInTheDocument();
   });
 });
@@ -238,6 +238,14 @@ describe("ReaderBar's layout", () => {
     expect(document.getElementById("reader-with")).toHaveClass("col-start-1", "row-start-2", "w-full", "min-w-0");
     expect(document.getElementById("reader-close")).toHaveClass("col-start-2", "row-start-2");
     expect(document.getElementById("reader-swap")).toHaveClass("col-start-3", "row-start-1", "row-span-2");
+  });
+
+  it("puts the switches on a row of their own, below the day", () => {
+    renderBar(null);
+    const row = document.getElementById("reader-ids")!.closest("label")!.parentElement!;
+    expect(row).toContainElement(document.getElementById("reader-markup"));
+    expect(row).not.toContainElement(document.getElementById("reader-today"));
+    expect(row).not.toContainElement(document.getElementById("reader-subject"));
   });
 
   it("draws no swap or clear button without a comparison", () => {

@@ -93,7 +93,7 @@ function reveal(root: HTMLElement, id: string): boolean {
 
 /**
  * One day's page; keyed by the parent on edition/day so each turn starts fresh in "loading", and with the
- * markup's provider (`markup`: "Names & places" is on) mounted afresh, so no popup outlives its day.
+ * markup's provider (`markup`: "Annotations" is on) mounted afresh, so no popup outlives its day.
  */
 function DayView({
   edition, mm, dd, lang, title, signedIn, turn, showIds, onMentions, markup,
