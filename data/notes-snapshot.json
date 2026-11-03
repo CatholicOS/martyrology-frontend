@@ -920,6 +920,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"truly Catholic by nature\" where the Latin has \"cathólicum vero cognómen\" (but Catholic his surname)."
     }
   },
+  "mr:0309-bruno-querfurtensis": {
+    "note": "Both editions say Bruno was made bishop by Pope John X, who reigned 914–928, almost a century earlier. Bruno received the pallium from Sylvester II (999–1003) and was consecrated in 1004, when the pope was John XVIII."
+  },
   "mr:0309-catharina-bononiae": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"humble devotion\" where the Latin has \"pæniténtiæ humilitatísque cursu\" (course of penance and humility)."
@@ -1162,6 +1165,9 @@
   },
   "mr:0402-franciscus-coll": {
     "note": "Francisco Coll y Guitart, blessed in the 2004 editions, was canonized on 11 October 2009."
+  },
+  "mr:0404-platon-constantinopoli": {
+    "note": "Plato's nephew who reformed the Studion with him, called Theodosius in both editions, is Theodore the Studite; no nephew Theodosius is known."
   },
   "mr:0404-gulielmus-cuffitelli": {
     "editions": {
@@ -2063,6 +2069,9 @@
   "mr:0628-irenaeus-lugdunensis": {
     "note": "Irenaeus was declared a Doctor of the Church on 21 January 2022."
   },
+  "mr:0628-argimirus-cordubae": {
+    "note": "Both editions date Argimirus under \"Mohammed II\"; he died in 856, under the emir Muhammad I of Córdoba (852–886)."
+  },
   "mr:0628-lucia-wang-cheng-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Qi Yu\" where the Latin has \"Maríæ Qi Yu\" (Maria Qi Yu)."
@@ -2466,6 +2475,9 @@
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"though a religious\" where the Latin \"cum religiósa esset\" means because she was a religious."
     }
   },
+  "mr:0725-valentina-et-socii": {
+    "note": "Both editions place these martyrs in the persecution of the emperor Maximian. Eusebius (Martyrs of Palestine 8) dates them to 308 under the governor Firmilian, when Palestine was ruled by Maximinus Daia; Maximian had abdicated in 305."
+  },
   "mr:0725-maria-a-monte-carmelo-salles-y-barangueras": {
     "note": "María del Monte Carmelo Sallés y Barangueras, blessed in the 2004 editions, was canonized on 21 October 2012."
   },
@@ -2767,6 +2779,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Eutychius\" where the Latin has \"Euthychiáni\" (Eutychian)."
     }
+  },
+  "mr:0815-hyacinthus-cracoviae": {
+    "note": "\"Henry the German\", Hyacinth's companion in both editions, is not otherwise known: the sources name Henry of Moravia and Herman the German among the companions Dominic received with Hyacinth and Ceslaus, and the printed name seems to join the two."
   },
   "mr:0815-ludovicus-masferrer-vila-et-socii": {
     "editions": {
@@ -3130,6 +3145,9 @@
       "martyrologium_romanum_2004_it_IT": "Printed here without an asterisk; the Latin editio altera prints the entry with one (10*). Translation error: \"nella Guascogna\" (Gascony) where the Latin has \"in Vascónia Hispániæ\" (the Basque Country of Spain)."
     }
   },
+  "mr:0910-nemesius-alexandriae": {
+    "note": "Dionysius of Alexandria (in Eusebius, Church History VI.41) does not name the judge who tried Nemesion under Decius. Aemilianus, named in both editions, governed Egypt under Valerian (257–261) and tried Dionysius himself."
+  },
   "mr:0910-sebastianus-kimura-et-socii": {
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"eight of them priests\" where the Latin has only \"presbýteri, religiósi\" (priests, religious), without a number."
@@ -3227,6 +3245,9 @@
   },
   "mr:0917-sigismundus-felix-felinski": {
     "note": "Zygmunt Szczęsny Feliński, blessed in the 2004 editions, was canonized on 11 October 2009."
+  },
+  "mr:0918-ferreolus-lemovici": {
+    "note": "Gregory of Tours (Histories V.28) makes Mark the referendary of King Chilperic I, collecting his taxes at Limoges in 579; both editions call him King Childebert's referendary."
   },
   "mr:0919-eustochius-turonum": {
     "editions": {
@@ -4026,6 +4047,9 @@
     "editions": {
       "martyrologium_romanum_2004_en_unofficial": "Translation error: \"Belle-Île\" where the Latin has \"in loco Bello Visu\" (Beauvoir-sur-Mer). Translation error: \"then a hermit in the monastery of Rhuys\" where the Latin places Gulstan, not Felix, \"in monastério Rhuvigiénsi\"."
     }
+  },
+  "mr:1127-thomas-koteda-kiuni-et-socii": {
+    "note": "The governor \"Gonzuku\" of both editions is Hasegawa Gonroku, bugyō (governor) of Nagasaki from 1615 to 1626."
   },
   "mr:1127-bronislaus-kostowski": {
     "editions": {
