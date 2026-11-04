@@ -68,7 +68,7 @@ describe("DayPage", () => {
 describe("DayPage misprints", () => {
   const it2004 = {
     titulus: null,
-    elogia: [{ id: "mr:0305-phoca-sinopes", entry: 4, asterisk: false, unnumbered: false, anchor_day: "03-05", text: "Commemorazione nell’odiena Turchia di san Foca." }],
+    elogia: [{ id: "mr:0305-phocas-sinopes", entry: 4, asterisk: false, unnumbered: false, anchor_day: "03-05", text: "Commemorazione nell’odiena Turchia di san Foca." }],
     conclusio: null,
   };
 
@@ -188,7 +188,7 @@ describe("DayPage, printed footnotes", () => {
       ...day,
       elogia: [
         {
-          id: "mr:0305-phoca-sinopes", entry: 1, asterisk: false, unnumbered: false, anchor_day: "03-05",
+          id: "mr:0305-phocas-sinopes", entry: 1, asterisk: false, unnumbered: false, anchor_day: "03-05",
           text: "Commemorazione nell’odiena memoria.", footnotes: [{ mark: "1", after: "nell’odiena", text: "Nota." }],
         },
       ],
