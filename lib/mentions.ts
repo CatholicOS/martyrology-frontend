@@ -29,17 +29,18 @@ const whereKey = (w: Mention["where"]) => (w === "text" ? "text" : `fn${w.footno
 
 /**
  * The mention's name on the page: its edition, its eulogy, where it is, and where it starts. The edition keeps
- * the two columns of a spread apart when both print the same eulogy.
+ * the two columns of a spread apart when both print the same eulogy. An event's ends in "|event": a place or
+ * person inside it may start where it starts (Polonia in "Polonia invasa").
  */
 export function mentionKey(edition: string, eulogy: string, m: Mention): string {
-  return `${edition}|${eulogy}|${whereKey(m.where)}|${m.start}`;
+  return `${edition}|${eulogy}|${whereKey(m.where)}|${m.start}${m.kind === "event" ? "|event" : ""}`;
 }
 
 /**
  * The marks tinted together with this one: a person's, by their name and n in one eulogy, which is who they are
  * (crmedr's persons), in its text and its footnotes and in every edition printed beside it (the Italian marks carry
  * the Latin name and n); a place's, by its Wikidata item in one eulogy (crmedr's gazetteer gives the Latin and
- * Italian marks the same item); an event's (a council or synod), by its item likewise. A person is never grouped by the item, which most persons do not have; a mark
+ * Italian marks the same item); an event's, by its item likewise. A person is never grouped by the item, which most persons do not have; a mark
  * with neither stays alone.
  */
 export function mentionGroup(edition: string, eulogy: string, m: Mention): string {

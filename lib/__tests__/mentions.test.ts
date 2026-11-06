@@ -16,6 +16,12 @@ describe("mentionKey", () => {
   it("tells the same mention apart in two editions, as the two columns of a spread", () => {
     expect(mentionKey("a", "mr:x", place)).not.toBe(mentionKey("b", "mr:x", place));
   });
+
+  it("tells an event apart from the place it starts with (Polonia invasa)", () => {
+    const event: Mention = { kind: "event", where: "text", start: 0, end: 32, form: "Cæsaréæ in Cappadócia, sepultúra", name: null, qid: "Q2" };
+    expect(mentionKey("ed", "mr:x", event)).not.toBe(mentionKey("ed", "mr:x", place));
+    expect(mentionKey("ed", "mr:x", place)).toBe("ed|mr:x|text|0");
+  });
 });
 
 describe("mentionsIn", () => {
