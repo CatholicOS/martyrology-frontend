@@ -105,6 +105,23 @@ nombre lleva un elemento distintivo, el primero de los siguientes que sea aplica
 El mismo santo lleva el mismo elemento distintivo en todos los días. Estos elementos distintivos se están
 redactando para todo el registro y están en revisión.
 
+### Coherencia
+
+Otras cuatro reglas mantienen coherentes los identificadores. El registro comprueba la primera, la
+segunda y la cuarta con `scripts/lint_ids.py` antes de acuñar o renombrar un identificador:
+
+- **Un santo, un slug.** Cada elogio de una misma persona (un mismo elemento de Wikidata) la nombra
+  igual, en cada día y en cada edición: Agustín de Canterbury no es `augustinus-cantuariae` el 26 de
+  mayo y `augustinus-cantuariensis` el 27 de mayo. Las herramientas dependen de ello: un elogio que
+  dice *cuius memoria cras agitur* («cuya memoria se celebra mañana») se enlaza con el elogio del día
+  siguiente mediante su identificador.
+- **Se conserva el diptongo impreso.** Un lugar impreso con *æ* u *œ* lo conserva como `ae` u `oe`:
+  *Córdubæ* da `cordubae`, nunca `cordube`.
+- **El lugar conserva su propia forma**, la del lugar que imprime el texto: *Naziánzi* da
+  `nonna-nazianzi`, no el adjetivo masculino `nazianzenus` de otro santo.
+- **Ningún identificador se reutiliza**, ni siquiera uno obsoleto: un identificador nuevo que sería
+  igual a uno existente, actual u obsoleto, toma otra forma.
+
 ## Identificadores obsoletos
 
 Las ediciones antiguas contienen elogios que el libro de 2004 no imprime, o que imprime en otro día. Cada

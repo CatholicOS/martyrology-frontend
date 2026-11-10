@@ -106,6 +106,23 @@ einem Namen ein Unterscheidungsmerkmal, und zwar das erste der folgenden, das zu
 Derselbe Heilige trägt an jedem Tag dasselbe Unterscheidungsmerkmal. Diese Merkmale werden derzeit für
 das ganze Register entworfen und sind in Prüfung.
 
+### Einheitlichkeit
+
+Vier weitere Regeln halten die Kennungen einheitlich. Das Register prüft die erste, zweite und vierte
+mit `scripts/lint_ids.py`, bevor eine Kennung vergeben oder umbenannt wird:
+
+- **Ein Heiliger, ein Slug.** Jedes Elogium derselben Person (desselben Wikidata-Objekts) nennt sie
+  gleich, an jedem Tag und in jeder Ausgabe: Augustinus von Canterbury ist nicht am 26. Mai
+  `augustinus-cantuariae` und am 27. Mai `augustinus-cantuariensis`. Werkzeuge hängen davon ab: Ein
+  Elogium, das *cuius memoria cras agitur* („dessen Gedenktag morgen ist“) sagt, wird über seine
+  Kennung mit dem Elogium des nächsten Tages verknüpft.
+- **Der gedruckte Diphthong bleibt erhalten.** Ein mit *æ* oder *œ* gedruckter Ort behält ihn als `ae`
+  oder `oe`: *Córdubæ* ergibt `cordubae`, nie `cordube`.
+- **Der Ort behält seine eigene Form**, die des im Text gedruckten Ortes: *Naziánzi* ergibt
+  `nonna-nazianzi`, nicht das männliche Adjektiv `nazianzenus` eines anderen Heiligen.
+- **Keine Kennung wird wiederverwendet**, auch keine veraltete: Eine neue Kennung, die einer
+  bestehenden gleich wäre, ob aktuell oder veraltet, erhält eine andere Form.
+
 ## Veraltete IDs
 
 Ältere Ausgaben enthalten Elogien, die das Buch von 2004 nicht oder an einem anderen Tag druckt. Jedes
