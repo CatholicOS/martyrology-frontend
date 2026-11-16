@@ -65,13 +65,30 @@ async function readCatalog(res: Response): Promise<CatalogEntryOut[] | null> {
   }
 }
 
+/** Catalog requests in flight, by URL: concurrent callers share one (see `fetchCatalog`). */
+const catalogsInFlight = new Map<string, Promise<CatalogEntryOut[]>>();
+
 /**
  * The edition's catalog (every eulogy, with its subject in `lang`), from the data cache (revalidated
  * hourly). The cache keeps any answer the API gave with a 200, so an answer that is not a catalog is
  * asked for again, fresh, rather than served for the hour. Throws when the API cannot give it.
+ *
+ * Concurrent calls for the same catalog share one request: the data cache does not. When its entry
+ * is missing or stale, every render asking at that moment goes to the API, and fetch memoization
+ * only spans one render pass. Under a crawl that is dozens of identical catalog requests at once,
+ * each costly for the API (on 2026-11-16 one such burst took the server down). The result is shared
+ * between the callers, so they must not mutate it.
  */
-export async function fetchCatalog(edition: string, lang: Locale): Promise<CatalogEntryOut[]> {
+export function fetchCatalog(edition: string, lang: Locale): Promise<CatalogEntryOut[]> {
   const url = `${API_BASE}/api/v1/elogia?edition=${encodeURIComponent(edition)}&locale=${lang}`;
+  const pending = catalogsInFlight.get(url);
+  if (pending) return pending;
+  const request = loadCatalog(url, edition).finally(() => catalogsInFlight.delete(url));
+  catalogsInFlight.set(url, request);
+  return request;
+}
+
+async function loadCatalog(url: string, edition: string): Promise<CatalogEntryOut[]> {
   const cached = await readCatalog(await fetch(url, { next: { revalidate: 3600 } }));
   if (cached) return cached;
   const fresh = await readCatalog(await fetch(url, { cache: "no-store" }));

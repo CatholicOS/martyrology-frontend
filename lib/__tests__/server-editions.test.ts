@@ -110,4 +110,38 @@ describe("fetchCatalog", () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("down"));
     await expect(fetchCatalog("x", "la")).rejects.toThrow();
   });
+
+  it("shares one request between concurrent calls for the same catalog", async () => {
+    const elogia = [{ id: "mr:0101-basilius", subject: "Sanctus Basilius", anchor_day: "01-01", deprecated: false }];
+    let answer!: (r: Response) => void;
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(() => new Promise<Response>((r) => (answer = r)));
+    const calls = Array.from({ length: 40 }, () => fetchCatalog("martyrologium_romanum_2004", "la"));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    answer(new Response(JSON.stringify({ elogia })));
+    const results = await Promise.all(calls);
+    expect(results.every((r) => r === results[0])).toBe(true);
+    expect(results[0]).toEqual(elogia);
+  });
+
+  it("asks separately for another edition or language", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async () => new Response(JSON.stringify({ elogia: [] })));
+    await Promise.all([fetchCatalog("a", "la"), fetchCatalog("b", "la"), fetchCatalog("a", "it"), fetchCatalog("a", "la")]);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("asks again once a shared request has settled, after an answer or a failure", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async () => new Response(JSON.stringify({ elogia: [] })));
+    await fetchCatalog("x", "la");
+    await fetchCatalog("x", "la");
+    expect(fetchMock).toHaveBeenCalledTimes(2); // the data cache, not this sharing, keeps answers
+
+    fetchMock.mockClear().mockRejectedValue(new Error("down"));
+    const failed = [fetchCatalog("y", "la"), fetchCatalog("y", "la")];
+    for (const f of failed) await expect(f).rejects.toThrow("down");
+    expect(fetchMock).toHaveBeenCalledTimes(1); // the failure was shared too
+
+    fetchMock.mockClear().mockImplementation(async () => new Response(JSON.stringify({ elogia: [] })));
+    expect(await fetchCatalog("y", "la")).toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
 });
