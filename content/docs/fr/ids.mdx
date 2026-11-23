@@ -107,6 +107,23 @@ reçoit donc un élément distinctif, le premier des suivants qui s’applique 
 Le même saint porte le même élément distinctif à chacun de ses jours. Ces éléments distinctifs sont en
 cours de rédaction pour l’ensemble du registre et en cours d’examen.
 
+### Cohérence
+
+Quatre autres règles gardent les identifiants cohérents. Le registre vérifie la première, la deuxième
+et la quatrième avec `scripts/lint_ids.py` avant de créer ou de renommer un identifiant :
+
+- **Un saint, un slug.** Chaque éloge d’une même personne (un même élément Wikidata) la nomme de la
+  même façon, chaque jour et dans chaque édition : Augustin de Cantorbéry n’est pas
+  `augustinus-cantuariae` le 26 mai et `augustinus-cantuariensis` le 27 mai. Les outils en dépendent :
+  un éloge qui dit *cuius memoria cras agitur* (« dont la mémoire est célébrée demain ») est relié à
+  l’éloge du lendemain par son identifiant.
+- **La diphtongue imprimée est conservée.** Un lieu imprimé avec *æ* ou *œ* la garde sous la forme
+  `ae` ou `oe` : *Córdubæ* donne `cordubae`, jamais `cordube`.
+- **Le lieu garde sa propre forme**, celle du lieu imprimé dans le texte : *Naziánzi* donne
+  `nonna-nazianzi`, et non l’adjectif masculin `nazianzenus` d’un autre saint.
+- **Aucun identifiant n’est réutilisé**, pas même un identifiant obsolète : un nouvel identifiant qui
+  serait égal à un identifiant existant, actuel ou obsolète, prend une autre forme.
+
 ## Identifiants obsolètes
 
 Les éditions anciennes contiennent des éloges que le livre de 2004 n’imprime pas, ou imprime à un autre

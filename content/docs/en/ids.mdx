@@ -100,6 +100,22 @@ discriminator, the first of these that applies:
 The same saint carries the same discriminator on every day. These discriminators are being drafted for
 the whole registry and are under review.
 
+### Consistency
+
+Four more rules keep identifiers consistent. The registry checks the first, second and fourth
+with `scripts/lint_ids.py` before an identifier is minted or renamed:
+
+- **One saint, one slug.** Every eulogy of one person (one Wikidata item) names the person alike, on
+  every day and in every edition: Augustine of Canterbury is not `augustinus-cantuariae` on 26 May
+  and `augustinus-cantuariensis` on 27 May. Tools depend on it: a eulogy that says *cuius memoria
+  cras agitur* ("whose memorial is tomorrow") is linked to the next day's eulogy by its identifier.
+- **The printed diphthong is kept.** A place printed with *æ* or *œ* keeps it as `ae` or `oe`:
+  *Córdubæ* gives `cordubae`, never `cordube`.
+- **The place keeps its own form**, from the place the text prints: *Naziánzi* gives `nonna-nazianzi`,
+  not the masculine adjective `nazianzenus` of another saint.
+- **No identifier is reused**, not even a deprecated one: a new identifier that would equal an
+  existing one, current or deprecated, takes another form.
+
 ## Deprecated IDs
 
 Older editions contain eulogies that the 2004 book does not print, or prints on another day. Each has
